@@ -1,0 +1,280 @@
+
+
+
+
+                                                          P. Lodderstedt
+                                                                      DT
+                                                              T. Bradley
+                                                           Ping Identity
+                                                        October 15, 2014
+
+
+              OpenID Connect Mobile Discovery Profile 1.0
+                       draft-mobile-discovery-01
+
+Abstract
+
+   OpenID Connect Discovery 1.0 [OpenID.Discovery] section 2.1 specifies
+   a way to normalize a user identifier to derive a resource and
+   especially a host for OpenID Provider Issuer Discovery.  While this
+   works well for identifiers as email addresses and urls it does not
+   work for MNO identifiers.  In a mobile environment, MSISDN's or ip-
+   addresses are typical resources identifying a user.  The structure of
+   those identifiers does not allow for an algorithmic normalization.
+   Thus it will be necessary to have a specific service to perform the
+   normalization.
+
+   The Mobile Profile will specify the interface of this service.  Part
+   of the interface specification will be the identification of possible
+   user input identifier types relevant in the Mobile Connect scenario.
+   Remark: Some of those user input identifier types may not identify a
+   single user/device but may be sufficient to identify the right mobile
+   operator.  An example for this is the MNC/MCC tuple (mobile network
+   code/ mobile contry code) or the IP address range.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Requirements Notation and Conventions . . . . . . . . . .   2
+     1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
+   4.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   3
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   3
+   6.  Normative References  . . . . . . . . . . . . . . . . . . . .   3
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   4
+   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   4
+   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   5
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
+
+
+
+
+
+
+
+Lodderstedt & Bradley    Expires April 18, 2015                 [Page 1]
+
+                    OIDC Mobile Discoery Profile 1.0        October 2014
+
+
+1.  Introduction
+
+   OpenID Connect Mobile Discovery Profile 1.0 is a profile of the
+   OpenID Connect Discovery 1.0 [OpenID.Discovery] specification that
+   stipulates how a OpenID Connect client can use MNO identifiers to
+   determine the authoritative issuer for a identifier thereby enabling
+   a Single SignOn experience for End-Users.
+
+1.1.  Requirements Notation and Conventions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+   Throughout this document, values are quoted to indicate that they are
+   to be taken literally.  When using these values in protocol messages,
+   the quotes MUST NOT be used as part of the value.
+
+1.2.  Terminology
+
+   This specification uses the terms "Access Token", "Refresh Token",
+   "Authorization Code", "Authorization Grant", "Authorization Server",
+   "Authorization Endpoint", "Client", "Client Identifier", "Client
+   Secret", "Protected Resource", "Resource Owner", "Resource Server",
+   and "Token Endpoint" defined by OAuth 2.0 [RFC6749].  This
+   specification also defines the following terms:
+
+   Token Agent (TA)  A native application that obtains access tokens on
+      behalf of other native applications - thereby enabling a Single
+      SignOn experience for Native Application end users because the
+      End-Users need only explicitly authenticate the _TA_ once per
+      Authorization Server.
+
+   AppInfo Endpoint  A protected resource that the _TA_ can call (using
+      its primary access token) to obtain metadata corresponding to a
+      set of applications - both web & native.  The _TA_ uses the
+      application metadata in order to obtain secondary access tokens
+      for those applications.
+
+   Primary Token  An OAuth token (access, refresh, and id_token)
+      obtained by the _TA_ for its own uses.
+
+   Secondary Token  An OAuth access token obtained by the _TA_ on behalf
+      of another native application.
+
+
+
+
+
+
+
+Lodderstedt & Bradley    Expires April 18, 2015                 [Page 2]
+
+                    OIDC Mobile Discoery Profile 1.0        October 2014
+
+
+2.  Overview
+
+   Overview.
+
+3.  Security Considerations
+
+   TBD
+
+4.  Privacy Considerations
+
+   TBD
+
+5.  IANA Considerations
+
+   This document makes no requests of IANA.
+
+6.  Normative References
+
+   [JWT]      Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
+              (JWT)", draft-ietf-oauth-json-web-token (work in
+              progress), May 2013.
+
+   [OpenID.Core]
+              Sakimura, N., Bradley, J., Jones, M., de Medeiros, B.,
+              Mortimore, C., and E. Jay, "OpenID Connect Standard 1.0",
+              December 2013.
+
+   [OpenID.Discovery]
+              Sakimura, N., Bradley, J., Jones, M., and E. Jay, "OpenID
+              Connect Discovery 1.0", September 2014.
+
+   [OpenID.Registration]
+              Sakimura, N., Bradley, J., and M. Jones, "OpenID Connect
+              Dynamic Client Registration 1.0", December 2013.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+   [RFC2246]  Dierks, T. and C. Allen, "The TLS Protocol Version 1.0",
+              RFC 2246, January 1999.
+
+   [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
+              (TLS) Protocol Version 1.2", RFC 5246, August 2008.
+
+   [RFC6749]  Hardt, D., "The OAuth 2.0 Authorization Framework", RFC
+              6749, October 2012.
+
+
+
+
+
+Lodderstedt & Bradley    Expires April 18, 2015                 [Page 3]
+
+                    OIDC Mobile Discoery Profile 1.0        October 2014
+
+
+   [RFC6750]  Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
+              Framework: Bearer Token Usage", RFC 6750, October 2012.
+
+Appendix A.  Acknowledgements
+
+   The following have contributed to the development of this
+   specification.
+
+
+
+Appendix B.  Notices
+
+   Copyright (c) 2014 The OpenID Foundation.
+
+   The OpenID Foundation (OIDF) grants to any Contributor, developer,
+   implementer, or other interested party a non-exclusive, royalty free,
+   worldwide copyright license to reproduce, prepare derivative works
+   from, distribute, perform and display, this Implementers Draft or
+   Final Specification solely for the purposes of (i) developing
+   specifications, and (ii) implementing Implementers Drafts and Final
+   Specifications based on such documents, provided that attribution be
+   made to the OIDF as the source of the material, but that such
+   attribution does not indicate an endorsement by the OIDF.
+
+   The technology described in this specification was made available
+   from contributions from various sources, including members of the
+   OpenID Foundation and others.  Although the OpenID Foundation has
+   taken steps to help ensure that the technology is available for
+   distribution, it takes no position regarding the validity or scope of
+   any intellectual property or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this specification or the extent to which any license under such
+   rights might or might not be available; neither does it represent
+   that it has made any independent effort to identify any such rights.
+   The OpenID Foundation and the contributors to this specification make
+   no (and hereby expressly disclaim any) warranties (express, implied,
+   or otherwise), including implied warranties of merchantability, non-
+   infringement, fitness for a particular purpose, or title, related to
+   this specification, and the entire risk as to implementing this
+   specification is assumed by the implementer.  The OpenID Intellectual
+   Property Rights policy requires contributors to offer a patent
+   promise not to assert certain patent claims against other
+   contributors and against implementers.  The OpenID Foundation invites
+   any interested party to bring to its attention any copyrights,
+   patents, patent applications, or other proprietary rights that may
+   cover technology that may be required to practice this specification.
+
+
+
+
+
+Lodderstedt & Bradley    Expires April 18, 2015                 [Page 4]
+
+                    OIDC Mobile Discoery Profile 1.0        October 2014
+
+
+Appendix C.  Document History
+
+   [[ To be removed from the final specification ]]
+
+   -01
+
+   o  Initial draft
+
+   o  Added OIDF Standard Notice
+
+Authors' Addresses
+
+   Torsten Lodderstedt
+   Deutsche Telekom AG
+
+   Email: torsten@lodderstedt.net
+
+
+   John Bradley
+   Ping Identity
+
+   Email: jbradley@pingidentity.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lodderstedt & Bradley    Expires April 18, 2015                 [Page 5]

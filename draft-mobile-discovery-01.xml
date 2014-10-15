@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<?xml-stylesheet type='text/xsl' href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
+<!DOCTYPE rfc PUBLIC "-//IETF//DTD RFC 2629//EN"
+"http://xml2rfc.ietf.org/authoring/rfc2629.dtd">
+<!--
+  NOTE:  This XML file is input used to produce the authoritative copy of an
+  OpenID Foundation specification.  The authoritative copy is the HTML output.
+  This XML source file is not authoritative.  The statement ipr="none" is
+  present only to satisfy the document compilation tool and is not indicative
+  of the IPR status of this specification.  The IPR for this specification is
+  described in the "Notices" section.  This is a public OpenID Foundation
+  document and not a private document, as the private="..." declaration could
+  be taken to indicate.
+-->
+<rfc category="std" docName="draft-mobile-discovery-01" ipr="none">
+
+  <?rfc toc="yes" ?>
+  <?rfc tocdepth="5" ?>
+  <?rfc symrefs="yes" ?>
+  <?rfc sortrefs="yes"?>
+  <?rfc strict="yes" ?>
+  <?rfc iprnotified="no" ?>
+  <?rfc private="Draft" ?>
+  
+  <front>
+    <title abbrev="OIDC Mobile Discoery Profile 1.0">
+            OpenID Connect Mobile Discovery Profile 1.0</title>
+
+
+    <author fullname="Torsten Lodderstedt" initials="P." surname="Lodderstedt">
+      <organization abbrev="DT">Deutsche Telekom AG</organization>
+      <address>
+        <email>torsten@lodderstedt.net</email>
+      </address>
+    </author>
+
+
+<author fullname="John Bradley" initials="T." surname="Bradley">
+      <organization abbrev="">Ping Identity</organization>
+      <address>
+        <email>jbradley@pingidentity.com</email>
+      </address>
+    </author>
+
+
+
+    <date day="15" month="Oct" year="2014" />
+    
+    <workgroup>OpenID Mobile Profile Working Group</workgroup>
+
+    <abstract>
+    
+<t><xref target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref> section 2.1 
+specifies a way to normalize a user identifier to derive a resource and especially a
+ host for OpenID Provider Issuer Discovery. While this works well for identifiers as 
+ email addresses and urls it does not work for MNO identifiers. In a mobile environment, 
+ MSISDN's or ip-addresses are typical resources identifying a user. The structure of 
+ those identifiers does not allow for an algorithmic normalization. Thus it will be 
+ necessary to have a specific service to perform the normalization. </t>
+ 
+<t>The Mobile Profile will specify the interface of this service. Part of the interface
+ specification will be the identification of possible user input identifier types 
+ relevant in the Mobile Connect scenario.
+Remark:
+Some of those user input identifier types may not identify a single user/device but may
+ be sufficient to identify the right mobile operator. An example for this is the 
+ MNC/MCC tuple (mobile network code/ mobile contry code) or the IP address range.
+</t>
+    </abstract>
+  </front>
+
+  <middle>
+
+    <section anchor="Introduction" title="Introduction">
+
+      <t>OpenID Connect Mobile Discovery Profile 1.0 is a profile of the 
+      <xref target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref> specification
+      that stipulates how a OpenID Connect client can use MNO identifiers to determine the
+      authoritative issuer for a identifier thereby   
+      enabling a Single SignOn experience for End-Users.</t>
+
+      <section anchor="rnc" title="Requirements Notation and Conventions">
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+        document are to be interpreted as described in <xref
+        target="RFC2119"/>.</t>
+
+        <t>Throughout this document, values are quoted to indicate that they are
+        to be taken literally. When using these values in protocol messages, the
+        quotes MUST NOT be used as part of the value.</t>
+      </section>
+
+      <section anchor="terminology" title="Terminology">
+        <t>
+          This specification uses the terms "Access Token", "Refresh Token",
+          "Authorization Code", "Authorization Grant", "Authorization Server",
+          "Authorization Endpoint", "Client", "Client Identifier", "Client Secret",
+          "Protected Resource", "Resource Owner", "Resource Server", and
+          "Token Endpoint" defined by <xref target="RFC6749">OAuth 2.0</xref>.
+          This specification also defines the following terms: 
+          <list style="hanging">
+            <t hangText="Token Agent (TA)">
+               A native application that obtains access tokens on behalf of other native applications - thereby enabling a Single SignOn
+               experience for Native Application end users because the End-Users need only explicitly authenticate the <spanx style="emph">TA</spanx> once per Authorization Server.
+            </t>
+            <t hangText="AppInfo Endpoint">
+                A protected resource that the <spanx style="emph">TA</spanx> can call (using its primary access token) to obtain metadata corresponding to a set of 
+                applications - both web &amp; native. The <spanx style="emph">TA</spanx> uses the application metadata in order to obtain secondary access tokens for those 
+                applications.
+            </t>
+             <t hangText="Primary Token">
+              An OAuth token (access, refresh, and id_token) obtained by the <spanx style="emph">TA</spanx> for its own uses. 
+            </t>
+             <t hangText="Secondary Token">
+              An OAuth access token obtained by the <spanx style="emph">TA</spanx> on behalf of another native application. 
+            </t>
+          </list>
+        </t>
+      </section>
+    </section>
+    
+    <section title="Overview">
+    
+    <t>Overview. </t>
+
+
+    </section>
+
+
+    
+
+    <section anchor="security_considerations" title="Security Considerations">
+	<t>TBD</t>
+    </section>
+
+    <section anchor="privacy_considerations" title="Privacy Considerations">
+	<t>TBD</t>
+    </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This document makes no requests of IANA.</t>
+    </section>
+
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119"?>
+      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6749"?>
+      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6750"?>
+      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5246"?>
+      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2246"?>
+
+
+      
+      <reference anchor="OpenID.Core">
+	<front>
+	  <title>OpenID Connect Standard 1.0</title>
+
+	  <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+	    <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+	  </author>
+
+	  <author fullname="John Bradley" initials="J." surname="Bradley">
+	    <organization abbrev="Ping Identity">Ping Identity</organization>
+	  </author>
+
+	  <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+	    <organization abbrev="Microsoft">Microsoft</organization>
+	  </author>
+
+	  <author fullname="Breno de Medeiros" initials="B." surname="de Medeiros">
+	    <organization abbrev="Google">Google</organization>
+	  </author>
+
+	  <author fullname="Chuck Mortimore" initials="C." surname="Mortimore">
+	    <organization abbrev="Salesforce">Salesforce</organization>
+	  </author>
+
+	  <author fullname="Edmund Jay" initials="E." surname="Jay">
+	    <organization abbrev="Illumila">Illumila</organization>
+	  </author>
+
+	  <date day="19" month="December" year="2013"/>
+	</front>
+
+	<format target="http://openid.net/specs/openid-connect-core-1_0.html"
+		type="HTML" />
+      </reference>
+
+      <reference anchor="OpenID.Registration">
+        <front>
+          <title>OpenID Connect Dynamic Client Registration 1.0</title>
+
+          <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+            <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+          </author>
+
+          <author fullname="John Bradley" initials="J." surname="Bradley">
+            <organization abbrev="Ping Identity">Ping Identity</organization>
+          </author>
+
+          <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+            <organization abbrev="Microsoft">Microsoft</organization>
+          </author>
+
+          <date day="19" month="December" year="2013"/>
+        </front>
+
+	<format target="http://openid.net/specs/openid-connect-registration-1_0-19.html"
+                type="HTML" />
+      </reference>
+
+      <reference anchor="OpenID.Discovery">
+	<front>
+	  <title>OpenID Connect Discovery 1.0</title>
+
+	  <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+	    <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+	  </author>
+
+	  <author fullname="John Bradley" initials="J." surname="Bradley">
+	    <organization abbrev="Ping Identity">Ping Identity</organization>
+	  </author>
+
+	  <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+	    <organization abbrev="Microsoft">Microsoft</organization>
+	  </author>
+
+	  <author fullname="Edmund Jay" initials="E." surname="Jay">
+	    <organization abbrev="Illumila">Illumila</organization>
+	  </author>
+
+	  <date day="16" month="September" year="2014"/>
+	</front>
+
+	<format target="http://openid.net/specs/openid-connect-discovery-1_0.html"
+		type="HTML" />
+      </reference>
+
+      <reference anchor="JWT">
+        <front>
+          <title>JSON Web Token (JWT)</title>
+
+          <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+            <organization abbrev="Microsoft">Microsoft</organization>
+          </author>
+
+          <author fullname="John Bradley" initials="J." surname="Bradley">
+           <organization abbrev="Ping Identity">Ping Identity</organization>
+          </author>
+
+          <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+            <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+          </author>
+
+          <date day="28" month="May" year="2013" />
+        </front>
+
+	<seriesInfo value="draft-ietf-oauth-json-web-token" name="Internet-Draft"/>
+	<format target="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08"
+                type="HTML" />
+      </reference>
+      
+    </references>
+    
+
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>The following have contributed to the development of this specification.</t>
+      <t>
+        <list style="empty">
+          <t></t>
+        </list>
+      </t>
+    </section>
+
+
+    <section anchor="Notices" title="Notices">
+      <t>Copyright (c) 2014 The OpenID Foundation.</t>
+      <t>
+	The OpenID Foundation (OIDF) grants to any Contributor, developer, 
+	implementer, or other interested party a non-exclusive, royalty free, 
+	worldwide copyright license to reproduce, prepare derivative works from, 
+	distribute, perform and display, this Implementers Draft or 
+	Final Specification solely for the purposes of (i) developing 
+	specifications, and (ii) implementing Implementers Drafts and 
+	Final Specifications based on such documents, provided that attribution 
+	be made to the OIDF as the source of the material, but that such attribution 
+	does not indicate an endorsement by the OIDF.
+      </t>
+      <t>
+	The technology described in this specification was 
+	made available from contributions from various sources, 
+	including members of the OpenID Foundation and others.  
+	Although the OpenID Foundation has taken steps to help ensure 
+	that the technology is available for distribution, it takes 
+	no position regarding the validity or scope of any intellectual 
+	property or other rights that might be claimed to pertain to 
+	the implementation or use of the technology described in 
+	this specification or the extent to which any license under 
+	such rights might or might not be available; neither does it 
+	represent that it has made any independent effort to identify 
+	any such rights.  The OpenID Foundation and the contributors 
+	to this specification make no (and hereby expressly disclaim any) 
+	warranties (express, implied, or otherwise), including implied 
+	warranties of merchantability, non-infringement, fitness for 
+	a particular purpose, or title, related to this specification, 
+	and the entire risk as to implementing this specification is 
+	assumed by the implementer.  The OpenID Intellectual 
+	Property Rights policy requires contributors to offer 
+	a patent promise not to assert certain patent claims against 
+	other contributors and against implementers.  The OpenID Foundation invites 
+	any interested party to bring to its attention any copyrights, 
+	patents, patent applications, or other proprietary rights 
+	that may cover technology that may be required to practice 
+	this specification.
+      </t>
+    </section>
+
+
+    <section anchor="History" title="Document History">
+      <t>[[ To be removed from the final specification ]]</t>
+
+      <t>-01 <list style="symbols">
+          <t>Initial draft</t>
+          <t>Added OIDF Standard Notice </t>
+        </list></t>
+        
+          
+    
+    </section>
+  </back>
+</rfc>
