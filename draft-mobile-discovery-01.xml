@@ -99,15 +99,7 @@ Some of those user input identifier types may not identify a single user/device 
           "Token Endpoint" defined by <xref target="RFC6749">OAuth 2.0</xref>.
           This specification also defines the following terms: 
           <list style="hanging">
-            <t hangText="Token Agent (TA)">
-               A native application that obtains access tokens on behalf of other native applications - thereby enabling a Single SignOn
-               experience for Native Application end users because the End-Users need only explicitly authenticate the <spanx style="emph">TA</spanx> once per Authorization Server.
-            </t>
-            <t hangText="AppInfo Endpoint">
-                A protected resource that the <spanx style="emph">TA</spanx> can call (using its primary access token) to obtain metadata corresponding to a set of 
-                applications - both web &amp; native. The <spanx style="emph">TA</spanx> uses the application metadata in order to obtain secondary access tokens for those 
-                applications.
-            </t>
+            
              <t hangText="Primary Token">
               An OAuth token (access, refresh, and id_token) obtained by the <spanx style="emph">TA</spanx> for its own uses. 
             </t>
@@ -139,6 +131,14 @@ Some of those user input identifier types may not identify a single user/device 
     <section title="Request" anchor="user-discovery-service-req">
     <t>The client creates a authorization request using the OAuth scope
     "providerid"</t>
+    <t>The following additional optional request paramaters are defined:
+    <list style="hanging">
+            <t hangText="MCC">
+               The Mobile Country Code as defined by ITU-T E.212
+            </t>
+    
+    </list>
+    </t>
     </section>
     
     <section title="Response" anchor="user-discovery-service-resp">
@@ -157,11 +157,41 @@ Some of those user input identifier types may not identify a single user/device 
             <t hangText="user_iss">
                The Issuer URI "iss" for the user who has authorized discovery.
             </t>
-            <t hangText="user_hint_token">
+            <t hangText="login_hint_token">
                 A Encrypted JSON web token (JWE) that contains the user hint for the 
                 issuer.  The token is encrypted with the public key of the issuer. 
                 This is passed to the issuer in the authentication request.
-            </t>
+                This token contains the following elements:
+				<list style="hanging">
+					<t hangText="iss">
+						The party creating the token.
+					</t>
+
+					<t hangText="aud">
+						The party to receive the token, typically the users IdP.
+						The value SHOULD be the "iss" URI of the IdP.
+					</t>
+					<t hangText="iat"> 
+						When the token was issued.
+					</t>
+					<t hangText="MCC"> NUMERIC
+						Mobile Country Code ITU-T E.212
+					 </t>
+					<t hangText="MNC"> NUMERIC
+						Mobile Network operator code ITU-T E.212
+					</t>
+					<t hangText="MSISDN"> NUMERIC 
+						The Subscriber identifier
+					</t>	
+					<t hangText="login_hint">  STRING
+						A account identifier for the user
+					</t>
+					<t hangText="ip_address">  STRING
+					    A IP address for the users device.
+					</t>
+
+				</list>
+				</t>
     </list>
     </t>
     </section>
