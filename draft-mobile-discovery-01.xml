@@ -35,7 +35,7 @@
     </author>
 
 
-<author fullname="John Bradley" initials="T." surname="Bradley">
+<author fullname="John Bradley" initials="J." surname="Bradley">
       <organization abbrev="">Ping Identity</organization>
       <address>
         <email>jbradley@pingidentity.com</email>
@@ -159,8 +159,8 @@ Some of those user input identifier types may not identify a single user/device 
             </t>
             <t hangText="login_hint_token">
                 A Encrypted JSON web token (JWE) that contains the user hint for the 
-                issuer.  The token is encrypted with the public key of the issuer. 
-                This is passed to the issuer in the authentication request.
+                issuer.  The token MUST be encrypted with the public key of the issuer. 
+                This token is passed to the issuer in the authentication request.
                 This token contains the following elements:
 				<list style="hanging">
 					<t hangText="iss">
