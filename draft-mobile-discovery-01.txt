@@ -6,7 +6,7 @@
                                                                       DT
                                                               T. Bradley
                                                            Ping Identity
-                                                        October 15, 2014
+                                                       December 07, 2014
 
 
               OpenID Connect Mobile Discovery Profile 1.0
@@ -38,25 +38,28 @@ Table of Contents
      1.1.  Requirements Notation and Conventions . . . . . . . . . .   2
      1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
-   4.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   3
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   3
-   6.  Normative References  . . . . . . . . . . . . . . . . . . . .   3
+   3.  User Discovery Service  . . . . . . . . . . . . . . . . . . .   3
+     3.1.  Registration  . . . . . . . . . . . . . . . . . . . . . .   3
+     3.2.  Request . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.3.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.4.  Error Response  . . . . . . . . . . . . . . . . . . . . .   3
+     3.5.  Discovery endpoint Response . . . . . . . . . . . . . . .   3
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
+   5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   4
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   4
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   4
-   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   4
-   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   5
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
+   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   5
 
 
 
-
-
-
-
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 1]
+Lodderstedt & Bradley     Expires June 10, 2015                 [Page 1]
 
-                    OIDC Mobile Discoery Profile 1.0        October 2014
+                    OIDC Mobile Discoery Profile 1.0       December 2014
 
+
+   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   5
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
 
@@ -106,31 +109,76 @@ Lodderstedt & Bradley    Expires April 18, 2015                 [Page 1]
 
 
 
-
-
-
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 2]
+Lodderstedt & Bradley     Expires June 10, 2015                 [Page 2]
 
-                    OIDC Mobile Discoery Profile 1.0        October 2014
+                    OIDC Mobile Discoery Profile 1.0       December 2014
 
 
 2.  Overview
 
    Overview.
 
-3.  Security Considerations
+   OpenID Connect Clients using this specification are encouraged to use
+   the OpenID Account chooser service.  This allows them to bypass
+   discovery for users that already have account information cached.
+
+3.  User Discovery Service
+
+3.1.  Registration
+
+   The client must register with the discovery service and have a valid
+   OAuth client_id.
+
+3.2.  Request
+
+   The client creates a authorization request using the OAuth scope
+   "providerid"
+
+3.3.  Response
+
+   The Authorization server returns a code or token depending on the
+   requested response type.
+
+3.4.  Error Response
+
+3.5.  Discovery endpoint Response
+
+   The response from the Discovery endpoint is a JSON object containing
+   the following top level elements:
+
+   user_iss  The Issuer URI "iss" for the user who has authorized
+      discovery.
+
+   user_hint_token  A Encrypted JSON web token (JWE) that contains the
+      user hint for the issuer.  The token is encrypted with the public
+      key of the issuer.  This is passed to the issuer in the
+      authentication request.
+
+4.  Security Considerations
 
    TBD
 
-4.  Privacy Considerations
+
+
+
+
+
+
+
+Lodderstedt & Bradley     Expires June 10, 2015                 [Page 3]
+
+                    OIDC Mobile Discoery Profile 1.0       December 2014
+
+
+5.  Privacy Considerations
 
    TBD
 
-5.  IANA Considerations
+6.  IANA Considerations
 
    This document makes no requests of IANA.
 
-6.  Normative References
+7.  Normative References
 
    [JWT]      Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", draft-ietf-oauth-json-web-token (work in
@@ -161,15 +209,6 @@ Lodderstedt & Bradley    Expires April 18, 2015                 [Page 2]
    [RFC6749]  Hardt, D., "The OAuth 2.0 Authorization Framework", RFC
               6749, October 2012.
 
-
-
-
-
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 3]
-
-                    OIDC Mobile Discoery Profile 1.0        October 2014
-
-
    [RFC6750]  Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
               Framework: Bearer Token Usage", RFC 6750, October 2012.
 
@@ -178,6 +217,13 @@ Appendix A.  Acknowledgements
    The following have contributed to the development of this
    specification.
 
+
+
+
+
+Lodderstedt & Bradley     Expires June 10, 2015                 [Page 4]
+
+                    OIDC Mobile Discoery Profile 1.0       December 2014
 
 
 Appendix B.  Notices
@@ -217,15 +263,6 @@ Appendix B.  Notices
    patents, patent applications, or other proprietary rights that may
    cover technology that may be required to practice this specification.
 
-
-
-
-
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 4]
-
-                    OIDC Mobile Discoery Profile 1.0        October 2014
-
-
 Appendix C.  Document History
 
    [[ To be removed from the final specification ]]
@@ -235,6 +272,15 @@ Appendix C.  Document History
    o  Initial draft
 
    o  Added OIDF Standard Notice
+
+
+
+
+
+Lodderstedt & Bradley     Expires June 10, 2015                 [Page 5]
+
+                    OIDC Mobile Discoery Profile 1.0       December 2014
+
 
 Authors' Addresses
 
@@ -277,4 +323,14 @@ Authors' Addresses
 
 
 
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 5]
+
+
+
+
+
+
+
+
+
+
+Lodderstedt & Bradley     Expires June 10, 2015                 [Page 6]

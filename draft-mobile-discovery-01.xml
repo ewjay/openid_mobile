@@ -44,7 +44,7 @@
 
 
 
-    <date day="15" month="Oct" year="2014" />
+    <date day="07" month="December" year="2014" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -122,8 +122,51 @@ Some of those user input identifier types may not identify a single user/device 
     <section title="Overview">
     
     <t>Overview. </t>
+    <t>OpenID Connect Clients using this specification are encouraged to use the OpenID 
+    Account chooser service.  This allows them to bypass discovery for users that already
+    have account information cached.</t>
 
 
+    </section>
+    
+    <section title="User Discovery Service" anchor="user-discovery-service">
+    
+    <section title="Registration" anchor="user-discovery-service-reg">
+    <t>The client must register with the discovery service and have a valid
+    OAuth client_id.</t>
+    </section>
+    
+    <section title="Request" anchor="user-discovery-service-req">
+    <t>The client creates a authorization request using the OAuth scope
+    "providerid"</t>
+    </section>
+    
+    <section title="Response" anchor="user-discovery-service-resp">
+    <t>The Authorization server returns a code or token depending on the requested response
+     type.</t>
+    </section>
+    
+    <section title="Error Response" anchor="user-discovery-service-err">
+    </section>
+    
+    <section title="Discovery endpoint Response" anchor="user-discovery-endpoint-resp">
+    <t>The response from the Discovery endpoint is a JSON object containing the following
+    top level elements:
+    
+     <list style="hanging">
+            <t hangText="user_iss">
+               The Issuer URI "iss" for the user who has authorized discovery.
+            </t>
+            <t hangText="user_hint_token">
+                A Encrypted JSON web token (JWE) that contains the user hint for the 
+                issuer.  The token is encrypted with the public key of the issuer. 
+                This is passed to the issuer in the authentication request.
+            </t>
+    </list>
+    </t>
+    </section>
+    
+    
     </section>
 
 
