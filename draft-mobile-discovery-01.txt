@@ -4,7 +4,7 @@
 
                                                           P. Lodderstedt
                                                                       DT
-                                                              T. Bradley
+                                                              J. Bradley
                                                            Ping Identity
                                                        December 07, 2014
 
@@ -37,18 +37,18 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Requirements Notation and Conventions . . . . . . . . . .   2
      1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   2
    3.  User Discovery Service  . . . . . . . . . . . . . . . . . . .   3
      3.1.  Registration  . . . . . . . . . . . . . . . . . . . . . .   3
      3.2.  Request . . . . . . . . . . . . . . . . . . . . . . . . .   3
      3.3.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   3
      3.4.  Error Response  . . . . . . . . . . . . . . . . . . . . .   3
      3.5.  Discovery endpoint Response . . . . . . . . . . . . . . .   3
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
    5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   4
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
    7.  Normative References  . . . . . . . . . . . . . . . . . . . .   4
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   4
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   5
    Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   5
 
 
@@ -58,7 +58,7 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 1]
                     OIDC Mobile Discoery Profile 1.0       December 2014
 
 
-   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   5
+   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   6
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
@@ -88,31 +88,11 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 1]
    and "Token Endpoint" defined by OAuth 2.0 [RFC6749].  This
    specification also defines the following terms:
 
-   Token Agent (TA)  A native application that obtains access tokens on
-      behalf of other native applications - thereby enabling a Single
-      SignOn experience for Native Application end users because the
-      End-Users need only explicitly authenticate the _TA_ once per
-      Authorization Server.
-
-   AppInfo Endpoint  A protected resource that the _TA_ can call (using
-      its primary access token) to obtain metadata corresponding to a
-      set of applications - both web & native.  The _TA_ uses the
-      application metadata in order to obtain secondary access tokens
-      for those applications.
-
    Primary Token  An OAuth token (access, refresh, and id_token)
       obtained by the _TA_ for its own uses.
 
    Secondary Token  An OAuth access token obtained by the _TA_ on behalf
       of another native application.
-
-
-
-
-Lodderstedt & Bradley     Expires June 10, 2015                 [Page 2]
-
-                    OIDC Mobile Discoery Profile 1.0       December 2014
-
 
 2.  Overview
 
@@ -121,6 +101,18 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 2]
    OpenID Connect Clients using this specification are encouraged to use
    the OpenID Account chooser service.  This allows them to bypass
    discovery for users that already have account information cached.
+
+
+
+
+
+
+
+
+Lodderstedt & Bradley     Expires June 10, 2015                 [Page 2]
+
+                    OIDC Mobile Discoery Profile 1.0       December 2014
+
 
 3.  User Discovery Service
 
@@ -133,6 +125,10 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 2]
 
    The client creates a authorization request using the OAuth scope
    "providerid"
+
+   The following additional optional request paramaters are defined:
+
+   MCC  The Mobile Country Code as defined by ITU-T E.212
 
 3.3.  Response
 
@@ -149,18 +145,22 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 2]
    user_iss  The Issuer URI "iss" for the user who has authorized
       discovery.
 
-   user_hint_token  A Encrypted JSON web token (JWE) that contains the
-      user hint for the issuer.  The token is encrypted with the public
-      key of the issuer.  This is passed to the issuer in the
-      authentication request.
+   login_hint_token  A Encrypted JSON web token (JWE) that contains the
+      user hint for the issuer.  The token MUST be encrypted with the
+      public key of the issuer.  This token is passed to the issuer in
+      the authentication request.  This token contains the following
+      elements:
 
-4.  Security Considerations
+      iss  The party creating the token.
 
-   TBD
+      aud  The party to receive the token, typically the users IdP.  The
+         value SHOULD be the "iss" URI of the IdP.
 
+      iat  When the token was issued.
 
+      MCC  NUMERIC Mobile Country Code ITU-T E.212
 
-
+      MNC  NUMERIC Mobile Network operator code ITU-T E.212
 
 
 
@@ -169,6 +169,16 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 3]
 
                     OIDC Mobile Discoery Profile 1.0       December 2014
 
+
+      MSISDN  NUMERIC The Subscriber identifier
+
+      login_hint  STRING A account identifier for the user
+
+      ip_address  STRING A IP address for the users device.
+
+4.  Security Considerations
+
+   TBD
 
 5.  Privacy Considerations
 
@@ -209,6 +219,13 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 3]
    [RFC6749]  Hardt, D., "The OAuth 2.0 Authorization Framework", RFC
               6749, October 2012.
 
+
+
+Lodderstedt & Bradley     Expires June 10, 2015                 [Page 4]
+
+                    OIDC Mobile Discoery Profile 1.0       December 2014
+
+
    [RFC6750]  Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
               Framework: Bearer Token Usage", RFC 6750, October 2012.
 
@@ -217,13 +234,6 @@ Appendix A.  Acknowledgements
    The following have contributed to the development of this
    specification.
 
-
-
-
-
-Lodderstedt & Bradley     Expires June 10, 2015                 [Page 4]
-
-                    OIDC Mobile Discoery Profile 1.0       December 2014
 
 
 Appendix B.  Notices
@@ -263,6 +273,15 @@ Appendix B.  Notices
    patents, patent applications, or other proprietary rights that may
    cover technology that may be required to practice this specification.
 
+
+
+
+
+Lodderstedt & Bradley     Expires June 10, 2015                 [Page 5]
+
+                    OIDC Mobile Discoery Profile 1.0       December 2014
+
+
 Appendix C.  Document History
 
    [[ To be removed from the final specification ]]
@@ -272,15 +291,6 @@ Appendix C.  Document History
    o  Initial draft
 
    o  Added OIDF Standard Notice
-
-
-
-
-
-Lodderstedt & Bradley     Expires June 10, 2015                 [Page 5]
-
-                    OIDC Mobile Discoery Profile 1.0       December 2014
-
 
 Authors' Addresses
 
@@ -294,16 +304,6 @@ Authors' Addresses
    Ping Identity
 
    Email: jbradley@pingidentity.com
-
-
-
-
-
-
-
-
-
-
 
 
 
