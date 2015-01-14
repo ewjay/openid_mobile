@@ -2,11 +2,11 @@
 
 
 
-                                                          P. Lodderstedt
+                                                             J. Connotte
                                                                       DT
-                                                              T. Bradley
+                                                              J. Bradley
                                                            Ping Identity
-                                                        October 15, 2014
+                                                            Dec 09, 2014
 
 
             OpenID Connect Mobile Authentication Profile 1.0
@@ -26,18 +26,37 @@ Abstract
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   1
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Requirements Notation and Conventions . . . . . . . . . .   2
      1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   2
-   3.  Security Considerations . . . . . . . . . . . . . . . . . . .   2
-   4.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   3
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   3
-   6.  Normative References  . . . . . . . . . . . . . . . . . . . .   3
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   3
-   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   4
-   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   4
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
+   2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  acr_values request and acr reponse  . . . . . . . . . . . . .   3
+   5.  amr . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   6.  Processing the login_hint_token . . . . . . . . . . . . . . .   3
+   7.  Specifying the truthyness of user claims  . . . . . . . . . .   3
+   8.  Special claims for Mobile Operators as OpenID Providers . . .   3
+   9.  pair wise . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   10. mandatory to implement  . . . . . . . . . . . . . . . . . . .   3
+   11. Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   12. Privacy Considerations  . . . . . . . . . . . . . . . . . . .   4
+   13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   14. Normative References  . . . . . . . . . . . . . . . . . . . .   4
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   5
+   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   5
+   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   6
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+
+
+
+
+
+
+
+Connotte & Bradley        Expires June 12, 2015                 [Page 1]
+
+                 OIDC Mobile Authentication Profile 1.0         Dec 2014
+
 
 1.  Introduction
 
@@ -46,17 +65,6 @@ Table of Contents
    common authentication contexts to be used across MNO and Mandatory to
    Implement features for MNO to assure interoperability of clients
    across MNO.
-
-
-
-
-
-
-
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 1]
-
-                 OIDC Mobile Authentication Profile 1.0     October 2014
-
 
 1.1.  Requirements Notation and Conventions
 
@@ -95,34 +103,96 @@ Lodderstedt & Bradley    Expires April 18, 2015                 [Page 1]
    Secondary Token  An OAuth access token obtained by the _TA_ on behalf
       of another native application.
 
+
+
+
+
+
+
+Connotte & Bradley        Expires June 12, 2015                 [Page 2]
+
+                 OIDC Mobile Authentication Profile 1.0         Dec 2014
+
+
 2.  Overview
 
    Overview.
 
-3.  Security Considerations
+3.
 
-   TBD
+   JCO: what are the right acr values to reflect either legal
+   indentities or pure digital identities?
+
+4.  acr_values request and acr reponse
+
+   JCO: Reiteration of the corresponding values.  Support for al least
+   Joe1 (digital identity)
+
+5.  amr
+
+   JCO: the amr response value must be considered in relation to the acr
+   repsonse
+
+6.  Processing the login_hint_token
+
+   For specification of login_hint_token look at the discovery part of
+   the Mobile Profile section ???
+
+7.  Specifying the truthyness of user claims
+
+   JCO: Something about how the claim was verified (self_asserted,
+   proved).  Leads to a structure of claims.
+
+8.  Special claims for Mobile Operators as OpenID Providers
+
+   JCO: special claims
+
+9.  pair wise
+
+10.  mandatory to implement
+
+   SPOP: symmetric proof of possession MANDATORY
+
+   Mandatory support for private_key_jwt, SHOULD basic (section 9 of
+   OpenID Connect) --> this implies public key exchange during
+   registration.
+
+   mandatory scopes (claims) as a question to the group.
+
+   Support for account chooser: push login_hint_token to the account
+   chooser
 
 
 
 
-
-
-
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 2]
+Connotte & Bradley        Expires June 12, 2015                 [Page 3]
 
-                 OIDC Mobile Authentication Profile 1.0     October 2014
+                 OIDC Mobile Authentication Profile 1.0         Dec 2014
 
 
-4.  Privacy Considerations
+   asymmetric RSA signing for id_token --> publish jks-uri
+
+   code flow, code id_token etc. optional
+
+   login_hint_token to be implemented per the discovery spec
+
+11.  Security Considerations
 
    TBD
 
-5.  IANA Considerations
+12.  Privacy Considerations
+
+   JCO: pair wise subject mandatory for Mobile Connect OpenID Provider.
+   The RP can negotiate for the exact mechanism.
+
+13.  IANA Considerations
 
    This document makes no requests of IANA.
 
-6.  Normative References
+   JCO: Is this true?  Didn't we talk about registering acr_values / acr
+   at IANA?
+
+14.  Normative References
 
    [JWT]      Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", draft-ietf-oauth-json-web-token (work in
@@ -147,6 +217,15 @@ Lodderstedt & Bradley    Expires April 18, 2015                 [Page 2]
    [RFC2246]  Dierks, T. and C. Allen, "The TLS Protocol Version 1.0",
               RFC 2246, January 1999.
 
+
+
+
+
+Connotte & Bradley        Expires June 12, 2015                 [Page 4]
+
+                 OIDC Mobile Authentication Profile 1.0         Dec 2014
+
+
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246, August 2008.
 
@@ -161,13 +240,6 @@ Appendix A.  Acknowledgements
    The following have contributed to the development of this
    specification.
 
-
-
-
-
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 3]
-
-                 OIDC Mobile Authentication Profile 1.0     October 2014
 
 
 Appendix B.  Notices
@@ -202,6 +274,14 @@ Appendix B.  Notices
    specification is assumed by the implementer.  The OpenID Intellectual
    Property Rights policy requires contributors to offer a patent
    promise not to assert certain patent claims against other
+
+
+
+Connotte & Bradley        Expires June 12, 2015                 [Page 5]
+
+                 OIDC Mobile Authentication Profile 1.0         Dec 2014
+
+
    contributors and against implementers.  The OpenID Foundation invites
    any interested party to bring to its attention any copyrights,
    patents, patent applications, or other proprietary rights that may
@@ -217,21 +297,12 @@ Appendix C.  Document History
 
    o  Added OIDF Standard Notice
 
-
-
-
-
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 4]
-
-                 OIDC Mobile Authentication Profile 1.0     October 2014
-
-
 Authors' Addresses
 
-   Torsten Lodderstedt
+   Joerg Connotte
    Deutsche Telekom AG
 
-   Email: torsten@lodderstedt.net
+   Email: j.connotte@telekom.de
 
 
    John Bradley
@@ -262,19 +333,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 5]
+Connotte & Bradley        Expires June 12, 2015                 [Page 6]
