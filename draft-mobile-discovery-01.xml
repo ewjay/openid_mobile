@@ -44,7 +44,7 @@
 
 
 
-    <date day="07" month="December" year="2014" />
+    <date day="07" month="February" year="2014" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -119,6 +119,59 @@ Some of those user input identifier types may not identify a single user/device 
     have account information cached.</t>
 
 
+    </section>
+        <section anchor="Account_Chooser" title="Account Chooser">
+        
+        <section anchor="Account_chooser_client" title="AC Client">
+	<t>It is recommended that Web server clients use the Account Chooser Central Data Store (CDS)
+	for discovering the users preferred account.</t>
+	    </section>
+	
+	  <section anchor="Account_chooser_idp" title="AC Identity Provider">
+	<t>Identity providers will populate the account information in Account Chooser's 
+	browser local storrage as the result of a successful loggin before redirecting
+	the user back to the client.</t>
+	
+	<t>If the user account has not been provisioned in the Browsers local storrage,
+	the Identity provider MUST offer to store the account before redirecting the user 
+	back to the Connect client.</t>
+	
+	<t>The following is an example of the script elements invoking ac.js offering to 
+	store an account:</t>
+	
+	<figure><artwork><![CDATA[
+<script type="text/javascript" 
+	src="https://www.accountchooser.com/ac.js" />
+<script type="text/javascript"> 
+	accountchooser.CONFIG = { 
+	// Sets the home-page URL to "/top" 
+	homeUrl: '/top', 
+ 
+	// Instructs ac.js to offer storage of an account via 
+	// accountchooser.com 
+	storeAccount: { 
+		email: '555-1212@babytel.com", 
+		displayName: "Santa Claus",
+		login_hint_token: 
+		"eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
+     OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
+     ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
+     Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
+     mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
+     1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi
+     6UklfCpIMfIjf7iGdXKHzg.
+     48V1_ALb6US04U3b.
+     5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
+     SdiwkIr3ajwQzaBtQD_A.
+     XFBoMYUZodetZdvTiFvSkQ",
+		providerId: "babytel.com"
+	} 
+}; 
+</script>
+		 ]]></artwork></figure>
+
+	    </section>
+	
     </section>
     
     <section title="User Discovery Service" anchor="user-discovery-service">
@@ -332,6 +385,24 @@ Some of those user input identifier types may not identify a single user/device 
 
 	<seriesInfo value="draft-ietf-oauth-json-web-token" name="Internet-Draft"/>
 	<format target="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08"
+                type="HTML" />
+      </reference>
+      
+      <reference anchor="AC">
+        <front>
+          <title>Account Chooser (AC)</title>
+
+          <author fullname="openid" initials="" surname="">
+
+          </author>
+
+
+
+          <date day="28" month="May" year="2013" />
+        </front>
+
+
+	<format target="http://accountchooser.net/developers"
                 type="HTML" />
       </reference>
       
