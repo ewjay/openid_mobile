@@ -6,7 +6,7 @@
                                                                       DT
                                                               J. Bradley
                                                            Ping Identity
-                                                       December 07, 2014
+                                                       February 07, 2014
 
 
               OpenID Connect Mobile Discovery Profile 1.0
@@ -38,28 +38,31 @@ Table of Contents
      1.1.  Requirements Notation and Conventions . . . . . . . . . .   2
      1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   2
-   3.  User Discovery Service  . . . . . . . . . . . . . . . . . . .   3
-     3.1.  Registration  . . . . . . . . . . . . . . . . . . . . . .   3
-     3.2.  Request . . . . . . . . . . . . . . . . . . . . . . . . .   3
-     3.3.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   3
-     3.4.  Error Response  . . . . . . . . . . . . . . . . . . . . .   3
-     3.5.  Discovery endpoint Response . . . . . . . . . . . . . . .   3
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   4
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   4
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   5
-   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   5
+   3.  Account Chooser . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.1.  AC Client . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.2.  AC Identity Provider  . . . . . . . . . . . . . . . . . .   3
+   4.  User Discovery Service  . . . . . . . . . . . . . . . . . . .   4
+     4.1.  Registration  . . . . . . . . . . . . . . . . . . . . . .   4
+     4.2.  Request . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     4.3.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   4
+     4.4.  Error Response  . . . . . . . . . . . . . . . . . . . . .   4
+     4.5.  Discovery endpoint Response . . . . . . . . . . . . . . .   4
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   5
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
 
 
 
-Lodderstedt & Bradley     Expires June 10, 2015                 [Page 1]
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 1]
 
-                    OIDC Mobile Discoery Profile 1.0       December 2014
+                    OIDC Mobile Discoery Profile 1.0       February 2014
 
 
-   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   6
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   6
+   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   6
+   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
@@ -106,22 +109,75 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 1]
 
 
 
-
-
-
-Lodderstedt & Bradley     Expires June 10, 2015                 [Page 2]
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 2]
 
-                    OIDC Mobile Discoery Profile 1.0       December 2014
+                    OIDC Mobile Discoery Profile 1.0       February 2014
 
 
-3.  User Discovery Service
+3.  Account Chooser
 
-3.1.  Registration
+3.1.  AC Client
+
+   It is recommended that Web server clients use the Account Chooser
+   Central Data Store (CDS) for discovering the users preferred account.
+
+3.2.  AC Identity Provider
+
+   Identity providers will populate the account information in Account
+   Chooser's browser local storrage as the result of a successful loggin
+   before redirecting the user back to the client.
+
+   If the user account has not been provisioned in the Browsers local
+   storrage, the Identity provider MUST offer to store the account
+   before redirecting the user back to the Connect client.
+
+   The following is an example of the script elements invoking ac.js
+   offering to store an account:
+
+   <script type="text/javascript"
+       src="https://www.accountchooser.com/ac.js" />
+   <script type="text/javascript">
+       accountchooser.CONFIG = {
+       // Sets the home-page URL to "/top"
+       homeUrl: '/top',
+
+       // Instructs ac.js to offer storage of an account via
+       // accountchooser.com
+       storeAccount: {
+           email: '555-1212@babytel.com",
+           displayName: "Santa Claus",
+           login_hint_token:
+           "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
+        OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
+        ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
+        Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
+        mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
+        1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi
+        6UklfCpIMfIjf7iGdXKHzg.
+        48V1_ALb6US04U3b.
+        5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
+        SdiwkIr3ajwQzaBtQD_A.
+        XFBoMYUZodetZdvTiFvSkQ",
+           providerId: "babytel.com"
+       }
+   };
+   </script>
+
+
+
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 3]
+
+                    OIDC Mobile Discoery Profile 1.0       February 2014
+
+
+4.  User Discovery Service
+
+4.1.  Registration
 
    The client must register with the discovery service and have a valid
    OAuth client_id.
 
-3.2.  Request
+4.2.  Request
 
    The client creates a authorization request using the OAuth scope
    "providerid"
@@ -130,14 +186,14 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 2]
 
    MCC  The Mobile Country Code as defined by ITU-T E.212
 
-3.3.  Response
+4.3.  Response
 
    The Authorization server returns a code or token depending on the
    requested response type.
 
-3.4.  Error Response
+4.4.  Error Response
 
-3.5.  Discovery endpoint Response
+4.5.  Discovery endpoint Response
 
    The response from the Discovery endpoint is a JSON object containing
    the following top level elements:
@@ -165,9 +221,9 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 2]
 
 
 
-Lodderstedt & Bradley     Expires June 10, 2015                 [Page 3]
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 4]
 
-                    OIDC Mobile Discoery Profile 1.0       December 2014
+                    OIDC Mobile Discoery Profile 1.0       February 2014
 
 
       MSISDN  NUMERIC The Subscriber identifier
@@ -176,19 +232,21 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 3]
 
       ip_address  STRING A IP address for the users device.
 
-4.  Security Considerations
+5.  Security Considerations
 
    TBD
 
-5.  Privacy Considerations
+6.  Privacy Considerations
 
    TBD
 
-6.  IANA Considerations
+7.  IANA Considerations
 
    This document makes no requests of IANA.
 
-7.  Normative References
+8.  Normative References
+
+   [AC]       "Account Chooser (AC)", May 2013.
 
    [JWT]      Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", draft-ietf-oauth-json-web-token (work in
@@ -216,15 +274,16 @@ Lodderstedt & Bradley     Expires June 10, 2015                 [Page 3]
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246, August 2008.
 
+
+
+
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 5]
+
+                    OIDC Mobile Discoery Profile 1.0       February 2014
+
+
    [RFC6749]  Hardt, D., "The OAuth 2.0 Authorization Framework", RFC
               6749, October 2012.
-
-
-
-Lodderstedt & Bradley     Expires June 10, 2015                 [Page 4]
-
-                    OIDC Mobile Discoery Profile 1.0       December 2014
-
 
    [RFC6750]  Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
               Framework: Bearer Token Usage", RFC 6750, October 2012.
@@ -270,17 +329,17 @@ Appendix B.  Notices
    promise not to assert certain patent claims against other
    contributors and against implementers.  The OpenID Foundation invites
    any interested party to bring to its attention any copyrights,
+
+
+
+
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 6]
+
+                    OIDC Mobile Discoery Profile 1.0       February 2014
+
+
    patents, patent applications, or other proprietary rights that may
    cover technology that may be required to practice this specification.
-
-
-
-
-
-Lodderstedt & Bradley     Expires June 10, 2015                 [Page 5]
-
-                    OIDC Mobile Discoery Profile 1.0       December 2014
-
 
 Appendix C.  Document History
 
@@ -330,7 +389,4 @@ Authors' Addresses
 
 
 
-
-
-
-Lodderstedt & Bradley     Expires June 10, 2015                 [Page 6]
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 7]
