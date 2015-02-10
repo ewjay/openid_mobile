@@ -44,12 +44,12 @@ Table of Contents
    4.  User Discovery Service  . . . . . . . . . . . . . . . . . . .   4
      4.1.  Registration  . . . . . . . . . . . . . . . . . . . . . .   4
      4.2.  Request . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     4.3.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   4
-     4.4.  Error Response  . . . . . . . . . . . . . . . . . . . . .   4
-     4.5.  Discovery endpoint Response . . . . . . . . . . . . . . .   4
+     4.3.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   5
+     4.4.  Error Response  . . . . . . . . . . . . . . . . . . . . .   5
+     4.5.  Discovery endpoint Response . . . . . . . . . . . . . . .   5
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
    6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   5
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
 
 
 
@@ -58,11 +58,11 @@ Lodderstedt & Bradley    Expires August 11, 2014                [Page 1]
                     OIDC Mobile Discoery Profile 1.0       February 2014
 
 
-   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
+   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   6
-   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   6
+   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   7
    Appendix C.  Document History . . . . . . . . . . . . . . . . . .   7
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
@@ -121,6 +121,22 @@ Lodderstedt & Bradley    Expires August 11, 2014                [Page 2]
    It is recommended that Web server clients use the Account Chooser
    Central Data Store (CDS) for discovering the users preferred account.
 
+   Account Chooser is invoked with the following script:
+
+   The client needs to host a account-tatus endpoint.  This endpoint
+   will be passed the information from the account that the user
+   selects.
+
+   <script type="text/javascript"
+        src="https://www.accountchooser.com/ac.js" />
+   <script>
+    accountchooser.CONFIG.uiConfig = {
+       title: 'Sign in to Example.com',
+       favicon: 'http://example.com/favicon.ico',
+       branding: 'http://example.com/branding/ac-blurb.html'
+        };
+   </script>
+
 3.2.  AC Identity Provider
 
    Identity providers will populate the account information in Account
@@ -133,6 +149,26 @@ Lodderstedt & Bradley    Expires August 11, 2014                [Page 2]
 
    The following is an example of the script elements invoking ac.js
    offering to store an account:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 3]
+
+                    OIDC Mobile Discoery Profile 1.0       February 2014
+
 
    <script type="text/javascript"
        src="https://www.accountchooser.com/ac.js" />
@@ -163,13 +199,6 @@ Lodderstedt & Bradley    Expires August 11, 2014                [Page 2]
    };
    </script>
 
-
-
-Lodderstedt & Bradley    Expires August 11, 2014                [Page 3]
-
-                    OIDC Mobile Discoery Profile 1.0       February 2014
-
-
 4.  User Discovery Service
 
 4.1.  Registration
@@ -185,6 +214,17 @@ Lodderstedt & Bradley    Expires August 11, 2014                [Page 3]
    The following additional optional request paramaters are defined:
 
    MCC  The Mobile Country Code as defined by ITU-T E.212
+
+
+
+
+
+
+
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 4]
+
+                    OIDC Mobile Discoery Profile 1.0       February 2014
+
 
 4.3.  Response
 
@@ -218,14 +258,6 @@ Lodderstedt & Bradley    Expires August 11, 2014                [Page 3]
 
       MNC  NUMERIC Mobile Network operator code ITU-T E.212
 
-
-
-
-Lodderstedt & Bradley    Expires August 11, 2014                [Page 4]
-
-                    OIDC Mobile Discoery Profile 1.0       February 2014
-
-
       MSISDN  NUMERIC The Subscriber identifier
 
       login_hint  STRING A account identifier for the user
@@ -239,6 +271,16 @@ Lodderstedt & Bradley    Expires August 11, 2014                [Page 4]
 6.  Privacy Considerations
 
    TBD
+
+
+
+
+
+
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 5]
+
+                    OIDC Mobile Discoery Profile 1.0       February 2014
+
 
 7.  IANA Considerations
 
@@ -274,14 +316,6 @@ Lodderstedt & Bradley    Expires August 11, 2014                [Page 4]
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246, August 2008.
 
-
-
-
-Lodderstedt & Bradley    Expires August 11, 2014                [Page 5]
-
-                    OIDC Mobile Discoery Profile 1.0       February 2014
-
-
    [RFC6749]  Hardt, D., "The OAuth 2.0 Authorization Framework", RFC
               6749, October 2012.
 
@@ -293,6 +327,15 @@ Appendix A.  Acknowledgements
    The following have contributed to the development of this
    specification.
 
+
+
+
+
+
+
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 6]
+
+                    OIDC Mobile Discoery Profile 1.0       February 2014
 
 
 Appendix B.  Notices
@@ -329,15 +372,6 @@ Appendix B.  Notices
    promise not to assert certain patent claims against other
    contributors and against implementers.  The OpenID Foundation invites
    any interested party to bring to its attention any copyrights,
-
-
-
-
-Lodderstedt & Bradley    Expires August 11, 2014                [Page 6]
-
-                    OIDC Mobile Discoery Profile 1.0       February 2014
-
-
    patents, patent applications, or other proprietary rights that may
    cover technology that may be required to practice this specification.
 
@@ -350,6 +384,15 @@ Appendix C.  Document History
    o  Initial draft
 
    o  Added OIDF Standard Notice
+
+
+
+
+
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 7]
+
+                    OIDC Mobile Discoery Profile 1.0       February 2014
+
 
 Authors' Addresses
 
@@ -389,4 +432,17 @@ Authors' Addresses
 
 
 
-Lodderstedt & Bradley    Expires August 11, 2014                [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lodderstedt & Bradley    Expires August 11, 2014                [Page 8]

@@ -125,6 +125,25 @@ Some of those user input identifier types may not identify a single user/device 
         <section anchor="Account_chooser_client" title="AC Client">
 	<t>It is recommended that Web server clients use the Account Chooser Central Data Store (CDS)
 	for discovering the users preferred account.</t>
+	
+	<t>Account Chooser is invoked with the following script:</t>
+	
+	<t>
+	The client needs to host a account-tatus endpoint.  This endpoint will be passed the
+	information from the account that the user selects.</t> 
+		<figure><artwork><![CDATA[
+<script type="text/javascript"
+     src="https://www.accountchooser.com/ac.js" />
+<script>
+ accountchooser.CONFIG.uiConfig = { 
+	title: 'Sign in to Example.com', 
+	favicon: 'http://example.com/favicon.ico', 
+	branding: 'http://example.com/branding/ac-blurb.html' 
+     };
+</script>
+		 ]]></artwork></figure>
+
+	
 	    </section>
 	
 	  <section anchor="Account_chooser_idp" title="AC Identity Provider">
