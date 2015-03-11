@@ -123,9 +123,14 @@ authentication. We propose to use the definition of Level of Assurance as specif
 
     <section anchor="acr_loa" title="">
         <t>JCO: what are the right acr values to reflect either legal indentities or pure digital identities?</t>
+        <t> http://docs.oasis-open.org/security/saml/v2.0/saml-authn-context-2.0-os.pdf
+        describes a number of possible acr corresponding to mobile environment
+        i.e. urn:oasis:names:tc:SAML:2.0:ac:classes:MobileOneFactorUnregistered is referred to as 
+        </t>
     </section>
-    <section anchor="acr_valued_and_response" title="acr_values request and acr reponse">
+    <section anchor="acr_values_and_response" title="acr_values request and acr reponse">
         <t>JCO: Reiteration of the corresponding values. Support for al least Joe1 (digital identity)</t>
+        <t></t>
     </section>
     
     <section anchor="a_m_r" title="amr">

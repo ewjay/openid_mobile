@@ -123,6 +123,12 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 2]
    JCO: what are the right acr values to reflect either legal
    indentities or pure digital identities?
 
+   http://docs.oasis-open.org/security/saml/v2.0/saml-authn-context-
+   2.0-os.pdf describes a number of possible acr corresponding to mobile
+   environment i.e.
+   urn:oasis:names:tc:SAML:2.0:ac:classes:MobileOneFactorUnregistered is
+   referred to as
+
 4.  acr_values request and acr reponse
 
    JCO: Reiteration of the corresponding values.  Support for al least
@@ -157,18 +163,17 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 2]
    OpenID Connect) --> this implies public key exchange during
    registration.
 
-   mandatory scopes (claims) as a question to the group.
-
-   Support for account chooser: push login_hint_token to the account
-   chooser
-
-
 
 
 Connotte & Bradley        Expires June 12, 2015                 [Page 3]
 
                  OIDC Mobile Authentication Profile 1.0         Dec 2014
 
+
+   mandatory scopes (claims) as a question to the group.
+
+   Support for account chooser: push login_hint_token to the account
+   chooser
 
    asymmetric RSA signing for id_token --> publish jks-uri
 
@@ -214,17 +219,15 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 3]
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
-   [RFC2246]  Dierks, T. and C. Allen, "The TLS Protocol Version 1.0",
-              RFC 2246, January 1999.
-
-
-
 
 
 Connotte & Bradley        Expires June 12, 2015                 [Page 4]
 
                  OIDC Mobile Authentication Profile 1.0         Dec 2014
 
+
+   [RFC2246]  Dierks, T. and C. Allen, "The TLS Protocol Version 1.0",
+              RFC 2246, January 1999.
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246, August 2008.
@@ -271,9 +274,6 @@ Appendix B.  Notices
    or otherwise), including implied warranties of merchantability, non-
    infringement, fitness for a particular purpose, or title, related to
    this specification, and the entire risk as to implementing this
-   specification is assumed by the implementer.  The OpenID Intellectual
-   Property Rights policy requires contributors to offer a patent
-   promise not to assert certain patent claims against other
 
 
 
@@ -282,6 +282,9 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 5]
                  OIDC Mobile Authentication Profile 1.0         Dec 2014
 
 
+   specification is assumed by the implementer.  The OpenID Intellectual
+   Property Rights policy requires contributors to offer a patent
+   promise not to assert certain patent claims against other
    contributors and against implementers.  The OpenID Foundation invites
    any interested party to bring to its attention any copyrights,
    patents, patent applications, or other proprietary rights that may
@@ -309,9 +312,6 @@ Authors' Addresses
    Ping Identity
 
    Email: jbradley@pingidentity.com
-
-
-
 
 
 
