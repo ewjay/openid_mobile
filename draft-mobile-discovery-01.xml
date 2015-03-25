@@ -44,7 +44,7 @@
 
 
 
-    <date day="11" month="February" year="2014" />
+    <date day="21" month="March" year="2015" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -98,29 +98,115 @@ Some of those user input identifier types may not identify a single user/device 
           "Protected Resource", "Resource Owner", "Resource Server", and
           "Token Endpoint" defined by <xref target="RFC6749">OAuth 2.0</xref>.
           This specification also defines the following terms: 
-          <list style="hanging">
-            
-             <t hangText="Primary Token">
-              An OAuth token (access, refresh, and id_token) obtained by the <spanx style="emph">TA</spanx> for its own uses. 
-            </t>
-             <t hangText="Secondary Token">
-              An OAuth access token obtained by the <spanx style="emph">TA</spanx> on behalf of another native application. 
-            </t>
-          </list>
+          
         </t>
       </section>
     </section>
     
     <section title="Overview">
     
-    <t>Overview. </t>
-    <t>OpenID Connect Clients using this specification are encouraged to use the OpenID 
-    Account chooser service.  This allows them to bypass discovery for users that already
+    <t>OpenID Connect Clients using this specification are encouraged to use the <xref target="AC">OpenID 
+    Account chooser service</xref>.  This allows them to bypass discovery for users that already
     have account information cached.</t>
 
 
     </section>
-        <section anchor="Account_Chooser" title="Account Chooser">
+
+    
+    <section title="User Discovery Service" anchor="user-discovery-service">
+    
+    <section title="Registration" anchor="user-discovery-service-reg">
+    <t>The client must register with the discovery service and have a valid
+    OAuth client_id.</t>
+    </section>
+    
+    <section title="Request" anchor="user-discovery-service-req">
+    <t>The client creates a authorization request using the OAuth scope
+    "providerid"</t>
+    <t>The following additional optional request paramaters are defined:
+    <list style="hanging">
+            <t hangText="MCC">
+               The Mobile Country Code as defined by ITU-T E.212
+            </t>
+    
+    </list>
+    </t>
+    </section>
+    
+    <section title="Response" anchor="user-discovery-service-resp">
+    <t>The Authorization server returns a code or token depending on the requested response
+     type.</t>
+    </section>
+    
+    <section title="Error Response" anchor="user-discovery-service-err">
+    </section>
+    
+    <section title="Discovery endpoint Response" anchor="user-discovery-endpoint-resp">
+    <t>The response from the Discovery endpoint is a JSON object containing the following
+    top level elements:
+    
+     <list style="hanging">
+            <t hangText="user_iss">
+               The Issuer URI "iss" for the user who has authorized discovery.
+            </t>
+            <t hangText="login_hint_token">
+                A Encrypted JSON web token (JWE) that contains the user hint for the 
+                issuer.  The token MUST be encrypted with the public key of the issuer. 
+                This token is passed to the issuer in the authentication request.
+                This token contains the following elements:
+				<list style="hanging">
+					<t hangText="iss">
+						The party creating the token.
+					</t>
+
+					<t hangText="aud">
+						The party to receive the token, typically the users IdP.
+						The value SHOULD be the "iss" URI of the IdP.
+					</t>
+					<t hangText="iat"> 
+						When the token was issued.
+					</t>
+					<t hangText="MCC"> NUMERIC
+						Mobile Country Code ITU-T E.212
+					 </t>
+					<t hangText="MNC"> NUMERIC
+						Mobile Network operator code ITU-T E.212
+					</t>
+					<t hangText="MSISDN"> NUMERIC 
+						The Subscriber identifier
+					</t>	
+					<t hangText="login_hint">  STRING
+						A account identifier for the user
+					</t>
+					<t hangText="ip_address">  STRING
+					    A IP address for the users device.
+					</t>
+
+				</list>
+				<figure>
+	  <preamble>The following is a non-normative example of JWT body 
+	  (with line wraps within values for display purposes only):</preamble>
+
+	  <artwork><![CDATA[
+  {
+   "iss": "https://discovery-provider.com",
+   "aud": "https://babytel.com",
+   "exp": 1311281970,
+   "iat": 1311280970,
+   "login_hint": "i5555551212"
+    }
+  }
+]]></artwork>
+    </figure>
+				</t>
+    </list>
+    </t>
+    </section>
+    
+    
+    </section>
+
+    <section anchor="Account_Chooser" title="Account Chooser">
         
         <section anchor="Account_chooser_client" title="AC Client">
 	<t>It is recommended that Web server clients use the Account Chooser Central Data Store (CDS)
@@ -248,101 +334,6 @@ POST /token HTTP/1.1
 	    </section>
 	
     </section>
-    
-    <section title="User Discovery Service" anchor="user-discovery-service">
-    
-    <section title="Registration" anchor="user-discovery-service-reg">
-    <t>The client must register with the discovery service and have a valid
-    OAuth client_id.</t>
-    </section>
-    
-    <section title="Request" anchor="user-discovery-service-req">
-    <t>The client creates a authorization request using the OAuth scope
-    "providerid"</t>
-    <t>The following additional optional request paramaters are defined:
-    <list style="hanging">
-            <t hangText="MCC">
-               The Mobile Country Code as defined by ITU-T E.212
-            </t>
-    
-    </list>
-    </t>
-    </section>
-    
-    <section title="Response" anchor="user-discovery-service-resp">
-    <t>The Authorization server returns a code or token depending on the requested response
-     type.</t>
-    </section>
-    
-    <section title="Error Response" anchor="user-discovery-service-err">
-    </section>
-    
-    <section title="Discovery endpoint Response" anchor="user-discovery-endpoint-resp">
-    <t>The response from the Discovery endpoint is a JSON object containing the following
-    top level elements:
-    
-     <list style="hanging">
-            <t hangText="user_iss">
-               The Issuer URI "iss" for the user who has authorized discovery.
-            </t>
-            <t hangText="login_hint_token">
-                A Encrypted JSON web token (JWE) that contains the user hint for the 
-                issuer.  The token MUST be encrypted with the public key of the issuer. 
-                This token is passed to the issuer in the authentication request.
-                This token contains the following elements:
-				<list style="hanging">
-					<t hangText="iss">
-						The party creating the token.
-					</t>
-
-					<t hangText="aud">
-						The party to receive the token, typically the users IdP.
-						The value SHOULD be the "iss" URI of the IdP.
-					</t>
-					<t hangText="iat"> 
-						When the token was issued.
-					</t>
-					<t hangText="MCC"> NUMERIC
-						Mobile Country Code ITU-T E.212
-					 </t>
-					<t hangText="MNC"> NUMERIC
-						Mobile Network operator code ITU-T E.212
-					</t>
-					<t hangText="MSISDN"> NUMERIC 
-						The Subscriber identifier
-					</t>	
-					<t hangText="login_hint">  STRING
-						A account identifier for the user
-					</t>
-					<t hangText="ip_address">  STRING
-					    A IP address for the users device.
-					</t>
-
-				</list>
-				<figure>
-	  <preamble>The following is a non-normative example of JWT body 
-	  (with line wraps within values for display purposes only):</preamble>
-
-	  <artwork><![CDATA[
-  {
-   "iss": "https://discovery-provider.com",
-   "aud": "https://babytel.com",
-   "exp": 1311281970,
-   "iat": 1311280970,
-   "login_hint": "i5555551212"
-    }
-  }
-]]></artwork>
-    </figure>
-				</t>
-    </list>
-    </t>
-    </section>
-    
-    
-    </section>
-
-
     
 
     <section anchor="security_considerations" title="Security Considerations">

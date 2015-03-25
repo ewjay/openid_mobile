@@ -6,7 +6,7 @@
                                                                       DT
                                                               J. Bradley
                                                            Ping Identity
-                                                       February 11, 2014
+                                                          March 21, 2015
 
 
               OpenID Connect Mobile Discovery Profile 1.0
@@ -38,31 +38,31 @@ Table of Contents
      1.1.  Requirements Notation and Conventions . . . . . . . . . .   2
      1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   2
-   3.  Account Chooser . . . . . . . . . . . . . . . . . . . . . . .   3
-     3.1.  AC Client . . . . . . . . . . . . . . . . . . . . . . . .   3
-     3.2.  AC Identity Provider  . . . . . . . . . . . . . . . . . .   4
-   4.  User Discovery Service  . . . . . . . . . . . . . . . . . . .   5
-     4.1.  Registration  . . . . . . . . . . . . . . . . . . . . . .   5
-     4.2.  Request . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     4.3.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   6
-     4.4.  Error Response  . . . . . . . . . . . . . . . . . . . . .   6
-     4.5.  Discovery endpoint Response . . . . . . . . . . . . . . .   6
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   7
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+   3.  User Discovery Service  . . . . . . . . . . . . . . . . . . .   2
+     3.1.  Registration  . . . . . . . . . . . . . . . . . . . . . .   2
+     3.2.  Request . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.3.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.4.  Error Response  . . . . . . . . . . . . . . . . . . . . .   3
+     3.5.  Discovery endpoint Response . . . . . . . . . . . . . . .   3
+   4.  Account Chooser . . . . . . . . . . . . . . . . . . . . . . .   4
+     4.1.  AC Client . . . . . . . . . . . . . . . . . . . . . . . .   4
+     4.2.  AC Identity Provider  . . . . . . . . . . . . . . . . . .   5
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
+   6.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   6
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
 
 
 
-Lodderstedt & Bradley    Expires August 15, 2014                [Page 1]
+Lodderstedt & Bradley  Expires September 22, 2015               [Page 1]
 
-                    OIDC Mobile Discoery Profile 1.0       February 2014
+                    OIDC Mobile Discoery Profile 1.0          March 2015
 
 
-   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   7
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   8
-   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   8
-   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   9
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
+   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   7
+   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   7
+   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
@@ -91,179 +91,30 @@ Lodderstedt & Bradley    Expires August 15, 2014                [Page 1]
    and "Token Endpoint" defined by OAuth 2.0 [RFC6749].  This
    specification also defines the following terms:
 
-   Primary Token  An OAuth token (access, refresh, and id_token)
-      obtained by the _TA_ for its own uses.
-
-   Secondary Token  An OAuth access token obtained by the _TA_ on behalf
-      of another native application.
-
 2.  Overview
 
-   Overview.
-
    OpenID Connect Clients using this specification are encouraged to use
-   the OpenID Account chooser service.  This allows them to bypass
+   the OpenID Account chooser service [AC].  This allows them to bypass
    discovery for users that already have account information cached.
 
+3.  User Discovery Service
 
-
-
-
-Lodderstedt & Bradley    Expires August 15, 2014                [Page 2]
-
-                    OIDC Mobile Discoery Profile 1.0       February 2014
-
-
-3.  Account Chooser
-
-3.1.  AC Client
-
-   It is recommended that Web server clients use the Account Chooser
-   Central Data Store (CDS) for discovering the users preferred account.
-
-   Account Chooser [AC] is invoked with the following script:
-
-   <script type="text/javascript"
-        src="https://www.accountchooser.com/ac.js" />
-   <script>
-    accountchooser.CONFIG.uiConfig = {
-       title: 'Sign in to Example.com',
-       favicon: 'http://example.com/favicon.ico',
-       branding: 'http://example.com/branding/ac-blurb.html'
-        };
-   </script>
-
-   If the user clicks on one of the accounts, ac.js sends an HTTP POST
-   to a status checker (userStatusUrl:/account-status) that the client
-   has to to implement.  The status checker will receive up to five
-   arguments as URL query parameters.
-
-   The paramaters if available are:
-
-   email
-      x
-
-   displayName
-      x
-
-   photoUrl
-      x
-
-   providerId
-      x
-
-   login_hint_token
-      x
-
-
-
-
-
-
-
-
-
-
-
-Lodderstedt & Bradley    Expires August 15, 2014                [Page 3]
-
-                    OIDC Mobile Discoery Profile 1.0       February 2014
-
-
-   For example (with line wraps within values for display purposes
-   only):
-
-   POST /token HTTP/1.1
-     Host: server.example.com
-     Content-Type: application/x-www-form-urlencoded
-
-       email=555-1212@babytel.com&
-       displayName=i1WsRn1uB1&
-       photoUrl=s6BhdRkqt3&
-       providerId=babytel.com&
-       login_hint_token=eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
-        OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
-        ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
-        Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
-        mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
-        1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi
-        6UklfCpIMfIjf7iGdXKHzg.
-        48V1_ALb6US04U3b.
-        5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
-        SdiwkIr3ajwQzaBtQD_A.
-        XFBoMYUZodetZdvTiFvSkQ
-
-3.2.  AC Identity Provider
-
-   Identity providers will populate the account information in Account
-   Chooser's browser local storrage as the result of a successful loggin
-   before redirecting the user back to the client.
-
-   If the user account has not been provisioned in the Browsers local
-   storrage, the Identity provider MUST offer to store the account
-   before redirecting the user back to the Connect client.
-
-   The following is an example of the script elements invoking ac.js
-   offering to store an account:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Lodderstedt & Bradley    Expires August 15, 2014                [Page 4]
-
-                    OIDC Mobile Discoery Profile 1.0       February 2014
-
-
-   <script type="text/javascript"
-       src="https://www.accountchooser.com/ac.js" />
-   <script type="text/javascript">
-       accountchooser.CONFIG = {
-       // Sets the home-page URL to "/top"
-       homeUrl: '/top',
-
-       // Instructs ac.js to offer storage of an account via
-       // accountchooser.com
-       storeAccount: {
-           email: "555-1212@babytel.com",
-           displayName: "Santa Claus",
-           providerId: : "babytel.com",
-           login_hint_token:
-           "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
-        OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
-        ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
-        Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
-        mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
-        1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi
-        6UklfCpIMfIjf7iGdXKHzg.
-        48V1_ALb6US04U3b.
-        5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
-        SdiwkIr3ajwQzaBtQD_A.
-        XFBoMYUZodetZdvTiFvSkQ",
-           providerId: "babytel.com"
-       }
-   };
-   </script>
-
-4.  User Discovery Service
-
-4.1.  Registration
+3.1.  Registration
 
    The client must register with the discovery service and have a valid
    OAuth client_id.
 
-4.2.  Request
+
+
+
+
+
+Lodderstedt & Bradley  Expires September 22, 2015               [Page 2]
+
+                    OIDC Mobile Discoery Profile 1.0          March 2015
+
+
+3.2.  Request
 
    The client creates a authorization request using the OAuth scope
    "providerid"
@@ -272,24 +123,14 @@ Lodderstedt & Bradley    Expires August 15, 2014                [Page 4]
 
    MCC  The Mobile Country Code as defined by ITU-T E.212
 
-
-
-
-
-
-Lodderstedt & Bradley    Expires August 15, 2014                [Page 5]
-
-                    OIDC Mobile Discoery Profile 1.0       February 2014
-
-
-4.3.  Response
+3.3.  Response
 
    The Authorization server returns a code or token depending on the
    requested response type.
 
-4.4.  Error Response
+3.4.  Error Response
 
-4.5.  Discovery endpoint Response
+3.5.  Discovery endpoint Response
 
    The response from the Discovery endpoint is a JSON object containing
    the following top level elements:
@@ -324,18 +165,9 @@ Lodderstedt & Bradley    Expires August 15, 2014                [Page 5]
 
 
 
-
-
-
-
-
-
-
-
-
-Lodderstedt & Bradley    Expires August 15, 2014                [Page 6]
+Lodderstedt & Bradley  Expires September 22, 2015               [Page 3]
 
-                    OIDC Mobile Discoery Profile 1.0       February 2014
+                    OIDC Mobile Discoery Profile 1.0          March 2015
 
 
    The following is a non-normative example of JWT body (with line wraps
@@ -349,6 +181,136 @@ Lodderstedt & Bradley    Expires August 15, 2014                [Page 6]
       "login_hint": "i5555551212"
        }
      }
+
+4.  Account Chooser
+
+4.1.  AC Client
+
+   It is recommended that Web server clients use the Account Chooser
+   Central Data Store (CDS) for discovering the users preferred account.
+
+   Account Chooser [AC] is invoked with the following script:
+
+   <script type="text/javascript"
+        src="https://www.accountchooser.com/ac.js" />
+   <script>
+    accountchooser.CONFIG.uiConfig = {
+           title: 'Sign in to Example.com',
+           favicon: 'http://example.com/favicon.ico',
+           branding: 'http://example.com/branding/ac-blurb.html'
+        };
+   </script>
+
+   If the user clicks on one of the accounts, ac.js sends an HTTP POST
+   to a status checker (userStatusUrl:/account-status) that the client
+   has to to implement.  The status checker will receive up to five
+   arguments as URL query parameters.
+
+   The paramaters if available are:
+
+   email
+      x
+
+   displayName
+      x
+
+   photoUrl
+      x
+
+   providerId
+
+
+
+Lodderstedt & Bradley  Expires September 22, 2015               [Page 4]
+
+                    OIDC Mobile Discoery Profile 1.0          March 2015
+
+
+      x
+
+   login_hint_token
+      x
+
+   For example (with line wraps within values for display purposes
+   only):
+
+   POST /token HTTP/1.1
+     Host: server.example.com
+     Content-Type: application/x-www-form-urlencoded
+
+       email=555-1212@babytel.com&
+       displayName=i1WsRn1uB1&
+       photoUrl=s6BhdRkqt3&
+       providerId=babytel.com&
+       login_hint_token=eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
+        OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
+        ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
+        Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
+        mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
+        1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi
+        6UklfCpIMfIjf7iGdXKHzg.
+        48V1_ALb6US04U3b.
+        5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
+        SdiwkIr3ajwQzaBtQD_A.
+        XFBoMYUZodetZdvTiFvSkQ
+
+4.2.  AC Identity Provider
+
+   Identity providers will populate the account information in Account
+   Chooser's browser local storrage as the result of a successful loggin
+   before redirecting the user back to the client.
+
+   If the user account has not been provisioned in the Browsers local
+   storrage, the Identity provider MUST offer to store the account
+   before redirecting the user back to the Connect client.
+
+   The following is an example of the script elements invoking ac.js
+   offering to store an account:
+
+
+
+
+
+
+
+
+
+
+
+Lodderstedt & Bradley  Expires September 22, 2015               [Page 5]
+
+                    OIDC Mobile Discoery Profile 1.0          March 2015
+
+
+   <script type="text/javascript"
+           src="https://www.accountchooser.com/ac.js" />
+   <script type="text/javascript">
+           accountchooser.CONFIG = {
+           // Sets the home-page URL to "/top"
+           homeUrl: '/top',
+
+           // Instructs ac.js to offer storage of an account via
+           // accountchooser.com
+           storeAccount: {
+                   email: "555-1212@babytel.com",
+                   displayName: "Santa Claus",
+                   providerId: : "babytel.com",
+                   login_hint_token:
+                   "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
+        OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
+        ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
+        Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
+        mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
+        1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi
+        6UklfCpIMfIjf7iGdXKHzg.
+        48V1_ALb6US04U3b.
+        5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
+        SdiwkIr3ajwQzaBtQD_A.
+        XFBoMYUZodetZdvTiFvSkQ",
+                   providerId: "babytel.com"
+           }
+   };
+   </script>
 
 5.  Security Considerations
 
@@ -365,6 +327,16 @@ Lodderstedt & Bradley    Expires August 15, 2014                [Page 6]
 8.  Normative References
 
    [AC]       "Account Chooser (AC)", May 2013.
+
+
+
+
+
+
+Lodderstedt & Bradley  Expires September 22, 2015               [Page 6]
+
+                    OIDC Mobile Discoery Profile 1.0          March 2015
+
 
    [JWT]      Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", draft-ietf-oauth-json-web-token (work in
@@ -385,14 +357,6 @@ Lodderstedt & Bradley    Expires August 15, 2014                [Page 6]
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
-
-
-
-
-Lodderstedt & Bradley    Expires August 15, 2014                [Page 7]
-
-                    OIDC Mobile Discoery Profile 1.0       February 2014
-
 
    [RFC2246]  Dierks, T. and C. Allen, "The TLS Protocol Version 1.0",
               RFC 2246, January 1999.
@@ -422,6 +386,14 @@ Appendix B.  Notices
    worldwide copyright license to reproduce, prepare derivative works
    from, distribute, perform and display, this Implementers Draft or
    Final Specification solely for the purposes of (i) developing
+
+
+
+Lodderstedt & Bradley  Expires September 22, 2015               [Page 7]
+
+                    OIDC Mobile Discoery Profile 1.0          March 2015
+
+
    specifications, and (ii) implementing Implementers Drafts and Final
    Specifications based on such documents, provided that attribution be
    made to the OIDF as the source of the material, but that such
@@ -442,14 +414,6 @@ Appendix B.  Notices
    or otherwise), including implied warranties of merchantability, non-
    infringement, fitness for a particular purpose, or title, related to
    this specification, and the entire risk as to implementing this
-
-
-
-Lodderstedt & Bradley    Expires August 15, 2014                [Page 8]
-
-                    OIDC Mobile Discoery Profile 1.0       February 2014
-
-
    specification is assumed by the implementer.  The OpenID Intellectual
    Property Rights policy requires contributors to offer a patent
    promise not to assert certain patent claims against other
@@ -474,6 +438,16 @@ Authors' Addresses
    Deutsche Telekom AG
 
    Email: torsten@lodderstedt.net
+
+
+
+
+
+
+
+Lodderstedt & Bradley  Expires September 22, 2015               [Page 8]
+
+                    OIDC Mobile Discoery Profile 1.0          March 2015
 
 
    John Bradley
@@ -501,4 +475,30 @@ Authors' Addresses
 
 
 
-Lodderstedt & Bradley    Expires August 15, 2014                [Page 9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lodderstedt & Bradley  Expires September 22, 2015               [Page 9]
