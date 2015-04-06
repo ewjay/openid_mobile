@@ -66,9 +66,9 @@ Lodderstedt & Bradley    Expires April 18, 2015                 [Page 1]
 
    OpenID Connect Mobile Registration Profile 1.0 is a profile of the
    OpenID Connect Registration 1.0 [OpenID.Registration] specification
-   that allows a Client to dynamically register with multiple MNO based
-   on information asserted by a primary MNO that the client has a
-   relationship with.
+   that allows a Client to dynamically register with multiple Mobile 
+   Network Operators (MNOs) based on information asserted by a primary 
+   MNO that the client has a relationship with.
 
 1.1.  Requirements Notation and Conventions
 
@@ -116,13 +116,33 @@ Lodderstedt & Bradley    Expires April 18, 2015                 [Page 2]
 
 2.  Overview
 
-   Overview.
+   The OIDC Mobile Profile is based on OpenID Connect 1.0 intended to 
+   be appropriate for use by Mobile Network Operators (MNOs) providing
+   identity services to Relaying Parties (RPs).
+   
+   This specification defines the dynamic client registration process
+   for OIDC Mobile Profile and describes how an OpenID Connect Relying
+   Party can dynamically register with the End-User's Mobile Network
+   Operator and obtain the information needed to use it with multiple 
+   MNOs.
 
-3.  Security Considerations
+3.  Client Registration
 
-   TBD
+3.1 Registration
 
-4.  Privacy Considerations
+3.2	Software Statement
+
+	TBD
+
+3.3	Error Response
+
+	[Editor's note:] Error message should include the scenario when an OP blocks a RP.
+
+4.  Security Considerations
+
+	[Editor's note:] Define authentication mechanism. Start with RSA and define minimum and maximum key length.  
+
+5.  Privacy Considerations
 
    TBD
 
