@@ -121,7 +121,7 @@ authentication. We propose to use the definition of Level of Assurance as specif
 
     </section>
 
-    <section anchor="acr_loa" title="">
+    <section anchor="acr_loa" title="Level of Assurance as acr_values">
         <t>JCO: what are the right acr values to reflect either legal indentities or pure digital identities?</t>
         <t> http://docs.oasis-open.org/security/saml/v2.0/saml-authn-context-2.0-os.pdf
         describes a number of possible acr corresponding to mobile environment
@@ -129,19 +129,76 @@ authentication. We propose to use the definition of Level of Assurance as specif
         </t>
     </section>
     <section anchor="acr_values_and_response" title="acr_values request and acr reponse">
-        <t>JCO: Reiteration of the corresponding values. Support for al least Joe1 (digital identity)</t>
+        <t>JCO: Reiteration of the corresponding values. Support for at least Joe
+         (credential level 1 to x) and/or John (identity level 1 to x)</t>
         <t></t>
     </section>
     
     <section anchor="a_m_r" title="amr">
         <t>JCO: the amr response value must be considered in relation to the acr repsonse</t>
     </section>
-    <section anchor="login_hint_token_processing" title="Processing the login_hint_token">
-    <t>For specification of login_hint_token look at the discovery part of the Mobile Profile section ???</t>   
+    <section anchor="login_hint_token" title="login_hint_token parameter">
+        <t>
+            A parameter to be passed in the authentication request. The login_hint_token is used to 
+            transport a user identifier from the discovery service to the OpenID Provider without 
+            revealing this identifier to the client.
+            <list style="hanging">
+                <t hangText="login_hint_token">
+				    An encrypted JSON web token that contains the MSISDN as user hint for the issuer.
+				</t>
+             
+        </t>
+        <section anchor="login_hint_token_structure" title="login_hint_token structure">
+            <t>
+                This JWT token MUST contain the following elements:
+                <list style="hanging">
+                    <t hangText="iss">
+				        The party creating the token.
+				        This value MUST be a URI to allow for signature validation
+				        JCO: is signing mandatory? 
+				    </t>
+				    <t hangText="aud">
+                        The party to receive the token, typically the users OpenID Provider.
+                        The value SHOULD be the issuer URI of the OID as exposed 
+                        in the openid-configuration.
+    			    </t>
+		      		<t hangText="iat"> 
+                        When the token was issued.
+				    </t>
+				    <t hangText="MSISDN"> NUMERIC 
+				        The Subscriber identifier
+                    </t>	
+                </list>
+            </t>
+                <figure>
+	               <preamble>The following is a non-normative example of JWT body 
+	               (with line wraps within values for display purposes only):</preamble>
+
+	               <artwork><![CDATA[
+  {
+   "iss": "https://discovery-provider.com",
+   "aud": "https://babytel.com",
+   "iat": 1311280970,
+   "MSISDN": "i5555551212"
+    }
+  }
+                ]]></artwork>
+                </figure>
+        </section>
+        <section anchor="lht_encryption_signing" title="login_hint_token encryption and signing">
+        The login_hint token MUST be encrypted using the public key of the OpenID Provider.
+        The login_hint token MUST be signed using the private key of the discovery service.
+        JCO: it would follow that the 'iss' claim is mandatory and must allow for signature validation.
+    </section>
+
+    <section anchor="request_object_claims" title="Additional claims for the request object">
+    <t>Add specific claims to the request object such as a transaction message. 
+    The request object MUST then be signed to prevent manipulating the transaction message</t>   
     </section>
 
     <section anchor="claim_validity" title="Specifying the truthyness of user claims">
-        <t>JCO: Something about how the claim was verified (self_asserted, proved). Leads to a structure of claims.</t>
+        <t>JCO: Something about how the claim was verified (self_asserted, proved).
+         Leads to a structure of claims.</t>
     </section>
     <section anchor="mno_claims" title="Special claims for Mobile Operators as OpenID Providers">
         <t>JCO: special claims</t>
