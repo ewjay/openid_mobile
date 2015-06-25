@@ -30,24 +30,24 @@ Table of Contents
      1.1.  Requirements Notation and Conventions . . . . . . . . . .   2
      1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  Level of Assurance as acr_values  . . . . . . . . . . . . . .   3
    4.  acr_values request and acr reponse  . . . . . . . . . . . . .   3
    5.  amr . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   6.  Processing the login_hint_token . . . . . . . . . . . . . . .   3
-   7.  Specifying the truthyness of user claims  . . . . . . . . . .   3
-   8.  Special claims for Mobile Operators as OpenID Providers . . .   3
-   9.  pair wise . . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   10. mandatory to implement  . . . . . . . . . . . . . . . . . . .   3
-   11. Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   12. Privacy Considerations  . . . . . . . . . . . . . . . . . . .   4
-   13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-   14. Normative References  . . . . . . . . . . . . . . . . . . . .   4
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   5
-   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   5
-   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   6
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
-
-
+   6.  login_hint_token  . . . . . . . . . . . . . . . . . . . . . .   3
+     6.1.  login_hint_token structure  . . . . . . . . . . . . . . .   3
+   7.  Additional claims for the request object  . . . . . . . . . .   4
+   8.  Specifying the truthyness of user claims  . . . . . . . . . .   4
+   9.  Special claims for Mobile Operators as OpenID Providers . . .   4
+   10. pair wise . . . . . . . . . . . . . . . . . . . . . . . . . .   4
+   11. mandatory to implement  . . . . . . . . . . . . . . . . . . .   4
+   12. Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   13. Privacy Considerations  . . . . . . . . . . . . . . . . . . .   5
+   14. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+   15. Normative References  . . . . . . . . . . . . . . . . . . . .   5
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   6
+   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   6
+   Appendix C.  Document History . . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 
 
@@ -118,7 +118,7 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 2]
 
    Overview.
 
-3.
+3.  Level of Assurance as acr_values
 
    JCO: what are the right acr values to reflect either legal
    indentities or pure digital identities?
@@ -131,37 +131,37 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 2]
 
 4.  acr_values request and acr reponse
 
-   JCO: Reiteration of the corresponding values.  Support for al least
-   Joe1 (digital identity)
+   JCO: Reiteration of the corresponding values.  Support for at least
+   Joe (credential level 1 to x) and/or John (identity level 1 to x)
 
 5.  amr
 
    JCO: the amr response value must be considered in relation to the acr
    repsonse
 
-6.  Processing the login_hint_token
+6.  login_hint_token
 
-   For specification of login_hint_token look at the discovery part of
-   the Mobile Profile section ???
+   The request parameter login_hint_token is used to transport the
+   MSISDN as a user identifier from the discovery service to the OpenID
+   Provider in a way that the client get's no knowledge about the
+   MSISDN.
 
-7.  Specifying the truthyness of user claims
+6.1.  login_hint_token structure
 
-   JCO: Something about how the claim was verified (self_asserted,
-   proved).  Leads to a structure of claims.
+   The value of the login_hint_token parameter is an Encrypted JSON web
+   token (JWE) that contains the user hint for the issuer.  The token
+   MUST be encrypted with the public key of the issuer.  This token is
+   passed to the issuer in the authentication request.  This token
+   contains the following elements:
 
-8.  Special claims for Mobile Operators as OpenID Providers
+   iss  The party creating the token.
 
-   JCO: special claims
+   aud  The party to receive the token, typically the users OpenID
+      Provider.  The value SHOULD be the "iss" URI of the OID.
 
-9.  pair wise
+   iat  When the token was issued.
 
-10.  mandatory to implement
-
-   SPOP: symmetric proof of possession MANDATORY
-
-   Mandatory support for private_key_jwt, SHOULD basic (section 9 of
-   OpenID Connect) --> this implies public key exchange during
-   registration.
+   MSISDN  NUMERIC The Subscriber identifier
 
 
 
@@ -169,6 +169,42 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 3]
 
                  OIDC Mobile Authentication Profile 1.0         Dec 2014
 
+
+   The following is a non-normative example of JWT body (with line wraps
+   within values for display purposes only):
+
+     {
+      "iss": "https://discovery-provider.com",
+      "aud": "https://babytel.com",
+      "iat": 1311280970,
+      "MSISDN": "i5555551212"
+       }
+     }
+
+7.  Additional claims for the request object
+
+   Add specific claims to the request object such as a transaction
+   message.  The request object MUST then be signed to prevent
+   manipulating the transaction message
+
+8.  Specifying the truthyness of user claims
+
+   JCO: Something about how the claim was verified (self_asserted,
+   proved).  Leads to a structure of claims.
+
+9.  Special claims for Mobile Operators as OpenID Providers
+
+   JCO: special claims
+
+10.  pair wise
+
+11.  mandatory to implement
+
+   SPOP: symmetric proof of possession MANDATORY
+
+   Mandatory support for private_key_jwt, SHOULD basic (section 9 of
+   OpenID Connect) --> this implies public key exchange during
+   registration.
 
    mandatory scopes (claims) as a question to the group.
 
@@ -181,23 +217,32 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 3]
 
    login_hint_token to be implemented per the discovery spec
 
-11.  Security Considerations
+
+
+
+
+Connotte & Bradley        Expires June 12, 2015                 [Page 4]
+
+                 OIDC Mobile Authentication Profile 1.0         Dec 2014
+
+
+12.  Security Considerations
 
    TBD
 
-12.  Privacy Considerations
+13.  Privacy Considerations
 
    JCO: pair wise subject mandatory for Mobile Connect OpenID Provider.
    The RP can negotiate for the exact mechanism.
 
-13.  IANA Considerations
+14.  IANA Considerations
 
    This document makes no requests of IANA.
 
    JCO: Is this true?  Didn't we talk about registering acr_values / acr
    at IANA?
 
-14.  Normative References
+15.  Normative References
 
    [JWT]      Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", draft-ietf-oauth-json-web-token (work in
@@ -219,13 +264,6 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 3]
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
-
-
-Connotte & Bradley        Expires June 12, 2015                 [Page 4]
-
-                 OIDC Mobile Authentication Profile 1.0         Dec 2014
-
-
    [RFC2246]  Dierks, T. and C. Allen, "The TLS Protocol Version 1.0",
               RFC 2246, January 1999.
 
@@ -234,6 +272,15 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 4]
 
    [RFC6749]  Hardt, D., "The OAuth 2.0 Authorization Framework", RFC
               6749, October 2012.
+
+
+
+
+
+Connotte & Bradley        Expires June 12, 2015                 [Page 5]
+
+                 OIDC Mobile Authentication Profile 1.0         Dec 2014
+
 
    [RFC6750]  Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
               Framework: Bearer Token Usage", RFC 6750, October 2012.
@@ -274,14 +321,6 @@ Appendix B.  Notices
    or otherwise), including implied warranties of merchantability, non-
    infringement, fitness for a particular purpose, or title, related to
    this specification, and the entire risk as to implementing this
-
-
-
-Connotte & Bradley        Expires June 12, 2015                 [Page 5]
-
-                 OIDC Mobile Authentication Profile 1.0         Dec 2014
-
-
    specification is assumed by the implementer.  The OpenID Intellectual
    Property Rights policy requires contributors to offer a patent
    promise not to assert certain patent claims against other
@@ -289,6 +328,15 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 5]
    any interested party to bring to its attention any copyrights,
    patents, patent applications, or other proprietary rights that may
    cover technology that may be required to practice this specification.
+
+
+
+
+
+Connotte & Bradley        Expires June 12, 2015                 [Page 6]
+
+                 OIDC Mobile Authentication Profile 1.0         Dec 2014
+
 
 Appendix C.  Document History
 
@@ -333,4 +381,12 @@ Authors' Addresses
 
 
 
-Connotte & Bradley        Expires June 12, 2015                 [Page 6]
+
+
+
+
+
+
+
+
+Connotte & Bradley        Expires June 12, 2015                 [Page 7]
