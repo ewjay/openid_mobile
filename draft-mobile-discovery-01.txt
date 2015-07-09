@@ -6,7 +6,7 @@
                                                                       DT
                                                               J. Bradley
                                                            Ping Identity
-                                                          March 21, 2015
+                                                           June 25, 2015
 
 
               OpenID Connect Mobile Discovery Profile 1.0
@@ -53,9 +53,9 @@ Table of Contents
 
 
 
-Lodderstedt & Bradley  Expires September 22, 2015               [Page 1]
+Lodderstedt & Bradley   Expires December 27, 2015               [Page 1]
 
-                    OIDC Mobile Discoery Profile 1.0          March 2015
+                    OIDC Mobile Discoery Profile 1.0           June 2015
 
 
    8.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
@@ -109,9 +109,9 @@ Lodderstedt & Bradley  Expires September 22, 2015               [Page 1]
 
 
 
-Lodderstedt & Bradley  Expires September 22, 2015               [Page 2]
+Lodderstedt & Bradley   Expires December 27, 2015               [Page 2]
 
-                    OIDC Mobile Discoery Profile 1.0          March 2015
+                    OIDC Mobile Discoery Profile 1.0           June 2015
 
 
 3.2.  Request
@@ -165,9 +165,9 @@ Lodderstedt & Bradley  Expires September 22, 2015               [Page 2]
 
 
 
-Lodderstedt & Bradley  Expires September 22, 2015               [Page 3]
+Lodderstedt & Bradley   Expires December 27, 2015               [Page 3]
 
-                    OIDC Mobile Discoery Profile 1.0          March 2015
+                    OIDC Mobile Discoery Profile 1.0           June 2015
 
 
    The following is a non-normative example of JWT body (with line wraps
@@ -221,9 +221,9 @@ Lodderstedt & Bradley  Expires September 22, 2015               [Page 3]
 
 
 
-Lodderstedt & Bradley  Expires September 22, 2015               [Page 4]
+Lodderstedt & Bradley   Expires December 27, 2015               [Page 4]
 
-                    OIDC Mobile Discoery Profile 1.0          March 2015
+                    OIDC Mobile Discoery Profile 1.0           June 2015
 
 
       x
@@ -277,9 +277,9 @@ Lodderstedt & Bradley  Expires September 22, 2015               [Page 4]
 
 
 
-Lodderstedt & Bradley  Expires September 22, 2015               [Page 5]
+Lodderstedt & Bradley   Expires December 27, 2015               [Page 5]
 
-                    OIDC Mobile Discoery Profile 1.0          March 2015
+                    OIDC Mobile Discoery Profile 1.0           June 2015
 
 
    <script type="text/javascript"
@@ -333,9 +333,9 @@ Lodderstedt & Bradley  Expires September 22, 2015               [Page 5]
 
 
 
-Lodderstedt & Bradley  Expires September 22, 2015               [Page 6]
+Lodderstedt & Bradley   Expires December 27, 2015               [Page 6]
 
-                    OIDC Mobile Discoery Profile 1.0          March 2015
+                    OIDC Mobile Discoery Profile 1.0           June 2015
 
 
    [JWT]      Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
@@ -389,9 +389,9 @@ Appendix B.  Notices
 
 
 
-Lodderstedt & Bradley  Expires September 22, 2015               [Page 7]
+Lodderstedt & Bradley   Expires December 27, 2015               [Page 7]
 
-                    OIDC Mobile Discoery Profile 1.0          March 2015
+                    OIDC Mobile Discoery Profile 1.0           June 2015
 
 
    specifications, and (ii) implementing Implementers Drafts and Final
@@ -432,6 +432,8 @@ Appendix C.  Document History
 
    o  Added OIDF Standard Notice
 
+   o  moved the definition of the encrypted id_token_int to login
+
 Authors' Addresses
 
    Torsten Lodderstedt
@@ -443,11 +445,9 @@ Authors' Addresses
 
 
 
-
-
-Lodderstedt & Bradley  Expires September 22, 2015               [Page 8]
+Lodderstedt & Bradley   Expires December 27, 2015               [Page 8]
 
-                    OIDC Mobile Discoery Profile 1.0          March 2015
+                    OIDC Mobile Discoery Profile 1.0           June 2015
 
 
    John Bradley
@@ -501,4 +501,4 @@ Lodderstedt & Bradley  Expires September 22, 2015               [Page 8]
 
 
 
-Lodderstedt & Bradley  Expires September 22, 2015               [Page 9]
+Lodderstedt & Bradley   Expires December 27, 2015               [Page 9]

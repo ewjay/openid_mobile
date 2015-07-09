@@ -44,7 +44,7 @@
 
 
 
-    <date day="21" month="March" year="2015" />
+    <date day="25" month="June" year="2015" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -549,6 +549,7 @@ POST /token HTTP/1.1
       <t>-01 <list style="symbols">
           <t>Initial draft</t>
           <t>Added OIDF Standard Notice </t>
+          <t>moved the definition of the encrypted id_token_int to login</t>
         </list></t>
         
           
