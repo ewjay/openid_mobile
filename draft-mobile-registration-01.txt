@@ -2,11 +2,11 @@
 
 
 
-                                                          P. Lodderstedt
-                                                                      DT
+                                                                B. Hjelm
+                                                                 Verizon
                                                               T. Bradley
                                                            Ping Identity
-                                                        October 15, 2014
+                                                           May 19, 2015
 
 
              OpenID Connect Mobile Registration Profile 1.0
@@ -26,8 +26,8 @@ Abstract
    necessary to establish some measures of control to verify the
    legitimacy of the RP.
 
-   For the Mobile Profile we propose to extend [4] with Software
-   Statements as specified in [5].
+   For the Mobile Profile we propose to extend [OpenID.Registration] with Software
+   Statements as specified in [OAuth.Registration].
 
    It is beyond the scope of the Mobile Profile how the RP will obtain
    original legitimation.  It is assumed that some trustworthy party
@@ -41,21 +41,25 @@ Abstract
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-     1.1.  Requirements Notation and Conventions . . . . . . . . . .   2
-     1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
-   4.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   3
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   3
-   6.  Normative References  . . . . . . . . . . . . . . . . . . . .   3
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   4
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   1
+     1.1.  Requirements Notation and Conventions . . . . . . . . . .   1
+     1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   1
+   2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   3.  Client Registration . . . . . . . . . . . . . . . . . . . . .   2
+     3.1.  Registration  . . . . . . . . . . . . . . . . . . . . . .   2
+     3.2.  Software Statement  . . . . . . . . . . . . . . . . . . .   2
+     3.3.  Error Response  . . . . . . . . . . . . . . . . . . . . .   2
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   2
+   5.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   2
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   2
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   2
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   3
 
 
 
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 1]
+Hjelm & Bradley    Expires October 9, 2015                      [Page 1]
 
-                  OIDC Mobile Registration Profile 1.0      October 2014
+                  OIDC Mobile Registration Profile 1.0        April 2015
 
 
    Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   4
@@ -109,9 +113,9 @@ Lodderstedt & Bradley    Expires April 18, 2015                 [Page 1]
 
 
 
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 2]
+Hjelm & Bradley    Expires October 9, 2015                      [Page 2]
 
-                  OIDC Mobile Registration Profile 1.0      October 2014
+                  OIDC Mobile Registration Profile 1.0        April 2015
 
 
 2.  Overview
@@ -130,9 +134,41 @@ Lodderstedt & Bradley    Expires April 18, 2015                 [Page 2]
 
 3.1 Registration
 
+	A valid OAuth client_id and Client secret are issued during client
+	registration with the MNO. The MNO MAY use a stateless client 
+	credential management.
+	[Editor's note:] Should the options (use Software Statement as 
+	client_id, encode client data within the client_id or secret) be 
+	defined in this section?
+	
+	If the client is registered with another MNO, a new version of 
+	the application is required.
+	[Editor's note:] What are the requirements for a new version of 
+	the application? What are the scalability issues with the MNO 
+	implementation that should be addressed in the implementation 
+	guidelines?
+	
+	[Editor's note:] Should the application developed be rquired to
+	agree to MNO-specific or regional/global T&C?
+
+
 3.2	Software Statement
 
-	TBD
+	OAuth
+	Signature algorithm
+	Issuer (Registry)
+	Redirect-URI
+	Display name/homepage/tos/...
+	Token and OAuth method
+	scopes
+	Claims (not supported yet)
+	Grant types, registration types (unique uses)
+	Allowed acus
+	Software ID
+	gti
+	Registry tos
+	
+	[Editor's note:] Cross-check with HEART and Blue Button Plus. Multiple Software Statement per Software ID.
 
 3.3	Error Response
 
@@ -146,11 +182,11 @@ Lodderstedt & Bradley    Expires April 18, 2015                 [Page 2]
 
    TBD
 
-5.  IANA Considerations
+6.  IANA Considerations
 
    This document makes no requests of IANA.
 
-6.  Normative References
+7.  Normative References
 
    [JWT]      Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", draft-ietf-oauth-json-web-token (work in
@@ -169,6 +205,12 @@ Lodderstedt & Bradley    Expires April 18, 2015                 [Page 2]
               Sakimura, N., Bradley, J., and M. Jones, "OpenID Connect
               Dynamic Client Registration 1.0", December 2013.
 
+
+   [OAuth.Registration]
+              Richer, J., Jones, M., Bradley, J., Machulak, M., and P.
+              Hunt, "OAuth 2.0 Dynamic Client Registration Protocol",
+              draft-ietf-oauth-dyn-reg (work in progress), March 2015.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
@@ -185,9 +227,9 @@ Lodderstedt & Bradley    Expires April 18, 2015                 [Page 2]
 
 
 
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 3]
+Hjelm & Bradley    Expires October 9, 2015                      [Page 3]
 
-                  OIDC Mobile Registration Profile 1.0      October 2014
+                  OIDC Mobile Registration Profile 1.0        April 2015
 
 
    [RFC6750]  Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
@@ -241,9 +283,9 @@ Appendix B.  Notices
 
 
 
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 4]
+Hjelm & Bradley    Expires October 9, 2015                      [Page 4]
 
-                  OIDC Mobile Registration Profile 1.0      October 2014
+                  OIDC Mobile Registration Profile 1.0        April 2015
 
 
 Appendix C.  Document History
@@ -258,10 +300,10 @@ Appendix C.  Document History
 
 Authors' Addresses
 
-   Torsten Lodderstedt
-   Deutsche Telekom AG
+   Bjorn Hjelm
+   Verizon
 
-   Email: torsten@lodderstedt.net
+   Email: bjorn.hjelm@verizon.com
 
 
    John Bradley
@@ -297,4 +339,4 @@ Authors' Addresses
 
 
 
-Lodderstedt & Bradley    Expires April 18, 2015                 [Page 5]
+Hjelm & Bradley    Expires October 9, 2015                      [Page 5]
