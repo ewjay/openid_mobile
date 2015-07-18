@@ -12,72 +12,81 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-mobile-discovery-01" ipr="none">
-
+<rfc category="std" docName="draft-mobile-discovery-02" ipr="none">
   <?rfc toc="yes" ?>
+
   <?rfc tocdepth="5" ?>
+
   <?rfc symrefs="yes" ?>
+
   <?rfc sortrefs="yes"?>
+
   <?rfc strict="yes" ?>
+
   <?rfc iprnotified="no" ?>
+
   <?rfc private="Draft" ?>
-  
+
   <front>
-    <title abbrev="OIDC Mobile Discoery Profile 1.0">
-            OpenID Connect Mobile Discovery Profile 1.0</title>
+    <title abbrev="OIDC Mobile Discoery Profile 1.0">OpenID Connect Mobile
+    Discovery Profile 1.0</title>
 
+    <author fullname="Torsten Lodderstedt" initials="T." surname="Lodderstedt">
+      <organization abbrev="">Deutsche Telekom AG</organization>
 
-    <author fullname="Torsten Lodderstedt" initials="P." surname="Lodderstedt">
-      <organization abbrev="DT">Deutsche Telekom AG</organization>
       <address>
         <email>torsten@lodderstedt.net</email>
       </address>
     </author>
 
-
-<author fullname="John Bradley" initials="J." surname="Bradley">
+    <author fullname="John Bradley" initials="J." surname="Bradley">
       <organization abbrev="">Ping Identity</organization>
+
       <address>
         <email>jbradley@pingidentity.com</email>
       </address>
     </author>
 
+    <date day="18" month="July" year="2015"/>
 
-
-    <date day="25" month="June" year="2015" />
-    
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
     <abstract>
-    
-<t><xref target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref> section 2.1 
-specifies a way to normalize a user identifier to derive a resource and especially a
- host for OpenID Provider Issuer Discovery. While this works well for identifiers as 
- email addresses and urls it does not work for MNO identifiers. In a mobile environment, 
- MSISDN's or ip-addresses are typical resources identifying a user. The structure of 
- those identifiers does not allow for an algorithmic normalization. Thus it will be 
- necessary to have a specific service to perform the normalization. </t>
- 
-<t>The Mobile Profile will specify the interface of this service. Part of the interface
- specification will be the identification of possible user input identifier types 
- relevant in the Mobile Connect scenario.
-Remark:
-Some of those user input identifier types may not identify a single user/device but may
- be sufficient to identify the right mobile operator. An example for this is the 
- MNC/MCC tuple (mobile network code/ mobile contry code) or the IP address range.
-</t>
+      <t><xref target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref>
+      section 2.1 specifies a way to normalize a user identifier to derive a
+      resource and especially a host for OpenID Provider Issuer Discovery.
+      While this works well for identifiers as email addresses and urls, it
+      does not work for typical identifiers from the mobile network space. In
+      a mobile environment, MSISDN's or ip-addresses are typical resources
+      identifying a user or the respective mobile network operator (MNO). The
+      structure of those identifiers does not allow for an algorithmic
+      normalization. Thus it will be necessary to have a specific service to
+      perform the normalization.</t>
+
+      <t>The OpenID Connect Mobile Discovery Profile specifies the interface
+      of this service. Part of the interface specification will be the
+      identification of possible user input identifier types relevant in the
+      Mobile Connect scenario. Remark: Some of those user input identifier
+      types may not identify a single user/device but may be sufficient to
+      identify the right mobile operator. An example for this is the MNC/MCC
+      tuple (mobile network code/ mobile contry code) or the IP address
+      range.</t>
+
+      <t>This profile also specifies how a client registers with the MNO
+      discovery service and how <xref target="Account.Chooser">Account Chooser
+      service</xref> can be used to further improve user experience in the
+      overall Mobile Connect flow.</t>
     </abstract>
   </front>
 
   <middle>
-
     <section anchor="Introduction" title="Introduction">
-
-      <t>OpenID Connect Mobile Discovery Profile 1.0 is a profile of the 
-      <xref target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref> specification
-      that stipulates how a OpenID Connect client can use MNO identifiers to determine the
-      authoritative issuer for a identifier thereby   
-      enabling a Single SignOn experience for End-Users.</t>
+      <t>OpenID Connect Mobile Discovery Profile 1.0 is a profile of the <xref
+      target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref>
+      specification that stipulates how a OpenID Connect client can use mobile
+      network specific identifiers to determine the authoritative issuer for a
+      identifier thereby enabling to detemine the OpenID OP belonging to a
+      particular MNO.</t>
 
       <section anchor="rnc" title="Requirements Notation and Conventions">
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -85,136 +94,423 @@ Some of those user input identifier types may not identify a single user/device 
         document are to be interpreted as described in <xref
         target="RFC2119"/>.</t>
 
-        <t>Throughout this document, values are quoted to indicate that they are
-        to be taken literally. When using these values in protocol messages, the
-        quotes MUST NOT be used as part of the value.</t>
+        <t>Throughout this document, values are quoted to indicate that they
+        are to be taken literally. When using these values in protocol
+        messages, the quotes MUST NOT be used as part of the value.</t>
       </section>
 
       <section anchor="terminology" title="Terminology">
-        <t>
-          This specification uses the terms "Access Token", "Refresh Token",
-          "Authorization Code", "Authorization Grant", "Authorization Server",
-          "Authorization Endpoint", "Client", "Client Identifier", "Client Secret",
-          "Protected Resource", "Resource Owner", "Resource Server", and
-          "Token Endpoint" defined by <xref target="RFC6749">OAuth 2.0</xref>.
-          This specification also defines the following terms: 
-          
-        </t>
+        <t>This specification uses the terms "Access Token", "Refresh Token",
+        "Authorization Code", "Authorization Grant", "Authorization Server",
+        "Authorization Endpoint", "Client", "Client Identifier", "Client
+        Secret", "Protected Resource", "Resource Owner", "Resource Server",
+        and "Token Endpoint" defined by <xref target="RFC6749">OAuth
+        2.0</xref>. This specification also defines the following terms:</t>
       </section>
     </section>
-    
+
     <section title="Overview">
-    
-    <t>OpenID Connect Clients using this specification are encouraged to use the <xref target="AC">OpenID 
-    Account chooser service</xref>.  This allows them to bypass discovery for users that already
-    have account information cached.</t>
+      <t>This specification defines two different discovery flows intended to
+      fit the needs of both server-based web as well as native applications
+      residing on mobile devices.</t>
 
+      <t>The protocol design is guided by to following requirements:</t>
 
-    </section>
+      <t><list style="symbols">
+          <t>a RP may not process the MSISDN in the course of the discovery
+          process. The MSISDN shall only be entered in the user interface
+          provided by the trusted discovery service.</t>
 
-    
-    <section title="User Discovery Service" anchor="user-discovery-service">
-    
-    <section title="Registration" anchor="user-discovery-service-reg">
-    <t>The client must register with the discovery service and have a valid
-    OAuth client_id.</t>
-    </section>
-    
-    <section title="Request" anchor="user-discovery-service-req">
-    <t>The client creates a authorization request using the OAuth scope
-    "providerid"</t>
-    <t>The following additional optional request paramaters are defined:
-    <list style="hanging">
-            <t hangText="MCC">
-               The Mobile Country Code as defined by ITU-T E.212
-            </t>
-    
-    </list>
-    </t>
-    </section>
-    
-    <section title="Response" anchor="user-discovery-service-resp">
-    <t>The Authorization server returns a code or token depending on the requested response
-     type.</t>
-    </section>
-    
-    <section title="Error Response" anchor="user-discovery-service-err">
-    </section>
-    
-    <section title="Discovery endpoint Response" anchor="user-discovery-endpoint-resp">
-    <t>The response from the Discovery endpoint is a JSON object containing the following
-    top level elements:
-    
-     <list style="hanging">
-            <t hangText="user_iss">
-               The Issuer URI "iss" for the user who has authorized discovery.
-            </t>
-            <t hangText="login_hint_token">
-                A Encrypted JSON web token (JWE) that contains the user hint for the 
-                issuer.  The token MUST be encrypted with the public key of the issuer. 
-                This token is passed to the issuer in the authentication request.
-                This token contains the following elements:
-				<list style="hanging">
-					<t hangText="iss">
-						The party creating the token.
-					</t>
+          <t>Due to privacy reasons and the cost risk for MNOs associated with
+          it, it must be ensured that the discovery service cannot be abused
+          as a mobile phone number lookup service by unauthorized parties.</t>
+        </list></t>
 
-					<t hangText="aud">
-						The party to receive the token, typically the users IdP.
-						The value SHOULD be the "iss" URI of the IdP.
-					</t>
-					<t hangText="iat"> 
-						When the token was issued.
-					</t>
-					<t hangText="MCC"> NUMERIC
-						Mobile Country Code ITU-T E.212
-					 </t>
-					<t hangText="MNC"> NUMERIC
-						Mobile Network operator code ITU-T E.212
-					</t>
-					<t hangText="MSISDN"> NUMERIC 
-						The Subscriber identifier
-					</t>	
-					<t hangText="login_hint">  STRING
-						A account identifier for the user
-					</t>
-					<t hangText="ip_address">  STRING
-					    A IP address for the users device.
-					</t>
+      <t>OpenID Connect Clients using this specification are encouraged to use
+      the <xref target="Account.Chooser">OpenID Account chooser
+      service</xref>. This allows them to bypass discovery for users that
+      already have account information cached.</t>
 
-				</list>
-				<figure>
-	  <preamble>The following is a non-normative example of JWT body 
-	  (with line wraps within values for display purposes only):</preamble>
+      <section title="Redirect-based flow">
+        <t>This section gives an overview on the redirect-based flow, which is
+        intended to be used by server-side web application. The design of this
+        flow is inspired by the OAuth 2.0 authorization code flow <xref
+        target="RFC6749"/>.</t>
 
-	  <artwork><![CDATA[
-  {
-   "iss": "https://discovery-provider.com",
-   "aud": "https://babytel.com",
-   "exp": 1311281970,
-   "iat": 1311280970,
-   "login_hint": "i5555551212"
-    }
-  }
+        <t>Note: This flow, in contrast to the POST-based flow, does support
+        lookup of the MNO based on the user's MSISDN.</t>
+
+        <figure>
+          <preamble>The following figure shows the message flow during the
+          discovery process.</preamble>
+
+          <artwork><![CDATA[     +--------+                               +---------------+
+     |        |--(A)- Existing Account? ----->|   Account     |
+     |        |<-(B)-- Account Data ----------| Chooser CDS   |
+     |        |                               +---------------+
+     |        |                               +---------------------------------+   
+     |        |                               | Mobile Issuer Discovery Service |
+     |        |                               |                                 | 
+     |        |                               +------------------+              |
+     |        |--(C)-- Discovery Request ---->| User Interaction |              |
+     | Client |<-(D)----- Code ---------------|     Endpoint     |              |
+     |        |                               +------------------+              |
+     |        |                               +------------------+              |          
+     |        |--(E)----- Code -------------->|   Issuer         |              |
+     |        |<-(F)--- Issuer ---------------|   Endpoint       |              |
+     |        |                               +------------------+              |
+     |        |                               +---------------------------------+                                 
+     |        |                               +---------------+
+     |        |--(G)----- Issuer ------------>|   MNO's OP    |
+     |        |<-(H)--- openid configuration -|               |
+     +--------+                               +---------------+
 ]]></artwork>
-    </figure>
-				</t>
-    </list>
-    </t>
+
+          <postamble>Figure 1 Redirect-based flow (Abstract Protocol
+          Flow)</postamble>
+        </figure>
+
+        <t><list style="empty">
+            <t>(A) The Client first tries to obtain data of a valid user
+            account from the Account Chooser Central Data Store in the User's
+            browser. If appropriate user accounts can be found in the local
+            storage, the user is presented with those user accounts and asked
+            to select one of them for use for the authentication process.</t>
+
+            <t>(B) If an user account is selected by the user, the account
+            chooser sends the respective Issuer and a pseudonym user id to the
+            client. The Client then skips steps C through F and directly
+            obtains the MNO's OPs openid configuration (steps G and H).</t>
+
+            <t>(C) I no appropriate user account could be found, the Client
+            starts the issuer discovery by sending a discovery request to the
+            User Interaction endpoint of the Mobile Issuer Discovery Service.
+            The Client identifies itself by way of an client id and indicated
+            the URI the user interaction service shall send the user agent to
+            after processing the request. Moreover, the client may pass MCC,
+            MNC or IMSI as part of the discovery request. If available, the
+            MNO is determined based on MCC/MNC or IMSI. Otherwise, the user
+            interaction service first tries to deduce the MNO from source IP
+            address range of the request. If that's impossible, the user is
+            asked for her MSISDN, which is used to looksup the respective MNO
+            from a database.</t>
+
+            <t>(D) The User Interaction Endpoint does not directly respond to
+            the client with the Issuer of the MNO's OP. Instead, it creates a
+            code, which is associated with the ongoing transaction and sends
+            it back to the client using the redirect URI passed by the client.
+            This indirection allows to authenticate and authorize the client
+            at the Issuer endpoint before the process is completed.</t>
+
+            <t>(E) The client sends the code along with its credentials to the
+            Issuer Endpoint. </t>
+
+            <t>(F) The endpoint validates the client credentials and responds
+            with the OpenID Issuer associated with the user's MNO. If the user
+            provided the discovery service with her MSISDN in order to
+            determine the MNO, this MSISDN is encrypted and also returned to
+            the client. The client is supposed to pass this encrypted MSISDN
+            as additional hint to the authentication process in order to spare
+            the user to enter the MSISDN twice.</t>
+
+            <t>(G) The client builds the URL refering to the OpenID
+            configuration of the MNO's OpenID server and sends a GET request
+            to it.</t>
+
+            <t>(H) The OP provides the client with a JSON document containing
+            meta data regarding endpoints, capabilities and policies. The
+            client is now fully equipped to start interaction with the
+            respective OP.</t>
+          </list></t>
+
+        <t>The User Interaction and Issuer Endpoints are specified in sections
+        <xref target="ui_endpoint"> </xref> and <xref
+        target="discovery_endpoint"/> , respectively.</t>
+
+        <t>Access to the OP's meta data (steps (G) and (H)) is defined in
+        <xref target="OpenID.Discovery"/>, section 4, and is therefore outside
+        of the scope of this specification.</t>
+
+        <t>Note: After the client logged the user in sucessfully with a
+        particular IDP (and has remembered the respective Issuer URL), there
+        is no need to conduct the full issuer process again. The client can
+        instead directly obtain the OP's meta data using the openid
+        configuration (steps G and H).</t>
+      </section>
+
+      <section title="POST-based flow">
+        <t>This section gives an overview on the POST-based flow, which is
+        intended to be used by native apps residing on mobile devices. The
+        rationale is to allow apps to conduct issuer discovery without the
+        need to use a web browser, which would degrade user experience and
+        increase complexity and implementation effort. The assumption is that
+        such apps cannot reliably be authenticated and authorized, so
+        MSISDN-based lookup is not offered.</t>
+
+        <figure>
+          <preamble>The following figure shows the message flow during the
+          discovery process.</preamble>
+
+          <artwork><![CDATA[     +--------+                               +---------------------------------+   
+     |        |                               | Mobile Issuer Discovery Service |
+     |        |                               +------------------+              |          
+     |        |--(A)---discovery data ------->|   Issuer         |              |
+     |        |<-(B)--- Issuer ---------------|   Endpoint       |              |
+     |        |                               +------------------+              |
+     |        |                               +---------------------------------+                                 
+     |        |                               +---------------+
+     |        |--(C)----- Issuer ------------>|   MNO's OP    |
+     |        |<-(D)--- openid configuration -|               |
+     +--------+                               +---------------+]]></artwork>
+
+          <postamble>Figure 2 POST-based flow (Abstract Protocol
+          Flow)</postamble>
+        </figure>
+
+        <t><list style="empty">
+            <t>(A) In contrast to the web-based flow, the client may directly
+            send data (MNC/MCC or IMSI) it can contribute to determine the
+            user's MNO to the Issuer Endpoint of the Mobile Issuer Discovery
+            Service. The service tries to determine the MNO based on this
+            data. If this data is not present, the discovery service attempts
+            to determine the MNO based on the client's IP address. If that
+            fails, the discovery process fails.</t>
+
+            <t>(B) The Issuer Endpoint responds with the OpenID Issuer or an
+            error message.</t>
+
+            <t>(C) The client builds the URL refering to the OpenID
+            configuration of the MNO and sends a GET request to it.</t>
+
+            <t>(D) The OP provides the client with a JSON document containing
+            meta data regarding endpoints, capabilities and policies. The
+            client is now fully equipped to start interaction with the
+            respective OP.</t>
+          </list></t>
+
+        <t>TBD: what if the service cannot determine MNO? Right now, we let
+        the discovery fail. Alternatively, the client could also be provided
+        with a list of potential MNOs, which it can present to the user for
+        selection?</t>
+      </section>
     </section>
-    
-    
+
+    <section anchor="mobile-issuer-discovery-service"
+             title="Mobile Issuer Discovery Service">
+      <t>The Mobile Issuer Discovery Service exposes the user interaction and
+      issuer endpoint, which are specified in this section. It may also expose
+      a registration endpoint (see below).</t>
+
+      <section anchor="ui_endpoint" title="User Interaction Endpoint">
+        <t>The User Interaction Endpoint provides the user interface to the
+        discovery service. It is used to enter the MSISDN, let the user select
+        her MNO and automatically determining the client devices IP address.
+        The client is supposed to redirect the user agent to this endpoint. If
+        the interactive process succeeds, the client is provided with a code,
+        which it then exchanges at the Issuer Endpoint for the actual Issuer
+        data and (optionally) user-specific data.</t>
+
+        <section anchor="user-discovery-service-req" title="Request">
+          <t>The request to the User Interaction endpoint contains the
+          following parameters: <list style="hanging">
+              <t hangText="client_id">REQUIRED. The identifier of the
+              respective client. This client must be known to the discovery
+              service in advance.</t>
+
+              <t hangText="redirect_uri">REQUIRED. The URI the user agent
+              shall be sent to after the discovery process has been completed.
+              The client must register its URIs in advance, the redirect_uri
+              parameter must exactly match one of those URIs.</t>
+
+              <t hangText="state">OPTIONAL. Value used by the client to
+              preserve state of a discovery transaction and to prevent XSRF
+              attacks. The discovery service includes this value when
+              redirecting the user-agent back to the client.</t>
+
+              <t hangText="mcc">OTIONAL. The Mobile Country Code as defined by
+              ITU-T E.212</t>
+
+              <t hangText="mnc">OTIONAL. The Mobile Network Code as defined by
+              ITU-T E.212</t>
+
+              <t hangText="imsi">OTIONAL. The International Mobile Subscriber
+              Identity.</t>
+            </list></t>
+
+          <t/>
+
+          <figure>
+            <preamble>For example, the client could ask for discovery with the
+            following request:</preamble>
+
+            <artwork><![CDATA[  GET /discovery_ui?client_id=example_client&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fdiscovery&state=xy&mcc=901&mnc=99 HTTP/1.1
+  Host: discovery.example.com
+]]></artwork>
+          </figure>
+
+          <t/>
+        </section>
+
+        <section anchor="user-discovery-service-resp" title="Response">
+          <t>The discovery service returns the following parameters:</t>
+
+          <t><list style="hanging">
+              <t hangText="code">REQUIRED. The code is a temporary credential
+              associated with the ongoing discovery transaction. The client is
+              supposed to exchange this code for the actual discovery results
+              at the issuer endpoint.</t>
+
+              <t hangText="state">REQUIRED if the "state" parameter was
+              present in the client authorization request. The exact value
+              received from the client.</t>
+            </list></t>
+
+          <figure>
+            <preamble>The following shows how the discovery service redirects
+            the user agent back to the client:</preamble>
+
+            <artwork><![CDATA[ HTTP/1.1 302 Found
+     Location: https://client.example.com/discovery?code=SplxlOBeZQQYbYS6WxSbIA
+               &state=xyz]]></artwork>
+          </figure>
+        </section>
+
+        <section anchor="user-discovery-service-err" title="Error Response">
+          <t>TBD</t>
+        </section>
+      </section>
+
+      <section anchor="discovery_endpoint" title="Issuer Endpoint">
+        <t>This endpoint provides the client with Issuer data. It supports two
+        use cases:</t>
+
+        <t><list style="numbers">
+            <t>It exchanges the code created by the User Interaction Endpoint
+            for issuer data.</t>
+
+            <t>Clients may directly request issuer data by passing pass mobile
+            network data.</t>
+          </list></t>
+
+        <section title="Request">
+          <t>This is reflected in the "signature" of the request: <list
+              style="hanging">
+              <t hangText="client_id">REQUIRED. The identifier of the
+              respective client. This client must be known to the discovery
+              service in advance.</t>
+
+              <t hangText="client_secret">REQUIRED. If a client secret had
+              been issued issued to the client.</t>
+
+              <t hangText="code">OPTIONAL. code value issued by the User
+              Interaction Endpoint to this particular client.</t>
+
+              <t hangText="redirect_uri">REQUIRED. If the parameter "code is
+              present. The actual URI used to invoke the user interaction
+              endpoint.</t>
+
+              <t hangText="mcc">OTIONAL. The Mobile Country Code as defined by
+              ITU-T E.212</t>
+
+              <t hangText="mnc">REQUIRED. If the parameter "mcc" is present.
+              The Mobile Network Code as defined by ITU-T E.212</t>
+
+              <t hangText="imsi">OTIONAL. The International Mobile Subscriber
+              Identity.</t>
+            </list></t>
+
+          <t>Either code, mcc or IMSI must be present in the request. The
+          discovery service first validates the client credentials and the
+          client's authorization to perform the request.</t>
+
+          <t>If code is present, the discovery service verifies, whether (1)
+          this code had been issued to this client and (2) whether
+          "redirect_uri" matches the redirect URI used in the original request
+          to the User Interaction Endpoint (TBD: really needed? we need to
+          conduct a threat analysis).</t>
+
+          <t>If "mcc" and "mnc" are present, the discovery service tries to
+          determine the MNO based on this data. The same holds true, if "imsi"
+          is found in the request.</t>
+
+          <t>TBD: does it sense to introduce a request type parameter (or
+          different endpoints) to distinguish redirect (code) and direct
+          use?</t>
+
+          <t>TBD: client secrets via authorization header</t>
+
+          <figure>
+            <preamble>For example, the client could send the following
+            request:</preamble>
+
+            <artwork><![CDATA[POST /discovery_issuer HTTP/1.1
+Host: discovery.example.com
+
+client_id=example_client&client_secret=secret&code=SplxlOBeZQQYbYS6WxSbIA&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fdiscovery]]></artwork>
+          </figure>
+
+          <t/>
+        </section>
+
+        <section anchor="user-discovery-endpoint-resp" title="Response">
+          <t>The response from the issuer endpoint is a JSON object containing
+          the following top level elements: <list style="hanging">
+              <t hangText="iss">The Issuer URI "iss" for the user who has
+              authorized discovery.</t>
+
+              <t hangText="login_hint_token">A Encrypted JSON web token (JWE)
+              that contains the user hint for the issuer. The token MUST be
+              encrypted with the public key of the issuer. This token is
+              passed to the issuer in the authentication request. Usage,
+              structure, and processing rules of the login hint token are
+              specified in <xref target="modrna.authentication"/></t>
+            </list></t>
+
+          <figure>
+            <preamble>The following is a non-normative example of the Issuer
+            response:</preamble>
+
+            <artwork><![CDATA[HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+   "iss": "https://example_provider.com",
+   "login_hint_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
+     OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
+     ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
+     Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
+     mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
+     1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi
+     6UklfCpIMfIjf7iGdXKHzg.
+     48V1_ALb6US04U3b.
+     5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
+     SdiwkIr3ajwQzaBtQD_A.
+     XFBoMYUZodetZdvTiFvSkQ"
+}]]></artwork>
+          </figure>
+        </section>
+      </section>
+    </section>
+
+    <section anchor="user-discovery-service-reg"
+             title="Dynamic Registration with Discovery Service">
+      <t>[TBD]The client must register with the discovery service and have a
+      valid OAuth client_id.</t>
     </section>
 
     <section anchor="Account_Chooser" title="Account Chooser">
-        
-        <section anchor="Account_chooser_client" title="AC Client">
-	<t>It is recommended that Web server clients use the Account Chooser Central Data Store (CDS)
-	for discovering the users preferred account.</t>
-	
-	<t><xref target="AC">Account Chooser</xref> is invoked with the following script:</t>
-	
-			<figure><artwork><![CDATA[
+      <section anchor="Account_chooser_client" title="AC Client">
+        <t>It is recommended that Web server clients use the Account Chooser
+        Central Data Store (CDS) for discovering the users preferred
+        account.</t>
+
+        <t><xref target="Account.Chooser">Account Chooser</xref> is invoked
+        with the following script:</t>
+
+        <figure>
+          <artwork><![CDATA[
 <script type="text/javascript"
      src="https://www.accountchooser.com/ac.js" />
 <script>
@@ -224,46 +520,33 @@ Some of those user input identifier types may not identify a single user/device 
 	branding: 'http://example.com/branding/ac-blurb.html' 
      };
 </script>
-		 ]]></artwork></figure>
+		 ]]></artwork>
+        </figure>
 
-<t>
+        <t>If the user clicks on one of the accounts, ac.js sends an HTTP POST
+        to a status checker (userStatusUrl:/account-status) that the client
+        has to to implement. The status checker will receive up to five
+        arguments as URL query parameters.</t>
 
-	If the user clicks on one of the accounts, ac.js sends an HTTP POST to a 
-	status checker (userStatusUrl:/account-status) that the client has to to implement. 
-	The status checker will receive up to five arguments as URL query parameters.</t>
-	
-	<t>The paramaters if available are:</t>
-	<t>
-	<list style="hanging">
-	<t hangText="email">
-	    <vspace/>
-	    x
-	  </t>
-	  <t hangText="displayName">
-	    <vspace/>
-	    x
-	  </t>
-	  <t hangText="photoUrl">
-	    <vspace/>
-	    x
-	  </t>
-	  <t hangText="providerId">
-	    <vspace/>
-	    x
-	  </t>
-	  <t hangText="login_hint_token">
-	    <vspace/>
-	    x
-	  </t>
-	</list>
-	</t>
-	
-		<figure>
-		<preamble>
-		For example
-		(with line wraps within values for display purposes only):
-	      </preamble>
-	      <artwork><![CDATA[
+        <t>The paramaters if available are:</t>
+
+        <t><list style="hanging">
+            <t hangText="email"><vspace/> x</t>
+
+            <t hangText="displayName"><vspace/> x</t>
+
+            <t hangText="photoUrl"><vspace/> x</t>
+
+            <t hangText="providerId"><vspace/> x</t>
+
+            <t hangText="login_hint_token"><vspace/> x</t>
+          </list></t>
+
+        <figure>
+          <preamble>For example (with line wraps within values for display
+          purposes only):</preamble>
+
+          <artwork><![CDATA[
 POST /token HTTP/1.1
   Host: server.example.com
   Content-Type: application/x-www-form-urlencoded
@@ -283,23 +566,24 @@ POST /token HTTP/1.1
      5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
      SdiwkIr3ajwQzaBtQD_A.
      XFBoMYUZodetZdvTiFvSkQ
-		 ]]></artwork></figure>
+		 ]]></artwork>
+        </figure>
+      </section>
 
-	    </section>
-	
-	  <section anchor="Account_chooser_idp" title="AC Identity Provider">
-	<t>Identity providers will populate the account information in Account Chooser's 
-	browser local storrage as the result of a successful loggin before redirecting
-	the user back to the client.</t>
-	
-	<t>If the user account has not been provisioned in the Browsers local storrage,
-	the Identity provider MUST offer to store the account before redirecting the user 
-	back to the Connect client.</t>
-	
-	<t>The following is an example of the script elements invoking ac.js offering to 
-	store an account:</t>
-	
-	<figure><artwork><![CDATA[
+      <section anchor="Account_chooser_idp" title="AC Identity Provider">
+        <t>Identity providers will populate the account information in Account
+        Chooser's browser local storrage as the result of a successful loggin
+        before redirecting the user back to the client.</t>
+
+        <t>If the user account has not been provisioned in the Browsers local
+        storrage, the Identity provider MUST offer to store the account before
+        redirecting the user back to the Connect client.</t>
+
+        <t>The following is an example of the script elements invoking ac.js
+        offering to store an account:</t>
+
+        <figure>
+          <artwork><![CDATA[
 <script type="text/javascript" 
 	src="https://www.accountchooser.com/ac.js" />
 <script type="text/javascript"> 
@@ -329,70 +613,75 @@ POST /token HTTP/1.1
 	} 
 }; 
 </script>
-		 ]]></artwork></figure>
-
-	    </section>
-	
+		 ]]></artwork>
+        </figure>
+      </section>
     </section>
-    
 
     <section anchor="security_considerations" title="Security Considerations">
-	<t>TBD</t>
+      <t>TBD</t>
+
+      <t>Open Redirector (user interaction endpoint)</t>
     </section>
 
     <section anchor="privacy_considerations" title="Privacy Considerations">
-	<t>TBD</t>
+      <t>TBD</t>
+
+      <t>confidentiality of MSISDN</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
       <t>This document makes no requests of IANA.</t>
     </section>
-
   </middle>
 
   <back>
     <references title="Normative References">
       <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119"?>
+
       <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6749"?>
+
       <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6750"?>
+
       <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5246"?>
+
       <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2246"?>
 
-
-      
       <reference anchor="OpenID.Core">
-	<front>
-	  <title>OpenID Connect Standard 1.0</title>
+        <front>
+          <title>OpenID Connect Standard 1.0</title>
 
-	  <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
-	    <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
-	  </author>
+          <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+            <organization abbrev="NRI">Nomura Research Institute,
+            Ltd.</organization>
+          </author>
 
-	  <author fullname="John Bradley" initials="J." surname="Bradley">
-	    <organization abbrev="Ping Identity">Ping Identity</organization>
-	  </author>
+          <author fullname="John Bradley" initials="J." surname="Bradley">
+            <organization abbrev="Ping Identity">Ping Identity</organization>
+          </author>
 
-	  <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
-	    <organization abbrev="Microsoft">Microsoft</organization>
-	  </author>
+          <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+            <organization abbrev="Microsoft">Microsoft</organization>
+          </author>
 
-	  <author fullname="Breno de Medeiros" initials="B." surname="de Medeiros">
-	    <organization abbrev="Google">Google</organization>
-	  </author>
+          <author fullname="Breno de Medeiros" initials="B."
+                  surname="de Medeiros">
+            <organization abbrev="Google">Google</organization>
+          </author>
 
-	  <author fullname="Chuck Mortimore" initials="C." surname="Mortimore">
-	    <organization abbrev="Salesforce">Salesforce</organization>
-	  </author>
+          <author fullname="Chuck Mortimore" initials="C." surname="Mortimore">
+            <organization abbrev="Salesforce">Salesforce</organization>
+          </author>
 
-	  <author fullname="Edmund Jay" initials="E." surname="Jay">
-	    <organization abbrev="Illumila">Illumila</organization>
-	  </author>
+          <author fullname="Edmund Jay" initials="E." surname="Jay">
+            <organization abbrev="Illumila">Illumila</organization>
+          </author>
 
-	  <date day="19" month="December" year="2013"/>
-	</front>
+          <date day="19" month="December" year="2013"/>
+        </front>
 
-	<format target="http://openid.net/specs/openid-connect-core-1_0.html"
-		type="HTML" />
+        <format target="http://openid.net/specs/openid-connect-core-1_0.html"
+                type="HTML"/>
       </reference>
 
       <reference anchor="OpenID.Registration">
@@ -400,7 +689,8 @@ POST /token HTTP/1.1
           <title>OpenID Connect Dynamic Client Registration 1.0</title>
 
           <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
-            <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+            <organization abbrev="NRI">Nomura Research Institute,
+            Ltd.</organization>
           </author>
 
           <author fullname="John Bradley" initials="J." surname="Bradley">
@@ -414,35 +704,36 @@ POST /token HTTP/1.1
           <date day="19" month="December" year="2013"/>
         </front>
 
-	<format target="http://openid.net/specs/openid-connect-registration-1_0-19.html"
-                type="HTML" />
+        <format target="http://openid.net/specs/openid-connect-registration-1_0-19.html"
+                type="HTML"/>
       </reference>
 
       <reference anchor="OpenID.Discovery">
-	<front>
-	  <title>OpenID Connect Discovery 1.0</title>
+        <front>
+          <title>OpenID Connect Discovery 1.0</title>
 
-	  <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
-	    <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
-	  </author>
+          <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+            <organization abbrev="NRI">Nomura Research Institute,
+            Ltd.</organization>
+          </author>
 
-	  <author fullname="John Bradley" initials="J." surname="Bradley">
-	    <organization abbrev="Ping Identity">Ping Identity</organization>
-	  </author>
+          <author fullname="John Bradley" initials="J." surname="Bradley">
+            <organization abbrev="Ping Identity">Ping Identity</organization>
+          </author>
 
-	  <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
-	    <organization abbrev="Microsoft">Microsoft</organization>
-	  </author>
+          <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+            <organization abbrev="Microsoft">Microsoft</organization>
+          </author>
 
-	  <author fullname="Edmund Jay" initials="E." surname="Jay">
-	    <organization abbrev="Illumila">Illumila</organization>
-	  </author>
+          <author fullname="Edmund Jay" initials="E." surname="Jay">
+            <organization abbrev="Illumila">Illumila</organization>
+          </author>
 
-	  <date day="16" month="September" year="2014"/>
-	</front>
+          <date day="16" month="September" year="2014"/>
+        </front>
 
-	<format target="http://openid.net/specs/openid-connect-discovery-1_0.html"
-		type="HTML" />
+        <format target="http://openid.net/specs/openid-connect-discovery-1_0.html"
+                type="HTML"/>
       </reference>
 
       <reference anchor="JWT">
@@ -454,106 +745,119 @@ POST /token HTTP/1.1
           </author>
 
           <author fullname="John Bradley" initials="J." surname="Bradley">
-           <organization abbrev="Ping Identity">Ping Identity</organization>
+            <organization abbrev="Ping Identity">Ping Identity</organization>
           </author>
 
           <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
-            <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+            <organization abbrev="NRI">Nomura Research Institute,
+            Ltd.</organization>
           </author>
 
-          <date day="28" month="May" year="2013" />
+          <date day="28" month="May" year="2013"/>
         </front>
 
-	<seriesInfo value="draft-ietf-oauth-json-web-token" name="Internet-Draft"/>
-	<format target="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08"
-                type="HTML" />
+        <seriesInfo name="Internet-Draft"
+                    value="draft-ietf-oauth-json-web-token"/>
+
+        <format target="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08"
+                type="HTML"/>
       </reference>
-      
-      <reference anchor="AC">
+
+      <reference anchor="Account.Chooser">
         <front>
           <title>Account Chooser (AC)</title>
 
-          <author fullname="openid" initials="" surname="">
+          <author fullname="openid" initials="" surname=""/>
 
-          </author>
-
-
-
-          <date day="28" month="May" year="2013" />
+          <date day="28" month="May" year="2013"/>
         </front>
 
-
-	<format target="http://accountchooser.net/developers"
-                type="HTML" />
+        <format target="http://accountchooser.net/developers" type="HTML"/>
       </reference>
-      
+
+      <reference anchor="modrna.authentication">
+        <front>
+          <title>OpenID Connect Mobile Authentication Profile 1.0</title>
+
+          <author fullname="Joerg Connotte" initials="J." surname="Connotte">
+            <organization abbrev="">Deutsche Telekom</organization>
+          </author>
+
+          <author fullname="John Bradley" initials="J." surname="Bradley">
+            <organization abbrev="Ping Identity">Ping Identity</organization>
+          </author>
+
+          <date day="25" month="June" year="2015"/>
+        </front>
+
+        <format target="https://bitbucket.org/openid/mobile/raw/default/draft-mobile-authentication-01.txt"
+                type="TXT"/>
+      </reference>
     </references>
-    
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>The following have contributed to the development of this specification.</t>
-      <t>
-        <list style="empty">
-          <t></t>
-        </list>
-      </t>
-    </section>
+      <t>The following have contributed to the development of this
+      specification.</t>
 
+      <t><list style="empty">
+          <t/>
+        </list></t>
+    </section>
 
     <section anchor="Notices" title="Notices">
       <t>Copyright (c) 2014 The OpenID Foundation.</t>
-      <t>
-	The OpenID Foundation (OIDF) grants to any Contributor, developer, 
-	implementer, or other interested party a non-exclusive, royalty free, 
-	worldwide copyright license to reproduce, prepare derivative works from, 
-	distribute, perform and display, this Implementers Draft or 
-	Final Specification solely for the purposes of (i) developing 
-	specifications, and (ii) implementing Implementers Drafts and 
-	Final Specifications based on such documents, provided that attribution 
-	be made to the OIDF as the source of the material, but that such attribution 
-	does not indicate an endorsement by the OIDF.
-      </t>
-      <t>
-	The technology described in this specification was 
-	made available from contributions from various sources, 
-	including members of the OpenID Foundation and others.  
-	Although the OpenID Foundation has taken steps to help ensure 
-	that the technology is available for distribution, it takes 
-	no position regarding the validity or scope of any intellectual 
-	property or other rights that might be claimed to pertain to 
-	the implementation or use of the technology described in 
-	this specification or the extent to which any license under 
-	such rights might or might not be available; neither does it 
-	represent that it has made any independent effort to identify 
-	any such rights.  The OpenID Foundation and the contributors 
-	to this specification make no (and hereby expressly disclaim any) 
-	warranties (express, implied, or otherwise), including implied 
-	warranties of merchantability, non-infringement, fitness for 
-	a particular purpose, or title, related to this specification, 
-	and the entire risk as to implementing this specification is 
-	assumed by the implementer.  The OpenID Intellectual 
-	Property Rights policy requires contributors to offer 
-	a patent promise not to assert certain patent claims against 
-	other contributors and against implementers.  The OpenID Foundation invites 
-	any interested party to bring to its attention any copyrights, 
-	patents, patent applications, or other proprietary rights 
-	that may cover technology that may be required to practice 
-	this specification.
-      </t>
-    </section>
 
+      <t>The OpenID Foundation (OIDF) grants to any Contributor, developer,
+      implementer, or other interested party a non-exclusive, royalty free,
+      worldwide copyright license to reproduce, prepare derivative works from,
+      distribute, perform and display, this Implementers Draft or Final
+      Specification solely for the purposes of (i) developing specifications,
+      and (ii) implementing Implementers Drafts and Final Specifications based
+      on such documents, provided that attribution be made to the OIDF as the
+      source of the material, but that such attribution does not indicate an
+      endorsement by the OIDF.</t>
+
+      <t>The technology described in this specification was made available
+      from contributions from various sources, including members of the OpenID
+      Foundation and others. Although the OpenID Foundation has taken steps to
+      help ensure that the technology is available for distribution, it takes
+      no position regarding the validity or scope of any intellectual property
+      or other rights that might be claimed to pertain to the implementation
+      or use of the technology described in this specification or the extent
+      to which any license under such rights might or might not be available;
+      neither does it represent that it has made any independent effort to
+      identify any such rights. The OpenID Foundation and the contributors to
+      this specification make no (and hereby expressly disclaim any)
+      warranties (express, implied, or otherwise), including implied
+      warranties of merchantability, non-infringement, fitness for a
+      particular purpose, or title, related to this specification, and the
+      entire risk as to implementing this specification is assumed by the
+      implementer. The OpenID Intellectual Property Rights policy requires
+      contributors to offer a patent promise not to assert certain patent
+      claims against other contributors and against implementers. The OpenID
+      Foundation invites any interested party to bring to its attention any
+      copyrights, patents, patent applications, or other proprietary rights
+      that may cover technology that may be required to practice this
+      specification.</t>
+    </section>
 
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
 
       <t>-01 <list style="symbols">
           <t>Initial draft</t>
-          <t>Added OIDF Standard Notice </t>
+
+          <t>Added OIDF Standard Notice</t>
+
           <t>moved the definition of the encrypted id_token_int to login</t>
         </list></t>
-        
-          
-    
+      <t>-02 <list style="symbols">
+	      <t>completely reworked document to reflect latest discovery design and support for different flows</t>
+	      <t>extended Overview section to describe overall flows for web and native apps</t>
+          <t>split discovery service into different endpoints and adopted the document structure accordingly</t>
+		  <t>added example requests and responses</t>
+		  <t>added reference to authentication profile</t>
+        </list></t>		
     </section>
   </back>
 </rfc>
