@@ -47,7 +47,7 @@
       </address>
     </author>
 
-    <date day="18" month="July" year="2015"/>
+    <date day="25" month="July" year="2015"/>
 
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -568,7 +568,7 @@ Pragma: no-cache
 
           <t>In all other error conditions, the discovery server responds with
           an HTTP 400 (Bad Request) status code and includes a JSON object
-          containing the following top level elements: </t>
+          containing the following top level elements:</t>
 
           <t><list style="hanging">
               <t hangText="error">REQUIRED. A single US ASCII error code from
