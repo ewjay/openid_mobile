@@ -12,7 +12,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-mobile-discovery-02" ipr="none">
+<rfc category="std" docName="draft-mobile-discovery-03" ipr="none">
   <?rfc toc="yes" ?>
 
   <?rfc tocdepth="5" ?>
@@ -83,10 +83,10 @@
     <section anchor="Introduction" title="Introduction">
       <t>OpenID Connect Mobile Discovery Profile 1.0 is a profile of the <xref
       target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref>
-      specification that stipulates how a OpenID Connect client can use mobile
-      network specific identifiers to determine the authoritative issuer for a
-      identifier thereby enabling to detemine the OpenID OP belonging to a
-      particular MNO.</t>
+      specification that stipulates how a OpenID Connect relying party (RP)
+      can use mobile network specific identifiers to determine the
+      authoritative issuer for a identifier thereby enabling to detemine the
+      OpenID OP belonging to a particular MNO.</t>
 
       <section anchor="rnc" title="Requirements Notation and Conventions">
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -100,12 +100,19 @@
       </section>
 
       <section anchor="terminology" title="Terminology">
-        <t>This specification uses the terms "Access Token", "Refresh Token",
-        "Authorization Code", "Authorization Grant", "Authorization Server",
-        "Authorization Endpoint", "Client", "Client Identifier", "Client
-        Secret", "Protected Resource", "Resource Owner", "Resource Server",
-        and "Token Endpoint" defined by <xref target="RFC6749">OAuth
-        2.0</xref>. This specification also defines the following terms:</t>
+        <t>This specification uses the terms "Refresh Token", "Client
+        Identifier",and "Client Secret" defined by <xref
+        target="RFC6749">OAuth 2.0</xref>. This specification uses the terms
+        "OpenID Provider (OP)" and Relying Party (RP) defined by OpenID
+        Connect Core <xref target="OpenID.Core"/>.</t>
+
+        <t>This specification also defines the following terms:</t>
+
+        <t><list style="empty">
+            <t>Mobile Network Operator (MNO)</t>
+
+            <t>...</t>
+          </list></t>
       </section>
     </section>
 
@@ -126,10 +133,10 @@
           as a mobile phone number lookup service by unauthorized parties.</t>
         </list></t>
 
-      <t>OpenID Connect Clients using this specification are encouraged to use
-      the <xref target="Account.Chooser">OpenID Account chooser
-      service</xref>. This allows them to bypass discovery for users that
-      already have account information cached.</t>
+      <t>OpenID Connect RPs using this specification are encouraged to use the
+      <xref target="Account.Chooser">OpenID Account chooser service</xref>.
+      This allows them to bypass discovery for users that already have account
+      information cached.</t>
 
       <section title="Redirect-based flow">
         <t>This section gives an overview on the redirect-based flow, which is
@@ -144,26 +151,26 @@
           <preamble>The following figure shows the message flow during the
           discovery process.</preamble>
 
-          <artwork><![CDATA[     +--------+                               +---------------+
-     |        |--(A)- Existing Account? ----->|   Account     |
-     |        |<-(B)-- Account Data ----------| Chooser CDS   |
-     |        |                               +---------------+
-     |        |                               +---------------------------------+   
-     |        |                               | Mobile Issuer Discovery Service |
-     |        |                               |                                 | 
-     |        |                               +------------------+              |
-     |        |--(C)-- Discovery Request ---->| User Interaction |              |
-     | Client |<-(D)----- Code ---------------|     Endpoint     |              |
-     |        |                               +------------------+              |
-     |        |                               +------------------+              |          
-     |        |--(E)----- Code -------------->|   Issuer         |              |
-     |        |<-(F)--- Issuer ---------------|   Endpoint       |              |
-     |        |                               +------------------+              |
-     |        |                               +---------------------------------+                                 
-     |        |                               +---------------+
-     |        |--(G)----- Issuer ------------>|   MNO's OP    |
-     |        |<-(H)--- openid configuration -|               |
-     +--------+                               +---------------+
+          <artwork><![CDATA[     +---------+                               +---------------+
+     |         |--(A)- Existing Account? ----->|   Account     |
+     |         |<-(B)-- Account Data ----------| Chooser CDS   |
+     |         |                               +---------------+
+     |         |                               +---------------------------------+   
+     |         |                               | Mobile Issuer Discovery Service |
+     |         |                               |                                 | 
+     |         |                               +------------------+              |
+     |         |--(C)-- Discovery Request ---->| User Interaction |              |
+     | Relying |<-(D)----- Code ---------------|     Endpoint     |              |
+     | Party   |                               +------------------+              |
+     |         |                               +------------------+              |          
+     |         |--(E)----- Code -------------->|   Issuer         |              |
+     |         |<-(F)--- Issuer ---------------|   Endpoint       |              |
+     |         |                               +------------------+              |
+     |         |                               +---------------------------------+                                 
+     |         |                               +---------------+
+     |         |--(G)----- Issuer ------------>|   MNO's OP    |
+     |         |<-(H)--- openid configuration -|               |
+     +---------+                               +---------------+
 ]]></artwork>
 
           <postamble>Figure 1 Redirect-based flow (Abstract Protocol
@@ -171,56 +178,54 @@
         </figure>
 
         <t><list style="empty">
-            <t>(A) The Client first tries to obtain data of a valid user
-            account from the Account Chooser Central Data Store in the User's
-            browser. If appropriate user accounts can be found in the local
-            storage, the user is presented with those user accounts and asked
-            to select one of them for use for the authentication process.</t>
+            <t>(A) The RP first tries to obtain data of a valid user account
+            from the Account Chooser Central Data Store in the User's browser.
+            If appropriate user accounts can be found in the local storage,
+            the user is presented with those user accounts and asked to select
+            one of them for use for the authentication process.</t>
 
             <t>(B) If an user account is selected by the user, the account
             chooser sends the respective Issuer and a pseudonym user id to the
-            client. The Client then skips steps C through F and directly
-            obtains the MNO's OPs openid configuration (steps G and H).</t>
+            RP. The RP then skips steps C through F and directly obtains the
+            MNO's OPs openid configuration (steps G and H).</t>
 
-            <t>(C) I no appropriate user account could be found, the Client
+            <t>(C) If no appropriate user account could be found, the RP
             starts the issuer discovery by sending a discovery request to the
             User Interaction endpoint of the Mobile Issuer Discovery Service.
-            The Client identifies itself by way of an client id and indicated
-            the URI the user interaction service shall send the user agent to
-            after processing the request. Moreover, the client may pass MCC,
-            MNC or IMSI as part of the discovery request. If available, the
-            MNO is determined based on MCC/MNC or IMSI. Otherwise, the user
+            The RP identifies itself by way of an client id and indicates the
+            URI the user interaction service shall send the user agent to
+            after processing the request. Moreover, the RP may pass MCC, MNC
+            or IMSI as part of the discovery request. If available, the MNO is
+            determined based on MCC/MNC or IMSI. Otherwise, the user
             interaction service first tries to deduce the MNO from source IP
             address range of the request. If that's impossible, the user is
             asked for her MSISDN, which is used to looksup the respective MNO
             from a database.</t>
 
             <t>(D) The User Interaction Endpoint does not directly respond to
-            the client with the Issuer of the MNO's OP. Instead, it creates a
+            the RP with the Issuer of the MNO's OP. Instead, it creates a
             code, which is associated with the ongoing transaction and sends
-            it back to the client using the redirect URI passed by the client.
-            This indirection allows to authenticate and authorize the client
-            at the Issuer endpoint before the process is completed.</t>
+            it back to the RP using the redirect URI passed by the RP. This
+            indirection allows to authenticate and authorize the RP at the
+            Issuer endpoint before the process is completed.</t>
 
-            <t>(E) The client sends the code along with its credentials to the
-            Issuer Endpoint. </t>
+            <t>(E) The RP sends the code along with its credentials to the
+            Issuer Endpoint.</t>
 
             <t>(F) The endpoint validates the client credentials and responds
             with the OpenID Issuer associated with the user's MNO. If the user
             provided the discovery service with her MSISDN in order to
             determine the MNO, this MSISDN is encrypted and also returned to
-            the client. The client is supposed to pass this encrypted MSISDN
-            as additional hint to the authentication process in order to spare
+            the RP. The RP is supposed to pass this encrypted MSISDN as
+            additional hint to the authentication process in order to spare
             the user to enter the MSISDN twice.</t>
 
-            <t>(G) The client builds the URL refering to the OpenID
-            configuration of the MNO's OpenID server and sends a GET request
-            to it.</t>
+            <t>(G) The RP builds the URL refering to the OpenID configuration
+            of the MNO's OpenID server and sends a GET request to it.</t>
 
-            <t>(H) The OP provides the client with a JSON document containing
-            meta data regarding endpoints, capabilities and policies. The
-            client is now fully equipped to start interaction with the
-            respective OP.</t>
+            <t>(H) The OP provides the RP with a JSON document containing meta
+            data regarding endpoints, capabilities and policies. The RP is now
+            fully equipped to start interaction with the respective OP.</t>
           </list></t>
 
         <t>The User Interaction and Issuer Endpoints are specified in sections
@@ -231,11 +236,11 @@
         <xref target="OpenID.Discovery"/>, section 4, and is therefore outside
         of the scope of this specification.</t>
 
-        <t>Note: After the client logged the user in sucessfully with a
-        particular IDP (and has remembered the respective Issuer URL), there
-        is no need to conduct the full issuer process again. The client can
-        instead directly obtain the OP's meta data using the openid
-        configuration (steps G and H).</t>
+        <t>Note: After the RP logged the user in sucessfully with a particular
+        OP (and has remembered the respective Issuer URL), there is no need to
+        conduct the full issuer process again. The RP can instead directly
+        obtain the OP's meta data using the openid configuration (steps G and
+        H).</t>
       </section>
 
       <section title="POST-based flow">
@@ -251,46 +256,45 @@
           <preamble>The following figure shows the message flow during the
           discovery process.</preamble>
 
-          <artwork><![CDATA[     +--------+                               +---------------------------------+   
-     |        |                               | Mobile Issuer Discovery Service |
-     |        |                               +------------------+              |          
-     |        |--(A)---discovery data ------->|   Issuer         |              |
-     |        |<-(B)--- Issuer ---------------|   Endpoint       |              |
-     |        |                               +------------------+              |
-     |        |                               +---------------------------------+                                 
-     |        |                               +---------------+
-     |        |--(C)----- Issuer ------------>|   MNO's OP    |
-     |        |<-(D)--- openid configuration -|               |
-     +--------+                               +---------------+]]></artwork>
+          <artwork><![CDATA[     +---------+                               +---------------------------------+   
+     |         |                               | Mobile Issuer Discovery Service |
+     |         |                               +------------------+              |          
+     |         |--(A)---discovery data ------->|   Issuer         |              |
+     |         |<-(B)--- Issuer ---------------|   Endpoint       |              |
+     | Relying |                               +------------------+              |
+     | Party   |                               +---------------------------------+                                 
+     |         |                               +---------------+
+     |         |--(C)----- Issuer ------------>|   MNO's OP    |
+     |         |<-(D)--- openid configuration -|               |
+     +---------+                               +---------------+]]></artwork>
 
           <postamble>Figure 2 POST-based flow (Abstract Protocol
           Flow)</postamble>
         </figure>
 
         <t><list style="empty">
-            <t>(A) In contrast to the web-based flow, the client may directly
-            send data (MNC/MCC or IMSI) it can contribute to determine the
-            user's MNO to the Issuer Endpoint of the Mobile Issuer Discovery
-            Service. The service tries to determine the MNO based on this
-            data. If this data is not present, the discovery service attempts
-            to determine the MNO based on the client's IP address. If that
-            fails, the discovery process fails.</t>
+            <t>(A) In contrast to the web-based flow, the RP may directly send
+            data (MNC/MCC or IMSI) it can contribute to determine the user's
+            MNO to the Issuer Endpoint of the Mobile Issuer Discovery Service.
+            The service tries to determine the MNO based on this data. If this
+            data is not present, the discovery service attempts to determine
+            the MNO based on the RP's IP address. If that fails, the discovery
+            process fails.</t>
 
             <t>(B) The Issuer Endpoint responds with the OpenID Issuer or an
             error message.</t>
 
-            <t>(C) The client builds the URL refering to the OpenID
-            configuration of the MNO and sends a GET request to it.</t>
+            <t>(C) The RP builds the URL refering to the OpenID configuration
+            of the MNO and sends a GET request to it.</t>
 
-            <t>(D) The OP provides the client with a JSON document containing
-            meta data regarding endpoints, capabilities and policies. The
-            client is now fully equipped to start interaction with the
-            respective OP.</t>
+            <t>(D) The OP provides the RP with a JSON document containing meta
+            data regarding endpoints, capabilities and policies. The RP is now
+            fully equipped to start interaction with the respective OP.</t>
           </list></t>
 
         <t>TBD: what if the service cannot determine MNO? Right now, we let
-        the discovery fail. Alternatively, the client could also be provided
-        with a list of potential MNOs, which it can present to the user for
+        the discovery fail. Alternatively, the RP could also be provided with
+        a list of potential MNOs, which it can present to the user for
         selection?</t>
       </section>
     </section>
@@ -304,28 +308,28 @@
       <section anchor="ui_endpoint" title="User Interaction Endpoint">
         <t>The User Interaction Endpoint provides the user interface to the
         discovery service. It is used to enter the MSISDN, let the user select
-        her MNO and automatically determining the client devices IP address.
-        The client is supposed to redirect the user agent to this endpoint. If
-        the interactive process succeeds, the client is provided with a code,
-        which it then exchanges at the Issuer Endpoint for the actual Issuer
-        data and (optionally) user-specific data.</t>
+        her MNO and automatically determining the RP device's IP address. The
+        RP is supposed to redirect the user agent to this endpoint. If the
+        interactive process succeeds, the RP is provided with a code, which it
+        then exchanges at the Issuer Endpoint for the actual Issuer data and
+        (optionally) user-specific data.</t>
 
         <section anchor="user-discovery-service-req" title="Request">
           <t>The request to the User Interaction endpoint contains the
           following parameters: <list style="hanging">
               <t hangText="client_id">REQUIRED. The identifier of the
-              respective client. This client must be known to the discovery
-              service in advance.</t>
+              respective RP. This RP must be known to the discovery service in
+              advance.</t>
 
               <t hangText="redirect_uri">REQUIRED. The URI the user agent
               shall be sent to after the discovery process has been completed.
-              The client must register its URIs in advance, the redirect_uri
+              The RP must register its URIs in advance, the redirect_uri
               parameter must exactly match one of those URIs.</t>
 
-              <t hangText="state">OPTIONAL. Value used by the client to
-              preserve state of a discovery transaction and to prevent XSRF
-              attacks. The discovery service includes this value when
-              redirecting the user-agent back to the client.</t>
+              <t hangText="state">OPTIONAL. Value used by the RP to preserve
+              state of a discovery transaction and to prevent XSRF attacks.
+              The discovery service includes this value when redirecting the
+              user-agent back to the RP.</t>
 
               <t hangText="mcc">OTIONAL. The Mobile Country Code as defined by
               ITU-T E.212</t>
@@ -335,15 +339,20 @@
 
               <t hangText="imsi">OTIONAL. The International Mobile Subscriber
               Identity.</t>
+
+              <t hangText="msisdn"><spanx style="strong">TBD</spanx></t>
             </list></t>
 
           <t/>
 
           <figure>
-            <preamble>For example, the client could ask for discovery with the
-            following request:</preamble>
+            <preamble>For example, the RP could ask for discovery with the
+            following request (line breaks are for display purposes
+            only):</preamble>
 
-            <artwork><![CDATA[  GET /discovery_ui?client_id=example_client&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fdiscovery&state=xy&mcc=901&mnc=99 HTTP/1.1
+            <artwork><![CDATA[  GET /discovery_ui?client_id=example_client&
+      redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fdiscovery&
+      state=xy&mcc=901&mnc=99 HTTP/1.1
   Host: discovery.example.com
 ]]></artwork>
           </figure>
@@ -356,18 +365,18 @@
 
           <t><list style="hanging">
               <t hangText="code">REQUIRED. The code is a temporary credential
-              associated with the ongoing discovery transaction. The client is
+              associated with the ongoing discovery transaction. The RP is
               supposed to exchange this code for the actual discovery results
               at the issuer endpoint.</t>
 
               <t hangText="state">REQUIRED if the "state" parameter was
-              present in the client authorization request. The exact value
-              received from the client.</t>
+              present in the discovery request. The exact value received from
+              the RP.</t>
             </list></t>
 
           <figure>
             <preamble>The following shows how the discovery service redirects
-            the user agent back to the client:</preamble>
+            the user agent back to the RP:</preamble>
 
             <artwork><![CDATA[ HTTP/1.1 302 Found
      Location: https://client.example.com/discovery?code=SplxlOBeZQQYbYS6WxSbIA
@@ -376,34 +385,91 @@
         </section>
 
         <section anchor="user-discovery-service-err" title="Error Response">
-          <t>TBD</t>
+          <t>If the request fails due to a missing, invalid, or mismatching
+          redirection URI, or if the client identifier is missing or invalid,
+          the discovery server SHOULD inform the end-user of the error and
+          MUST NOT automatically redirect the user-agent to the invalid
+          redirection URI. If the request fails for reasons other than a
+          missing or invalid redirection URI, the discovery server informs the
+          RP by adding the following parameters to the query component of the
+          redirection URI using the "application/x-www-form-urlencoded"
+          format:</t>
+
+          <t><list style="hanging">
+              <t hangText="error">REQUIRED. A single US ASCII error code from
+              the following:<list style="hanging">
+                  <t hangText="invalid_request">The request is missing a
+                  required parameter, includes an invalid parameter value,
+                  includes a parameter more than once, or is otherwise
+                  malformed.</t>
+
+                  <t hangText="unauthorized_client">The RP is not authorized
+                  to request disovery using this method.</t>
+
+                  <t hangText="access_denied">The discovery server denied the
+                  request.</t>
+
+                  <t hangText="server_error">The discovery server encountered
+                  an unexpected condition that prevented it from fulfilling
+                  the request. (This error code is needed because a 500
+                  Internal Server Error HTTP status code cannot be returned to
+                  the client via an HTTP redirect.)</t>
+
+                  <t hangText="temporarily_unavailable">The discovery server
+                  is currently unable to handle the request due to a temporary
+                  overloading or maintenance of the server. (This error code
+                  is needed because a 503 Service Unavailable HTTP status code
+                  cannot be returned to the client via an HTTP redirect.)</t>
+
+                  <t
+                  hangText="Values for the &quot;error&quot; parameter MUST NOT include characters          outside the set %x20-21 / %x23-5B / %x5D-7E."/>
+                </list></t>
+
+              <t hangText="error_description">OPTIONAL. Human-readable US
+              ASCII [USASCII] text providing additional information, used to
+              assist the RP developer in understanding the error that
+              occurred. Values for the "error_description" parameter MUST NOT
+              include characters outside the set %x20-21 / %x23-5B /
+              %x5D-7E.</t>
+
+              <t hangText="error_uri">OPTIONAL. A URI identifying a
+              human-readable web page with information about the error, used
+              to provide the client developer with additional information
+              about the error. Values for the "error_uri" parameter MUST
+              conform to the URI-reference syntax and thus MUST NOT include
+              characters outside the set %x21 / %x23-5B / %x5D-7E.</t>
+
+              <t hangText="state">REQUIRED if the "state" parameter was
+              present in the discovery request. The exact value received from
+              the RP.</t>
+            </list></t>
         </section>
       </section>
 
       <section anchor="discovery_endpoint" title="Issuer Endpoint">
-        <t>This endpoint provides the client with Issuer data. It supports two
-        use cases:</t>
+        <t>This endpoint provides the RP with issuer data. It supports two use
+        cases:</t>
 
         <t><list style="numbers">
             <t>It exchanges the code created by the User Interaction Endpoint
             for issuer data.</t>
 
-            <t>Clients may directly request issuer data by passing pass mobile
-            network data.</t>
+            <t>RPs may directly request issuer data by passing mobile network
+            data.</t>
           </list></t>
 
         <section title="Request">
           <t>This is reflected in the "signature" of the request: <list
               style="hanging">
               <t hangText="client_id">REQUIRED. The identifier of the
-              respective client. This client must be known to the discovery
-              service in advance.</t>
+              respective RP. This RP must be known to the discovery service in
+              advance.</t>
 
               <t hangText="client_secret">REQUIRED. If a client secret had
-              been issued issued to the client.</t>
+              been issued issued to the RP.</t>
 
               <t hangText="code">OPTIONAL. code value issued by the User
-              Interaction Endpoint to this particular client.</t>
+              Interaction Endpoint to this particular RP.</t>
 
               <t hangText="redirect_uri">REQUIRED. If the parameter "code is
               present. The actual URI used to invoke the user interaction
@@ -417,17 +483,19 @@
 
               <t hangText="imsi">OTIONAL. The International Mobile Subscriber
               Identity.</t>
+
+              <t hangText="msisdn"><spanx style="strong">TBD</spanx></t>
             </list></t>
 
           <t>Either code, mcc or IMSI must be present in the request. The
           discovery service first validates the client credentials and the
-          client's authorization to perform the request.</t>
+          RP's authorization to perform the request.</t>
 
           <t>If code is present, the discovery service verifies, whether (1)
-          this code had been issued to this client and (2) whether
-          "redirect_uri" matches the redirect URI used in the original request
-          to the User Interaction Endpoint (TBD: really needed? we need to
-          conduct a threat analysis).</t>
+          this code had been issued to this RP and (2) whether "redirect_uri"
+          matches the redirect URI used in the original request to the User
+          Interaction Endpoint (TBD: really needed? we need to conduct a
+          threat analysis).</t>
 
           <t>If "mcc" and "mnc" are present, the discovery service tries to
           determine the MNO based on this data. The same holds true, if "imsi"
@@ -440,13 +508,14 @@
           <t>TBD: client secrets via authorization header</t>
 
           <figure>
-            <preamble>For example, the client could send the following
-            request:</preamble>
+            <preamble>For example, the RP could send the following request
+            (line breaks are for display purposes only):</preamble>
 
             <artwork><![CDATA[POST /discovery_issuer HTTP/1.1
 Host: discovery.example.com
 
-client_id=example_client&client_secret=secret&code=SplxlOBeZQQYbYS6WxSbIA&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fdiscovery]]></artwork>
+client_id=example_client&client_secret=secret&code=SplxlOBeZQQYbYS6WxSbIA&
+redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fdiscovery]]></artwork>
           </figure>
 
           <t/>
@@ -463,7 +532,7 @@ client_id=example_client&client_secret=secret&code=SplxlOBeZQQYbYS6WxSbIA&redire
               encrypted with the public key of the issuer. This token is
               passed to the issuer in the authentication request. Usage,
               structure, and processing rules of the login hint token are
-              specified in <xref target="modrna.authentication"/></t>
+              specified in <xref target="MODRNA.Authentication"/></t>
             </list></t>
 
           <figure>
@@ -491,13 +560,82 @@ Pragma: no-cache
 }]]></artwork>
           </figure>
         </section>
+
+        <section title="Error Response">
+          <t>The discovery server respondes with an HTTP 401 status code if
+          the client credentials are invalid and an HTTP 403 status code if
+          the RP is not authorized to request the particular service.</t>
+
+          <t>In all other error conditions, the discovery server responds with
+          an HTTP 400 (Bad Request) status code and includes a JSON object
+          containing the following top level elements: </t>
+
+          <t><list style="hanging">
+              <t hangText="error">REQUIRED. A single US ASCII error code from
+              the following:<list style="hanging">
+                  <t hangText="invalid_request">The request is missing a
+                  required parameter, includes an invalid parameter value,
+                  includes a parameter more than once, or is otherwise
+                  malformed.</t>
+
+                  <t hangText="server_error">The discovery server encountered
+                  an unexpected condition that prevented it from fulfilling
+                  the request. (This error code is needed because a 500
+                  Internal Server Error HTTP status code cannot be returned to
+                  the client via an HTTP redirect.)</t>
+
+                  <t hangText="temporarily_unavailable">The discovery server
+                  is currently unable to handle the request due to a temporary
+                  overloading or maintenance of the server. (This error code
+                  is needed because a 503 Service Unavailable HTTP status code
+                  cannot be returned to the client via an HTTP redirect.)</t>
+
+                  <t hangText="invalid_code">RP tried to exchange an invalid
+                  code for discovery data (TBD: better HTTP status code
+                  403?)</t>
+
+                  <t hangText="discovery_failed">TBD</t>
+
+                  <t
+                  hangText="Values for the &quot;error&quot; parameter MUST NOT include characters          outside the set %x20-21 / %x23-5B / %x5D-7E."/>
+                </list></t>
+
+              <t hangText="error_description">OPTIONAL. Human-readable US
+              ASCII [USASCII] text providing additional information, used to
+              assist the RP developer in understanding the error that
+              occurred. Values for the "error_description" parameter MUST NOT
+              include characters outside the set %x20-21 / %x23-5B /
+              %x5D-7E.</t>
+
+              <t hangText="error_uri">OPTIONAL. A URI identifying a
+              human-readable web page with information about the error, used
+              to provide the client developer with additional information
+              about the error. Values for the "error_uri" parameter MUST
+              conform to the URI-reference syntax and thus MUST NOT include
+              characters outside the set %x21 / %x23-5B / %x5D-7E.</t>
+            </list></t>
+
+          <figure>
+            <preamble>The following is a non-normative example of a error
+            response:</preamble>
+
+            <artwork><![CDATA[HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8 
+Cache-Control: no-store 
+Pragma: no-cache 
+
+{ 
+   "error":"invalid_request" 
+}]]></artwork>
+          </figure>
+        </section>
       </section>
     </section>
 
     <section anchor="user-discovery-service-reg"
              title="Dynamic Registration with Discovery Service">
-      <t>[TBD]The client must register with the discovery service and have a
-      valid OAuth client_id.</t>
+      <t>[TBD]The RP must register with the discovery service and have a valid
+      client_id.</t>
     </section>
 
     <section anchor="Account_Chooser" title="Account Chooser">
@@ -573,11 +711,11 @@ POST /token HTTP/1.1
       <section anchor="Account_chooser_idp" title="AC Identity Provider">
         <t>Identity providers will populate the account information in Account
         Chooser's browser local storrage as the result of a successful loggin
-        before redirecting the user back to the client.</t>
+        before redirecting the user back to the RP.</t>
 
         <t>If the user account has not been provisioned in the Browsers local
-        storrage, the Identity provider MUST offer to store the account before
-        redirecting the user back to the Connect client.</t>
+        storage, the OP MUST offer to store the account before redirecting the
+        user back to the RP.</t>
 
         <t>The following is an example of the script elements invoking ac.js
         offering to store an account:</t>
@@ -641,15 +779,16 @@ POST /token HTTP/1.1
 
       <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6749"?>
 
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6750"?>
+      <!--   <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6750"?>-->
 
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5246"?>
+      <!--   <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5246"?> -->
 
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2246"?>
+      <!--   <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2246"?> -->
 
-      <reference anchor="OpenID.Core">
+      <reference anchor="OpenID.Core"
+                 target="http://openid.net/specs/openid-connect-core-1_0.html">
         <front>
-          <title>OpenID Connect Standard 1.0</title>
+          <title>OpenID Connect Core 1.0</title>
 
           <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
             <organization abbrev="NRI">Nomura Research Institute,
@@ -673,18 +812,11 @@ POST /token HTTP/1.1
             <organization abbrev="Salesforce">Salesforce</organization>
           </author>
 
-          <author fullname="Edmund Jay" initials="E." surname="Jay">
-            <organization abbrev="Illumila">Illumila</organization>
-          </author>
-
-          <date day="19" month="December" year="2013"/>
+          <date day="8" month="November" year="2014"/>
         </front>
-
-        <format target="http://openid.net/specs/openid-connect-core-1_0.html"
-                type="HTML"/>
       </reference>
 
-      <reference anchor="OpenID.Registration">
+      <!--   <reference anchor="OpenID.Registration" target="https://openid.net/specs/openid-connect-registration-1_0.html">
         <front>
           <title>OpenID Connect Dynamic Client Registration 1.0</title>
 
@@ -701,14 +833,13 @@ POST /token HTTP/1.1
             <organization abbrev="Microsoft">Microsoft</organization>
           </author>
 
-          <date day="19" month="December" year="2013"/>
+          <date day="8" month="November" year="2014"/>
         </front>
 
-        <format target="http://openid.net/specs/openid-connect-registration-1_0-19.html"
-                type="HTML"/>
-      </reference>
+      </reference>-->
 
-      <reference anchor="OpenID.Discovery">
+      <reference anchor="OpenID.Discovery"
+                 target="http://openid.net/specs/openid-connect-discovery-1_0.html">
         <front>
           <title>OpenID Connect Discovery 1.0</title>
 
@@ -729,14 +860,11 @@ POST /token HTTP/1.1
             <organization abbrev="Illumila">Illumila</organization>
           </author>
 
-          <date day="16" month="September" year="2014"/>
+          <date day="8" month="November" year="2014"/>
         </front>
-
-        <format target="http://openid.net/specs/openid-connect-discovery-1_0.html"
-                type="HTML"/>
       </reference>
 
-      <reference anchor="JWT">
+      <!--    <reference anchor="JWT">
         <front>
           <title>JSON Web Token (JWT)</title>
 
@@ -761,13 +889,14 @@ POST /token HTTP/1.1
 
         <format target="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08"
                 type="HTML"/>
-      </reference>
+      </reference>-->
 
-      <reference anchor="Account.Chooser">
+      <reference anchor="Account.Chooser"
+                 target="http://accountchooser.net/developers">
         <front>
           <title>Account Chooser (AC)</title>
 
-          <author fullname="openid" initials="" surname=""/>
+          <author fullname="OpenID Foundation" initials="" surname=""/>
 
           <date day="28" month="May" year="2013"/>
         </front>
@@ -775,7 +904,8 @@ POST /token HTTP/1.1
         <format target="http://accountchooser.net/developers" type="HTML"/>
       </reference>
 
-      <reference anchor="modrna.authentication">
+      <reference anchor="MODRNA.Authentication"
+                 target="https://bitbucket.org/openid/mobile/raw/default/draft-mobile-authentication-01.txt">
         <front>
           <title>OpenID Connect Mobile Authentication Profile 1.0</title>
 
@@ -789,18 +919,17 @@ POST /token HTTP/1.1
 
           <date day="25" month="June" year="2015"/>
         </front>
-
-        <format target="https://bitbucket.org/openid/mobile/raw/default/draft-mobile-authentication-01.txt"
-                type="TXT"/>
       </reference>
     </references>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>The following have contributed to the development of this
-      specification.</t>
+      <t>The OpenID Community would like to thank the following people for
+      their contributions to the development of this specification:</t>
 
       <t><list style="empty">
-          <t/>
+          <t>Sebastian Ebling (s.ebling@telekom.de), Deutsche Telekom</t>
+
+          <t>Philippe Clement (philippe.clement@orange.com), Orange</t>
         </list></t>
     </section>
 
@@ -851,13 +980,32 @@ POST /token HTTP/1.1
 
           <t>moved the definition of the encrypted id_token_int to login</t>
         </list></t>
+
       <t>-02 <list style="symbols">
-	      <t>completely reworked document to reflect latest discovery design and support for different flows</t>
-	      <t>extended Overview section to describe overall flows for web and native apps</t>
-          <t>split discovery service into different endpoints and adopted the document structure accordingly</t>
-		  <t>added example requests and responses</t>
-		  <t>added reference to authentication profile</t>
-        </list></t>		
+          <t>completely reworked document to reflect latest discovery design
+          and support for different flows</t>
+
+          <t>extended Overview section to describe overall flows for web and
+          native apps</t>
+
+          <t>split discovery service into different endpoints and adopted the
+          document structure accordingly</t>
+
+          <t>added example requests and responses</t>
+
+          <t>added reference to authentication profile</t>
+        </list></t>
+
+      <t>-03 <list style="symbols">
+          <t>corrected typos</t>
+
+          <t>cleaned up terminology section</t>
+
+          <t>cleaned up and repaired references (e.g. URLs now work)</t>
+
+          <t>replaced all occurrences of IDP, Authorization Server, and client
+          by OP and RP, respectively</t>
+        </list></t>
     </section>
   </back>
 </rfc>
