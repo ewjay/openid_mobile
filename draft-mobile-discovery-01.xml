@@ -12,7 +12,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-mobile-discovery-03" ipr="none">
+<rfc category="std" docName="draft-mobile-discovery-04" ipr="none">
   <?rfc toc="yes" ?>
 
   <?rfc tocdepth="5" ?>
@@ -47,9 +47,9 @@
       </address>
     </author>
 
-    <date day="25" month="July" year="2015"/>
+    <date day="08" month="August" year="2015"/>
 
-    <workgroup>OpenID Mobile Profile Working Group</workgroup>
+    <workgroup>OpenID MODRNA Working Group</workgroup>
 
     <abstract>
       <t><xref target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref>
@@ -124,9 +124,16 @@
       <t>The protocol design is guided by to following requirements:</t>
 
       <t><list style="symbols">
-          <t>a RP may not process the MSISDN in the course of the discovery
-          process. The MSISDN shall only be entered in the user interface
-          provided by the trusted discovery service.</t>
+          <t>A user's MSISDN can be used to determine the respective MNO. In
+          order to preserve privacy of the user's MSISDN, it is assumed that
+          it is typically entered in the user interface provided by the
+          trusted discovery service. From a practial perspective, some RPs
+          will either already are in posession of MSISDNs or may obtain it
+          from the mobile device's operating system (which tyically also
+          requires user consent). Therefore this specification will allow RPs
+          to pass MSISDNs to the discovery service in general. It is at the
+          discretion of the respective discovery service to authorize certain
+          RPs to use this feature.</t>
 
           <t>Due to privacy reasons and the cost risk for MNOs associated with
           it, it must be ensured that the discovery service cannot be abused
@@ -194,13 +201,13 @@
             User Interaction endpoint of the Mobile Issuer Discovery Service.
             The RP identifies itself by way of an client id and indicates the
             URI the user interaction service shall send the user agent to
-            after processing the request. Moreover, the RP may pass MCC, MNC
-            or IMSI as part of the discovery request. If available, the MNO is
-            determined based on MCC/MNC or IMSI. Otherwise, the user
-            interaction service first tries to deduce the MNO from source IP
-            address range of the request. If that's impossible, the user is
-            asked for her MSISDN, which is used to looksup the respective MNO
-            from a database.</t>
+            after processing the request. Moreover, the RP may pass MCC/MNC,
+            IMSI, or MSISDN as part of the discovery request. If this data is
+            available, it is used to determine the MNO. Otherwise or if this
+            attempt fals, the user interaction service first tries to deduce
+            the MNO from source IP address range of the request. If that's
+            impossible, the user is asked for her MSISDN, which is used to
+            lookup the respective MNO from a database.</t>
 
             <t>(D) The User Interaction Endpoint does not directly respond to
             the RP with the Issuer of the MNO's OP. Instead, it creates a
@@ -273,13 +280,12 @@
         </figure>
 
         <t><list style="empty">
-            <t>(A) In contrast to the web-based flow, the RP may directly send
-            data (MNC/MCC or IMSI) it can contribute to determine the user's
-            MNO to the Issuer Endpoint of the Mobile Issuer Discovery Service.
-            The service tries to determine the MNO based on this data. If this
-            data is not present, the discovery service attempts to determine
-            the MNO based on the RP's IP address. If that fails, the discovery
-            process fails.</t>
+            <t>(A) In contrast to the web-based flow, the RP typically
+            provides data (MNC/MCC,IMSI, or MSISDN) to determine the user's
+            MNO to the discovery process. The service tries to determine the
+            MNO based on this data. If this data is not present, the discovery
+            service attempts to determine the MNO based on the RP's IP
+            address. If that fails, the discovery process fails.</t>
 
             <t>(B) The Issuer Endpoint responds with the OpenID Issuer or an
             error message.</t>
@@ -292,10 +298,11 @@
             fully equipped to start interaction with the respective OP.</t>
           </list></t>
 
-        <t>TBD: what if the service cannot determine MNO? Right now, we let
-        the discovery fail. Alternatively, the RP could also be provided with
-        a list of potential MNOs, which it can present to the user for
-        selection?</t>
+        <t>TBD: what if the service cannot determine the MNO? Currently the
+        discovery process fails. Alternatively, the discovery service could
+        respond to the RP with a list of potential MNOs, which the RP could
+        present to the user for selection
+        (https://bitbucket.org/openid/mobile/issues/25/add-operator-list-in-case-mno-cannot-be).</t>
       </section>
     </section>
 
@@ -331,16 +338,17 @@
               The discovery service includes this value when redirecting the
               user-agent back to the RP.</t>
 
-              <t hangText="mcc">OTIONAL. The Mobile Country Code as defined by
-              ITU-T E.212</t>
+              <t hangText="mcc">OPTIONAL. The Mobile Country Code as defined
+              by ITU-T E.212</t>
 
-              <t hangText="mnc">OTIONAL. The Mobile Network Code as defined by
-              ITU-T E.212</t>
+              <t hangText="mnc">REQUIRED. If the parameter "mcc" is present.
+              The Mobile Network Code as defined by ITU-T E.212</t>
 
-              <t hangText="imsi">OTIONAL. The International Mobile Subscriber
+              <t hangText="imsi">OPTIONAL. The International Mobile Subscriber
               Identity.</t>
 
-              <t hangText="msisdn"><spanx style="strong">TBD</spanx></t>
+              <t hangText="msisdn">OPTIONAL. Mobile phone number of the
+              subscriber.</t>
             </list></t>
 
           <t/>
@@ -475,20 +483,21 @@
               present. The actual URI used to invoke the user interaction
               endpoint.</t>
 
-              <t hangText="mcc">OTIONAL. The Mobile Country Code as defined by
-              ITU-T E.212</t>
+              <t hangText="mcc">OPTIONAL. The Mobile Country Code as defined
+              by ITU-T E.212</t>
 
               <t hangText="mnc">REQUIRED. If the parameter "mcc" is present.
               The Mobile Network Code as defined by ITU-T E.212</t>
 
-              <t hangText="imsi">OTIONAL. The International Mobile Subscriber
+              <t hangText="imsi">OPTIONAL. The International Mobile Subscriber
               Identity.</t>
 
-              <t hangText="msisdn"><spanx style="strong">TBD</spanx></t>
+              <t hangText="msisdn">OPTIONAL. Mobile phone number of the
+              subscriber.</t>
             </list></t>
 
-          <t>Either code, mcc or IMSI must be present in the request. The
-          discovery service first validates the client credentials and the
+          <t>Either code, mcc, imsi, or msisdn must be present in the request.
+          The discovery service first validates the client credentials and the
           RP's authorization to perform the request.</t>
 
           <t>If code is present, the discovery service verifies, whether (1)
@@ -497,13 +506,11 @@
           Interaction Endpoint (TBD: really needed? we need to conduct a
           threat analysis).</t>
 
-          <t>If "mcc" and "mnc" are present, the discovery service tries to
-          determine the MNO based on this data. The same holds true, if "imsi"
-          is found in the request.</t>
-
-          <t>TBD: does it sense to introduce a request type parameter (or
-          different endpoints) to distinguish redirect (code) and direct
-          use?</t>
+          <t>If "msisdn" is present, this parameter takes precedence and is
+          used to determine the MNO. Otherwise and if "mcc" and "mnc" are
+          present, the discovery service tries to determine the MNO based on
+          this data. If neiter "msisdn" nor "mcc" is present but "imsi", then
+          this parameter is used to determine the MNO.</t>
 
           <t>TBD: client secrets via authorization header</t>
 
@@ -528,11 +535,13 @@ redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fdiscovery]]></artwork>
               authorized discovery.</t>
 
               <t hangText="login_hint_token">A Encrypted JSON web token (JWE)
-              that contains the user hint for the issuer. The token MUST be
-              encrypted with the public key of the issuer. This token is
-              passed to the issuer in the authentication request. Usage,
-              structure, and processing rules of the login hint token are
-              specified in <xref target="MODRNA.Authentication"/></t>
+              that contains the user hint for the issuer. This token is
+              returned, if the user has entered her MSISDN in the user
+              interaction endpoint. The token MUST be encrypted with the
+              public key of the issuer. This token is passed to the issuer in
+              the authentication request. Usage, structure, and processing
+              rules of the login hint token are specified in <xref
+              target="MODRNA.Authentication"/></t>
             </list></t>
 
           <figure>
@@ -930,6 +939,8 @@ POST /token HTTP/1.1
           <t>Sebastian Ebling (s.ebling@telekom.de), Deutsche Telekom</t>
 
           <t>Philippe Clement (philippe.clement@orange.com), Orange</t>
+
+          <t>Matthieu Verdier (matthieu.verdier@orange.com), Orange</t>
         </list></t>
     </section>
 
@@ -1005,6 +1016,10 @@ POST /token HTTP/1.1
 
           <t>replaced all occurrences of IDP, Authorization Server, and client
           by OP and RP, respectively</t>
+        </list></t>
+
+      <t>-04 <list style="symbols">
+          <t>added MSISDN as parameter to both endpoints</t>
         </list></t>
     </section>
   </back>
