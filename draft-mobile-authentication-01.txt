@@ -3,10 +3,10 @@
 
 
                                                              J. Connotte
-                                                                      DT
+                                                     Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                            Dec 09, 2014
+                                                            Sep 06, 2015
 
 
             OpenID Connect Mobile Authentication Profile 1.0
@@ -30,32 +30,32 @@ Table of Contents
      1.1.  Requirements Notation and Conventions . . . . . . . . . .   2
      1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Level of Assurance as acr_values  . . . . . . . . . . . . . .   3
-   4.  acr_values request and acr reponse  . . . . . . . . . . . . .   3
-   5.  amr . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   6.  login_hint_token  . . . . . . . . . . . . . . . . . . . . . .   3
-     6.1.  login_hint_token structure  . . . . . . . . . . . . . . .   3
+   3.  Authentication Request  . . . . . . . . . . . . . . . . . . .   3
+   4.  acr_values request values and level of assurance  . . . . . .   3
+   5.  login_hint_token  . . . . . . . . . . . . . . . . . . . . . .   4
+   6.  login_hint_token encryption and signing . . . . . . . . . . .   4
    7.  Additional claims for the request object  . . . . . . . . . .   4
-   8.  Specifying the truthyness of user claims  . . . . . . . . . .   4
-   9.  Special claims for Mobile Operators as OpenID Providers . . .   4
-   10. pair wise . . . . . . . . . . . . . . . . . . . . . . . . . .   4
-   11. mandatory to implement  . . . . . . . . . . . . . . . . . . .   4
+   8.  Specifying the truthyness of user claims  . . . . . . . . . .   5
+   9.  Special claims for Mobile Operators as OpenID Providers . . .   5
+   10. pair wise . . . . . . . . . . . . . . . . . . . . . . . . . .   5
+   11. mandatory to implement  . . . . . . . . . . . . . . . . . . .   5
    12. Security Considerations . . . . . . . . . . . . . . . . . . .   5
    13. Privacy Considerations  . . . . . . . . . . . . . . . . . . .   5
    14. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
-   15. Normative References  . . . . . . . . . . . . . . . . . . . .   5
+   15. Normative References  . . . . . . . . . . . . . . . . . . . .   6
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   6
-   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   6
+   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   7
    Appendix C.  Document History . . . . . . . . . . . . . . . . . .   7
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 
 
 
 
-Connotte & Bradley        Expires June 12, 2015                 [Page 1]
+
+Connotte & Bradley        Expires March 9, 2016                 [Page 1]
 
-                 OIDC Mobile Authentication Profile 1.0         Dec 2014
+                 OIDC Mobile Authentication Profile 1.0         Sep 2015
 
 
 1.  Introduction
@@ -109,66 +109,87 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 1]
 
 
 
-Connotte & Bradley        Expires June 12, 2015                 [Page 2]
+Connotte & Bradley        Expires March 9, 2016                 [Page 2]
 
-                 OIDC Mobile Authentication Profile 1.0         Dec 2014
+                 OIDC Mobile Authentication Profile 1.0         Sep 2015
 
 
 2.  Overview
 
-   Overview.
+   This specification serves as a profile based on OpenID Connect Core
+   [OpenID.Core].  It defines additional request parameters in the
+   Authentication Request.  It specifies authentication class reference
+   values based on the ISO/IEC DIS 29115 [ISO.29115]
 
-3.  Level of Assurance as acr_values
+3.  Authentication Request
 
-   JCO: what are the right acr values to reflect either legal
-   indentities or pure digital identities?
+   acr_values  REQUIRED.  For MODRNA the parameter is REQUIRED to enable
+      the Relying Party to indicate a MODRNA conform authentication
+      request.
 
-   http://docs.oasis-open.org/security/saml/v2.0/saml-authn-context-
-   2.0-os.pdf describes a number of possible acr corresponding to mobile
-   environment i.e.
-   urn:oasis:names:tc:SAML:2.0:ac:classes:MobileOneFactorUnregistered is
-   referred to as
+   login_hint_token  OPTIONAL.  A parameter to be passed in the
+      authentication request.  The login_hint_token is used to transport
+      a user identifier from the discovery service to the OpenID
+      Provider without revealing this identifier to the client.
 
-4.  acr_values request and acr reponse
+   context  OPTIONAL.  Interlock message to tie the consumption device
+      and the authentication device together.  How to ensure that the
+      message is actually shown on all relevant devices is out of the
+      scope of this document.
 
-   JCO: Reiteration of the corresponding values.  Support for at least
+   MODRNA also supports all request parameters as specified in OpenID
+   Connect Core 3.1.2.1 [OpenID.Core]
+
+4.  acr_values request values and level of assurance
+
+   TBD: Reiteration of the corresponding values.  Support for at least
    Joe (credential level 1 to x) and/or John (identity level 1 to x)
 
-5.  amr
+   TBD: After discussion the acr_values have to reflect the level of
+   assurance as specified in ISO 29115.  An urn is used to be able to
+   register to IANA.  TBD: Do we have to specify the actual
+   methodologies here?
 
-   JCO: the amr response value must be considered in relation to the acr
-   repsonse
+   urn:modrna:acr:credential:loa1  ISO 29115: Litte or no confidence in
+      the asserted identity.  No verification of the posted credentials
+      is performed.
 
-6.  login_hint_token
+   urn:modrna:acr:credential:loa2  ISO 29115: Some confidence in the
+      asserted identity Single factor authentication is performed.
 
-   The request parameter login_hint_token is used to transport the
-   MSISDN as a user identifier from the discovery service to the OpenID
-   Provider in a way that the client get's no knowledge about the
-   MSISDN.
-
-6.1.  login_hint_token structure
-
-   The value of the login_hint_token parameter is an Encrypted JSON web
-   token (JWE) that contains the user hint for the issuer.  The token
-   MUST be encrypted with the public key of the issuer.  This token is
-   passed to the issuer in the authentication request.  This token
-   contains the following elements:
-
-   iss  The party creating the token.
-
-   aud  The party to receive the token, typically the users OpenID
-      Provider.  The value SHOULD be the "iss" URI of the OID.
-
-   iat  When the token was issued.
-
-   MSISDN  NUMERIC The Subscriber identifier
+   urn:modrna:acr:credential:loa3  ISO 29115: High confidence in the
+      asserted identity Multi-factor authentication shall be used.
 
 
 
-Connotte & Bradley        Expires June 12, 2015                 [Page 3]
+
+
+
+Connotte & Bradley        Expires March 9, 2016                 [Page 3]
 
-                 OIDC Mobile Authentication Profile 1.0         Dec 2014
+                 OIDC Mobile Authentication Profile 1.0         Sep 2015
 
+
+   urn:modrna:acr:credential:loa4  ISO 29115: Very high confidence in
+      the asserted identity The use of tamper-resistant hardware devices
+      for the storage of all cryptrographic keys.
+
+5.  login_hint_token
+
+   The login_hint_token is a Json Web Token [JWT] that contains the
+   following elements:
+
+   iss  REQUIRED.  The party creating the token.  This value MUST be a
+      URI to allow for signature validation TBD: is signing mandatory?
+
+   aud  REQUIRED.  The party to receive the token, typically the users
+      OpenID Provider.  The value SHOULD be the issuer URI of the OID as
+      exposed in the openid-configuration.
+
+   iat  REQUIRED.  When the token was issued.
+
+   MSISDN  REQUIRED.  NUMERIC The Subscriber identifier TBD: according
+      to what standard?
 
    The following is a non-normative example of JWT body (with line wraps
    within values for display purposes only):
@@ -177,9 +198,16 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 3]
       "iss": "https://discovery-provider.com",
       "aud": "https://babytel.com",
       "iat": 1311280970,
-      "MSISDN": "i5555551212"
+      "MSISDN": "5555551212"
        }
      }
+
+6.  login_hint_token encryption and signing
+
+   The login_hint token MUST be encrypted using the public key of the
+   OpenID Provider.  The login_hint token MUST be signed using the
+   private key of the discovery service.  TBD: it would follow that the
+   'iss' claim is mandatory and must allow for signature validation.
 
 7.  Additional claims for the request object
 
@@ -187,14 +215,25 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 3]
    message.  The request object MUST then be signed to prevent
    manipulating the transaction message
 
+   context  TBD: add the definition of an OPTIONAL parameter 'context'
+
+
+
+
+
+Connotte & Bradley        Expires March 9, 2016                 [Page 4]
+
+                 OIDC Mobile Authentication Profile 1.0         Sep 2015
+
+
 8.  Specifying the truthyness of user claims
 
-   JCO: Something about how the claim was verified (self_asserted,
+   TBD: Something about how the claim was verified (self_asserted,
    proved).  Leads to a structure of claims.
 
 9.  Special claims for Mobile Operators as OpenID Providers
 
-   JCO: special claims
+   TBD: special claims
 
 10.  pair wise
 
@@ -217,32 +256,37 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 3]
 
    login_hint_token to be implemented per the discovery spec
 
-
-
-
-
-Connotte & Bradley        Expires June 12, 2015                 [Page 4]
-
-                 OIDC Mobile Authentication Profile 1.0         Dec 2014
-
-
 12.  Security Considerations
 
    TBD
 
 13.  Privacy Considerations
 
-   JCO: pair wise subject mandatory for Mobile Connect OpenID Provider.
+   TBD: pair wise subject mandatory for Mobile Connect OpenID Provider.
    The RP can negotiate for the exact mechanism.
 
 14.  IANA Considerations
 
    This document makes no requests of IANA.
 
-   JCO: Is this true?  Didn't we talk about registering acr_values / acr
+   TBD: Is this true?  Didn't we talk about registering acr_values / acr
    at IANA?
 
+
+
+
+
+
+Connotte & Bradley        Expires March 9, 2016                 [Page 5]
+
+                 OIDC Mobile Authentication Profile 1.0         Sep 2015
+
+
 15.  Normative References
+
+   [ISO.29115]
+              McAllister, E. and R. Brackney, "ISO/IEC DIS 29115", April
+              2013.
 
    [JWT]      Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", draft-ietf-oauth-json-web-token (work in
@@ -257,39 +301,41 @@ Connotte & Bradley        Expires June 12, 2015                 [Page 4]
               Sakimura, N., Bradley, J., Jones, M., and E. Jay, "OpenID
               Connect Discovery 1.0", September 2014.
 
-   [OpenID.Registration]
-              Sakimura, N., Bradley, J., and M. Jones, "OpenID Connect
-              Dynamic Client Registration 1.0", December 2013.
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119, March 1997.
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <http://www.rfc-editor.org/info/rfc2119>.
 
    [RFC2246]  Dierks, T. and C. Allen, "The TLS Protocol Version 1.0",
-              RFC 2246, January 1999.
+              RFC 2246, DOI 10.17487/RFC2246, January 1999,
+              <http://www.rfc-editor.org/info/rfc2246>.
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
-              (TLS) Protocol Version 1.2", RFC 5246, August 2008.
+              (TLS) Protocol Version 1.2", RFC 5246,
+              DOI 10.17487/RFC5246, August 2008,
+              <http://www.rfc-editor.org/info/rfc5246>.
 
-   [RFC6749]  Hardt, D., "The OAuth 2.0 Authorization Framework", RFC
-              6749, October 2012.
-
-
-
-
-
-Connotte & Bradley        Expires June 12, 2015                 [Page 5]
-
-                 OIDC Mobile Authentication Profile 1.0         Dec 2014
-
+   [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
+              RFC 6749, DOI 10.17487/RFC6749, October 2012,
+              <http://www.rfc-editor.org/info/rfc6749>.
 
    [RFC6750]  Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
-              Framework: Bearer Token Usage", RFC 6750, October 2012.
+              Framework: Bearer Token Usage", RFC 6750,
+              DOI 10.17487/RFC6750, October 2012,
+              <http://www.rfc-editor.org/info/rfc6750>.
 
 Appendix A.  Acknowledgements
 
    The following have contributed to the development of this
    specification.
 
+
+
+
+
+Connotte & Bradley        Expires March 9, 2016                 [Page 6]
+
+                 OIDC Mobile Authentication Profile 1.0         Sep 2015
 
 
 Appendix B.  Notices
@@ -329,15 +375,6 @@ Appendix B.  Notices
    patents, patent applications, or other proprietary rights that may
    cover technology that may be required to practice this specification.
 
-
-
-
-
-Connotte & Bradley        Expires June 12, 2015                 [Page 6]
-
-                 OIDC Mobile Authentication Profile 1.0         Dec 2014
-
-
 Appendix C.  Document History
 
    [[ To be removed from the final specification ]]
@@ -347,6 +384,15 @@ Appendix C.  Document History
    o  Initial draft
 
    o  Added OIDF Standard Notice
+
+
+
+
+
+Connotte & Bradley        Expires March 9, 2016                 [Page 7]
+
+                 OIDC Mobile Authentication Profile 1.0         Sep 2015
+
 
 Authors' Addresses
 
@@ -389,4 +435,14 @@ Authors' Addresses
 
 
 
-Connotte & Bradley        Expires June 12, 2015                 [Page 7]
+
+
+
+
+
+
+
+
+
+
+Connotte & Bradley        Expires March 9, 2016                 [Page 8]
