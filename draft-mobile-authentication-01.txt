@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                            Sep 06, 2015
+                                                        October 06, 2015
 
 
             OpenID Connect Mobile Authentication Profile 1.0
@@ -53,9 +53,9 @@ Table of Contents
 
 
 
-Connotte & Bradley        Expires March 9, 2016                 [Page 1]
+Connotte & Bradley        Expires April 8, 2016                 [Page 1]
 
-                 OIDC Mobile Authentication Profile 1.0         Sep 2015
+                 OIDC Mobile Authentication Profile 1.0     October 2015
 
 
 1.  Introduction
@@ -109,9 +109,9 @@ Connotte & Bradley        Expires March 9, 2016                 [Page 1]
 
 
 
-Connotte & Bradley        Expires March 9, 2016                 [Page 2]
+Connotte & Bradley        Expires April 8, 2016                 [Page 2]
 
-                 OIDC Mobile Authentication Profile 1.0         Sep 2015
+                 OIDC Mobile Authentication Profile 1.0     October 2015
 
 
 2.  Overview
@@ -165,9 +165,9 @@ Connotte & Bradley        Expires March 9, 2016                 [Page 2]
 
 
 
-Connotte & Bradley        Expires March 9, 2016                 [Page 3]
+Connotte & Bradley        Expires April 8, 2016                 [Page 3]
 
-                 OIDC Mobile Authentication Profile 1.0         Sep 2015
+                 OIDC Mobile Authentication Profile 1.0     October 2015
 
 
    urn:modrna:acr:credential:loa4  ISO 29115: Very high confidence in
@@ -221,9 +221,9 @@ Connotte & Bradley        Expires March 9, 2016                 [Page 3]
 
 
 
-Connotte & Bradley        Expires March 9, 2016                 [Page 4]
+Connotte & Bradley        Expires April 8, 2016                 [Page 4]
 
-                 OIDC Mobile Authentication Profile 1.0         Sep 2015
+                 OIDC Mobile Authentication Profile 1.0     October 2015
 
 
 8.  Specifying the truthyness of user claims
@@ -277,9 +277,9 @@ Connotte & Bradley        Expires March 9, 2016                 [Page 4]
 
 
 
-Connotte & Bradley        Expires March 9, 2016                 [Page 5]
+Connotte & Bradley        Expires April 8, 2016                 [Page 5]
 
-                 OIDC Mobile Authentication Profile 1.0         Sep 2015
+                 OIDC Mobile Authentication Profile 1.0     October 2015
 
 
 15.  Normative References
@@ -333,9 +333,9 @@ Appendix A.  Acknowledgements
 
 
 
-Connotte & Bradley        Expires March 9, 2016                 [Page 6]
+Connotte & Bradley        Expires April 8, 2016                 [Page 6]
 
-                 OIDC Mobile Authentication Profile 1.0         Sep 2015
+                 OIDC Mobile Authentication Profile 1.0     October 2015
 
 
 Appendix B.  Notices
@@ -389,9 +389,9 @@ Appendix C.  Document History
 
 
 
-Connotte & Bradley        Expires March 9, 2016                 [Page 7]
+Connotte & Bradley        Expires April 8, 2016                 [Page 7]
 
-                 OIDC Mobile Authentication Profile 1.0         Sep 2015
+                 OIDC Mobile Authentication Profile 1.0     October 2015
 
 
 Authors' Addresses
@@ -445,4 +445,4 @@ Authors' Addresses
 
 
 
-Connotte & Bradley        Expires March 9, 2016                 [Page 8]
+Connotte & Bradley        Expires April 8, 2016                 [Page 8]
