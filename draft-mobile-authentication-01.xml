@@ -58,6 +58,10 @@ and it must be able to do this interoperable.</t>
 authentication. We propose to use the definition of Level of Assurance as specified in 
 [6] as a starting point and define respective normative ACR values.
 </t>
+<t>Moreover the profile will specify an encrypted login hint to 
+	allow for the transport of identifiers to the OP.</t>
+<t>TBD: something about the context parameter</t>
+
 
 
 
@@ -87,31 +91,16 @@ authentication. We propose to use the definition of Level of Assurance as specif
 
       <section anchor="terminology" title="Terminology">
         <t>
-          This specification uses the terms "Access Token", "Refresh Token",
-          "Authorization Code", "Authorization Grant", "Authorization Server",
-          "Authorization Endpoint", "Client", "Client Identifier", "Client Secret",
-          "Protected Resource", "Resource Owner", "Resource Server", and
-          "Token Endpoint" defined by <xref target="RFC6749">OAuth 2.0</xref>.
+          This specification uses the termn "OpenID Provider (OP)" and "Relying Party (RP)" as
+          defined by <xref target="OpenID.Core">OpenID Connect Core</xref>.
           This specification also defines the following terms: 
           <list style="hanging">
-            <t hangText="Token Agent (TA)">
-               A native application that obtains access tokens on behalf of other native applications - thereby enabling a Single SignOn
-               experience for Native Application end users because the End-Users need only explicitly authenticate the <spanx style="emph">TA</spanx> once per Authorization Server.
+             <t hangText="Mobile Network Operator (MNO)">
+               A provider of wireless communication services that owns or controls the wireless 
+               network elements necessary to sell and deliver services to an end user.
             </t>
-            <t hangText="AppInfo Endpoint">
-                A protected resource that the <spanx style="emph">TA</spanx> can call 
-                (using its primary access token) to obtain metadata corresponding to a set 
-                of applications - both web &amp; native. The <spanx style="emph">TA</spanx> 
-                uses the application metadata in order to obtain secondary access tokens 
-                for those applications.
-            </t>
-             <t hangText="Primary Token">
-              An OAuth token (access, refresh, and id_token) obtained by 
-              the <spanx style="emph">TA</spanx> for its own uses. 
-            </t>
-             <t hangText="Secondary Token">
-              An OAuth access token obtained by the <spanx style="emph">TA</spanx> on behalf of 
-              another native application. 
+             <t hangText="Mobile Station International Subscriber Directory Number (MSISDN)">
+              A telephone number uniquely identifying a subscription in a mobile network. T  
             </t>
           </list>
         </t>
@@ -123,65 +112,73 @@ authentication. We propose to use the definition of Level of Assurance as specif
     <t>
 	    This specification serves as a profile based on OpenID Connect Core <xref target="OpenID.Core"/>.
 	    It defines additional request parameters in the Authentication Request.
-	    It specifies authentication class reference values based on the
-	    ISO/IEC DIS 29115 <xref target="ISO.29115"/>
+	    It also specifies authentication class reference values based on the
+	    ISO/IEC DIS 29115 <xref target="ISO.29115"/> to be used for the 
+	    acr_values request parameter
 	</t>
 
 
     </section>
 	<section anchor="auth_request" title="Authentication Request">
 		<t>
+			MODRNA supports all request parameters as specified in 
+			OpenID Connect Core 3.1.2.1 <xref target="OpenID.Core"/>
+		</t>
+		<t>In addtion the following parameters are defined.</t>
+		<t>
 			<list style="hanging">
 				<t hangText="acr_values">
 					REQUIRED. For MODRNA the parameter is REQUIRED to enable the Relying Party to 
 					indicate a MODRNA conform authentication request. 
+					Allowed values are defined in <xref target="acr_values" />
 				</t>
 				<t hangText="login_hint_token">
-					OPTIONAL. A parameter to be passed in the authentication request. 
-					The login_hint_token is used to 
+					OPTIONAL. The login_hint_token is used to 
     	        	transport a user identifier from the discovery service to the OpenID Provider without 
         	    	revealing this identifier to the client.
+        	    	<xref target="login_hint_token_structure" /> specifies the structure of this parameter.
 				</t>
 				<t hangText="context">
 				    OPTIONAL. Interlock message to tie the consumption device and 
 				    the authentication device together.
 				    How to ensure that the message is actually shown on all relevant 
 				    devices is out of the scope of this document.
+				    Possible values and constraints are specified in <xref target="context_values" />
 				</t>
 			</list>
-		</t>
-		<t>
-			MODRNA also supports all request parameters as specified in 
-			OpenID Connect Core 3.1.2.1 <xref target="OpenID.Core"/>
 		</t>
 	</section>
     <section anchor="acr_values" title="acr_values request values and level of assurance">
         <t>
-	        TBD: Reiteration of the corresponding values. Support for at least Joe
-         	(credential level 1 to x) and/or John (identity level 1 to x)
-        </t>
-        <t>
-	        TBD: After discussion the acr_values have to reflect the level of assurance as
-	    	specified in ISO 29115. An urn is used to be able to register to IANA.
+	        The acr_values reflect the level of assurance as
+	    	specified in <xref target="ISO.29115">ISO 29115</xref>.
+	    </t>
+	    <t>A urn is used to be able to register to IANA.</t>
+		<t>
+			It is important to note that the acr_values specified in this profile are only 
+			intended for credential validation. Identity or claim assurance is not included in this 
+			specification.
+		</t>
+	    <t>
 	    	TBD: Do we have to specify the actual methodologies here? 
 	    </t>
 	    <t>
 		    <list style="hanging">
 			    <t hangText="urn:modrna:acr:credential:loa1">
-				    ISO 29115: Litte or no confidence in the asserted identity. 
+				    Litte or no confidence in the asserted identifier. 
 				    No verification of the posted credentials is performed.
 				    
 			    </t>
 			    <t hangText="urn:modrna:acr:credential:loa2">
-				    ISO 29115: Some confidence in the asserted identity
+				    Some confidence in the asserted identifier.
 				    Single factor authentication is performed.
 			    </t>
 			    <t hangText="urn:modrna:acr:credential:loa3">
-				    ISO 29115: High confidence in the asserted identity
+				    High confidence in the asserted identifier.
 				    Multi-factor authentication shall be used.
 			    </t>
 			    <t hangText="urn:modrna:acr:credential:loa4">
-				    ISO 29115: Very high confidence in the asserted identity
+				    Very high confidence in the asserted identifier.
 				    The use of tamper-resistant hardware devices for the storage of all 
 				    cryptrographic keys.
 			    </t>
@@ -196,8 +193,8 @@ authentication. We propose to use the definition of Level of Assurance as specif
             <list style="hanging">
                 <t hangText="iss">
 			        REQUIRED. The party creating the token.
-			        This value MUST be a URI to allow for signature validation
-			        TBD: is signing mandatory? 
+			        This value MUST be used to obtain the JWK file required to validate
+			        the tokens's signature (see <xref target="lht_encryption_signing" />). 
 			    </t>
 			    <t hangText="aud">
                     REQUIRED. The party to receive the token, typically the users OpenID Provider.
@@ -209,7 +206,7 @@ authentication. We propose to use the definition of Level of Assurance as specif
 			    </t>
 			    <t hangText="MSISDN"> REQUIRED. NUMERIC 
 			        The Subscriber identifier
-			        TBD: according to what standard?
+			        TBD: according to what standard? - E.123 E.164
                 </t>	
              </list>
          </t>
@@ -232,44 +229,35 @@ authentication. We propose to use the definition of Level of Assurance as specif
         <t>
 	        The login_hint token MUST be encrypted using the public key of the OpenID Provider.
         	The login_hint token MUST be signed using the private key of the discovery service.
-        	TBD: it would follow that the 'iss' claim is mandatory and must allow for 
-        	signature validation.
+        </t>
+        <t>
+TBD: add description on how to process/validate the signature
+From https://bitbucket.org /openid/mobile/issues/13/encrypted-login-hint.
+Standard mechanism is described where? --> John
+	    </t>
+    </section>
+
+    
+    <section anchor="context_values" title="context">
+        <t>
+TBD: in detail description of the allowed content of the context parameter.
+TBD: Add method of protection of context parameter using the OIDC request object
         </t>
     </section>
-
-    <section anchor="request_object_claims" title="Additional claims for the request object">
-    	<t>
-	    	Add specific claims to the request object such as a transaction message. 
-    		The request object MUST then be signed to prevent manipulating the transaction message
-		    <list style="hanging">
-			    <t hangText="context">
-				    TBD: add the definition of an OPTIONAL parameter 'context'
-			    </t>
-			</list>
-    	</t>
-    </section>
-
-    <section anchor="claim_validity" title="Specifying the truthyness of user claims">
-        <t>TBD: Something about how the claim was verified (self_asserted, proved).
-         Leads to a structure of claims.</t>
-    </section>
-    <section anchor="mno_claims" title="Special claims for Mobile Operators as OpenID Providers">
-        <t>TBD: special claims</t>
-        <t hangText=""></t>
-    </section>
     
-    <section anchor="pair_wise" title="pair wise ">
-        <t></t>
-    </section>
     <section anchor="m_t_i" title="mandatory to implement">
-        <t>SPOP: symmetric proof of possession MANDATORY</t>
-        <t>Mandatory support for private_key_jwt, SHOULD basic (section 9 of OpenID Connect) 
-	        --> this implies public key exchange during registration.</t>
-        <t>mandatory scopes (claims) as a question to the group.</t>
-        <t>Support for account chooser: push login_hint_token to the account chooser</t>
-        <t>asymmetric RSA signing for id_token --> publish jks-uri</t>
-        <t>code flow, code id_token etc. optional</t>
-        <t>login_hint_token to be implemented per the discovery spec</t>
+	    <t>
+            <list style="hanging">
+                <t hangText="acr_values">
+			       All MODRNA compliant OP's MUST accept the in <xref target="acr_values" /> 
+			       specified acr_values.
+			    </t>
+             </list>
+		</t>
+        <t>Support for account chooser: push login_hint_token to the account chooser
+	        TBD: discussion in issue #24
+        </t>
+        <t>TBD: code flow, code id_token etc. optional</t>
     </section>
     
 
@@ -278,13 +266,16 @@ authentication. We propose to use the definition of Level of Assurance as specif
     </section>
 
     <section anchor="privacy_considerations" title="Privacy Considerations">
-	<t>TBD: pair wise subject mandatory for Mobile Connect OpenID Provider. 
-		The RP can negotiate for the exact mechanism. </t>
+	    <t>TBD</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
       <t>This document makes no requests of IANA.</t>
-      <t>TBD: Is this true? Didn't we talk about registering acr_values / acr at IANA?</t>
+      <t>TBD: Find out about how to correctly add entries to IANA
+	      for:
+	      
+	      https://www.iana.org/assignment/loa-profiles/loa-profiles.xhtml
+      </t>
     </section>
 
   </middle>
