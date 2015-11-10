@@ -1,0 +1,824 @@
+<!DOCTYPE HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><HTML 
+lang="en" lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><HEAD 
+profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/"><META 
+content="IE=11.0000" http-equiv="X-UA-Compatible">
+<rfc category="std" docName="draft-mobile-registration-04" ipr="none">   
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">   
+<TITLE>OpenID Connect Mobile Registration Profile 1.0</TITLE>   
+<STYLE title="Xml2Rfc (sans serif)" type="text/css">
+  /*<![CDATA[*/
+	  a {
+	  text-decoration: none;
+	  }
+      /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+      a.info {
+          /* This is the key. */
+          position: relative;
+          z-index: 24;
+          text-decoration: none;
+      }
+      a.info:hover {
+          z-index: 25;
+          color: #FFF; background-color: #900;
+      }
+      a.info span { display: none; }
+      a.info:hover span.info {
+          /* The span will display just on :hover state. */
+          display: block;
+          position: absolute;
+          font-size: smaller;
+          top: 2em; left: -5em; width: 15em;
+          padding: 2px; border: 1px solid #333;
+          color: #900; background-color: #EEE;
+          text-align: left;
+      }
+	  a.smpl {
+	  color: black;
+	  }
+	  a:hover {
+	  text-decoration: underline;
+	  }
+	  a:active {
+	  text-decoration: underline;
+	  }
+	  address {
+	  margin-top: 1em;
+	  margin-left: 2em;
+	  font-style: normal;
+	  }
+	  body {
+	  color: black;
+	  font-family: verdana, helvetica, arial, sans-serif;
+	  font-size: 10pt;
+	  max-width: 55em;
+	  
+	  }
+	  cite {
+	  font-style: normal;
+	  }
+	  dd {
+	  margin-right: 2em;
+	  }
+	  dl {
+	  margin-left: 2em;
+	  }
+	
+	  ul.empty {
+	  list-style-type: none;
+	  }
+	  ul.empty li {
+	  margin-top: .5em;
+	  }
+	  dl p {
+	  margin-left: 0em;
+	  }
+	  dt {
+	  margin-top: .5em;
+	  }
+	  h1 {
+	  font-size: 14pt;
+	  line-height: 21pt;
+	  page-break-after: avoid;
+	  }
+	  h1.np {
+	  page-break-before: always;
+	  }
+	  h1 a {
+	  color: #333333;
+	  }
+	  h2 {
+	  font-size: 12pt;
+	  line-height: 15pt;
+	  page-break-after: avoid;
+	  }
+	  h3, h4, h5, h6 {
+	  font-size: 10pt;
+	  page-break-after: avoid;
+	  }
+	  h2 a, h3 a, h4 a, h5 a, h6 a {
+	  color: black;
+	  }
+	  img {
+	  margin-left: 3em;
+	  }
+	  li {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol p {
+	  margin-left: 0em;
+	  }
+	  p {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  pre {
+	  margin-left: 3em;
+	  background-color: lightyellow;
+	  padding: .25em;
+	  }
+	  pre.text2 {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f0f0f0;
+	  width: 69em;
+	  }
+	  pre.inline {
+	  background-color: white;
+	  padding: 0em;
+	  }
+	  pre.text {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  width: 69em;
+	  }
+	  pre.drawing {
+	  border-style: solid;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  padding: 2em;
+	  }
+	  table {
+	  margin-left: 2em;
+	  }
+	  table.tt {
+	  vertical-align: top;
+	  }
+	  table.full {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.headers {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.tt td {
+	  vertical-align: top;
+	  }
+	  table.full td {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.tt th {
+	  vertical-align: top;
+	  }
+	  table.full th {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.headers th {
+	  border-style: none none inset none;
+	  border-width: 1px;
+	  }
+	  table.left {
+	  margin-right: auto;
+	  }
+	  table.right {
+	  margin-left: auto;
+	  }
+	  table.center {
+	  margin-left: auto;
+	  margin-right: auto;
+	  }
+	  caption {
+	  caption-side: bottom;
+	  font-weight: bold;
+	  font-size: 9pt;
+	  margin-top: .5em;
+	  }
+	
+	  table.header {
+	  border-spacing: 1px;
+	  width: 95%;
+	  font-size: 10pt;
+	  color: white;
+	  }
+	  td.top {
+	  vertical-align: top;
+	  }
+	  td.topnowrap {
+	  vertical-align: top;
+	  white-space: nowrap; 
+	  }
+	  table.header td {
+	  background-color: gray;
+	  width: 50%;
+	  }
+	  table.header a {
+	  color: white;
+	  }
+	  td.reference {
+	  vertical-align: top;
+	  white-space: nowrap;
+	  padding-right: 1em;
+	  }
+	  thead {
+	  display:table-header-group;
+	  }
+	  ul.toc, ul.toc ul {
+	  list-style: none;
+	  margin-left: 1.5em;
+	  margin-right: 0em;
+	  padding-left: 0em;
+	  }
+	  ul.toc li {
+	  line-height: 150%;
+	  font-weight: bold;
+	  font-size: 10pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  ul.toc li li {
+	  line-height: normal;
+	  font-weight: normal;
+	  font-size: 9pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  li.excluded {
+	  font-size: 0pt;
+	  }
+	  ul p {
+	  margin-left: 0em;
+	  }
+	
+	  .comment {
+	  background-color: yellow;
+	  }
+	  .center {
+	  text-align: center;
+	  }
+	  .error {
+	  color: red;
+	  font-style: italic;
+	  font-weight: bold;
+	  }
+	  .figure {
+	  font-weight: bold;
+	  text-align: center;
+	  font-size: 9pt;
+	  }
+	  .filename {
+	  color: #333333;
+	  font-weight: bold;
+	  font-size: 12pt;
+	  line-height: 21pt;
+	  text-align: center;
+	  }
+	  .fn {
+	  font-weight: bold;
+	  }
+	  .hidden {
+	  display: none;
+	  }
+	  .left {
+	  text-align: left;
+	  }
+	  .right {
+	  text-align: right;
+	  }
+	  .title {
+	  color: #990000;
+	  font-size: 18pt;
+	  line-height: 18pt;
+	  font-weight: bold;
+	  text-align: center;
+	  margin-top: 36pt;
+	  }
+	  .vcardline {
+	  display: block;
+	  }
+	  .warning {
+	  font-size: 14pt;
+	  background-color: yellow;
+	  }
+	
+	
+	  @media print {
+	  .noprint {
+		display: none;
+	  }
+	
+	  a {
+		color: black;
+		text-decoration: none;
+	  }
+	
+	  table.header {
+		width: 90%;
+	  }
+	
+	  td.header {
+		width: 50%;
+		color: black;
+		background-color: white;
+		vertical-align: top;
+		font-size: 12pt;
+	  }
+	
+	  ul.toc a::after {
+		content: leader('.') target-counter(attr(href), page);
+	  }
+	
+	  ul.ind li li a {
+		content: target-counter(attr(href), page);
+	  }
+	
+	  .print2col {
+		column-count: 2;
+		-moz-column-count: 2;
+		column-fill: auto;
+	  }
+	  }
+	
+	  @page {
+	  @top-left {
+		   content: "Internet-Draft"; 
+	  } 
+	  @top-right {
+		   content: "December 2010"; 
+	  } 
+	  @top-center {
+		   content: "Abbreviated Title";
+	  } 
+	  @bottom-left {
+		   content: "Doe"; 
+	  } 
+	  @bottom-center {
+		   content: "Expires June 2011"; 
+	  } 
+	  @bottom-right {
+		   content: "[Page " counter(page) "]"; 
+	  } 
+	  }
+	
+	  @page:first { 
+		@top-left {
+		  content: normal;
+		}
+		@top-right {
+		  content: normal;
+		}
+		@top-center {
+		  content: normal;
+		}
+	  }
+  /*]]>*/
+  </STYLE>
+   <LINK href="#rfc.toc" rel="Contents"> <LINK title="1 Introduction" href="#rfc.section.1" 
+rel="Chapter"> <LINK title="1.1 Requirements Notation and Conventions" href="#rfc.section.1.1" 
+rel="Chapter"> <LINK title="1.2 Terminology" href="#rfc.section.1.2" rel="Chapter"> 
+<LINK title="2 Overview" href="#rfc.section.2" rel="Chapter"> <LINK title="2.1 Redirect-based flow" 
+href="#rfc.section.2.1" rel="Chapter"> <LINK title="2.2 POST-based flow" href="#rfc.section.2.2" 
+rel="Chapter"> <LINK title="3 Mobile Issuer Discovery Service" href="#rfc.section.3" 
+rel="Chapter"> <LINK title="3.1 User Interaction Endpoint" href="#rfc.section.3.1" 
+rel="Chapter"> <LINK title="3.1.1 Request" href="#rfc.section.3.1.1" rel="Chapter"> 
+<LINK title="3.1.2 Response" href="#rfc.section.3.1.2" rel="Chapter"> <LINK 
+title="3.1.4 Error Response" href="#rfc.section.3.1.3" rel="Chapter"> <LINK 
+title="3.2 Issuer Endpoint" href="#rfc.section.3.2" rel="Chapter"> <LINK title="3.2.1 Request" 
+href="#rfc.section.3.2.1" rel="Chapter"> <LINK title="3.2.2 Response" href="#rfc.section.3.2.2" 
+rel="Chapter"> <LINK title="3.2.3 Error Response" href="#rfc.section.3.2.3" rel="Chapter"> 
+<LINK title="4 Dynamic Registration with Discovery Service" href="#rfc.section.4" 
+rel="Chapter"> <LINK title="5 Account Chooser" href="#rfc.section.5" rel="Chapter"> 
+<LINK title="5.1 AC Client" href="#rfc.section.5.1" rel="Chapter"> <LINK title="5.2 AC Identity Provider" 
+href="#rfc.section.5.2" rel="Chapter"> <LINK title="6 Security Considerations" 
+href="#rfc.section.6" rel="Chapter"> <LINK title="7 Privacy Considerations" 
+href="#rfc.section.7" rel="Chapter"> <LINK title="8 IANA Considerations" href="#rfc.section.8" 
+rel="Chapter"> <LINK title="9 Normative References" href="#rfc.references" rel="Chapter"> 
+<LINK title="A Acknowledgements" href="#rfc.appendix.A" rel="Chapter"> <LINK 
+title="B Notices" href="#rfc.appendix.B" rel="Chapter"> <LINK title="C Document History" 
+href="#rfc.appendix.C" rel="Chapter"> <LINK href="#rfc.authors" rel="Chapter">   
+<META name="GENERATOR" content="MSHTML 11.00.9600.17937">   <LINK href="http://purl.org/dc/terms/" 
+rel="schema.dct">   
+<META name="dct.creator" content="Hjelm, B., Lodderstedt, T., and J. Bradley">   
+<META name="dct.identifier" content="urn:ietf:id:draft-mobile-registration-03">   
+<META name="dct.issued" content="2015-7-25" scheme="ISO8601">   
+<META name="dct.abstract" content="">   
+<META name="description" content=""> </HEAD> 
+<BODY>
+<TABLE class="header">
+  <TBODY>
+  <TR>
+    <TD class="left"></TD>
+    <TD class="right">B. Hjelm</TD></TR>
+  <TR>
+    <TD class="left"></TD>
+    <TD class="right">Verizon</TD></TR>
+  <TR>
+    <TD class="left"></TD>
+    <TD class="right">T. Lodderstedt</TD></TR>
+  <TR>
+    <TD class="left"></TD>
+    <TD class="right">Deutsche Telekom AG</TD></TR>
+  <TR>
+    <TD class="left"></TD>
+    <TD class="right">J. Bradley</TD></TR>
+  <TR>
+    <TD class="left"></TD>
+    <TD class="right">Ping Identity</TD></TR>
+  <TR>
+    <TD class="left"></TD>
+    <TD class="right">October 29, 2015</TD></TR></TBODY></TABLE>
+<P class="title">OpenID Connect Mobile Registration Profile 1.0<BR><SPAN class="filename">draft-mobile-registration-01</SPAN></P>
+<H1 id="rfc.abstract"><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.abstract">Abstract</A> 
+</H1>
+<P><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#OpenID.Registration">OpenID Connect Dynamic Client Registration 1.0</A> <CITE title="NONE">[OpenID.Registration]</CITE> 
+defines how an OpenID Connect Relying Party (RP) can dynamically register with the 
+End-User's OpenID Provider, providing information about itself to the OpenID 
+Provider, and obtaining information needed to use it.</P> 
+<P>The OpenID Connect Mobile Registration Profile specification defines how a 
+RP dynamically registers with a mobile network operator (MNO) to access
+identity services provided by the MNO. The RP shall be able to access identity 
+services from multiple MNOs withour requiring the RP to register with all individual MNOs. 
+To achieve this, the <A href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#OpenID.Registration">OpenID Connect Dynamic Client Registration 1.0</A> <CITE title="NONE">[OpenID.Registration]</CITE> 
+will be extended with Software Statement as specified in <A href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#RFC7591">OAuth2.0</A> <CITE title="NONE">[RFC 7591]</CITE>.</P>
+<p>It is beyond the scope of this specification how the RP will obtain original legitimation.  
+It is assumed that some trustworthy party validates the RP and issues the software statement to the RP. 
+It is also beyond the scope of this specification how an OpenID Provider validates the software statement.</P>
+<HR class="noprint">
+
+<H1 class="np" id="rfc.toc"><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.toc">Table 
+of Contents</A></H1>
+<UL class="toc">
+  <LI>1.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.1">Introduction</A></LI>
+  <UL>
+    <LI>1.1.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.1.1">Requirements 
+    Notation and Conventions</A></LI>
+    <LI>1.2.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.1.2">Terminology</A></LI></UL>
+  <LI>2.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.2">Overview</A></LI>
+  <LI>3.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.3">Client Registration</A></LI>
+  <UL>
+    <LI>3.1.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.3.1">Software Statement</A></LI>
+    <LI>3.2.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.3.2">Client Registration Request</A></LI>
+    <LI>3.3.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.3.3">Client Registration Response</A></LI>
+    <LI>3.4.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.3.4">Error Response</A></LI>
+	</UL>
+  <LI>4.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.4">Implementation 
+  Considerations</A></LI>
+  <LI>5.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.5">Security 
+  Considerations</A></LI>
+  <LI>6.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.6">Privacy 
+  Considerations</A></LI>
+  <LI>7.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.7">IANA 
+  Considerations</A></LI>
+  <LI>8.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.references">Normative 
+  References</A></LI>
+  <LI>Appendix A.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.appendix.A">Acknowledgements</A></LI>
+  <LI>Appendix B.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.appendix.B">Notices</A></LI>
+  <LI>Appendix C.   <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.appendix.C">Document 
+  History</A></LI>
+  <LI><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.authors">Authors' 
+  Addresses</A></LI></UL>
+<H1 id="rfc.section.1"><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.1">1.</A> 
+<A id="Introduction" href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#Introduction">Introduction</A></H1>
+<P id="rfc.section.1.p.1">OpenID Connect Mobile Registration Profile 1.0 is a 
+profile of the <A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#OpenID.Registration">OpenID 
+Connect Dynamic Client Registration 1.0</A> <CITE title="NONE">[OpenID.Registration]</CITE> 
+specification that that allows a RP to dynamically register with multiple Mobile 
+Network Operators (MNOs) based on information asserted by a trusted entity e.g. a primary 
+MNO that the client has a relationship with.</P>
+<H1 id="rfc.section.1.1"><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.1.1">1.1.</A> 
+<A id="rnc" href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rnc">Requirements 
+Notation and Conventions</A></H1>
+<P id="rfc.section.1.1.p.1">The key words "MUST", "MUST NOT",  "REQUIRED", 
+"SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and 
+"OPTIONAL" in this document are to be interpreted as  described in <A href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#RFC2119">[RFC2119]</A>.</P>
+<P id="rfc.section.1.1.p.2">Throughout this document, values are quoted  to 
+indicate that they are to be taken literally. When using these values in 
+protocol messages, the quotes MUST NOT be used as part of the value.</P>
+<H1 id="rfc.section.1.2"><A href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#rfc.section.1.2">1.2.</A> 
+<A id="terminology" href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#terminology">Terminology</A></H1>
+<P id="rfc.section.1.2.p.1">This specification uses the terms 
+"OpenID Provider (OP)" and Relying Party (RP) defined by OpenID Connect Core <A 
+href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#OpenID.Core">[OpenID.Core]</A>.</P>
+<P id="rfc.section.1.2.p.2">This specification also defines the following 
+terms:</P>
+<P></P>
+<UL class="empty">
+  <LI>Mobile Network Operator (MNO). Is a provider of services wireless 
+  communications that owns or controls the wireless network elements 
+  necessary to sell and deliver services to an end user</LI>
+</UL>
+<H1 id="rfc.section.2"><A href="http://openid.net/wordpress-content/uploads/2015/07/draft-mobile-discovery-011.html#rfc.section.2">2.</A> 
+Overview</H1>
+<P id="rfc.section.2.p.1">This specification defines the dynamic client 
+registration process
+for OpenID Connect Mobile Profile and describes how an OpenID Connect Relying Party 
+can dynamically register with the End-User's Mobile Network Operator (MNO) 
+and obtain the information needed to use it with multiple MNOs.</P>
+<P>The following figure shows a high-level flow for the business process of registration. The Registry acts on behalf of all the MNO OPs Mobile Connect system. 
+The assumption is that the Registry verifies the Service Provider. 
+The Service Provider is required to accept the terms and conditions for the MNOs OPs. 
+Registry issues a Software Statement that represents credentials to establish a trust relationship with the MNO's OP.</P>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
++----------+                                +--------------+
+| Service  |---(A)- registration request --&gt;|   Registry   |
+| Provider |&lt;--(B)-- Software Statement ---|              |
++----------+                                +--------------+
+</pre></div>
+<P>(A) The Service Provider sends a registration request to the Registry.</P>
+<P>(B) The Registry responds with a Software Statement. The Software Statement serves two purposes: (1) authorizes client to register with MNO's OP and (2) puts limitations on the client. Below is an example of such Software Statement.</P> 
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+"iss": "https://registry.exampleregistry.com",
+"aud": ["https://accounts.operator1.com","https://accounts.operator2.com","https://accounts.operator3.com"], 
+"software_id": "4NRB1-0XZABZI9E6-5SM3R",
+"software_version": "2.2",
+"client_name": "Example Statement-based Client",
+"client_uri": "https://client.example.net/",
+"redirect_uris": ["https://client.example.org/callback",
+...
+</pre></div>
+<P>The Relaying Party sends a Registration Request with any Client Metadata parameters that the Client chooses to specify for itself during the registration. The assumptions is that evey instant of a Client would register with the MNO OP. </P>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
++----------+                                 +----------------+
+|          |                                 |    MNO's OP    |
+|          |                                 |--------------| |
+| Relaying |---(A)-- Registration Request --&gt;| Registration | |
+| Party    |&lt;--(B)-- Registration Response --| Endpoint     | |
+|          |                                 |--------------| |
+|          |                                 |                |
++----------+                                 +----------------+
+</pre></div>
+<P>[Editor's note:] It is assumed that the RP needs to agree to the MNO-specific or regional/global Terms and Conditions and that the respective information are carried to the MNO at runtime via the software statement.</P>
+<P>[Editor's note:] MODRNA OP is able to process OpenID Connect Client Registration requests with software statements, so MODRNA RPs can use this mechanism instead of plain request parameters. Difference: entitlement to register with MODNRA OP may depend on external assertion (software statement) -> introduces concept of protected OP to OIDC.</P>
+<H1 id="rfc.section.3"><A href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#rfc.section.3">3.</A> 
+<A id="client-registration" href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#client-registration">Client Registration</A></H1>
+<P id="rfc.section.3.p.1">The Client Registration Endpoint is an OAuth 2.0 Protected Resource through which a new Client registration can be requested.</P>
+<H1 id="rfc.section.3.1"><A href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#rfc.section.3.1">3.1.</A> 
+<A id="software_statement" href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#software_statement">Software Statement</A></H1>
+<P id="rfc.section.3.1.p.1">The following is a non-normative example of a Software Statement:
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+       "iss": "https://registry.exampleregistry.com",
+       "aud": ["https://accounts.operator1.com","https://accounts.operator2.com","https://accounts.operator3.com"], 
+       "exp": "1311281970",
+       "iat": "1311280970",
+       "jti": "id12345685439487678",
+      "software_id": "4NRB1-0XZABZI9E6-5SM3R",
+      "software_version": "2.2",
+      "client_name": "Example Statement-based Client",
+      "client_uri": "https://client.example.net/",
+      "redirect_uris": ["https://client.example.org/callback",
+      "https://client.example.org/callback2"],
+      "token_endpoint_auth_method": "client_secret_basic",
+      "grant_types": ["authorization_code"],
+      "response_types": ["code"],
+      "logo_uri": "https://client.example.org/logo.png",
+      "scope": "openid",
+      "contacts": ["ve7jtb@example.org", "mary@example.org"],
+      "tos_uri": "https://client.example.org/tos.html",
+      "policy_uri": "https://client.example.org/policy.html",
+      "application_type": "web",
+      "sector_identifier_uri": "https://other.example.net/file_of_redirect_uris.json",
+      "subject_type": "pairwise",
+      "id_token_signed_response_alg": "RS256", 
+      "allowed_claims": ["name", "family_name", "phone_number", "phone_number_verified"],
+      "allowed_acrs": ["urn:modrna:acr:credential:loa2", "urn:modrna:acr:credential:loa3"],
+      "registry_tos": "https://registry.exampleregistry.com/tos.html"
+}
+</pre></div>
+<P id="rfc.section.3.1.p.2">[Editor's note:] Cross-check with HEART and Blue Button Plus. 
+Multiple Software Statement per Software ID.</P>
+<P id="rfc.section.3.1.p.3">[Editor's note:] Proposal to is to limit the signature 
+algorithm to RSA to start with.</P>
+<P id="rfc.section.3.1.p.4">[Editor's note:] What claims are required to carry information about MNO T&Cs or more general authz data?.</P>
+<H1 id="rfc.section.3.2"><A href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#rfc.section.3.2">3.2.</A> 
+<A id="registration" href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#registration_request">Client Registration Request</A></H1>
+<P>A valide OAuth client_id and Client secret are issued during client registration with the MNO's OP. The client_id is unique within MNO.</P>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+POST /register HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Host: accounts.operator1.com
+	 
+{
+  "software_statement": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXV
+CJ9.eyJpc3MiOiJodHRwczovL3JlZ2lzdHJ5LmV4YW1wbGVyZWdpc3RyeS5jb20
+iLCJhdWQiOlsiaHR0cHM6Ly9hY2NvdW50cy5vcGVyYXRvcjEuY29tIiwiaHR0cH
+M6Ly9hY2NvdW50cy5vcGVyYXRvcjIuY29tIiwiaHR0cHM6Ly9hY2NvdW50cy5vc
+GVyYXRvcjMuY29tIl0sImV4cCI6IjEzMTEyODE5NzAiLCJpYXQiOiIxMzExMjgw
+OTcwIiwianRpIjoiaWQxMjM0NTY4NTQzOTQ4NzY3OCIsInNvZnR3YXJlX2lkIjo
+iNE5SQjEtMFhaQUJaSTlFNi01U00zUiIsInNvZnR3YXJlX3ZlcnNpb24iOiIyLj
+IiLCJjbGllbnRfbmFtZSI6IkV4YW1wbGUgU3RhdGVtZW50LWJhc2VkIENsaWVud
+CIsImNsaWVudF91cmkiOiJodHRwczovL2NsaWVudC5leGFtcGxlLm5ldC8iLCJy
+ZWRpcmVjdF91cmlzIjpbImh0dHBzOi8vY2xpZW50LmV4YW1wbGUub3JnL2NhbGx
+iYWNrIiwiaHR0cHM6Ly9jbGllbnQuZXhhbXBsZS5vcmcvY2FsbGJhY2syIl0sIn
+Rva2VuX2VuZHBvaW50X2F1dGhfbWV0aG9kIjoiY2xpZW50X3NlY3JldF9iYXNpY
+yIsImdyYW50X3R5cGVzIjpbImF1dGhvcml6YXRpb25fY29kZSJdLCJyZXNwb25z
+ZV90eXBlcyI6WyJjb2RlIl0sImxvZ29fdXJpIjoiaHR0cHM6Ly9jbGllbnQuZXh
+hbXBsZS5vcmcvbG9nby5wbmciLCJzY29wZSI6Im9wZW5pZCIsImNvbnRhY3RzIj
+pbInZlN2p0YkBleGFtcGxlLm9yZyIsIm1hcnlAZXhhbXBsZS5vcmciXSwidG9zX
+3VyaSI6Imh0dHBzOi8vY2xpZW50LmV4YW1wbGUub3JnL3Rvcy5odG1sIiwicG9s
+aWN5X3VyaSI6Imh0dHBzOi8vY2xpZW50LmV4YW1wbGUub3JnL3BvbGljeS5odG1
+sIiwiYXBwbGljYXRpb25fdHlwZSI6IndlYiIsInNlY3Rvcl9pZGVudGlmaWVyX3
+VyaSI6Imh0dHBzOi8vb3RoZXIuZXhhbXBsZS5uZXQvZmlsZV9vZl9yZWRpcmVjd
+F91cmlzLmpzb24iLCJzdWJqZWN0X3R5cGUiOiJwYWlyd2lzZSIsImlkX3Rva2Vu
+X3NpZ25lZF9yZXNwb25zZV9hbGciOiJSUzI1NiIsImFsbG93ZWRfY2xhaW1zIjp
+bIm5hbWUiLCJmYW1pbHlfbmFtZSIsInBob25lX251bWJlciIsInBob25lX251bW
+Jlcl92ZXJpZmllZCJdLCJhbGxvd2VkX2FjcnMiOlsidXJuOm1vZHJuYTphY3I6Y
+3JlZGVudGlhbDpsb2EyIiwidXJuOm1vZHJuYTphY3I6Y3JlZGVudGlhbDpsb2Ez
+Il0sInJlZ2lzdHJ5X3RvcyI6Imh0dHBzOi8vcmVnaXN0cnkuZXhhbXBsZXJlZ2l
+zdHJ5LmNvbS90b3MuaHRtbCJ9.Ei47Uuo-pbV15Y2595kj8V4EAJAPJPmHz2XuK
+PVSbgR-DpjVt9eWz_cyI0ksnnsh61i6mdUf1glpzFHd9x7Qvgl-s22bKRmqa1cl
+Y2HjgTg4h_RsNJL6oYufxfBy2pATrqTbTdXCRNo9CbxLcxF5b-jnZcvZvlOVdlr
+HOPK__6s"
+}
+</pre></div>
+<P>... </P>
+<H1 id="rfc.section.3.3"><A href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#rfc.section.3.3">3.3.</A> 
+<A id="registration" href="http://openid.net/wordpress-content/uploads/2015/09/draft-mobile-registration-03.html#registration_response">Client Registration Response</A></H1>
+<P id="rfc.section.3.3.p.1">A valid OAuth client_id and Client secret are 
+issued during client registration with the MNO. The MNO MAY use a stateless 
+client credential management.</P>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+HTTP/1.1 201 Created
+Content-Type: application/json
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+ "client_id": "s6BhdRkqt3",
+ "client_secret":
+ "ZJYCqe3GGRvdrudKyZS0XhGv_Z45DuKhCUk0gBR1vZk",
+ "client_id_issued_at": 2893256800,
+ "client_secret_expires_at": 1577858400,
+}
+</pre></div>
+<P id="rfc.section.3.3.p.2">If the client is registered with another MNO, a 
+new version of the Client_ID is required.</P>
+<P id="rfc.section.3.3.p.3"> Verify life cycle of the Software Statement with OAuth spec.</P></P>
+
+<H1 id="rfc.section.3.4"><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.3.4">3.4.</A> 
+Error Response</H1>
+<P id="rfc.section.3.4.p.1">[Editor's note:] Error message should include the 
+scenario when an OP blocks a RP.</P>
+<H1 id="rfc.section.4"><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.4">4.</A> 
+<A id="implementation_considerations" href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#implementation_considerations">Implementation Considerations</A></H1>
+<P id="rfc.section.4.p.1"><P>The MNO May use a stateless client credential management.</P></P>
+<P id="rfc.section.4.p.2"><P>[Editor's note:] Should the options (use Software Statement as client_id, 
+encode client data within the client_id or secret) be defined in this section?</P></P>
+<P id="rfc.section.4.p.3"><P>[Editor's note:] What are the scalability issues with the MNO implementation that should be 
+addressed in the implementation guidelines?</P></P>
+<H1 id="rfc.section.5"><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.5">5.</A> 
+<A id="security_considerations" href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#security_considerations">Security 
+Considerations</A></H1>
+<P id="rfc.section.5.p.1">[Editor's note:] Define authentication mechanism. 
+Start with RSA and define minimum and maximum key length.</P>
+<H1 id="rfc.section.5"><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.6">6.</A> 
+<A id="privacy_considerations" href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#privacy_considerations">Privacy 
+Considerations</A></H1>
+<P id="rfc.section.6.p.1">TBD</P>
+<H1 id="rfc.section.7"><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.section.7">7.</A> 
+<A id="IANA" href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#IANA">IANA 
+Considerations</A></H1>
+<P id="rfc.section.7.p.1">This document makes no requests of IANA.</P>
+<H1 id="rfc.references"><A href="http://openid.net/wordpress-content/uploads/2015/11/draft-mobile-registration-01.html#rfc.references">8.</A> 
+Normative References</H1>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TD class="reference"><B id="RFC7519">[RFC7519]</B>
+	</TD>
+    <TD class="top"> <A title="Microsoft">Jones, M.</A>, <A title="Ping Identity">J. 
+      Bradley</A>, and <A title="Nomura Research Institute, Ltd.">Sakimura, N.</A>, 
+	  "<A href="https://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</A>", May 2015.</TD></TR>
+  <TR>
+    <TD class="reference"><B id="OpenID.Core">[OpenID.Core]</B>       </TD>
+    <TD class="top"><A title="Nomura Research Institute, Ltd.">Sakimura, 
+      N.</A>, <A title="Ping Identity">Bradley, J.</A>, <A 
+      title="Microsoft">Jones, M.</A>, <A title="Google">de Medeiros, B.</A> and 
+      <A title="Salesforce">C. Mortimore</A>, "<A href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID 
+      Connect Core 1.0</A>", November 2014.</TD></TR>
+  <TR>
+    <TD class="reference"><B id="OpenID.Discovery">[OpenID.Discovery]</B>      
+     </TD>
+    <TD class="top"><A title="Nomura Research Institute, Ltd.">Sakimura, 
+      N.</A>, <A title="Ping Identity">Bradley, J.</A>, <A 
+      title="Microsoft">Jones, M.</A> and <A title="Illumila">E. Jay</A>, "<A 
+      href="http://openid.net/specs/openid-connect-discovery-1_0.html">OpenID 
+      Connect Discovery 1.0</A>", November 2014.</TD></TR>
+  <TR>
+    <TD class="reference"><B id="OpenID.Registration">[OpenID.Registration]</B>      
+     </TD>
+    <TD class="top"><A title="Nomura Research Institute, Ltd.">Sakimura, 
+      N.</A>, <A title="Ping Identity">Bradley, J.</A>, and <A 
+      title="Microsoft">Jones, M.</A>, "<A 
+      href="http://openid.net/specs/openid-connect-registration-1_0.html">OpenID 
+      Connect Discovery 1.0</A>", November 2014.</TD></TR>
+  <TR>
+    <TD class="reference"><B id="RFC7591">[RFC7591]</B>       </TD>
+    <TD class="top"><A>Richer, J.</A>, , <A title="Microsoft">Jones, M.</A>, 
+	<A title="Ping Identity">Bradley, J.</A>, <A title="Newcastle University">
+	Machulak, M.</A>, and <A title="Oracle Corporation">Hunt, P.</A>, 
+	<A href="http://tools.ietf.org/html/rfc7591">OAuth 2.0 Dynamic Client Registration Protocol</A>", 
+	RFC 7591, July 2015.</TD></TR>
+  <TR>
+    <TD class="reference"><B id="RFC2119">[RFC2119]</B>       </TD>
+    <TD class="top"><A>Bradner, S.</A>, "<A href="http://tools.ietf.org/html/rfc2119">Key 
+      words for use in RFCs to Indicate Requirement Levels</A>", BCP 14, RFC 
+      2119, DOI 10.17487/RFC2119, March 1997.</TD></TR>
+  <TR>
+    <TD class="reference"><B id="RFC2246">[RFC2246]</B>       </TD>
+    <TD class="top"><A title="Certicom">Dierks, T.</A> and <A title="Certicom">Allen, C.</A>, 
+	<A href="http://tools.ietf.org/html/rfc2246">The TLS Protocol Version 1.0</A>", RFC 
+      2246, January 1999.</TD></TR>
+  <TR>
+    <TD class="reference"><B id="RFC5246">[RFC5246]</B>       </TD>
+    <TD class="top"><A>Dierks, T.</A> and <A title="RTFM, Inc.">Rescorla, E.</A>, 
+	"<A href="http://tools.ietf.org/html/rfc5246">The Transport Layer Security (TLS) Protocol Version 1.2</A>", 
+	RFC5246, August 2008.</TD></TR>
+  <TR>
+    <TD class="reference"><B id="RFC6749">[RFC6749]</B>       </TD>
+    <TD class="top"><A>Hardt, D.</A>, "<A href="http://tools.ietf.org/html/rfc6749">The 
+      OAuth 2.0 Authorization Framework</A>", RFC 6749, DOI 10.17487/RFC6749, 
+      October 2012.</TD></TR></TBODY></TABLE>
+<H1 id="rfc.appendix.A"><A href="http://openid.net/wordpress-content/uploads/2015/07/draft-mobile-registration-03.html#rfc.appendix.A">Appendix 
+A.</A> <A id="Acknowledgements" href="http://openid.net/wordpress-content/uploads/2015/07/draft-mobile-registration-03.html#Acknowledgements">Acknowledgements</A></H1>
+<P id="rfc.section.A.p.1">The OpenID Community would like to thank the following 
+people for their contributions to the development of this specification:</P>
+<P></P>
+<UL class="empty">
+  <LI> </LI>
+  <LI> </LI></UL>
+<H1 id="rfc.appendix.B"><A href="http://openid.net/wordpress-content/uploads/2015/07/draft-mobile-registration-03.html#rfc.appendix.B">Appendix 
+B.</A> <A id="Notices" href="http://openid.net/wordpress-content/uploads/2015/07/draft-mobile-registration-03.html#Notices">Notices</A></H1>
+<P id="rfc.section.B.p.1">Copyright (c) 2014 The OpenID Foundation.</P>
+<P id="rfc.section.B.p.2">The OpenID Foundation (OIDF) grants to any 
+ Contributor, developer, implementer, or other interested party a 
+ non-exclusive, royalty free, worldwide copyright license to reproduce,  prepare 
+derivative works from, distribute, perform and display, this  Implementers Draft 
+or Final Specification solely for the purposes of (i) developing specifications, 
+and (ii) implementing Implementers Drafts  and Final Specifications based on 
+such documents, provided that  attribution be made to the OIDF as the source of 
+the material, but that  such attribution does not indicate an endorsement by the 
+OIDF.</P>
+<P id="rfc.section.B.p.3">The technology described in this specification was 
+made available from contributions from various sources, including  members of 
+the OpenID Foundation and others. Although the OpenID  Foundation has taken 
+steps to help ensure that the technology is  available for distribution, it 
+takes no position regarding the validity  or scope of any intellectual property 
+or other rights that might be  claimed to pertain to the implementation or use 
+of the technology  described in this specification or the extent to which any 
+license under such rights might or might not be available; neither does it 
+represent  that it has made any independent effort to identify any such rights. 
+The OpenID Foundation and the contributors to this specification make no  (and 
+hereby expressly disclaim any) warranties (express, implied, or  otherwise), 
+including implied warranties of merchantability,  non-infringement, fitness for 
+a particular purpose, or title, related to this specification, and the entire 
+risk as to implementing this  specification is assumed by the implementer. The 
+OpenID Intellectual  Property Rights policy requires contributors to offer a 
+patent promise  not to assert certain patent claims against other contributors 
+and  against implementers. The OpenID Foundation invites any interested party to 
+bring to its attention any copyrights, patents, patent applications, or other 
+proprietary rights that may cover technology that may be  required to practice 
+this specification.</P>
+<H1 id="rfc.appendix.C"><A href="http://openid.net/wordpress-content/uploads/2015/07/draft-mobile-discovery-011.html#rfc.appendix.C">Appendix 
+C.</A> <A id="History" href="http://openid.net/wordpress-content/uploads/2015/07/draft-mobile-discovery-011.html#History">Document 
+History</A></H1>
+<P id="rfc.section.C.p.1">[[ To be removed from the final specification ]]</P>
+<P id="rfc.section.C.p.2">-01 </P>
+<UL>
+  <LI>Initial draft</LI></UL>
+<P id="rfc.section.C.p.3">-02 </P>
+<UL>
+  <LI>added comments on Software Statement</LI></UL>
+<P id="rfc.section.C.p.4">-03 </P>
+<UL>
+  <LI>revised draft template</LI>
+  <LI>extended Overview section</LI>
+  <LI>corrected typos</LI>
+  <LI>cleaned up terminology section</LI>
+  <LI>revised reference section and added references</LI></UL>
+<H1 id="rfc.authors"><A href="http://openid.net/wordpress-content/uploads/2015/07/draft-mobile-discovery-011.html#rfc.authors">Authors' 
+Addresses</A> </H1>
+<DIV class="avoidbreak">
+<ADDRESS class="vcard"><SPAN class="vcardline"><SPAN class="fn">Bjorn 
+Hjelm</SPAN> 	  <SPAN class="n hidden"><SPAN 
+class="family-name">Hjelm</SPAN>	   </SPAN>	 </SPAN><SPAN class="org vcardline">Verizon
+</SPAN><SPAN class="adr"><SPAN class="vcardline"><SPAN class="locality"></SPAN> 
+		<SPAN class="region"></SPAN>		 <SPAN class="code"></SPAN>	   </SPAN><SPAN 
+class="country-name vcardline"></SPAN></SPAN>	 <SPAN class="vcardline">EMail: <A 
+href="mailto:bjorn.hjelm@verizon.com">bjorn.hjelm@verizon.com</A></SPAN></ADDRESS></DIV>
+<DIV class="avoidbreak">
+<ADDRESS class="vcard"><SPAN class="vcardline"><SPAN class="fn">Torsten 
+Lodderstedt</SPAN> 	  <SPAN class="n hidden"><SPAN 
+class="family-name">Hjelm</SPAN>	   </SPAN>	 </SPAN><SPAN class="org vcardline">Deutsche Telekom AG
+</SPAN><SPAN class="adr"><SPAN class="vcardline"><SPAN class="locality"></SPAN> 
+		<SPAN class="region"></SPAN>		 <SPAN class="code"></SPAN>	   </SPAN><SPAN 
+class="country-name vcardline"></SPAN></SPAN>	 <SPAN class="vcardline">EMail: <A 
+href="mailto:bjorn.hjelm@verizon.com">torsten@lodderstedt.net</A></SPAN></ADDRESS></DIV>
+<DIV class="avoidbreak">
+<ADDRESS class="vcard"><SPAN class="vcardline"><SPAN class="fn">John 
+Bradley</SPAN> 	  <SPAN class="n hidden"><SPAN 
+class="family-name">Bradley</SPAN>	   </SPAN>	 </SPAN><SPAN class="org vcardline">Ping 
+Identity</SPAN><SPAN class="adr"><SPAN class="vcardline"><SPAN 
+class="locality"></SPAN> 		<SPAN class="region"></SPAN>		 <SPAN 
+class="code"></SPAN>	   </SPAN><SPAN 
+class="country-name vcardline"></SPAN></SPAN>	 <SPAN class="vcardline">EMail: <A 
+href="mailto:jbradley@pingidentity.com">jbradley@pingidentity.com</A></SPAN></ADDRESS></DIV></BODY></HTML>
