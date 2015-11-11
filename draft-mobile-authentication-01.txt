@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                            Oct 06, 2015
+                                                       November 10, 2015
 
 
             OpenID Connect Mobile Authentication Profile 1.0
@@ -53,9 +53,9 @@ Table of Contents
 
 
 
-Connotte & Bradley        Expires April 8, 2016                 [Page 1]
+Connotte & Bradley        Expires May 13, 2016                  [Page 1]
 
-                 OIDC Mobile Authentication Profile 1.0         Oct 2015
+                 OIDC Mobile Authentication Profile 1.0    November 2015
 
 
 1.  Introduction
@@ -109,9 +109,9 @@ Connotte & Bradley        Expires April 8, 2016                 [Page 1]
 
 
 
-Connotte & Bradley        Expires April 8, 2016                 [Page 2]
+Connotte & Bradley        Expires May 13, 2016                  [Page 2]
 
-                 OIDC Mobile Authentication Profile 1.0         Oct 2015
+                 OIDC Mobile Authentication Profile 1.0    November 2015
 
 
    acr_values  REQUIRED.  For MODRNA the parameter is REQUIRED to enable
@@ -165,9 +165,9 @@ Connotte & Bradley        Expires April 8, 2016                 [Page 2]
 
 
 
-Connotte & Bradley        Expires April 8, 2016                 [Page 3]
+Connotte & Bradley        Expires May 13, 2016                  [Page 3]
 
-                 OIDC Mobile Authentication Profile 1.0         Oct 2015
+                 OIDC Mobile Authentication Profile 1.0    November 2015
 
 
    iss  REQUIRED.  The party creating the token.  This value MUST be
@@ -221,9 +221,9 @@ Connotte & Bradley        Expires April 8, 2016                 [Page 3]
 
 
 
-Connotte & Bradley        Expires April 8, 2016                 [Page 4]
+Connotte & Bradley        Expires May 13, 2016                  [Page 4]
 
-                 OIDC Mobile Authentication Profile 1.0         Oct 2015
+                 OIDC Mobile Authentication Profile 1.0    November 2015
 
 
    TBD: code flow, code id_token etc. optional
@@ -277,9 +277,9 @@ Connotte & Bradley        Expires April 8, 2016                 [Page 4]
 
 
 
-Connotte & Bradley        Expires April 8, 2016                 [Page 5]
+Connotte & Bradley        Expires May 13, 2016                  [Page 5]
 
-                 OIDC Mobile Authentication Profile 1.0         Oct 2015
+                 OIDC Mobile Authentication Profile 1.0    November 2015
 
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
@@ -333,9 +333,9 @@ Appendix B.  Notices
 
 
 
-Connotte & Bradley        Expires April 8, 2016                 [Page 6]
+Connotte & Bradley        Expires May 13, 2016                  [Page 6]
 
-                 OIDC Mobile Authentication Profile 1.0         Oct 2015
+                 OIDC Mobile Authentication Profile 1.0    November 2015
 
 
    infringement, fitness for a particular purpose, or title, related to
@@ -389,4 +389,4 @@ Authors' Addresses
 
 
 
-Connotte & Bradley        Expires April 8, 2016                 [Page 7]
+Connotte & Bradley        Expires May 13, 2016                  [Page 7]
