@@ -44,7 +44,7 @@
 
 
 
-    <date day="10" month="Nov" year="2015" />
+    <date day="22" month="Nov" year="2015" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -54,16 +54,15 @@
 MNOs. However a RP must be able to describe its demands for an authentication request 
 and it must be able to do this interoperable.</t>
 
-<t>The Mobile Profile will specify how RP's request a certain level of  assurance for the 
+<t>The MODRNA Profile will specify how RP's request a certain level of  assurance for the 
 authentication. We propose to use the definition of Level of Assurance as specified in 
 [6] as a starting point and define respective normative ACR values.
 </t>
-<t>Moreover the profile will specify an encrypted login hint to 
+<t>In addition the profile will specify an encrypted login hint to 
 	allow for the transport of identifiers to the OP.</t>
-<t>TBD: something about the context parameter</t>
-
-
-
+<t>Lastly the profile will specify an additional context parameter intended
+	to serve as an interlock between the user's consumpution device and 
+	authentication device.</t>
 
     </abstract>
   </front>
@@ -100,7 +99,14 @@ authentication. We propose to use the definition of Level of Assurance as specif
                network elements necessary to sell and deliver services to an end user.
             </t>
              <t hangText="Mobile Station International Subscriber Directory Number (MSISDN)">
-              A telephone number uniquely identifying a subscription in a mobile network. T  
+              A telephone number uniquely identifying a subscription in a mobile network.  
+            </t>
+             <t hangText="Consumption Device (CD)">
+              A user agent, most probably a browser, on which the user consumes the actual service
+              provided by the Relying Party.  
+            </t>
+             <t hangText="Authentication Device (AD)">
+              A mobile device on which the user will authenticate the actual login.
             </t>
           </list>
         </t>
@@ -137,13 +143,17 @@ authentication. We propose to use the definition of Level of Assurance as specif
     	        	transport a user identifier from the discovery service to the OpenID Provider without 
         	    	revealing this identifier to the client.
         	    	<xref target="login_hint_token_structure" /> specifies the structure of this parameter.
+        	    	Protection of the login_hint_token's content is specified in 
+        	    	<xref target="lht_encryption_signing" />.
 				</t>
 				<t hangText="context">
 				    OPTIONAL. Interlock message to tie the consumption device and 
 				    the authentication device together.
 				    How to ensure that the message is actually shown on all relevant 
 				    devices is out of the scope of this document.
-				    Possible values and constraints are specified in <xref target="context_values" />
+				    Possible values and constraints are specified in <xref target="context_values" />.
+				    Ways to protect the integrity of the conext message are discussed 
+				    in <xref target="securing_context" />.
 				</t>
 			</list>
 		</t>
@@ -159,9 +169,6 @@ authentication. We propose to use the definition of Level of Assurance as specif
 			intended for credential validation. Identity or claim assurance is not included in this 
 			specification.
 		</t>
-	    <t>
-	    	TBD: Do we have to specify the actual methodologies here? 
-	    </t>
 	    <t>
 		    <list style="hanging">
 			    <t hangText="urn:modrna:acr:credential:loa1">
@@ -198,7 +205,7 @@ authentication. We propose to use the definition of Level of Assurance as specif
 			    </t>
 			    <t hangText="aud">
                     REQUIRED. The party to receive the token, typically the users OpenID Provider.
-                    The value SHOULD be the issuer URI of the OID as exposed 
+                    The value SHOULD be the issuer URI of the OP as exposed 
                     in the openid-configuration.
    			    </t>
 	      		<t hangText="iat"> 
@@ -219,45 +226,60 @@ authentication. We propose to use the definition of Level of Assurance as specif
    "aud": "https://babytel.com",
    "iat": 1311280970,
    "MSISDN": "5555551212"
-    }
   }
                 ]]></artwork>
 		</figure>
-    </section>
 
-    <section anchor="lht_encryption_signing" title="login_hint_token encryption and signing">
-        <t>
-	        The login_hint token MUST be encrypted using the public key of the OpenID Provider.
-        	The login_hint token MUST be signed using the private key of the discovery service.
-        </t>
-        <t>
+    	<section anchor="lht_encryption_signing" title="login_hint_token encryption and signing">
+        	<t>The login_hint token MUST be encrypted using the public key of the OpenID Provider.</t>
+        	<t>The login_hint token MUST be signed using the private key of the discovery service.</t>
+        	<t>
 TBD: add description on how to process/validate the signature
 From https://bitbucket.org /openid/mobile/issues/13/encrypted-login-hint.
 Standard mechanism is described where? --> John
-	    </t>
+		    </t>
+	    </section>
     </section>
 
     
     <section anchor="context_values" title="context">
         <t>
-TBD: in detail description of the allowed content of the context parameter.
-TBD: Add method of protection of context parameter using the OIDC request object
+	        The context parameter is a message provided by the RP an can be shown to the user 
+	        on the consumption device as well as on the authentication device as an interlock 
+	        between RP and OP. The context SHOULD be displayable by all participating parties.
+	     </t>
+	     <t>
+	        The context message MUST be plain text using the "application/x-www-form-urlencoded" 
+	        format as the authentication device in particular may have limited abilities to show text
+	        or formats.
+	      </t>
+	      <t>
+	        TBD: something about the length of the message? e.g. the message MUST be distingushable from the
+	        first 64 characters...
+	        
         </t>
+        <section anchor="securing_context" title="context security">
+	    	<t>
+				To prohibit manipulation of the context parameter the RP SHOULD use
+				the OpenID Connect Request Object.	    	
+		    </t>
+		    <t>
+			    The Request Object SHOULD be signed as specified in section 6.3.2 of <xref target="OpenID.Core"/>.
+			</t>
+			<t>
+				The Request Object MAY the encrypted as specified in section 6.3.1 of <xref target="OpenID.Core"/>. 
+			</t>
+	    </section>
     </section>
     
     <section anchor="m_t_i" title="mandatory to implement">
 	    <t>
             <list style="hanging">
                 <t hangText="acr_values">
-			       All MODRNA compliant OP's MUST accept the in <xref target="acr_values" /> 
-			       specified acr_values.
+			       All MODRNA compliant OP's MUST accept the acr_values specified in <xref target="acr_values" /> 
 			    </t>
              </list>
 		</t>
-        <t>Support for account chooser: push login_hint_token to the account chooser
-	        TBD: discussion in issue #24
-        </t>
-        <t>TBD: code flow, code id_token etc. optional</t>
     </section>
     
 
@@ -403,14 +425,15 @@ TBD: Add method of protection of context parameter using the OIDC request object
       <t>The following have contributed to the development of this specification.</t>
       <t>
         <list style="empty">
-          <t></t>
+          <t>Matthieu Verdier (matthieu.verdier@orange.com), Orange</t>
+          <t>Gonzalo Fernandez Rodriguez (gonzalo.fernandezrodriguez@telefonica.com), Telefonica</t>
         </list>
       </t>
     </section>
 
 
     <section anchor="Notices" title="Notices">
-      <t>Copyright (c) 2014 The OpenID Foundation.</t>
+      <t>Copyright (c) 2015 The OpenID Foundation.</t>
       <t>
 	The OpenID Foundation (OIDF) grants to any Contributor, developer, 
 	implementer, or other interested party a non-exclusive, royalty free, 
