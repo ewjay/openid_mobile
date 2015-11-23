@@ -381,13 +381,14 @@
 <link href="#rfc.section.3" rel="Chapter" title="3 Authentication Request"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 acr_values request values and level of assurance"/>
 <link href="#rfc.section.5" rel="Chapter" title="5 login_hint_token"/>
-<link href="#rfc.section.6" rel="Chapter" title="6 login_hint_token encryption and signing"/>
-<link href="#rfc.section.7" rel="Chapter" title="7 context"/>
-<link href="#rfc.section.8" rel="Chapter" title="8 mandatory to implement"/>
-<link href="#rfc.section.9" rel="Chapter" title="9 Security Considerations"/>
-<link href="#rfc.section.10" rel="Chapter" title="10 Privacy Considerations"/>
-<link href="#rfc.section.11" rel="Chapter" title="11 IANA Considerations"/>
-<link href="#rfc.references" rel="Chapter" title="12 Normative References"/>
+<link href="#rfc.section.5.1" rel="Chapter" title="5.1 login_hint_token encryption and signing"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 context"/>
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 context security"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 mandatory to implement"/>
+<link href="#rfc.section.8" rel="Chapter" title="8 Security Considerations"/>
+<link href="#rfc.section.9" rel="Chapter" title="9 Privacy Considerations"/>
+<link href="#rfc.section.10" rel="Chapter" title="10 IANA Considerations"/>
+<link href="#rfc.references" rel="Chapter" title="11 Normative References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgements"/>
 <link href="#rfc.appendix.B" rel="Chapter" title="B Notices"/>
 <link href="#rfc.appendix.C" rel="Chapter" title="C Document History"/>
@@ -399,7 +400,7 @@
 
   <meta name="dct.creator" content="Connotte, J. and J. Bradley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-mobile-authentication-01" />
-  <meta name="dct.issued" scheme="ISO8601" content="2015-11-10" />
+  <meta name="dct.issued" scheme="ISO8601" content="2015-11-22" />
   <meta name="dct.abstract" content="RPs are keen to use high quality authentication methods which can be provided by the MNOs. However a RP must be able to describe its demands for an authentication request and it must be able to do this interoperable." />
   <meta name="description" content="RPs are keen to use high quality authentication methods which can be provided by the MNOs. However a RP must be able to describe its demands for an authentication request and it must be able to do this interoperable." />
 
@@ -428,7 +429,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">November 10, 2015</td>
+  <td class="right">November 22, 2015</td>
 </tr>
 
     	
@@ -442,9 +443,9 @@
   <a href="#rfc.abstract">Abstract</a>
 </h1>
 <p>RPs are keen to use high quality authentication methods which can be provided by the MNOs. However a RP must be able to describe its demands for an authentication request and it must be able to do this interoperable.</p>
-<p>The Mobile Profile will specify how RP's request a certain level of  assurance for the authentication. We propose to use the definition of Level of Assurance as specified in [6] as a starting point and define respective normative ACR values.  </p>
-<p>Moreover the profile will specify an encrypted login hint to allow for the transport of identifiers to the OP.</p>
-<p>TBD: something about the context parameter</p>
+<p>The MODRNA Profile will specify how RP's request a certain level of  assurance for the authentication. We propose to use the definition of Level of Assurance as specified in [6] as a starting point and define respective normative ACR values.  </p>
+<p>In addition the profile will specify an encrypted login hint to allow for the transport of identifiers to the OP.</p>
+<p>Lastly the profile will specify an additional context parameter intended to serve as an interlock between the user's consumpution device and authentication device.</p>
 
   
   <hr class="noprint" />
@@ -458,13 +459,14 @@
 <li>3.   <a href="#rfc.section.3">Authentication Request</a></li>
 <li>4.   <a href="#rfc.section.4">acr_values request values and level of assurance</a></li>
 <li>5.   <a href="#rfc.section.5">login_hint_token</a></li>
-<li>6.   <a href="#rfc.section.6">login_hint_token encryption and signing</a></li>
-<li>7.   <a href="#rfc.section.7">context</a></li>
-<li>8.   <a href="#rfc.section.8">mandatory to implement</a></li>
-<li>9.   <a href="#rfc.section.9">Security Considerations</a></li>
-<li>10.   <a href="#rfc.section.10">Privacy Considerations</a></li>
-<li>11.   <a href="#rfc.section.11">IANA Considerations</a></li>
-<li>12.   <a href="#rfc.references">Normative References</a></li>
+<ul><li>5.1.   <a href="#rfc.section.5.1">login_hint_token encryption and signing</a></li>
+</ul><li>6.   <a href="#rfc.section.6">context</a></li>
+<ul><li>6.1.   <a href="#rfc.section.6.1">context security</a></li>
+</ul><li>7.   <a href="#rfc.section.7">mandatory to implement</a></li>
+<li>8.   <a href="#rfc.section.8">Security Considerations</a></li>
+<li>9.   <a href="#rfc.section.9">Privacy Considerations</a></li>
+<li>10.   <a href="#rfc.section.10">IANA Considerations</a></li>
+<li>11.   <a href="#rfc.references">Normative References</a></li>
 <li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgements</a></li>
 <li>Appendix B.   <a href="#rfc.appendix.B">Notices</a></li>
 <li>Appendix C.   <a href="#rfc.appendix.C">Document History</a></li>
@@ -485,7 +487,11 @@
   <dt>Mobile Network Operator (MNO)</dt>
   <dd style="margin-left: 8">A provider of wireless communication services that owns or controls the wireless network elements necessary to sell and deliver services to an end user.  </dd>
   <dt>Mobile Station International Subscriber Directory Number (MSISDN)</dt>
-  <dd style="margin-left: 8">A telephone number uniquely identifying a subscription in a mobile network. T </dd>
+  <dd style="margin-left: 8">A telephone number uniquely identifying a subscription in a mobile network.  </dd>
+  <dt>Consumption Device (CD)</dt>
+  <dd style="margin-left: 8">A user agent, most probably a browser, on which the user consumes the actual service provided by the Relying Party.  </dd>
+  <dt>Authentication Device (AD)</dt>
+  <dd style="margin-left: 8">A mobile device on which the user will authenticate the actual login.  </dd>
 </dl>
 
 <p> </p>
@@ -500,9 +506,9 @@
   <dt>acr_values</dt>
   <dd style="margin-left: 8">REQUIRED. For MODRNA the parameter is REQUIRED to enable the Relying Party to indicate a MODRNA conform authentication request.  Allowed values are defined in <a href="#acr_values">Section 4</a> </dd>
   <dt>login_hint_token</dt>
-  <dd style="margin-left: 8">OPTIONAL. The login_hint_token is used to transport a user identifier from the discovery service to the OpenID Provider without revealing this identifier to the client.  <a href="#login_hint_token_structure">Section 5</a> specifies the structure of this parameter.  </dd>
+  <dd style="margin-left: 8">OPTIONAL. The login_hint_token is used to transport a user identifier from the discovery service to the OpenID Provider without revealing this identifier to the client.  <a href="#login_hint_token_structure">Section 5</a> specifies the structure of this parameter.  Protection of the login_hint_token's content is specified in <a href="#lht_encryption_signing">Section 5.1</a>.  </dd>
   <dt>context</dt>
-  <dd style="margin-left: 8">OPTIONAL. Interlock message to tie the consumption device and the authentication device together.  How to ensure that the message is actually shown on all relevant devices is out of the scope of this document.  Possible values and constraints are specified in <a href="#context_values">Section 7</a> </dd>
+  <dd style="margin-left: 8">OPTIONAL. Interlock message to tie the consumption device and the authentication device together.  How to ensure that the message is actually shown on all relevant devices is out of the scope of this document.  Possible values and constraints are specified in <a href="#context_values">Section 6</a>.  Ways to protect the integrity of the conext message are discussed in <a href="#securing_context">Section 6.1</a>.  </dd>
 </dl>
 
 <p> </p>
@@ -510,7 +516,6 @@
 <p id="rfc.section.4.p.1">The acr_values reflect the level of assurance as specified in <a href="#ISO.29115">ISO 29115</a> <cite title="NONE">[ISO.29115]</cite>.  </p>
 <p id="rfc.section.4.p.2">A urn is used to be able to register to IANA.</p>
 <p id="rfc.section.4.p.3">It is important to note that the acr_values specified in this profile are only intended for credential validation. Identity or claim assurance is not included in this specification.  </p>
-<p id="rfc.section.4.p.4">TBD: Do we have to specify the actual methodologies here? </p>
 <p/>
 
 <dl>
@@ -530,9 +535,9 @@
 
 <dl>
   <dt>iss</dt>
-  <dd style="margin-left: 8">REQUIRED. The party creating the token.  This value MUST be used to obtain the JWK file required to validate the tokens's signature (see <a href="#lht_encryption_signing">Section 6</a>).  </dd>
+  <dd style="margin-left: 8">REQUIRED. The party creating the token.  This value MUST be used to obtain the JWK file required to validate the tokens's signature (see <a href="#lht_encryption_signing">Section 5.1</a>).  </dd>
   <dt>aud</dt>
-  <dd style="margin-left: 8">REQUIRED. The party to receive the token, typically the users OpenID Provider.  The value SHOULD be the issuer URI of the OID as exposed in the openid-configuration.  </dd>
+  <dd style="margin-left: 8">REQUIRED. The party to receive the token, typically the users OpenID Provider.  The value SHOULD be the issuer URI of the OP as exposed in the openid-configuration.  </dd>
   <dt>iat</dt>
   <dd style="margin-left: 8">REQUIRED. When the token was issued.  </dd>
   <dt>MSISDN</dt>
@@ -547,33 +552,37 @@
    "aud": "https://babytel.com",
    "iat": 1311280970,
    "MSISDN": "5555551212"
-    }
   }
                 </pre>
-<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#lht_encryption_signing" id="lht_encryption_signing">login_hint_token encryption and signing</a></h1>
-<p id="rfc.section.6.p.1">The login_hint token MUST be encrypted using the public key of the OpenID Provider.  The login_hint token MUST be signed using the private key of the discovery service.  </p>
-<p id="rfc.section.6.p.2">TBD: add description on how to process/validate the signature From https://bitbucket.org /openid/mobile/issues/13/encrypted-login-hint.  Standard mechanism is described where? --&gt; John </p>
-<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#context_values" id="context_values">context</a></h1>
-<p id="rfc.section.7.p.1">TBD: in detail description of the allowed content of the context parameter.  TBD: Add method of protection of context parameter using the OIDC request object </p>
-<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#m_t_i" id="m_t_i">mandatory to implement</a></h1>
+<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#lht_encryption_signing" id="lht_encryption_signing">login_hint_token encryption and signing</a></h1>
+<p id="rfc.section.5.1.p.1">The login_hint token MUST be encrypted using the public key of the OpenID Provider.</p>
+<p id="rfc.section.5.1.p.2">The login_hint token MUST be signed using the private key of the discovery service.</p>
+<p id="rfc.section.5.1.p.3">TBD: add description on how to process/validate the signature From https://bitbucket.org /openid/mobile/issues/13/encrypted-login-hint.  Standard mechanism is described where? --&gt; John </p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#context_values" id="context_values">context</a></h1>
+<p id="rfc.section.6.p.1">The context parameter is a message provided by the RP an can be shown to the user on the consumption device as well as on the authentication device as an interlock between RP and OP. The context SHOULD be displayable by all participating parties.  </p>
+<p id="rfc.section.6.p.2">The context message MUST be plain text using the "application/x-www-form-urlencoded" format as the authentication device in particular may have limited abilities to show text or formats.  </p>
+<p id="rfc.section.6.p.3">TBD: something about the length of the message? e.g. the message MUST be distingushable from the first 64 characters...  </p>
+<h1 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> <a href="#securing_context" id="securing_context">context security</a></h1>
+<p id="rfc.section.6.1.p.1">To prohibit manipulation of the context parameter the RP SHOULD use the OpenID Connect Request Object.  </p>
+<p id="rfc.section.6.1.p.2">The Request Object SHOULD be signed as specified in section 6.3.2 of <a href="#OpenID.Core">[OpenID.Core]</a>.  </p>
+<p id="rfc.section.6.1.p.3">The Request Object MAY the encrypted as specified in section 6.3.1 of <a href="#OpenID.Core">[OpenID.Core]</a>.  </p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#m_t_i" id="m_t_i">mandatory to implement</a></h1>
 <p/>
 
 <dl>
   <dt>acr_values</dt>
-  <dd style="margin-left: 8">All MODRNA compliant OP's MUST accept the in <a href="#acr_values">Section 4</a> specified acr_values.  </dd>
+  <dd style="margin-left: 8">All MODRNA compliant OP's MUST accept the acr_values specified in <a href="#acr_values">Section 4</a> </dd>
 </dl>
 
 <p> </p>
-<p id="rfc.section.8.p.2">Support for account chooser: push login_hint_token to the account chooser TBD: discussion in issue #24 </p>
-<p id="rfc.section.8.p.3">TBD: code flow, code id_token etc. optional</p>
-<h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#security_considerations" id="security_considerations">Security Considerations</a></h1>
+<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#security_considerations" id="security_considerations">Security Considerations</a></h1>
+<p id="rfc.section.8.p.1">TBD</p>
+<h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#privacy_considerations" id="privacy_considerations">Privacy Considerations</a></h1>
 <p id="rfc.section.9.p.1">TBD</p>
-<h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#privacy_considerations" id="privacy_considerations">Privacy Considerations</a></h1>
-<p id="rfc.section.10.p.1">TBD</p>
-<h1 id="rfc.section.11"><a href="#rfc.section.11">11.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
-<p id="rfc.section.11.p.1">This document makes no requests of IANA.</p>
-<p id="rfc.section.11.p.2">TBD: Find out about how to correctly add entries to IANA for: https://www.iana.org/assignment/loa-profiles/loa-profiles.xhtml </p>
-<h1 id="rfc.references"><a href="#rfc.references">12.</a> Normative References</h1>
+<h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
+<p id="rfc.section.10.p.1">This document makes no requests of IANA.</p>
+<p id="rfc.section.10.p.2">TBD: Find out about how to correctly add entries to IANA for: https://www.iana.org/assignment/loa-profiles/loa-profiles.xhtml </p>
+<h1 id="rfc.references"><a href="#rfc.references">11.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
@@ -637,12 +646,13 @@
 <p/>
 
 <ul class="empty">
-  <li/>
+  <li>Matthieu Verdier (matthieu.verdier@orange.com), Orange</li>
+  <li>Gonzalo Fernandez Rodriguez (gonzalo.fernandezrodriguez@telefonica.com), Telefonica</li>
 </ul>
 
 <p> </p>
 <h1 id="rfc.appendix.B"><a href="#rfc.appendix.B">Appendix B.</a> <a href="#Notices" id="Notices">Notices</a></h1>
-<p id="rfc.section.B.p.1">Copyright (c) 2014 The OpenID Foundation.</p>
+<p id="rfc.section.B.p.1">Copyright (c) 2015 The OpenID Foundation.</p>
 <p id="rfc.section.B.p.2">The OpenID Foundation (OIDF) grants to any Contributor, developer, implementer, or other interested party a non-exclusive, royalty free, worldwide copyright license to reproduce, prepare derivative works from, distribute, perform and display, this Implementers Draft or Final Specification solely for the purposes of (i) developing specifications, and (ii) implementing Implementers Drafts and Final Specifications based on such documents, provided that attribution be made to the OIDF as the source of the material, but that such attribution does not indicate an endorsement by the OIDF.  </p>
 <p id="rfc.section.B.p.3">The technology described in this specification was made available from contributions from various sources, including members of the OpenID Foundation and others.  Although the OpenID Foundation has taken steps to help ensure that the technology is available for distribution, it takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this specification or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any independent effort to identify any such rights.  The OpenID Foundation and the contributors to this specification make no (and hereby expressly disclaim any) warranties (express, implied, or otherwise), including implied warranties of merchantability, non-infringement, fitness for a particular purpose, or title, related to this specification, and the entire risk as to implementing this specification is assumed by the implementer.  The OpenID Intellectual Property Rights policy requires contributors to offer a patent promise not to assert certain patent claims against other contributors and against implementers.  The OpenID Foundation invites any interested party to bring to its attention any copyrights, patents, patent applications, or other proprietary rights that may cover technology that may be required to practice this specification.  </p>
 <h1 id="rfc.appendix.C"><a href="#rfc.appendix.C">Appendix C.</a> <a href="#History" id="History">Document History</a></h1>
