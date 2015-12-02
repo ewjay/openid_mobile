@@ -130,7 +130,8 @@ authentication. We propose to use the definition of Level of Assurance as specif
 			MODRNA supports all request parameters as specified in 
 			OpenID Connect Core 3.1.2.1 <xref target="OpenID.Core"/>
 		</t>
-		<t>In addtion the following parameters are defined.</t>
+		<t>In addtion the following parameters are defined or made REQUIRED for clients
+		to send. All additional paramaters are REQUIRED for IdP to support.</t>
 		<t>
 			<list style="hanging">
 				<t hangText="acr_values">
@@ -159,38 +160,88 @@ authentication. We propose to use the definition of Level of Assurance as specif
 		</t>
 	</section>
     <section anchor="acr_values" title="acr_values request values and level of assurance">
+        <t> The service terms of service will specify a trust framework for Identity Providers 
+             to follow for general business processes and other related account security 
+             issues.
+        </t>
         <t>
-	        The acr_values reflect the level of assurance as
-	    	specified in <xref target="ISO.29115">ISO 29115</xref>.
+	        This specification defines initial <spanx style="verb">acr</spanx> values
+	        that clients can use to request the IdP mitigate specific authentication
+	        risks.
 	    </t>
-	    <t>A urn is used to be able to register to IANA.</t>
-		<t>
-			It is important to note that the acr_values specified in this profile are only 
-			intended for credential validation. Identity or claim assurance is not included in this 
-			specification.
-		</t>
+	    <t>In addition the initial set of <spanx style="verb">acr</spanx> values 
+	       contain no requirements for the IdP to make any guarente of identity proofing 
+	       the subject of the authentication beyond what is required by business practices
+	       for account recovery, and customer service as defined in the trust framework.
+	       Prepaid anonymous users are included 
+	       in responses conforming to these  values.
+	       </t>
+	    <t>The IANA <xref target="RFC6711">Level of Assurance (LoA) Profiles</xref>
+	    Registry will be used to register the short names for these LoA, and any future
+	    additional LoA.
+	    </t>
+	    
 	    <t>
 		    <list style="hanging">
-			    <t hangText="urn:modrna:acr:credential:loa1">
-				    Litte or no confidence in the asserted identifier. 
-				    No verification of the posted credentials is performed.
+			    <t hangText="http://schemas.openid.net/policies/mod/phishing-resistant">
+			    Short-Name: mod-pr
+			    <vspace/>
+			    This mitigates phishing of credentials.
+			    <vspace/> 
+				    The user is authenticated via possession of a device (phone) containing a secret key. 
+The user is required to provide no additional authentication information to use the key.
+The user is interactively prompted to confirm the authentication. 
+The storage mechanism for the secret key and other relevant authentication information is returned via the <spanx style="verb">amr</spanx>.
+The user is not re-prompted if prompt is not login and max_age is more than the elapsed time since the user last authenticated at this acr
 				    
 			    </t>
-			    <t hangText="urn:modrna:acr:credential:loa2">
-				    Some confidence in the asserted identifier.
-				    Single factor authentication is performed.
+			    <t hangText="http://schemas.openid.net/policies/mod/multi-factor">
+			    Short-Name: mod-mf
+			    <vspace/>
+			    This mitigates phishing and proves the device is recently in the possession of
+			    the authorised user via pin or device unlock.
+			    <vspace/> 
+				    The user is authenticated via possession of a device (phone) containing a secret key. 
+The user is required to provide additional authentication information via a biometric, pin code or other appropriate factors such as bluetooth paring with a watch.
+Given suitable Mobile device management unlocking the device is also sufficient along with user confirmation of desire to authenticate.
+The storage mechanism for the secret key and other relevant authentication information is returned via the <spanx style="verb">amr</spanx> value.
+The user is not re-prompted if prompt is not login and max_age is more than the elapsed time since the user last authenticated at this acr,
 			    </t>
-			    <t hangText="urn:modrna:acr:credential:loa3">
-				    High confidence in the asserted identifier.
-				    Multi-factor authentication shall be used.
+			    <t hangText="http://schemas.openid.net/policies/mod/multi-factor-physical">
+			    Short-Name: mod-mfp
+			     <vspace/> 
+			    This mitigates phishing and proves the device is currently in the possession of
+			    the authorised user verified by a biometric.
+			    <vspace/>
+				    The user is authenticated via possession of a device (phone) containing a secret key.
+The user is required to provide additional authentication information via a local biometric, 
+or a remote paring with a biometric capable device.  If an external device like a EKG band
+is used for the biometric the user must still be prompted for consent on the AD.
+The Biometric may be captured as part of the consent flow.
+
 			    </t>
-			    <t hangText="urn:modrna:acr:credential:loa4">
-				    Very high confidence in the asserted identifier.
-				    The use of tamper-resistant hardware devices for the storage of all 
-				    cryptrographic keys.
-			    </t>
+			    
 			</list>
-		</t>		    
+	    </t>
+			<t>Identity Providers MUST recognize and process both the long URI and short 
+			registered forms of the authentication context strings.</t>
+			
+			<t>The OP MUST support receiving <spanx style="verb">acr_values</spanx> as a
+			space separated list in order of preference per 
+			 OpenID Connect Core 3.1.2.1 <xref target="OpenID.Core"/>.
+		    </t>
+		    
+		    <t>The OP MUST also support receiving <spanx style="verb">acr</spanx> as a
+			as a claim request in a signed request per 
+			 OpenID Connect Core 5.5.1 <xref target="OpenID.Core"/>.
+		    </t>
+		    <t>Depending on the authentication capabilities of the users device,
+		    the OP must attempt to match the highest requested acr value that the 
+		    AD is capable of. 
+		    If the acr claim is not marked as essential in the request object, the OP 
+		    may return another acr value that the device is capable of rather than an error 
+		    if it cannot match any of the requested acr_values.
+		    </t>  
     </section>
     
     <section anchor="login_hint_token_structure" title="login_hint_token">
@@ -319,6 +370,7 @@ Standard mechanism is described where? --> John
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.7517"?>
       <?rfc include="reference.RFC.7519"?>
+      <?rfc include="reference.RFC.6711"?>
 
 
       
