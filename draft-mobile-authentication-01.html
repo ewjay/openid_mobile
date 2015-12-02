@@ -5,7 +5,7 @@
 <head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
   <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 
-  <title>OpenID Connect Mobile Authentication Profile 1.0</title>
+  <title>OpenID Connect MODRNA Authentication Profile 1.0</title>
 
   <style type="text/css" title="Xml2Rfc (sans serif)">
   /*<![CDATA[*/
@@ -383,7 +383,6 @@
 <link href="#rfc.section.5" rel="Chapter" title="5 login_hint_token"/>
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 login_hint_token encryption and signing"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 context"/>
-<link href="#rfc.section.6.1" rel="Chapter" title="6.1 context security"/>
 <link href="#rfc.section.7" rel="Chapter" title="7 mandatory to implement"/>
 <link href="#rfc.section.8" rel="Chapter" title="8 Security Considerations"/>
 <link href="#rfc.section.9" rel="Chapter" title="9 Privacy Considerations"/>
@@ -402,9 +401,9 @@
 
   <meta name="dct.creator" content="Connotte, J. and J. Bradley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-mobile-authentication-01" />
-  <meta name="dct.issued" scheme="ISO8601" content="2015-12-01" />
-  <meta name="dct.abstract" content="RPs are keen to use high quality authentication methods which can be provided by the MNOs. However a RP must be able to describe its demands for an authentication request and it must be able to do this interoperable." />
-  <meta name="description" content="RPs are keen to use high quality authentication methods which can be provided by the MNOs. However a RP must be able to describe its demands for an authentication request and it must be able to do this interoperable." />
+  <meta name="dct.issued" scheme="ISO8601" content="2015-12-02" />
+  <meta name="dct.abstract" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
+  <meta name="description" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
 
 </head>
 
@@ -431,23 +430,23 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">December 01, 2015</td>
+  <td class="right">December 02, 2015</td>
 </tr>
 
     	
     </tbody>
   </table>
 
-  <p class="title">OpenID Connect Mobile Authentication Profile 1.0<br />
+  <p class="title">OpenID Connect MODRNA Authentication Profile 1.0<br />
   <span class="filename">draft-mobile-authentication-01</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>RPs are keen to use high quality authentication methods which can be provided by the MNOs. However a RP must be able to describe its demands for an authentication request and it must be able to do this interoperable.</p>
-<p>The MODRNA Profile will specify how RP's request a certain level of  assurance for the authentication. We propose to use the definition of Level of Assurance as specified in [6] as a starting point and define respective normative ACR values.  </p>
-<p>In addition the profile will specify an encrypted login hint to allow for the transport of identifiers to the OP.</p>
-<p>Lastly the profile will specify an additional context parameter intended to serve as an interlock between the user's consumpution device and authentication device.</p>
+<p>RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  </p>
+<p>The MODRNA Authentication Profile will specify how RP's request a certain level of assurance for the authentication.  </p>
+<p>In addition, the profile will specify an encrypted login hint to allow for the transport of user identifiers to the OP in a privacy preserving fashion.  </p>
+<p>Lastly, the profile will specify an additional messge parameter intended to serve as an interlock between the user's consumpution device and authentication device.  </p>
 
   
   <hr class="noprint" />
@@ -463,8 +462,7 @@
 <li>5.   <a href="#rfc.section.5">login_hint_token</a></li>
 <ul><li>5.1.   <a href="#rfc.section.5.1">login_hint_token encryption and signing</a></li>
 </ul><li>6.   <a href="#rfc.section.6">context</a></li>
-<ul><li>6.1.   <a href="#rfc.section.6.1">context security</a></li>
-</ul><li>7.   <a href="#rfc.section.7">mandatory to implement</a></li>
+<li>7.   <a href="#rfc.section.7">mandatory to implement</a></li>
 <li>8.   <a href="#rfc.section.8">Security Considerations</a></li>
 <li>9.   <a href="#rfc.section.9">Privacy Considerations</a></li>
 <li>10.   <a href="#rfc.section.10">IANA Considerations</a></li>
@@ -480,7 +478,7 @@
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#Introduction" id="Introduction">Introduction</a></h1>
-<p id="rfc.section.1.p.1">OpenID Connect Mobile Authentication Profile 1.0 is a profile of the <a href="#OpenID.Core">OpenID Connect Core 1.0</a> <cite title="NONE">[OpenID.Core]</cite> specification that defines common authentication contexts to be used across MNO and Mandatory to Implement features for MNO to assure interoperability of clients across MNO.  </p>
+<p id="rfc.section.1.p.1">OpenID Connect MODRNA Authentication Profile 1.0 is a profile of the <a href="#OpenID.Core">OpenID Connect Core 1.0</a> <cite title="NONE">[OpenID.Core]</cite> specification that defines common authentication contexts and further extensions to OpenID Connect Core to be used when requesting authentication from MNO's. Moreover it defines Mandatory to Implement features for MNOs to assure interoperability of clients across MNO's.  </p>
 <h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> <a href="#rnc" id="rnc">Requirements Notation and Conventions</a></h1>
 <p id="rfc.section.1.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
 <p id="rfc.section.1.1.p.2">Throughout this document, values are quoted to indicate that they are to be taken literally. When using these values in protocol messages, the quotes MUST NOT be used as part of the value.</p>
@@ -500,19 +498,19 @@
 
 <p> </p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#overview" id="overview">Overview</a></h1>
-<p id="rfc.section.2.p.1">This specification serves as a profile based on OpenID Connect Core <a href="#OpenID.Core">[OpenID.Core]</a>.  It defines additional request parameters in the Authentication Request.  It also specifies authentication class reference values based on the ISO/IEC DIS 29115 <a href="#ISO.29115">[ISO.29115]</a> to be used for the acr_values request parameter </p>
+<p id="rfc.section.2.p.1">This specification serves as a profile based on OpenID Connect Core <a href="#OpenID.Core">[OpenID.Core]</a>.  It defines additional request parameters in the Authentication Request.  It also specifies authentication class reference values based on the ISO/IEC DIS 29115 <a href="#ISO.29115">[ISO.29115]</a> to be used for the "acr_values" request parameter </p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#auth_request" id="auth_request">Authentication Request</a></h1>
 <p id="rfc.section.3.p.1">MODRNA supports all request parameters as specified in OpenID Connect Core 3.1.2.1 <a href="#OpenID.Core">[OpenID.Core]</a> </p>
-<p id="rfc.section.3.p.2">In addtion the following parameters are defined or made REQUIRED for clients to send. All additional paramaters are REQUIRED for IdP to support.</p>
+<p id="rfc.section.3.p.2">In addition the following parameters are defined or made REQUIRED for clients to send. All additional paramaters are REQUIRED for OP to support.</p>
 <p/>
 
 <dl>
   <dt>acr_values</dt>
-  <dd style="margin-left: 8">REQUIRED. For MODRNA the parameter is REQUIRED to enable the Relying Party to indicate a MODRNA conform authentication request.  Allowed values are defined in <a href="#acr_values">Section 4</a> </dd>
+  <dd style="margin-left: 8">REQUIRED. In <a href="#OpenID.Core">[OpenID.Core]</a> this parameter is specified as OPTIONAL.  For MODRNA this parameter is REQUIRED in order to enable the Relying Party to indicate a MODRNA conform authentication request to the OP.  Allowed values are defined in <a href="#acr_values">Section 4</a>.  </dd>
   <dt>login_hint_token</dt>
-  <dd style="margin-left: 8">OPTIONAL. The login_hint_token is used to transport a user identifier from the discovery service to the OpenID Provider without revealing this identifier to the client.  <a href="#login_hint_token_structure">Section 5</a> specifies the structure of this parameter.  Protection of the login_hint_token's content is specified in <a href="#lht_encryption_signing">Section 5.1</a>.  </dd>
+  <dd style="margin-left: 8">OPTIONAL. This is a new parameter. The login_hint_token is used to transport a user identifier from the discovery service to the OpenID Provider without revealing this identifier to the client.  <a href="#login_hint_token_structure">Section 5</a> specifies the structure of this parameter.  Protection of the login_hint_token's content is specified in <a href="#lht_encryption_signing">Section 5.1</a>.  </dd>
   <dt>context</dt>
-  <dd style="margin-left: 8">OPTIONAL. Interlock message to tie the consumption device and the authentication device together.  How to ensure that the message is actually shown on all relevant devices is out of the scope of this document.  Possible values and constraints are specified in <a href="#context_values">Section 6</a>.  Ways to protect the integrity of the conext message are discussed in <a href="#securing_context">Section 6.1</a>.  </dd>
+  <dd style="margin-left: 8">TDB: There is a request from GSMA to call this "binding_message".  OPTIONAL. This is a new parameter. An Interlock message to tie the consumption device and the authentication device together.  How to ensure that the message is actually shown on all relevant devices is out of the scope of this document.  Possible values and constraints are specified in <a href="#context_values">Section 6</a>.  Ways to protect the integrity of the context message are discussed in <a href="#security_considerations">Section 8</a>.  </dd>
 </dl>
 
 <p> </p>
@@ -538,17 +536,18 @@
 <p id="rfc.section.4.p.8">The OP MUST also support receiving <samp>acr</samp> as a as a claim request in a signed request per OpenID Connect Core 5.5.1 <a href="#OpenID.Core">[OpenID.Core]</a>.  </p>
 <p id="rfc.section.4.p.9">Depending on the authentication capabilities of the users device, the OP must attempt to match the highest requested acr value that the AD is capable of.  If the acr claim is not marked as essential in the request object, the OP may return another acr value that the device is capable of rather than an error if it cannot match any of the requested acr_values.  </p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#login_hint_token_structure" id="login_hint_token_structure">login_hint_token</a></h1>
-<p id="rfc.section.5.p.1">The <samp>login_hint_token</samp> produced by the Discovery service is a Json Web Token <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite> that contains the following elements: </p>
+<p id="rfc.section.5.p.1">The <samp>login_hint_token</samp> produced by the Discovery service is an encrypted Json Web Token <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite> that contains a user hint for a certain OP. This token is typically created by a MODRNA discovery service <a href="#E.164">[E.164]</a>, if a user has entered a MSISDN during discovery process.  The <samp>login_hint_token</samp> SHALL be used by the client as login hint with the particular OP.  </p>
+<p id="rfc.section.5.p.2">The <samp>login_hint_token</samp> has the following elements: </p>
 
 <dl>
   <dt>iss</dt>
   <dd style="margin-left: 8">REQUIRED. The party creating the token.  This value MUST be used to obtain the <a href="#RFC7517">JWK</a> <cite title="NONE">[RFC7517]</cite> file required to validate the tokens's signature (see <a href="#lht_encryption_signing">Section 5.1</a>).  </dd>
   <dt>aud</dt>
-  <dd style="margin-left: 8">REQUIRED. The party to receive the token, typically the users OpenID Provider.  The value SHOULD be the issuer URI of the OP as exposed in the openid-configuration.  </dd>
+  <dd style="margin-left: 8">REQUIRED. The party to receive the token, typically the users OpenID Provider.  The value MUST be the issuer URI of the OP as exposed in the openid-configuration.  </dd>
   <dt>iat</dt>
   <dd style="margin-left: 8">REQUIRED. When the token was issued.  </dd>
   <dt>MSISDN</dt>
-  <dd style="margin-left: 8">REQUIRED. NUMERIC The Subscriber identifier TBD: according to what standard? - E.123 E.164 </dd>
+  <dd style="margin-left: 8">REQUIRED. NUMERIC The Subscriber identifier formated according to ITU-T recommendation <a href="#E.164">[E.164]</a> </dd>
 </dl>
 
 <p> </p>
@@ -558,23 +557,20 @@
    "iss": "https://discovery-provider.com",
    "aud": "https://babytel.com",
    "iat": 1311280970,
-   "MSISDN": "5555551212"
+   "MSISDN": "+1999550123"
   }
                 </pre>
 <h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#lht_encryption_signing" id="lht_encryption_signing">login_hint_token encryption and signing</a></h1>
-<p id="rfc.section.5.1.p.1">The login_hint token MUST be signed using the private key of the discovery service.</p>
-<p id="rfc.section.5.1.p.2">The login_hint token MUST be encrypted using the public key of the OpenID Provider.</p>
-<p id="rfc.section.5.1.p.3">It is best practice to sign then encrypt tokens, as signatures over encrypted information may leak information in the envelope, and may not be considered legally valid.</p>
-<p id="rfc.section.5.1.p.4">For an example of a nested JWT that is signed and then encrypted see Appendix 2 of <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite>.  TBD: add description on how to process/validate the signature From https://bitbucket.org /openid/mobile/issues/13/encrypted-login-hint.  Standard mechanism is described where? --&gt; John </p>
-<p id="rfc.section.5.1.p.5">NOTE:  The <samp>login_hint_token</samp> is opaque to the client by design.  The Authorization server may produce <samp>login_hint_token</samp> tokens in other formats for use in Account Chooser or other discovery profiles, as long as they are confidentiality protected from the client. </p>
+<p id="rfc.section.5.1.p.1">The login_hint token MUST be encrypted using the public key of the OpenID Provider designated by the claim "aud". The respective public key is obtained using the rules defined in OpenID Connect Discovery.  </p>
+<p id="rfc.section.5.1.p.2">TDB: do we need a reference to some standard here? In the first step, the openid-configuration is retrieved by appending /.well-kown/openid-configuration the value of the "aud" claim. In the next step, the claim "jwks_uri" is used to retrieve the OP's key set.  </p>
+<p id="rfc.section.5.1.p.3">The login_hint token MUST be signed using the private key of the discovery service.</p>
+<p id="rfc.section.5.1.p.4">It is best practice to sign then encrypt tokens, as signatures over encrypted information may leak information in the envelope, and may not be considered legally valid.</p>
+<p id="rfc.section.5.1.p.5">For an example of a nested JWT that is signed and then encrypted see Appendix 2 of <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite>.  </p>
+<p id="rfc.section.5.1.p.6">NOTE:  The <samp>login_hint_token</samp> is opaque to the client by design.  The Authorization server may produce <samp>login_hint_token</samp> tokens in other formats for use in Account Chooser or other discovery profiles, as long as they are confidentiality protected from the client. </p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#context_values" id="context_values">context</a></h1>
-<p id="rfc.section.6.p.1">The context parameter is a message provided by the RP an can be shown to the user on the consumption device as well as on the authentication device as an interlock between RP and OP. The context SHOULD be displayable by all participating parties.  </p>
+<p id="rfc.section.6.p.1">The context parameter is a message provided by the RP intended to be shown to the user on the consumption device as well as on the authentication device as an interlock between RP and OP. The context SHOULD be displayable by all participating parties.  </p>
 <p id="rfc.section.6.p.2">The context message MUST be plain text using the "application/x-www-form-urlencoded" format as the authentication device in particular may have limited abilities to show text or formats.  </p>
 <p id="rfc.section.6.p.3">TBD: something about the length of the message? e.g. the message MUST be distingushable from the first 64 characters...  </p>
-<h1 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> <a href="#securing_context" id="securing_context">context security</a></h1>
-<p id="rfc.section.6.1.p.1">To prohibit manipulation of the context parameter the RP SHOULD use the OpenID Connect Request Object.  </p>
-<p id="rfc.section.6.1.p.2">The Request Object SHOULD be signed as specified in section 6.3.2 of <a href="#OpenID.Core">[OpenID.Core]</a>.  </p>
-<p id="rfc.section.6.1.p.3">The Request Object MAY the encrypted as specified in section 6.3.1 of <a href="#OpenID.Core">[OpenID.Core]</a>.  </p>
 <h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#m_t_i" id="m_t_i">mandatory to implement</a></h1>
 <p/>
 
@@ -585,12 +581,14 @@
 
 <p> </p>
 <h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#security_considerations" id="security_considerations">Security Considerations</a></h1>
-<p id="rfc.section.8.p.1">TBD</p>
+<p id="rfc.section.8.p.1">The login hint token SHOULD be digitally signed by the issuer.  This ensures authenticity of the data and reduces the threat of an injedtion attack.  </p>
+<p id="rfc.section.8.p.2">To prevent modification of the context message value, the RP SHOULD send the parameter to the OP using a signed OpenID Connect Request Object (section 6.3.2 of <a href="#OpenID.Core">[OpenID.Core]</a>).  </p>
+<p id="rfc.section.8.p.3">The OP MUST sanitize the context message value in order to prevent injection attacks.  </p>
+<p id="rfc.section.8.p.4">The message being displayed on the consumption and authentication device SHOULD contain a random value (e.g. an authorization code) of reasonable entropy.  This is a countermeasure against session fixation type attacks, where the attacker initiates an authentication process on a consumption device under his control, which will result in the same text being displayed on the authentication device as for legitimate transactions.  </p>
 <h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#privacy_considerations" id="privacy_considerations">Privacy Considerations</a></h1>
-<p id="rfc.section.9.p.1">TBD</p>
+<p id="rfc.section.9.p.1">The login hint token is encrypted in order to protect eht user's MSISN from being revealed to the client unintentionally.  </p>
 <h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
-<p id="rfc.section.10.p.1">This document makes no requests of IANA.</p>
-<p id="rfc.section.10.p.2">TBD: Find out about how to correctly add entries to IANA for: https://www.iana.org/assignment/loa-profiles/loa-profiles.xhtml </p>
+<p id="rfc.section.10.p.1">TBD: Find out about how to correctly add entries to IANA for: https://www.iana.org/assignment/loa-profiles/loa-profiles.xhtml </p>
 <h1 id="rfc.references"><a href="#rfc.references">11.</a> References</h1>
 <h1 id="rfc.references.1"><a href="#rfc.references.1">11.1.</a> Normative References</h1>
 <table>
@@ -630,6 +628,12 @@
 <h1 id="rfc.references.2"><a href="#rfc.references.2">11.2.</a> Informative References</h1>
 <table>
   <tbody>
+    <tr>
+      <td class="reference">
+        <b id="E.164">[E.164]</b>
+      </td>
+      <td class="top"><a title="ITU-T">N., </a>, "<a>Recommendation ITU-T E.164</a>", November 2010.</td>
+    </tr>
     <tr>
       <td class="reference">
         <b id="ISO.29115">[ISO.29115]</b>
