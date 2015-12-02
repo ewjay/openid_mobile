@@ -23,8 +23,8 @@
   <?rfc private="Draft" ?>
   
   <front>
-    <title abbrev="OIDC Mobile Authentication Profile 1.0">
-            OpenID Connect Mobile Authentication Profile 1.0</title>
+    <title abbrev="OIDC MODRNA Authentication Profile 1.0">
+            OpenID Connect MODRNA Authentication Profile 1.0</title>
 
 
     <author fullname="Joerg Connotte" initials="J." surname="Connotte">
@@ -44,25 +44,31 @@
 
 
 
-    <date day="01" month="Dec" year="2015" />
+    <date day="02" month="Dec" year="2015" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
     <abstract>
     
-<t>RPs are keen to use high quality authentication methods which can be provided by the 
-MNOs. However a RP must be able to describe its demands for an authentication request 
-and it must be able to do this interoperable.</t>
-
-<t>The MODRNA Profile will specify how RP's request a certain level of  assurance for the 
-authentication. We propose to use the definition of Level of Assurance as specified in 
-[6] as a starting point and define respective normative ACR values.
+<t>RPs are keen to use high quality authentication methods, which can be provided by 
+	Mobile Network Operators (MNO). 
+	However a RP must be able to describe its demands for an authentication request 
+	and it must be able to do this in an interoperable way.
 </t>
-<t>In addition the profile will specify an encrypted login hint to 
-	allow for the transport of identifiers to the OP.</t>
-<t>Lastly the profile will specify an additional context parameter intended
+<t>
+	The MODRNA Authentication Profile will specify how RP's request a certain level of 
+	assurance for the authentication.
+</t>
+<t>
+	In addition, the profile will specify an encrypted login hint to 
+	allow for the transport of user identifiers to the OP in a privacy preserving 
+	fashion.
+</t>
+<t>
+	Lastly, the profile will specify an additional messge parameter intended
 	to serve as an interlock between the user's consumpution device and 
-	authentication device.</t>
+	authentication device.
+</t>
 
     </abstract>
   </front>
@@ -71,10 +77,13 @@ authentication. We propose to use the definition of Level of Assurance as specif
 
     <section anchor="Introduction" title="Introduction">
 
-      <t>OpenID Connect Mobile Authentication Profile 1.0 is a profile of the 
-      <xref target="OpenID.Core">OpenID Connect Core 1.0</xref> specification
-      that defines common authentication contexts to be used across MNO and Mandatory to 
-      Implement features for MNO to assure interoperability of clients across MNO.
+      <t>
+	    OpenID Connect MODRNA Authentication Profile 1.0 is a profile of the 
+      	<xref target="OpenID.Core">OpenID Connect Core 1.0</xref> specification
+      	that defines common authentication contexts and further extensions to OpenID
+      	Connect Core to be used when requesting authentication from MNO's. Moreover it 
+      	defines Mandatory to Implement features for MNOs to assure interoperability of clients across 
+      	MNO's.
       </t>
 
       <section anchor="rnc" title="Requirements Notation and Conventions">
@@ -120,7 +129,7 @@ authentication. We propose to use the definition of Level of Assurance as specif
 	    It defines additional request parameters in the Authentication Request.
 	    It also specifies authentication class reference values based on the
 	    ISO/IEC DIS 29115 <xref target="ISO.29115"/> to be used for the 
-	    acr_values request parameter
+	    "acr_values" request parameter
 	</t>
 
 
@@ -130,17 +139,18 @@ authentication. We propose to use the definition of Level of Assurance as specif
 			MODRNA supports all request parameters as specified in 
 			OpenID Connect Core 3.1.2.1 <xref target="OpenID.Core"/>
 		</t>
-		<t>In addtion the following parameters are defined or made REQUIRED for clients
-		to send. All additional paramaters are REQUIRED for IdP to support.</t>
+		<t>In addition the following parameters are defined or made REQUIRED for clients
+		to send. All additional paramaters are REQUIRED for OP to support.</t>
 		<t>
 			<list style="hanging">
 				<t hangText="acr_values">
-					REQUIRED. For MODRNA the parameter is REQUIRED to enable the Relying Party to 
-					indicate a MODRNA conform authentication request. 
-					Allowed values are defined in <xref target="acr_values" />
+					REQUIRED. In <xref target="OpenID.Core"/> this parameter is specified as OPTIONAL.
+					For MODRNA this parameter is REQUIRED in order to enable the Relying Party to 
+					indicate a MODRNA conform authentication request to the OP. 
+					Allowed values are defined in <xref target="acr_values" />.
 				</t>
 				<t hangText="login_hint_token">
-					OPTIONAL. The login_hint_token is used to 
+					OPTIONAL. This is a new parameter. The login_hint_token is used to 
     	        	transport a user identifier from the discovery service to the OpenID Provider without 
         	    	revealing this identifier to the client.
         	    	<xref target="login_hint_token_structure" /> specifies the structure of this parameter.
@@ -148,13 +158,14 @@ authentication. We propose to use the definition of Level of Assurance as specif
         	    	<xref target="lht_encryption_signing" />.
 				</t>
 				<t hangText="context">
-				    OPTIONAL. Interlock message to tie the consumption device and 
-				    the authentication device together.
+TDB: There is a request from GSMA to call this "binding_message".
+				    OPTIONAL. This is a new parameter. An Interlock message to tie the consumption 
+				    device and the authentication device together.
 				    How to ensure that the message is actually shown on all relevant 
 				    devices is out of the scope of this document.
 				    Possible values and constraints are specified in <xref target="context_values" />.
-				    Ways to protect the integrity of the conext message are discussed 
-				    in <xref target="securing_context" />.
+				    Ways to protect the integrity of the context message are discussed 
+				    in <xref target="security_considerations" />.
 				</t>
 			</list>
 		</t>
@@ -246,9 +257,15 @@ The Biometric may be captured as part of the consent flow.
     
     <section anchor="login_hint_token_structure" title="login_hint_token">
 		<t>
-        	The <spanx style="verb">login_hint_token</spanx> produced by the Discovery service 
-        	is a Json Web Token <xref target="RFC7519">JWT</xref> that contains 
-        	the following elements:
+			The <spanx style="verb">login_hint_token</spanx> produced by the Discovery service 
+        	is an encrypted Json Web Token <xref target="RFC7519">JWT</xref> that contains a user
+        	hint for a certain OP. This token is typically created by a MODRNA discovery service <xref target="E.164" />,
+        	if a user has entered a MSISDN during discovery process. 
+        	The <spanx style="verb">login_hint_token</spanx> SHALL be used by the client as 
+        	login hint with the particular OP.
+		</t>
+		<t>
+        	 The <spanx style="verb">login_hint_token</spanx> has the following elements:
             <list style="hanging">
                 <t hangText="iss">
 			        REQUIRED. The party creating the token.
@@ -258,15 +275,14 @@ The Biometric may be captured as part of the consent flow.
 			    </t>
 			    <t hangText="aud">
                     REQUIRED. The party to receive the token, typically the users OpenID Provider.
-                    The value SHOULD be the issuer URI of the OP as exposed 
+                    The value MUST be the issuer URI of the OP as exposed 
                     in the openid-configuration.
    			    </t>
 	      		<t hangText="iat"> 
                     REQUIRED. When the token was issued.
 			    </t>
 			    <t hangText="MSISDN"> REQUIRED. NUMERIC 
-			        The Subscriber identifier
-			        TBD: according to what standard? - E.123 E.164
+			        The Subscriber identifier formated according to ITU-T recommendation <xref target="E.164" />
                 </t>	
              </list>
          </t>
@@ -278,23 +294,30 @@ The Biometric may be captured as part of the consent flow.
    "iss": "https://discovery-provider.com",
    "aud": "https://babytel.com",
    "iat": 1311280970,
-   "MSISDN": "5555551212"
+   "MSISDN": "+1999550123"
   }
                 ]]></artwork>
 		</figure>
 
     	<section anchor="lht_encryption_signing" title="login_hint_token encryption and signing">
+        	<t>
+	        	The login_hint token MUST be encrypted using the public key of the OpenID Provider
+	        	designated by the claim "aud". The respective public key is obtained using the rules
+	        	defined in OpenID Connect Discovery.
+	        </t>
+	        <t>
+TDB: do we need a reference to some standard here?
+		        In the first step, the openid-configuration is retrieved by appending 
+		        /.well-kown/openid-configuration the value of the "aud" claim. In the next step,
+		        the claim "jwks_uri" is used to retrieve the OP's key set.
+		    </t>
     	    <t>The login_hint token MUST be signed using the private key of the discovery service.</t>
-        	<t>The login_hint token MUST be encrypted using the public key of the OpenID Provider.</t>
         	
         	<t>It is best practice to sign then encrypt tokens, as signatures over encrypted 
         	information may leak information in the envelope, and may not be considered 
         	legally valid.</t>
         	<t>For an example of a nested JWT that is signed and then encrypted see 
         	Appendix 2 of <xref target="RFC7519">JWT</xref>.
-TBD: add description on how to process/validate the signature
-From https://bitbucket.org /openid/mobile/issues/13/encrypted-login-hint.
-Standard mechanism is described where? --> John
 		    </t>
 		    <t>NOTE:  The <spanx style="verb">login_hint_token</spanx> is opaque to
 		     the client by design.  The Authorization server may produce 
@@ -307,7 +330,7 @@ Standard mechanism is described where? --> John
     
     <section anchor="context_values" title="context">
         <t>
-	        The context parameter is a message provided by the RP an can be shown to the user 
+	        The context parameter is a message provided by the RP intended to be shown to the user 
 	        on the consumption device as well as on the authentication device as an interlock 
 	        between RP and OP. The context SHOULD be displayable by all participating parties.
 	     </t>
@@ -321,18 +344,6 @@ Standard mechanism is described where? --> John
 	        first 64 characters...
 	        
         </t>
-        <section anchor="securing_context" title="context security">
-	    	<t>
-				To prohibit manipulation of the context parameter the RP SHOULD use
-				the OpenID Connect Request Object.	    	
-		    </t>
-		    <t>
-			    The Request Object SHOULD be signed as specified in section 6.3.2 of <xref target="OpenID.Core"/>.
-			</t>
-			<t>
-				The Request Object MAY the encrypted as specified in section 6.3.1 of <xref target="OpenID.Core"/>. 
-			</t>
-	    </section>
     </section>
     
     <section anchor="m_t_i" title="mandatory to implement">
@@ -347,15 +358,37 @@ Standard mechanism is described where? --> John
     
 
     <section anchor="security_considerations" title="Security Considerations">
-	<t>TBD</t>
+	<t>
+		The login hint token SHOULD be digitally signed by the issuer.
+		This ensures authenticity of the data and reduces the threat of an injedtion attack.
+	</t>
+	<t>
+		To prevent modification of the context message value, the RP SHOULD send 
+		the parameter to the OP using a signed OpenID Connect Request Object 
+		(section 6.3.2 of <xref target="OpenID.Core"/>). 
+	</t>
+	<t>
+		The OP MUST sanitize the context message value in order to prevent 
+		injection attacks.
+	</t>
+	<t>
+		The message being displayed on the consumption and authentication device SHOULD
+		contain a random value (e.g. an authorization code) of reasonable entropy.
+		This is a countermeasure against session fixation type attacks, where the 
+		attacker initiates an authentication process on a consumption device under his 
+		control, which will result in the same text being displayed on the authentication
+		device as for legitimate transactions.
+	</t>
     </section>
 
     <section anchor="privacy_considerations" title="Privacy Considerations">
-	    <t>TBD</t>
+	    <t>
+		    The login hint token is encrypted in order to protect eht user's MSISN from 
+		    being revealed to the client unintentionally.
+	    </t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
-      <t>This document makes no requests of IANA.</t>
       <t>TBD: Find out about how to correctly add entries to IANA
 	      for:
 	      
@@ -471,6 +504,21 @@ Standard mechanism is described where? --> John
 
 	<format target="http://www.iso.org/iso/catalogue_detail.htm?csnumber=45138"
 		type="HTML" />
+      </reference>
+
+      <reference anchor="E.164">
+	<front>
+	  <title>Recommendation ITU-T E.164</title>
+
+          <author fullname="N." initials="" surname="N.">
+            <organization abbrev="ITU-T">ITU-T</organization>
+          </author>
+
+	  <date day="01" month="November" year="2010"/>
+	</front>
+
+	<format target="https://www.itu.int/rec/T-REC-E.164-201011-I"
+		type="PDF" />
       </reference>
       
     </references>
