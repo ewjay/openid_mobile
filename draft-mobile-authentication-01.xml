@@ -195,12 +195,13 @@ authentication. We propose to use the definition of Level of Assurance as specif
     
     <section anchor="login_hint_token_structure" title="login_hint_token">
 		<t>
-        	The login_hint_token is a Json Web Token <xref target="JWT"/> that contains 
+        	The login_hint_token is a Json Web Token <xref target="RFC7519">JWT</xref> that contains 
         	the following elements:
             <list style="hanging">
                 <t hangText="iss">
 			        REQUIRED. The party creating the token.
-			        This value MUST be used to obtain the JWK file required to validate
+			        This value MUST be used to obtain the <xref target="RFC7517">JWK</xref>
+			         file required to validate
 			        the tokens's signature (see <xref target="lht_encryption_signing" />). 
 			    </t>
 			    <t hangText="aud">
@@ -304,11 +305,9 @@ Standard mechanism is described where? --> John
 
   <back>
     <references title="Normative References">
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119"?>
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6749"?>
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6750"?>
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5246"?>
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2246"?>
+      <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.7517"?>
+      <?rfc include="reference.RFC.7519"?>
 
 
       
@@ -348,6 +347,21 @@ Standard mechanism is described where? --> John
       </reference>
 
 
+
+
+
+      
+    </references>
+    
+    <references title="Informative References">
+
+      <?rfc include="reference.RFC.6749"?>
+      <?rfc include="reference.RFC.6750"?>
+      <?rfc include="reference.RFC.5246"?>
+      <?rfc include="reference.RFC.2246"?>
+
+
+
       <reference anchor="OpenID.Discovery">
 	<front>
 	  <title>OpenID Connect Discovery 1.0</title>
@@ -375,29 +389,7 @@ Standard mechanism is described where? --> John
 		type="HTML" />
       </reference>
 
-      <reference anchor="JWT">
-        <front>
-          <title>JSON Web Token (JWT)</title>
 
-          <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
-            <organization abbrev="Microsoft">Microsoft</organization>
-          </author>
-
-          <author fullname="John Bradley" initials="J." surname="Bradley">
-           <organization abbrev="Ping Identity">Ping Identity</organization>
-          </author>
-
-          <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
-            <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
-          </author>
-
-          <date day="28" month="May" year="2013" />
-        </front>
-
-	<seriesInfo value="draft-ietf-oauth-json-web-token" name="Internet-Draft"/>
-	<format target="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08"
-                type="HTML" />
-      </reference>
 
       <reference anchor="ISO.29115">
 	<front>
@@ -419,7 +411,6 @@ Standard mechanism is described where? --> John
       </reference>
       
     </references>
-    
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>The following have contributed to the development of this specification.</t>
