@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                            Nov 22, 2015
+                                                       December 01, 2015
 
 
             OpenID Connect Mobile Authentication Profile 1.0
@@ -53,9 +53,9 @@ Table of Contents
 
 
 
-Connotte & Bradley        Expires May 25, 2016                  [Page 1]
+Connotte & Bradley        Expires June 3, 2016                  [Page 1]
 
-                 OIDC Mobile Authentication Profile 1.0         Nov 2015
+                 OIDC Mobile Authentication Profile 1.0    December 2015
 
 
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   8
@@ -109,9 +109,9 @@ Connotte & Bradley        Expires May 25, 2016                  [Page 1]
 
 
 
-Connotte & Bradley        Expires May 25, 2016                  [Page 2]
+Connotte & Bradley        Expires June 3, 2016                  [Page 2]
 
-                 OIDC Mobile Authentication Profile 1.0         Nov 2015
+                 OIDC Mobile Authentication Profile 1.0    December 2015
 
 
 2.  Overview
@@ -165,9 +165,9 @@ Connotte & Bradley        Expires May 25, 2016                  [Page 2]
 
 
 
-Connotte & Bradley        Expires May 25, 2016                  [Page 3]
+Connotte & Bradley        Expires June 3, 2016                  [Page 3]
 
-                 OIDC Mobile Authentication Profile 1.0         Nov 2015
+                 OIDC Mobile Authentication Profile 1.0    December 2015
 
 
    framework.  Prepaid anonymous users are included in responses
@@ -221,9 +221,9 @@ Connotte & Bradley        Expires May 25, 2016                  [Page 3]
 
 
 
-Connotte & Bradley        Expires May 25, 2016                  [Page 4]
+Connotte & Bradley        Expires June 3, 2016                  [Page 4]
 
-                 OIDC Mobile Authentication Profile 1.0         Nov 2015
+                 OIDC Mobile Authentication Profile 1.0    December 2015
 
 
    Identity Providers MUST recognize and process both the long URI and
@@ -277,9 +277,9 @@ Connotte & Bradley        Expires May 25, 2016                  [Page 4]
 
 
 
-Connotte & Bradley        Expires May 25, 2016                  [Page 5]
+Connotte & Bradley        Expires June 3, 2016                  [Page 5]
 
-                 OIDC Mobile Authentication Profile 1.0         Nov 2015
+                 OIDC Mobile Authentication Profile 1.0    December 2015
 
 
 5.1.  login_hint_token encryption and signing
@@ -333,9 +333,9 @@ Connotte & Bradley        Expires May 25, 2016                  [Page 5]
 
 
 
-Connotte & Bradley        Expires May 25, 2016                  [Page 6]
+Connotte & Bradley        Expires June 3, 2016                  [Page 6]
 
-                 OIDC Mobile Authentication Profile 1.0         Nov 2015
+                 OIDC Mobile Authentication Profile 1.0    December 2015
 
 
 7.  mandatory to implement
@@ -389,9 +389,9 @@ Connotte & Bradley        Expires May 25, 2016                  [Page 6]
 
 
 
-Connotte & Bradley        Expires May 25, 2016                  [Page 7]
+Connotte & Bradley        Expires June 3, 2016                  [Page 7]
 
-                 OIDC Mobile Authentication Profile 1.0         Nov 2015
+                 OIDC Mobile Authentication Profile 1.0    December 2015
 
 
 11.2.  Informative References
@@ -445,9 +445,9 @@ Appendix B.  Notices
 
 
 
-Connotte & Bradley        Expires May 25, 2016                  [Page 8]
+Connotte & Bradley        Expires June 3, 2016                  [Page 8]
 
-                 OIDC Mobile Authentication Profile 1.0         Nov 2015
+                 OIDC Mobile Authentication Profile 1.0    December 2015
 
 
    Specifications based on such documents, provided that attribution be
@@ -501,9 +501,9 @@ Authors' Addresses
 
 
 
-Connotte & Bradley        Expires May 25, 2016                  [Page 9]
+Connotte & Bradley        Expires June 3, 2016                  [Page 9]
 
-                 OIDC Mobile Authentication Profile 1.0         Nov 2015
+                 OIDC Mobile Authentication Profile 1.0    December 2015
 
 
    John Bradley
@@ -557,4 +557,4 @@ Connotte & Bradley        Expires May 25, 2016                  [Page 9]
 
 
 
-Connotte & Bradley        Expires May 25, 2016                 [Page 10]
+Connotte & Bradley        Expires June 3, 2016                 [Page 10]
