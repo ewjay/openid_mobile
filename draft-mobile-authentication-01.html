@@ -401,7 +401,7 @@
 
   <meta name="dct.creator" content="Connotte, J. and J. Bradley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-mobile-authentication-01" />
-  <meta name="dct.issued" scheme="ISO8601" content="2015-12-02" />
+  <meta name="dct.issued" scheme="ISO8601" content="2015-12-06" />
   <meta name="dct.abstract" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
   <meta name="description" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
 
@@ -430,7 +430,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">December 02, 2015</td>
+  <td class="right">December 06, 2015</td>
 </tr>
 
     	
@@ -510,7 +510,7 @@
   <dt>login_hint_token</dt>
   <dd style="margin-left: 8">OPTIONAL. This is a new parameter. The login_hint_token is used to transport a user identifier from the discovery service to the OpenID Provider without revealing this identifier to the client.  <a href="#login_hint_token_structure">Section 5</a> specifies the structure of this parameter.  Protection of the login_hint_token's content is specified in <a href="#lht_encryption_signing">Section 5.1</a>.  </dd>
   <dt>context</dt>
-  <dd style="margin-left: 8">TDB: There is a request from GSMA to call this "binding_message".  OPTIONAL. This is a new parameter. An Interlock message to tie the consumption device and the authentication device together.  How to ensure that the message is actually shown on all relevant devices is out of the scope of this document.  Possible values and constraints are specified in <a href="#context_values">Section 6</a>.  Ways to protect the integrity of the context message are discussed in <a href="#security_considerations">Section 8</a>.  </dd>
+  <dd style="margin-left: 8">TBD: There is a request from GSMA to call this "binding_message".  OPTIONAL. This is a new parameter. An Interlock message to tie the consumption device and the authentication device together.  How to ensure that the message is actually shown on all relevant devices is out of the scope of this document.  Possible values and constraints are specified in <a href="#context_values">Section 6</a>.  Ways to protect the integrity of the context message are discussed in <a href="#security_considerations">Section 8</a>.  </dd>
 </dl>
 
 <p> </p>
@@ -536,7 +536,7 @@
 <p id="rfc.section.4.p.8">The OP MUST also support receiving <samp>acr</samp> as a as a claim request in a signed request per OpenID Connect Core 5.5.1 <a href="#OpenID.Core">[OpenID.Core]</a>.  </p>
 <p id="rfc.section.4.p.9">Depending on the authentication capabilities of the users device, the OP must attempt to match the highest requested acr value that the AD is capable of.  If the acr claim is not marked as essential in the request object, the OP may return another acr value that the device is capable of rather than an error if it cannot match any of the requested acr_values.  </p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#login_hint_token_structure" id="login_hint_token_structure">login_hint_token</a></h1>
-<p id="rfc.section.5.p.1">The <samp>login_hint_token</samp> produced by the Discovery service is an encrypted Json Web Token <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite> that contains a user hint for a certain OP. This token is typically created by a MODRNA discovery service <a href="#E.164">[E.164]</a>, if a user has entered a MSISDN during discovery process.  The <samp>login_hint_token</samp> SHALL be used by the client as login hint with the particular OP.  </p>
+<p id="rfc.section.5.p.1">The <samp>login_hint_token</samp> produced by the Discovery service is an encrypted Json Web Token <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite> that contains a user hint for a certain OP. This token is typically created by a MODRNA discovery service <a href="#MODRNA.Discovery">[MODRNA.Discovery]</a>, if a user has entered a MSISDN during discovery process.  The <samp>login_hint_token</samp> SHALL be used by the client as login hint with the particular OP.  </p>
 <p id="rfc.section.5.p.2">The <samp>login_hint_token</samp> has the following elements: </p>
 
 <dl>
@@ -562,7 +562,7 @@
                 </pre>
 <h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#lht_encryption_signing" id="lht_encryption_signing">login_hint_token encryption and signing</a></h1>
 <p id="rfc.section.5.1.p.1">The login_hint token MUST be encrypted using the public key of the OpenID Provider designated by the claim "aud". The respective public key is obtained using the rules defined in OpenID Connect Discovery.  </p>
-<p id="rfc.section.5.1.p.2">TDB: do we need a reference to some standard here? In the first step, the openid-configuration is retrieved by appending /.well-kown/openid-configuration the value of the "aud" claim. In the next step, the claim "jwks_uri" is used to retrieve the OP's key set.  </p>
+<p id="rfc.section.5.1.p.2">TBD: do we need a reference to some standard here? In the first step, the openid-configuration is retrieved by appending /.well-kown/openid-configuration the value of the "aud" claim. In the next step, the claim "jwks_uri" is used to retrieve the OP's key set.  </p>
 <p id="rfc.section.5.1.p.3">The login_hint token MUST be signed using the private key of the discovery service.</p>
 <p id="rfc.section.5.1.p.4">It is best practice to sign then encrypt tokens, as signatures over encrypted information may leak information in the envelope, and may not be considered legally valid.</p>
 <p id="rfc.section.5.1.p.5">For an example of a nested JWT that is signed and then encrypted see Appendix 2 of <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite>.  </p>
@@ -642,9 +642,9 @@
     </tr>
     <tr>
       <td class="reference">
-        <b id="OpenID.Discovery">[OpenID.Discovery]</b>
+        <b id="MODRNA.Discovery">[MODRNA.Discovery]</b>
       </td>
-      <td class="top"><a title="Nomura Research Institute, Ltd.">Sakimura, N.</a>, <a title="Ping Identity">Bradley, J.</a>, <a title="Microsoft">Jones, M.</a> and <a title="Illumila">E. Jay</a>, "<a>OpenID Connect Discovery 1.0</a>", September 2014.</td>
+      <td class="top"><a title="Deutsche Telekom AG">Lodderstedt, T.</a> and <a title="Ping Identity">J. Bradley</a>, "<a href="https://bitbucket.org/openid/mobile/raw/default/draft-mobile-discovery-01.txt">OpenID Connect Mobile Discovery Profile 1.0</a>", August 2015.</td>
     </tr>
     <tr>
       <td class="reference">
