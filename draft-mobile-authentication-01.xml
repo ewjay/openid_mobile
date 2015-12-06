@@ -44,7 +44,7 @@
 
 
 
-    <date day="02" month="Dec" year="2015" />
+    <date day="06" month="Dec" year="2015" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -158,7 +158,7 @@
         	    	<xref target="lht_encryption_signing" />.
 				</t>
 				<t hangText="context">
-TDB: There is a request from GSMA to call this "binding_message".
+TBD: There is a request from GSMA to call this "binding_message".
 				    OPTIONAL. This is a new parameter. An Interlock message to tie the consumption 
 				    device and the authentication device together.
 				    How to ensure that the message is actually shown on all relevant 
@@ -259,8 +259,8 @@ The Biometric may be captured as part of the consent flow.
 		<t>
 			The <spanx style="verb">login_hint_token</spanx> produced by the Discovery service 
         	is an encrypted Json Web Token <xref target="RFC7519">JWT</xref> that contains a user
-        	hint for a certain OP. This token is typically created by a MODRNA discovery service <xref target="E.164" />,
-        	if a user has entered a MSISDN during discovery process. 
+        	hint for a certain OP. This token is typically created by a MODRNA discovery service
+        	<xref target="MODRNA.Discovery"/>, if a user has entered a MSISDN during discovery process. 
         	The <spanx style="verb">login_hint_token</spanx> SHALL be used by the client as 
         	login hint with the particular OP.
 		</t>
@@ -306,7 +306,7 @@ The Biometric may be captured as part of the consent flow.
 	        	defined in OpenID Connect Discovery.
 	        </t>
 	        <t>
-TDB: do we need a reference to some standard here?
+TBD: do we need a reference to some standard here?
 		        In the first step, the openid-configuration is retrieved by appending 
 		        /.well-kown/openid-configuration the value of the "aud" claim. In the next step,
 		        the claim "jwks_uri" is used to retrieve the OP's key set.
@@ -457,7 +457,7 @@ TDB: do we need a reference to some standard here?
       <?rfc include="reference.RFC.2246"?>
 
 
-
+<!--
       <reference anchor="OpenID.Discovery">
 	<front>
 	  <title>OpenID Connect Discovery 1.0</title>
@@ -485,7 +485,7 @@ TDB: do we need a reference to some standard here?
 		type="HTML" />
       </reference>
 
-
+-->
 
       <reference anchor="ISO.29115">
 	<front>
@@ -519,6 +519,23 @@ TDB: do we need a reference to some standard here?
 
 	<format target="https://www.itu.int/rec/T-REC-E.164-201011-I"
 		type="PDF" />
+      </reference>
+
+      <reference anchor="MODRNA.Discovery"
+                 target="https://bitbucket.org/openid/mobile/raw/default/draft-mobile-discovery-01.txt">
+        <front>
+          <title>OpenID Connect Mobile Discovery Profile 1.0</title>
+
+          <author fullname="Torsten Lodderstedt" initials="T." surname="Lodderstedt">
+            <organization abbrev="">Deutsche Telekom AG</organization>
+          </author>
+
+          <author fullname="John Bradley" initials="J." surname="Bradley">
+            <organization abbrev="Ping Identity">Ping Identity</organization>
+          </author>
+
+          <date day="08" month="August" year="2015"/>
+        </front>
       </reference>
       
     </references>

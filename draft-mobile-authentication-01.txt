@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                       December 02, 2015
+                                                       December 06, 2015
 
 
             OpenID Connect MODRNA Authentication Profile 1.0
@@ -53,7 +53,7 @@ Table of Contents
 
 
 
-Connotte & Bradley        Expires June 4, 2016                  [Page 1]
+Connotte & Bradley        Expires June 8, 2016                  [Page 1]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -109,7 +109,7 @@ Connotte & Bradley        Expires June 4, 2016                  [Page 1]
 
 
 
-Connotte & Bradley        Expires June 4, 2016                  [Page 2]
+Connotte & Bradley        Expires June 8, 2016                  [Page 2]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -139,7 +139,7 @@ Connotte & Bradley        Expires June 4, 2016                  [Page 2]
       this parameter.  Protection of the login_hint_token's content is
       specified in Section 5.1.
 
-   context  TDB: There is a request from GSMA to call this
+   context  TBD: There is a request from GSMA to call this
       "binding_message".  OPTIONAL.  This is a new parameter.  An
       Interlock message to tie the consumption device and the
       authentication device together.  How to ensure that the message is
@@ -165,7 +165,7 @@ Connotte & Bradley        Expires June 4, 2016                  [Page 2]
 
 
 
-Connotte & Bradley        Expires June 4, 2016                  [Page 3]
+Connotte & Bradley        Expires June 8, 2016                  [Page 3]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -221,7 +221,7 @@ Connotte & Bradley        Expires June 4, 2016                  [Page 3]
 
 
 
-Connotte & Bradley        Expires June 4, 2016                  [Page 4]
+Connotte & Bradley        Expires June 8, 2016                  [Page 4]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -247,9 +247,9 @@ Connotte & Bradley        Expires June 4, 2016                  [Page 4]
    The "login_hint_token" produced by the Discovery service is an
    encrypted Json Web Token JWT [RFC7519] that contains a user hint for
    a certain OP.  This token is typically created by a MODRNA discovery
-   service [E.164], if a user has entered a MSISDN during discovery
-   process.  The "login_hint_token" SHALL be used by the client as login
-   hint with the particular OP.
+   service [MODRNA.Discovery], if a user has entered a MSISDN during
+   discovery process.  The "login_hint_token" SHALL be used by the
+   client as login hint with the particular OP.
 
    The "login_hint_token" has the following elements:
 
@@ -277,7 +277,7 @@ Connotte & Bradley        Expires June 4, 2016                  [Page 4]
 
 
 
-Connotte & Bradley        Expires June 4, 2016                  [Page 5]
+Connotte & Bradley        Expires June 8, 2016                  [Page 5]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -298,7 +298,7 @@ Connotte & Bradley        Expires June 4, 2016                  [Page 5]
    OpenID Provider designated by the claim "aud".  The respective public
    key is obtained using the rules defined in OpenID Connect Discovery.
 
-   TDB: do we need a reference to some standard here?  In the first
+   TBD: do we need a reference to some standard here?  In the first
    step, the openid-configuration is retrieved by appending /.well-kown/
    openid-configuration the value of the "aud" claim.  In the next step,
    the claim "jwks_uri" is used to retrieve the OP's key set.
@@ -333,7 +333,7 @@ Connotte & Bradley        Expires June 4, 2016                  [Page 5]
 
 
 
-Connotte & Bradley        Expires June 4, 2016                  [Page 6]
+Connotte & Bradley        Expires June 8, 2016                  [Page 6]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -389,7 +389,7 @@ Connotte & Bradley        Expires June 4, 2016                  [Page 6]
 
 
 
-Connotte & Bradley        Expires June 4, 2016                  [Page 7]
+Connotte & Bradley        Expires June 8, 2016                  [Page 7]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -419,9 +419,11 @@ Connotte & Bradley        Expires June 4, 2016                  [Page 7]
               McAllister, E. and R. Brackney, "ISO/IEC DIS 29115", April
               2013.
 
-   [OpenID.Discovery]
-              Sakimura, N., Bradley, J., Jones, M., and E. Jay, "OpenID
-              Connect Discovery 1.0", September 2014.
+   [MODRNA.Discovery]
+              Lodderstedt, T. and J. Bradley, "OpenID Connect Mobile
+              Discovery Profile 1.0", August 2015,
+              <https://bitbucket.org/openid/mobile/raw/default/draft-
+              mobile-discovery-01.txt>.
 
    [RFC2246]  Dierks, T. and C. Allen, "The TLS Protocol Version 1.0",
               RFC 2246, DOI 10.17487/RFC2246, January 1999,
@@ -443,9 +445,7 @@ Connotte & Bradley        Expires June 4, 2016                  [Page 7]
 
 
 
-
-
-Connotte & Bradley        Expires June 4, 2016                  [Page 8]
+Connotte & Bradley        Expires June 8, 2016                  [Page 8]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -501,7 +501,7 @@ Appendix B.  Notices
 
 
 
-Connotte & Bradley        Expires June 4, 2016                  [Page 9]
+Connotte & Bradley        Expires June 8, 2016                  [Page 9]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -557,4 +557,4 @@ Authors' Addresses
 
 
 
-Connotte & Bradley        Expires June 4, 2016                 [Page 10]
+Connotte & Bradley        Expires June 8, 2016                 [Page 10]
