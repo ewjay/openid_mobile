@@ -44,7 +44,7 @@
 
 
 
-    <date day="06" month="Dec" year="2015" />
+    <date day="09" month="Dec" year="2015" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -255,6 +255,79 @@ The Biometric may be captured as part of the consent flow.
 		    </t>  
     </section>
     
+    <section anchor="amr_values" title="Authentication Method Reference (amr)">
+        <t> The <spanx style="verb">amr</spanx> claim 
+        <xref target="OpenID.Core">OpenID Connect Core Sec 2</xref>
+        SHOULD be returned in the 
+        id_token if a <spanx style="verb">acr</spanx> value is specified in the request.
+        <vspace/>
+        The <spanx style="verb">amr</spanx> claim is a JSON array containing one or more 
+        string values indicating the authentication methods used in the authentication.
+        </t>
+        <t>The values for the strings in the <spanx style="verb">amr</spanx> claim are
+         registered in a IANA registry defined in 
+         <xref target="AMR">Authentication Method Reference Values</xref>.
+         </t>
+        <t>
+	        This specification recommends the use of several of the values, to provide
+	        a standard way for clients to understand the authentication 
+	    </t>
+	    
+	    <t>
+		    <list style="hanging">
+			    
+			    <t hangText="user">
+			    User presence test.
+			    </t>
+			    <t hangText="pin">
+			    A Personal Identification Number or pattern  (Not restricted to numbers only) 
+			    that a user used to unlock a key on the device.
+                This mechanism SHOULD have a way to deter an attacker from guessing the 
+                pin by making multiple guesses.
+			    </t>
+			    <t hangText="fpt">
+			    Fingerprint biometric
+			    </t> 
+			    <t hangText="sms">
+			    Confirmation by replying to SMS sent to a known device.
+			    </t>
+			    <t hangText="pop">
+			    Proof-of-possession (PoP) of a key.
+			    </t>
+			    <t hangText="hpop">
+			    Proof-of-possession (PoP) of a hardware protected key.
+			    </t>
+			    
+			</list>
+	    </t>
+	    <section anchor="amr_examples" title="AMR Value Examples">
+			<t>If the authentication is by sending the users mobile device a SMS with a URI
+			and having the user click on the link to confirm, it SHOULD have a 
+			<spanx style="verb">amr</spanx> value of ["sms","user"]</t>
+			
+			<t>If the authentication is by sending a secure message to a hardware 
+			element in mobile device's and the HW element signs a authentication challenge
+			only after the user has entered a local PIN then it SHOULD have a 
+			<spanx style="verb">amr</spanx> value of ["hpop","pin"]</t>
+			
+	        <t>If the authentication is by sending a secure message to a hardware 
+			element in the mobile device and the HW element signs a authentication challenge
+			only after the user has entered a local PIN then it SHOULD have a 
+			<spanx style="verb">amr</spanx> value of ["hpop","pin"]</t>
+		    
+		    <t>If the authentication is by sending a secure message to a software 
+			application in the mobile device that signs a authentication challenge
+			only after the user has entered a local fingerprint biometric then it 
+			SHOULD have a 
+			<spanx style="verb">amr</spanx> value of ["pop","fpt"]</t>
+			
+			<t>Note that the order of elements in the <spanx style="verb">amr</spanx>
+			array is not significant.</t>
+		    
+		    </section>    
+		     
+    </section>
+    
     <section anchor="login_hint_token_structure" title="login_hint_token">
 		<t>
 			The <spanx style="verb">login_hint_token</spanx> produced by the Discovery service 
@@ -442,7 +515,27 @@ TBD: do we need a reference to some standard here?
 		type="HTML" />
       </reference>
 
+      <reference anchor="AMR">
+	<front>
+	  <title>Authentication Method Reference Values</title>
 
+
+	  <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+	    <organization abbrev="Microsoft">Microsoft</organization>
+	  </author>
+
+	  <author fullname="Phil Hunt" initials="P." surname="Hunt">
+	    <organization abbrev="Oracle">Oracle</organization>
+	  </author>
+
+	  
+
+	  <date day="21" month="August" year="2015"/>
+	</front>
+
+	<format target="https://tools.ietf.org/html/draft-jones-oauth-amr-values"
+		type="HTML" />
+      </reference>
 
 
 

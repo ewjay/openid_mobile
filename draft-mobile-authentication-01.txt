@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                       December 06, 2015
+                                                       December 09, 2015
 
 
             OpenID Connect MODRNA Authentication Profile 1.0
@@ -35,31 +35,33 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Requirements Notation and Conventions . . . . . . . . . .   2
      1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Authentication Request  . . . . . . . . . . . . . . . . . . .   3
    4.  acr_values request values and level of assurance  . . . . . .   3
-   5.  login_hint_token  . . . . . . . . . . . . . . . . . . . . . .   5
-     5.1.  login_hint_token encryption and signing . . . . . . . . .   6
-   6.  context . . . . . . . . . . . . . . . . . . . . . . . . . . .   6
-   7.  mandatory to implement  . . . . . . . . . . . . . . . . . . .   7
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   9.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .   7
-   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .   7
-     11.2.  Informative References . . . . . . . . . . . . . . . . .   8
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   9
-   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .   9
+   5.  Authentication Method Reference (amr) . . . . . . . . . . . .   5
+     5.1.  AMR Value Examples  . . . . . . . . . . . . . . . . . . .   6
+   6.  login_hint_token  . . . . . . . . . . . . . . . . . . . . . .   6
+     6.1.  login_hint_token encryption and signing . . . . . . . . .   7
+   7.  context . . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   8.  mandatory to implement  . . . . . . . . . . . . . . . . . . .   8
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+   10. Privacy Considerations  . . . . . . . . . . . . . . . . . . .   8
+   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     12.1.  Normative References . . . . . . . . . . . . . . . . . .   8
+     12.2.  Informative References . . . . . . . . . . . . . . . . .   9
 
 
 
-Connotte & Bradley        Expires June 8, 2016                  [Page 1]
+Connotte & Bradley        Expires June 11, 2016                 [Page 1]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
 
-   Appendix C.  Document History . . . . . . . . . . . . . . . . . .  10
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  10
+   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .  10
+   Appendix C.  Document History . . . . . . . . . . . . . . . . . .  11
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
 
@@ -101,19 +103,22 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 1]
    Authentication Device (AD)  A mobile device on which the user will
       authenticate the actual login.
 
+
+
+
+
+
+
+Connotte & Bradley        Expires June 11, 2016                 [Page 2]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
+
 2.  Overview
 
    This specification serves as a profile based on OpenID Connect Core
    [OpenID.Core].  It defines additional request parameters in the
    Authentication Request.  It also specifies authentication class
-
-
-
-Connotte & Bradley        Expires June 8, 2016                  [Page 2]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
-
    reference values based on the ISO/IEC DIS 29115 [ISO.29115] to be
    used for the "acr_values" request parameter
 
@@ -135,9 +140,9 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 2]
    login_hint_token  OPTIONAL.  This is a new parameter.  The
       login_hint_token is used to transport a user identifier from the
       discovery service to the OpenID Provider without revealing this
-      identifier to the client.  Section 5 specifies the structure of
+      identifier to the client.  Section 6 specifies the structure of
       this parameter.  Protection of the login_hint_token's content is
-      specified in Section 5.1.
+      specified in Section 6.1.
 
    context  TBD: There is a request from GSMA to call this
       "binding_message".  OPTIONAL.  This is a new parameter.  An
@@ -145,8 +150,8 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 2]
       authentication device together.  How to ensure that the message is
       actually shown on all relevant devices is out of the scope of this
       document.  Possible values and constraints are specified in
-      Section 6.  Ways to protect the integrity of the context message
-      are discussed in Section 8.
+      Section 7.  Ways to protect the integrity of the context message
+      are discussed in Section 9.
 
 4.  acr_values request values and level of assurance
 
@@ -157,19 +162,18 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 2]
    This specification defines initial "acr" values that clients can use
    to request the IdP mitigate specific authentication risks.
 
-   In addition the initial set of "acr" values contain no requirements
-   for the IdP to make any guarente of identity proofing the subject of
-   the authentication beyond what is required by business practices for
-   account recovery, and customer service as defined in the trust
 
 
 
-
-Connotte & Bradley        Expires June 8, 2016                  [Page 3]
+Connotte & Bradley        Expires June 11, 2016                 [Page 3]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
 
+   In addition the initial set of "acr" values contain no requirements
+   for the IdP to make any guarente of identity proofing the subject of
+   the authentication beyond what is required by business practices for
+   account recovery, and customer service as defined in the trust
    framework.  Prepaid anonymous users are included in responses
    conforming to these values.
 
@@ -214,17 +218,16 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 3]
       additional authentication information via a local biometric, or a
       remote paring with a biometric capable device.  If an external
       device like a EKG band is used for the biometric the user must
-      still be prompted for consent on the AD.  The Biometric may be
-      captured as part of the consent flow.
 
 
 
-
-
-Connotte & Bradley        Expires June 8, 2016                  [Page 4]
+Connotte & Bradley        Expires June 11, 2016                 [Page 4]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
+
+      still be prompted for consent on the AD.  The Biometric may be
+      captured as part of the consent flow.
 
    Identity Providers MUST recognize and process both the long URI and
    short registered forms of the authentication context strings.
@@ -242,7 +245,68 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 4]
    is capable of rather than an error if it cannot match any of the
    requested acr_values.
 
-5.  login_hint_token
+5.  Authentication Method Reference (amr)
+
+   The "amr" claim OpenID Connect Core Sec 2 [OpenID.Core] SHOULD be
+   returned in the id_token if a "acr" value is specified in the
+   request.
+   The "amr" claim is a JSON array containing one or more string values
+   indicating the authentication methods used in the authentication.
+
+   The values for the strings in the "amr" claim are registered in a
+   IANA registry defined in Authentication Method Reference Values
+   [AMR].
+
+   This specification recommends the use of several of the values, to
+   provide a standard way for clients to understand the authentication
+
+   user  User presence test.
+
+   pin  A Personal Identification Number or pattern (Not restricted to
+      numbers only) that a user used to unlock a key on the device.
+      This mechanism SHOULD have a way to deter an attacker from
+      guessing the pin by making multiple guesses.
+
+   fpt  Fingerprint biometric
+
+   sms  Confirmation by replying to SMS sent to a known device.
+
+   pop  Proof-of-possession (PoP) of a key.
+
+   hpop  Proof-of-possession (PoP) of a hardware protected key.
+
+
+
+Connotte & Bradley        Expires June 11, 2016                 [Page 5]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
+
+5.1.  AMR Value Examples
+
+   If the authentication is by sending the users mobile device a SMS
+   with a URI and having the user click on the link to confirm, it
+   SHOULD have a "amr" value of ["sms","user"]
+
+   If the authentication is by sending a secure message to a hardware
+   element in mobile device's and the HW element signs a authentication
+   challenge only after the user has entered a local PIN then it SHOULD
+   have a "amr" value of ["hpop","pin"]
+
+   If the authentication is by sending a secure message to a hardware
+   element in the mobile device and the HW element signs a
+   authentication challenge only after the user has entered a local PIN
+   then it SHOULD have a "amr" value of ["hpop","pin"]
+
+   If the authentication is by sending a secure message to a software
+   application in the mobile device that signs a authentication
+   challenge only after the user has entered a local fingerprint
+   biometric then it SHOULD have a "amr" value of ["pop","fpt"]
+
+   Note that the order of elements in the "amr" array is not
+   significant.
+
+6.  login_hint_token
 
    The "login_hint_token" produced by the Discovery service is an
    encrypted Json Web Token JWT [RFC7519] that contains a user hint for
@@ -255,7 +319,7 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 4]
 
    iss  REQUIRED.  The party creating the token.  This value MUST be
       used to obtain the JWK [RFC7517] file required to validate the
-      tokens's signature (see Section 5.1).
+      tokens's signature (see Section 6.1).
 
    aud  REQUIRED.  The party to receive the token, typically the users
       OpenID Provider.  The value MUST be the issuer URI of the OP as
@@ -269,15 +333,7 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 4]
 
 
 
-
-
-
-
-
-
-
-
-Connotte & Bradley        Expires June 8, 2016                  [Page 5]
+Connotte & Bradley        Expires June 11, 2016                 [Page 6]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -292,7 +348,7 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 5]
       "MSISDN": "+1999550123"
      }
 
-5.1.  login_hint_token encryption and signing
+6.1.  login_hint_token encryption and signing
 
    The login_hint token MUST be encrypted using the public key of the
    OpenID Provider designated by the claim "aud".  The respective public
@@ -318,7 +374,7 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 5]
    formats for use in Account Chooser or other discovery profiles, as
    long as they are confidentiality protected from the client.
 
-6.  context
+7.  context
 
    The context parameter is a message provided by the RP intended to be
    shown to the user on the consumption device as well as on the
@@ -333,7 +389,7 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 5]
 
 
 
-Connotte & Bradley        Expires June 8, 2016                  [Page 6]
+Connotte & Bradley        Expires June 11, 2016                 [Page 7]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -341,12 +397,12 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 6]
    TBD: something about the length of the message? e.g. the message MUST
    be distingushable from the first 64 characters...
 
-7.  mandatory to implement
+8.  mandatory to implement
 
    acr_values  All MODRNA compliant OP's MUST accept the acr_values
       specified in Section 4
 
-8.  Security Considerations
+9.  Security Considerations
 
    The login hint token SHOULD be digitally signed by the issuer.  This
    ensures authenticity of the data and reduces the threat of an
@@ -367,32 +423,37 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 6]
    in the same text being displayed on the authentication device as for
    legitimate transactions.
 
-9.  Privacy Considerations
+10.  Privacy Considerations
 
    The login hint token is encrypted in order to protect eht user's
    MSISN from being revealed to the client unintentionally.
 
-10.  IANA Considerations
+11.  IANA Considerations
 
    TBD: Find out about how to correctly add entries to IANA for:
    https://www.iana.org/assignment/loa-profiles/loa-profiles.xhtml
 
-11.  References
+12.  References
 
-11.1.  Normative References
+12.1.  Normative References
+
+   [AMR]      Jones, M. and P. Hunt, "Authentication Method Reference
+              Values", August 2015.
+
+
+
+
+
+
+Connotte & Bradley        Expires June 11, 2016                 [Page 8]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
 
    [OpenID.Core]
               Sakimura, N., Bradley, J., Jones, M., de Medeiros, B.,
               Mortimore, C., and E. Jay, "OpenID Connect Core 1.0",
               December 2013.
-
-
-
-
-Connotte & Bradley        Expires June 8, 2016                  [Page 7]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -411,7 +472,7 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 7]
               (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
               <http://www.rfc-editor.org/info/rfc7519>.
 
-11.2.  Informative References
+12.2.  Informative References
 
    [E.164]    N., , "Recommendation ITU-T E.164", November 2010.
 
@@ -438,17 +499,17 @@ Connotte & Bradley        Expires June 8, 2016                  [Page 7]
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
               <http://www.rfc-editor.org/info/rfc6749>.
 
+
+
+Connotte & Bradley        Expires June 11, 2016                 [Page 9]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
+
    [RFC6750]  Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
               Framework: Bearer Token Usage", RFC 6750,
               DOI 10.17487/RFC6750, October 2012,
               <http://www.rfc-editor.org/info/rfc6750>.
-
-
-
-Connotte & Bradley        Expires June 8, 2016                  [Page 8]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
 
 Appendix A.  Acknowledgements
 
@@ -493,18 +554,17 @@ Appendix B.  Notices
    Property Rights policy requires contributors to offer a patent
    promise not to assert certain patent claims against other
    contributors and against implementers.  The OpenID Foundation invites
-   any interested party to bring to its attention any copyrights,
-   patents, patent applications, or other proprietary rights that may
-   cover technology that may be required to practice this specification.
 
 
 
-
-
-Connotte & Bradley        Expires June 8, 2016                  [Page 9]
+Connotte & Bradley        Expires June 11, 2016                [Page 10]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
+
+   any interested party to bring to its attention any copyrights,
+   patents, patent applications, or other proprietary rights that may
+   cover technology that may be required to practice this specification.
 
 Appendix C.  Document History
 
@@ -553,8 +613,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-Connotte & Bradley        Expires June 8, 2016                 [Page 10]
+Connotte & Bradley        Expires June 11, 2016                [Page 11]
