@@ -380,16 +380,18 @@
 <link href="#rfc.section.2" rel="Chapter" title="2 Overview"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Authentication Request"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 acr_values request values and level of assurance"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 login_hint_token"/>
-<link href="#rfc.section.5.1" rel="Chapter" title="5.1 login_hint_token encryption and signing"/>
-<link href="#rfc.section.6" rel="Chapter" title="6 context"/>
-<link href="#rfc.section.7" rel="Chapter" title="7 mandatory to implement"/>
-<link href="#rfc.section.8" rel="Chapter" title="8 Security Considerations"/>
-<link href="#rfc.section.9" rel="Chapter" title="9 Privacy Considerations"/>
-<link href="#rfc.section.10" rel="Chapter" title="10 IANA Considerations"/>
-<link href="#rfc.references" rel="Chapter" title="11 References"/>
-<link href="#rfc.references.1" rel="Chapter" title="11.1 Normative References"/>
-<link href="#rfc.references.2" rel="Chapter" title="11.2 Informative References"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Authentication Method Reference (amr)"/>
+<link href="#rfc.section.5.1" rel="Chapter" title="5.1 AMR Value Examples"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 login_hint_token"/>
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 login_hint_token encryption and signing"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 context"/>
+<link href="#rfc.section.8" rel="Chapter" title="8 mandatory to implement"/>
+<link href="#rfc.section.9" rel="Chapter" title="9 Security Considerations"/>
+<link href="#rfc.section.10" rel="Chapter" title="10 Privacy Considerations"/>
+<link href="#rfc.section.11" rel="Chapter" title="11 IANA Considerations"/>
+<link href="#rfc.references" rel="Chapter" title="12 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="12.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="12.2 Informative References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgements"/>
 <link href="#rfc.appendix.B" rel="Chapter" title="B Notices"/>
 <link href="#rfc.appendix.C" rel="Chapter" title="C Document History"/>
@@ -401,7 +403,7 @@
 
   <meta name="dct.creator" content="Connotte, J. and J. Bradley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-mobile-authentication-01" />
-  <meta name="dct.issued" scheme="ISO8601" content="2015-12-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2015-12-09" />
   <meta name="dct.abstract" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
   <meta name="description" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
 
@@ -430,7 +432,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">December 06, 2015</td>
+  <td class="right">December 09, 2015</td>
 </tr>
 
     	
@@ -459,16 +461,18 @@
 </ul><li>2.   <a href="#rfc.section.2">Overview</a></li>
 <li>3.   <a href="#rfc.section.3">Authentication Request</a></li>
 <li>4.   <a href="#rfc.section.4">acr_values request values and level of assurance</a></li>
-<li>5.   <a href="#rfc.section.5">login_hint_token</a></li>
-<ul><li>5.1.   <a href="#rfc.section.5.1">login_hint_token encryption and signing</a></li>
-</ul><li>6.   <a href="#rfc.section.6">context</a></li>
-<li>7.   <a href="#rfc.section.7">mandatory to implement</a></li>
-<li>8.   <a href="#rfc.section.8">Security Considerations</a></li>
-<li>9.   <a href="#rfc.section.9">Privacy Considerations</a></li>
-<li>10.   <a href="#rfc.section.10">IANA Considerations</a></li>
-<li>11.   <a href="#rfc.references">References</a></li>
-<ul><li>11.1.   <a href="#rfc.references.1">Normative References</a></li>
-<li>11.2.   <a href="#rfc.references.2">Informative References</a></li>
+<li>5.   <a href="#rfc.section.5">Authentication Method Reference (amr)</a></li>
+<ul><li>5.1.   <a href="#rfc.section.5.1">AMR Value Examples</a></li>
+</ul><li>6.   <a href="#rfc.section.6">login_hint_token</a></li>
+<ul><li>6.1.   <a href="#rfc.section.6.1">login_hint_token encryption and signing</a></li>
+</ul><li>7.   <a href="#rfc.section.7">context</a></li>
+<li>8.   <a href="#rfc.section.8">mandatory to implement</a></li>
+<li>9.   <a href="#rfc.section.9">Security Considerations</a></li>
+<li>10.   <a href="#rfc.section.10">Privacy Considerations</a></li>
+<li>11.   <a href="#rfc.section.11">IANA Considerations</a></li>
+<li>12.   <a href="#rfc.references">References</a></li>
+<ul><li>12.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>12.2.   <a href="#rfc.references.2">Informative References</a></li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgements</a></li>
 <li>Appendix B.   <a href="#rfc.appendix.B">Notices</a></li>
 <li>Appendix C.   <a href="#rfc.appendix.C">Document History</a></li>
@@ -508,9 +512,9 @@
   <dt>acr_values</dt>
   <dd style="margin-left: 8">REQUIRED. In <a href="#OpenID.Core">[OpenID.Core]</a> this parameter is specified as OPTIONAL.  For MODRNA this parameter is REQUIRED in order to enable the Relying Party to indicate a MODRNA conform authentication request to the OP.  Allowed values are defined in <a href="#acr_values">Section 4</a>.  </dd>
   <dt>login_hint_token</dt>
-  <dd style="margin-left: 8">OPTIONAL. This is a new parameter. The login_hint_token is used to transport a user identifier from the discovery service to the OpenID Provider without revealing this identifier to the client.  <a href="#login_hint_token_structure">Section 5</a> specifies the structure of this parameter.  Protection of the login_hint_token's content is specified in <a href="#lht_encryption_signing">Section 5.1</a>.  </dd>
+  <dd style="margin-left: 8">OPTIONAL. This is a new parameter. The login_hint_token is used to transport a user identifier from the discovery service to the OpenID Provider without revealing this identifier to the client.  <a href="#login_hint_token_structure">Section 6</a> specifies the structure of this parameter.  Protection of the login_hint_token's content is specified in <a href="#lht_encryption_signing">Section 6.1</a>.  </dd>
   <dt>context</dt>
-  <dd style="margin-left: 8">TBD: There is a request from GSMA to call this "binding_message".  OPTIONAL. This is a new parameter. An Interlock message to tie the consumption device and the authentication device together.  How to ensure that the message is actually shown on all relevant devices is out of the scope of this document.  Possible values and constraints are specified in <a href="#context_values">Section 6</a>.  Ways to protect the integrity of the context message are discussed in <a href="#security_considerations">Section 8</a>.  </dd>
+  <dd style="margin-left: 8">TBD: There is a request from GSMA to call this "binding_message".  OPTIONAL. This is a new parameter. An Interlock message to tie the consumption device and the authentication device together.  How to ensure that the message is actually shown on all relevant devices is out of the scope of this document.  Possible values and constraints are specified in <a href="#context_values">Section 7</a>.  Ways to protect the integrity of the context message are discussed in <a href="#security_considerations">Section 9</a>.  </dd>
 </dl>
 
 <p> </p>
@@ -535,13 +539,41 @@
 <p id="rfc.section.4.p.7">The OP MUST support receiving <samp>acr_values</samp> as a space separated list in order of preference per OpenID Connect Core 3.1.2.1 <a href="#OpenID.Core">[OpenID.Core]</a>.  </p>
 <p id="rfc.section.4.p.8">The OP MUST also support receiving <samp>acr</samp> as a as a claim request in a signed request per OpenID Connect Core 5.5.1 <a href="#OpenID.Core">[OpenID.Core]</a>.  </p>
 <p id="rfc.section.4.p.9">Depending on the authentication capabilities of the users device, the OP must attempt to match the highest requested acr value that the AD is capable of.  If the acr claim is not marked as essential in the request object, the OP may return another acr value that the device is capable of rather than an error if it cannot match any of the requested acr_values.  </p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#login_hint_token_structure" id="login_hint_token_structure">login_hint_token</a></h1>
-<p id="rfc.section.5.p.1">The <samp>login_hint_token</samp> produced by the Discovery service is an encrypted Json Web Token <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite> that contains a user hint for a certain OP. This token is typically created by a MODRNA discovery service <a href="#MODRNA.Discovery">[MODRNA.Discovery]</a>, if a user has entered a MSISDN during discovery process.  The <samp>login_hint_token</samp> SHALL be used by the client as login hint with the particular OP.  </p>
-<p id="rfc.section.5.p.2">The <samp>login_hint_token</samp> has the following elements: </p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#amr_values" id="amr_values">Authentication Method Reference (amr)</a></h1>
+<p id="rfc.section.5.p.1">The <samp>amr</samp> claim <a href="#OpenID.Core">OpenID Connect Core Sec 2</a> <cite title="NONE">[OpenID.Core]</cite> SHOULD be returned in the id_token if a <samp>acr</samp> value is specified in the request.  <br/> The <samp>amr</samp> claim is a JSON array containing one or more string values indicating the authentication methods used in the authentication.  </p>
+<p id="rfc.section.5.p.2">The values for the strings in the <samp>amr</samp> claim are registered in a IANA registry defined in <a href="#AMR">Authentication Method Reference Values</a> <cite title="NONE">[AMR]</cite>.  </p>
+<p id="rfc.section.5.p.3">This specification recommends the use of several of the values, to provide a standard way for clients to understand the authentication </p>
+<p/>
+
+<dl>
+  <dt>user</dt>
+  <dd style="margin-left: 8">User presence test.  </dd>
+  <dt>pin</dt>
+  <dd style="margin-left: 8">A Personal Identification Number or pattern  (Not restricted to numbers only) that a user used to unlock a key on the device.  This mechanism SHOULD have a way to deter an attacker from guessing the pin by making multiple guesses.  </dd>
+  <dt>fpt</dt>
+  <dd style="margin-left: 8">Fingerprint biometric </dd>
+  <dt>sms</dt>
+  <dd style="margin-left: 8">Confirmation by replying to SMS sent to a known device.  </dd>
+  <dt>pop</dt>
+  <dd style="margin-left: 8">Proof-of-possession (PoP) of a key.  </dd>
+  <dt>hpop</dt>
+  <dd style="margin-left: 8">Proof-of-possession (PoP) of a hardware protected key.  </dd>
+</dl>
+
+<p> </p>
+<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#amr_examples" id="amr_examples">AMR Value Examples</a></h1>
+<p id="rfc.section.5.1.p.1">If the authentication is by sending the users mobile device a SMS with a URI and having the user click on the link to confirm, it SHOULD have a <samp>amr</samp> value of ["sms","user"]</p>
+<p id="rfc.section.5.1.p.2">If the authentication is by sending a secure message to a hardware element in mobile device's and the HW element signs a authentication challenge only after the user has entered a local PIN then it SHOULD have a <samp>amr</samp> value of ["hpop","pin"]</p>
+<p id="rfc.section.5.1.p.3">If the authentication is by sending a secure message to a hardware element in the mobile device and the HW element signs a authentication challenge only after the user has entered a local PIN then it SHOULD have a <samp>amr</samp> value of ["hpop","pin"]</p>
+<p id="rfc.section.5.1.p.4">If the authentication is by sending a secure message to a software application in the mobile device that signs a authentication challenge only after the user has entered a local fingerprint biometric then it SHOULD have a <samp>amr</samp> value of ["pop","fpt"]</p>
+<p id="rfc.section.5.1.p.5">Note that the order of elements in the <samp>amr</samp> array is not significant.</p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#login_hint_token_structure" id="login_hint_token_structure">login_hint_token</a></h1>
+<p id="rfc.section.6.p.1">The <samp>login_hint_token</samp> produced by the Discovery service is an encrypted Json Web Token <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite> that contains a user hint for a certain OP. This token is typically created by a MODRNA discovery service <a href="#MODRNA.Discovery">[MODRNA.Discovery]</a>, if a user has entered a MSISDN during discovery process.  The <samp>login_hint_token</samp> SHALL be used by the client as login hint with the particular OP.  </p>
+<p id="rfc.section.6.p.2">The <samp>login_hint_token</samp> has the following elements: </p>
 
 <dl>
   <dt>iss</dt>
-  <dd style="margin-left: 8">REQUIRED. The party creating the token.  This value MUST be used to obtain the <a href="#RFC7517">JWK</a> <cite title="NONE">[RFC7517]</cite> file required to validate the tokens's signature (see <a href="#lht_encryption_signing">Section 5.1</a>).  </dd>
+  <dd style="margin-left: 8">REQUIRED. The party creating the token.  This value MUST be used to obtain the <a href="#RFC7517">JWK</a> <cite title="NONE">[RFC7517]</cite> file required to validate the tokens's signature (see <a href="#lht_encryption_signing">Section 6.1</a>).  </dd>
   <dt>aud</dt>
   <dd style="margin-left: 8">REQUIRED. The party to receive the token, typically the users OpenID Provider.  The value MUST be the issuer URI of the OP as exposed in the openid-configuration.  </dd>
   <dt>iat</dt>
@@ -560,18 +592,18 @@
    "MSISDN": "+1999550123"
   }
                 </pre>
-<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#lht_encryption_signing" id="lht_encryption_signing">login_hint_token encryption and signing</a></h1>
-<p id="rfc.section.5.1.p.1">The login_hint token MUST be encrypted using the public key of the OpenID Provider designated by the claim "aud". The respective public key is obtained using the rules defined in OpenID Connect Discovery.  </p>
-<p id="rfc.section.5.1.p.2">TBD: do we need a reference to some standard here? In the first step, the openid-configuration is retrieved by appending /.well-kown/openid-configuration the value of the "aud" claim. In the next step, the claim "jwks_uri" is used to retrieve the OP's key set.  </p>
-<p id="rfc.section.5.1.p.3">The login_hint token MUST be signed using the private key of the discovery service.</p>
-<p id="rfc.section.5.1.p.4">It is best practice to sign then encrypt tokens, as signatures over encrypted information may leak information in the envelope, and may not be considered legally valid.</p>
-<p id="rfc.section.5.1.p.5">For an example of a nested JWT that is signed and then encrypted see Appendix 2 of <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite>.  </p>
-<p id="rfc.section.5.1.p.6">NOTE:  The <samp>login_hint_token</samp> is opaque to the client by design.  The Authorization server may produce <samp>login_hint_token</samp> tokens in other formats for use in Account Chooser or other discovery profiles, as long as they are confidentiality protected from the client. </p>
-<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#context_values" id="context_values">context</a></h1>
-<p id="rfc.section.6.p.1">The context parameter is a message provided by the RP intended to be shown to the user on the consumption device as well as on the authentication device as an interlock between RP and OP. The context SHOULD be displayable by all participating parties.  </p>
-<p id="rfc.section.6.p.2">The context message MUST be plain text using the "application/x-www-form-urlencoded" format as the authentication device in particular may have limited abilities to show text or formats.  </p>
-<p id="rfc.section.6.p.3">TBD: something about the length of the message? e.g. the message MUST be distingushable from the first 64 characters...  </p>
-<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#m_t_i" id="m_t_i">mandatory to implement</a></h1>
+<h1 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> <a href="#lht_encryption_signing" id="lht_encryption_signing">login_hint_token encryption and signing</a></h1>
+<p id="rfc.section.6.1.p.1">The login_hint token MUST be encrypted using the public key of the OpenID Provider designated by the claim "aud". The respective public key is obtained using the rules defined in OpenID Connect Discovery.  </p>
+<p id="rfc.section.6.1.p.2">TBD: do we need a reference to some standard here? In the first step, the openid-configuration is retrieved by appending /.well-kown/openid-configuration the value of the "aud" claim. In the next step, the claim "jwks_uri" is used to retrieve the OP's key set.  </p>
+<p id="rfc.section.6.1.p.3">The login_hint token MUST be signed using the private key of the discovery service.</p>
+<p id="rfc.section.6.1.p.4">It is best practice to sign then encrypt tokens, as signatures over encrypted information may leak information in the envelope, and may not be considered legally valid.</p>
+<p id="rfc.section.6.1.p.5">For an example of a nested JWT that is signed and then encrypted see Appendix 2 of <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite>.  </p>
+<p id="rfc.section.6.1.p.6">NOTE:  The <samp>login_hint_token</samp> is opaque to the client by design.  The Authorization server may produce <samp>login_hint_token</samp> tokens in other formats for use in Account Chooser or other discovery profiles, as long as they are confidentiality protected from the client. </p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#context_values" id="context_values">context</a></h1>
+<p id="rfc.section.7.p.1">The context parameter is a message provided by the RP intended to be shown to the user on the consumption device as well as on the authentication device as an interlock between RP and OP. The context SHOULD be displayable by all participating parties.  </p>
+<p id="rfc.section.7.p.2">The context message MUST be plain text using the "application/x-www-form-urlencoded" format as the authentication device in particular may have limited abilities to show text or formats.  </p>
+<p id="rfc.section.7.p.3">TBD: something about the length of the message? e.g. the message MUST be distingushable from the first 64 characters...  </p>
+<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#m_t_i" id="m_t_i">mandatory to implement</a></h1>
 <p/>
 
 <dl>
@@ -580,19 +612,25 @@
 </dl>
 
 <p> </p>
-<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#security_considerations" id="security_considerations">Security Considerations</a></h1>
-<p id="rfc.section.8.p.1">The login hint token SHOULD be digitally signed by the issuer.  This ensures authenticity of the data and reduces the threat of an injedtion attack.  </p>
-<p id="rfc.section.8.p.2">To prevent modification of the context message value, the RP SHOULD send the parameter to the OP using a signed OpenID Connect Request Object (section 6.3.2 of <a href="#OpenID.Core">[OpenID.Core]</a>).  </p>
-<p id="rfc.section.8.p.3">The OP MUST sanitize the context message value in order to prevent injection attacks.  </p>
-<p id="rfc.section.8.p.4">The message being displayed on the consumption and authentication device SHOULD contain a random value (e.g. an authorization code) of reasonable entropy.  This is a countermeasure against session fixation type attacks, where the attacker initiates an authentication process on a consumption device under his control, which will result in the same text being displayed on the authentication device as for legitimate transactions.  </p>
-<h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#privacy_considerations" id="privacy_considerations">Privacy Considerations</a></h1>
-<p id="rfc.section.9.p.1">The login hint token is encrypted in order to protect eht user's MSISN from being revealed to the client unintentionally.  </p>
-<h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
-<p id="rfc.section.10.p.1">TBD: Find out about how to correctly add entries to IANA for: https://www.iana.org/assignment/loa-profiles/loa-profiles.xhtml </p>
-<h1 id="rfc.references"><a href="#rfc.references">11.</a> References</h1>
-<h1 id="rfc.references.1"><a href="#rfc.references.1">11.1.</a> Normative References</h1>
+<h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#security_considerations" id="security_considerations">Security Considerations</a></h1>
+<p id="rfc.section.9.p.1">The login hint token SHOULD be digitally signed by the issuer.  This ensures authenticity of the data and reduces the threat of an injedtion attack.  </p>
+<p id="rfc.section.9.p.2">To prevent modification of the context message value, the RP SHOULD send the parameter to the OP using a signed OpenID Connect Request Object (section 6.3.2 of <a href="#OpenID.Core">[OpenID.Core]</a>).  </p>
+<p id="rfc.section.9.p.3">The OP MUST sanitize the context message value in order to prevent injection attacks.  </p>
+<p id="rfc.section.9.p.4">The message being displayed on the consumption and authentication device SHOULD contain a random value (e.g. an authorization code) of reasonable entropy.  This is a countermeasure against session fixation type attacks, where the attacker initiates an authentication process on a consumption device under his control, which will result in the same text being displayed on the authentication device as for legitimate transactions.  </p>
+<h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#privacy_considerations" id="privacy_considerations">Privacy Considerations</a></h1>
+<p id="rfc.section.10.p.1">The login hint token is encrypted in order to protect eht user's MSISN from being revealed to the client unintentionally.  </p>
+<h1 id="rfc.section.11"><a href="#rfc.section.11">11.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
+<p id="rfc.section.11.p.1">TBD: Find out about how to correctly add entries to IANA for: https://www.iana.org/assignment/loa-profiles/loa-profiles.xhtml </p>
+<h1 id="rfc.references"><a href="#rfc.references">12.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">12.1.</a> Normative References</h1>
 <table>
   <tbody>
+    <tr>
+      <td class="reference">
+        <b id="AMR">[AMR]</b>
+      </td>
+      <td class="top"><a title="Microsoft">Jones, M.</a> and <a title="Oracle">P. Hunt</a>, "<a>Authentication Method Reference Values</a>", August 2015.</td>
+    </tr>
     <tr>
       <td class="reference">
         <b id="OpenID.Core">[OpenID.Core]</b>
@@ -625,7 +663,7 @@
     </tr>
   </tbody>
 </table>
-<h1 id="rfc.references.2"><a href="#rfc.references.2">11.2.</a> Informative References</h1>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">12.2.</a> Informative References</h1>
 <table>
   <tbody>
     <tr>
