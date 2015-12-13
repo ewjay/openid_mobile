@@ -151,7 +151,7 @@
 				</t>
 				<t hangText="login_hint_token">
 					OPTIONAL. This is a new parameter. The login_hint_token is used to 
-    	        	transport a user identifier from the discovery service to the OpenID Provider without 
+    	        	transport a user identifier from the Discovery Service to the OpenID Provider without 
         	    	revealing this identifier to the client.
         	    	<xref target="login_hint_token_structure" /> specifies the structure of this parameter.
         	    	Protection of the login_hint_token's content is specified in 
@@ -345,9 +345,9 @@ The Biometric may be captured as part of the consent flow.
     
     <section anchor="login_hint_token_structure" title="login_hint_token">
 		<t>
-			The <spanx style="verb">login_hint_token</spanx> produced by the Discovery service 
+			The <spanx style="verb">login_hint_token</spanx> produced by the Discovery Service 
         	is an encrypted Json Web Token <xref target="RFC7519">JWT</xref> that contains a user
-        	hint for a certain OP. This token is typically created by a MODRNA discovery service
+        	hint for a certain OP. This token is typically created by a MODRNA Discovery Service
         	<xref target="MODRNA.Discovery"/>, if a user has entered a MSISDN during discovery process. 
         	The <spanx style="verb">login_hint_token</spanx> SHALL be used by the client as 
         	login hint with the particular OP.
@@ -399,7 +399,7 @@ TBD: do we need a reference to some standard here?
 		        /.well-kown/openid-configuration the value of the "aud" claim. In the next step,
 		        the claim "jwks_uri" is used to retrieve the OP's key set.
 		    </t>
-    	    <t>The login_hint token MUST be signed using the private key of the discovery service.</t>
+    	    <t>The login_hint token MUST be signed using the private key of the Discovery Service.</t>
         	
         	<t>It is best practice to sign then encrypt tokens, as signatures over encrypted 
         	information may leak information in the envelope, and may not be considered 
