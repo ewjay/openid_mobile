@@ -44,7 +44,7 @@
 
 
 
-    <date day="09" month="Dec" year="2015" />
+    <date day="12" month="Dec" year="2015" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -297,6 +297,14 @@ The Biometric may be captured as part of the consent flow.
 			    <t hangText="hpop">
 			    Proof-of-possession (PoP) of a hardware protected key.
 			    </t>
+			    <t hangText="geo">
+			    Geo-Location of the authentication device.
+			    </t>
+			    <t hangText="mfa">
+			    Multiple-factor authentication. When this is
+                present, specific authentication methods used may also be
+                included.
+			    </t>
 			    
 			</list>
 	    </t>
@@ -309,11 +317,6 @@ The Biometric may be captured as part of the consent flow.
 			element in mobile device's and the HW element signs a authentication challenge
 			only after the user has entered a local PIN then it SHOULD have a 
 			<spanx style="verb">amr</spanx> value of ["hpop","pin"]</t>
-			
-	        <t>If the authentication is by sending a secure message to a hardware 
-			element in the mobile device and the HW element signs a authentication challenge
-			only after the user has entered a local PIN then it SHOULD have a 
-			<spanx style="verb">amr</spanx> value of ["hpop","pin"]</t>
 		    
 		    <t>If the authentication is by sending a secure message to a software 
 			application in the mobile device that signs a authentication challenge
@@ -321,7 +324,19 @@ The Biometric may be captured as part of the consent flow.
 			SHOULD have a 
 			<spanx style="verb">amr</spanx> value of ["pop","fpt"]</t>
 			
-			<t>Note that the order of elements in the <spanx style="verb">amr</spanx>
+			<t>If the authentication is by sending a secure message to a hardware 
+			element in mobile device's and the HW element signs a authentication challenge
+			only after the user has entered a local fingerprint biometric,
+			and the IdP has preformed additional passive analytics based on
+			geo location, then it 
+			SHOULD have a 
+			<spanx style="verb">amr</spanx> value of ["hpop","fpt","geo"]</t>
+			
+			<t>Note that if two or more authentication factors are used the MNO may 
+			include the <spanx style="verb">amr</spanx> value <spanx style="verb">mfa</spanx>
+			and optionally not include the specific factors.
+			<vspace/>
+			Note: that the order of elements in the <spanx style="verb">amr</spanx>
 			array is not significant.</t>
 		    
 		    </section>    

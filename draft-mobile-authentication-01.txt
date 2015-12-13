@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                       December 09, 2015
+                                                       December 12, 2015
 
 
             OpenID Connect MODRNA Authentication Profile 1.0
@@ -42,18 +42,18 @@ Table of Contents
      5.1.  AMR Value Examples  . . . . . . . . . . . . . . . . . . .   6
    6.  login_hint_token  . . . . . . . . . . . . . . . . . . . . . .   6
      6.1.  login_hint_token encryption and signing . . . . . . . . .   7
-   7.  context . . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   7.  context . . . . . . . . . . . . . . . . . . . . . . . . . . .   8
    8.  mandatory to implement  . . . . . . . . . . . . . . . . . . .   8
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
    10. Privacy Considerations  . . . . . . . . . . . . . . . . . . .   8
-   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
-   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     12.1.  Normative References . . . . . . . . . . . . . . . . . .   8
+   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
+   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     12.1.  Normative References . . . . . . . . . . . . . . . . . .   9
      12.2.  Informative References . . . . . . . . . . . . . . . . .   9
 
 
 
-Connotte & Bradley        Expires June 11, 2016                 [Page 1]
+Connotte & Bradley        Expires June 14, 2016                 [Page 1]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -109,7 +109,7 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 1]
 
 
 
-Connotte & Bradley        Expires June 11, 2016                 [Page 2]
+Connotte & Bradley        Expires June 14, 2016                 [Page 2]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -165,7 +165,7 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 2]
 
 
 
-Connotte & Bradley        Expires June 11, 2016                 [Page 3]
+Connotte & Bradley        Expires June 14, 2016                 [Page 3]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -221,7 +221,7 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 3]
 
 
 
-Connotte & Bradley        Expires June 11, 2016                 [Page 4]
+Connotte & Bradley        Expires June 14, 2016                 [Page 4]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -277,10 +277,15 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 4]
 
 
 
-Connotte & Bradley        Expires June 11, 2016                 [Page 5]
+Connotte & Bradley        Expires June 14, 2016                 [Page 5]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
+
+   geo  Geo-Location of the authentication device.
+
+   mfa  Multiple-factor authentication.  When this is present, specific
+      authentication methods used may also be included.
 
 5.1.  AMR Value Examples
 
@@ -293,17 +298,22 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 5]
    challenge only after the user has entered a local PIN then it SHOULD
    have a "amr" value of ["hpop","pin"]
 
-   If the authentication is by sending a secure message to a hardware
-   element in the mobile device and the HW element signs a
-   authentication challenge only after the user has entered a local PIN
-   then it SHOULD have a "amr" value of ["hpop","pin"]
-
    If the authentication is by sending a secure message to a software
    application in the mobile device that signs a authentication
    challenge only after the user has entered a local fingerprint
    biometric then it SHOULD have a "amr" value of ["pop","fpt"]
 
-   Note that the order of elements in the "amr" array is not
+   If the authentication is by sending a secure message to a hardware
+   element in mobile device's and the HW element signs a authentication
+   challenge only after the user has entered a local fingerprint
+   biometric, and the IdP has preformed additional passive analytics
+   based on geo location, then it SHOULD have a "amr" value of
+   ["hpop","fpt","geo"]
+
+   Note that if two or more authentication factors are used the MNO may
+   include the "amr" value "mfa" and optionally not include the specific
+   factors.
+   Note: that the order of elements in the "amr" array is not
    significant.
 
 6.  login_hint_token
@@ -321,6 +331,13 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 5]
       used to obtain the JWK [RFC7517] file required to validate the
       tokens's signature (see Section 6.1).
 
+
+
+Connotte & Bradley        Expires June 14, 2016                 [Page 6]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
+
    aud  REQUIRED.  The party to receive the token, typically the users
       OpenID Provider.  The value MUST be the issuer URI of the OP as
       exposed in the openid-configuration.
@@ -329,14 +346,6 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 5]
 
    MSISDN  REQUIRED.  NUMERIC The Subscriber identifier formated
       according to ITU-T recommendation [E.164]
-
-
-
-
-Connotte & Bradley        Expires June 11, 2016                 [Page 6]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
 
    The following is a non-normative example of JWT body (with line wraps
    within values for display purposes only):
@@ -374,6 +383,17 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 6]
    formats for use in Account Chooser or other discovery profiles, as
    long as they are confidentiality protected from the client.
 
+
+
+
+
+
+
+Connotte & Bradley        Expires June 14, 2016                 [Page 7]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
+
 7.  context
 
    The context parameter is a message provided by the RP intended to be
@@ -384,15 +404,6 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 6]
    The context message MUST be plain text using the "application/x-www-
    form-urlencoded" format as the authentication device in particular
    may have limited abilities to show text or formats.
-
-
-
-
-
-Connotte & Bradley        Expires June 11, 2016                 [Page 7]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
 
    TBD: something about the length of the message? e.g. the message MUST
    be distingushable from the first 64 characters...
@@ -428,6 +439,17 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 7]
    The login hint token is encrypted in order to protect eht user's
    MSISN from being revealed to the client unintentionally.
 
+
+
+
+
+
+
+Connotte & Bradley        Expires June 14, 2016                 [Page 8]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
+
 11.  IANA Considerations
 
    TBD: Find out about how to correctly add entries to IANA for:
@@ -439,16 +461,6 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 7]
 
    [AMR]      Jones, M. and P. Hunt, "Authentication Method Reference
               Values", August 2015.
-
-
-
-
-
-
-Connotte & Bradley        Expires June 11, 2016                 [Page 8]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
 
    [OpenID.Core]
               Sakimura, N., Bradley, J., Jones, M., de Medeiros, B.,
@@ -486,6 +498,14 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 8]
               <https://bitbucket.org/openid/mobile/raw/default/draft-
               mobile-discovery-01.txt>.
 
+
+
+
+Connotte & Bradley        Expires June 14, 2016                 [Page 9]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
+
    [RFC2246]  Dierks, T. and C. Allen, "The TLS Protocol Version 1.0",
               RFC 2246, DOI 10.17487/RFC2246, January 1999,
               <http://www.rfc-editor.org/info/rfc2246>.
@@ -498,13 +518,6 @@ Connotte & Bradley        Expires June 11, 2016                 [Page 8]
    [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
               <http://www.rfc-editor.org/info/rfc6749>.
-
-
-
-Connotte & Bradley        Expires June 11, 2016                 [Page 9]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
 
    [RFC6750]  Jones, M. and D. Hardt, "The OAuth 2.0 Authorization
               Framework: Bearer Token Usage", RFC 6750,
@@ -541,6 +554,14 @@ Appendix B.  Notices
    taken steps to help ensure that the technology is available for
    distribution, it takes no position regarding the validity or scope of
    any intellectual property or other rights that might be claimed to
+
+
+
+Connotte & Bradley        Expires June 14, 2016                [Page 10]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
+
    pertain to the implementation or use of the technology described in
    this specification or the extent to which any license under such
    rights might or might not be available; neither does it represent
@@ -554,14 +575,6 @@ Appendix B.  Notices
    Property Rights policy requires contributors to offer a patent
    promise not to assert certain patent claims against other
    contributors and against implementers.  The OpenID Foundation invites
-
-
-
-Connotte & Bradley        Expires June 11, 2016                [Page 10]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
-
    any interested party to bring to its attention any copyrights,
    patents, patent applications, or other proprietary rights that may
    cover technology that may be required to practice this specification.
@@ -600,17 +613,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Connotte & Bradley        Expires June 11, 2016                [Page 11]
+Connotte & Bradley        Expires June 14, 2016                [Page 11]
