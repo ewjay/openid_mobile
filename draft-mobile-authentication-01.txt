@@ -139,7 +139,7 @@ Connotte & Bradley        Expires June 14, 2016                 [Page 2]
 
    login_hint_token  OPTIONAL.  This is a new parameter.  The
       login_hint_token is used to transport a user identifier from the
-      discovery service to the OpenID Provider without revealing this
+      Discovery Service to the OpenID Provider without revealing this
       identifier to the client.  Section 6 specifies the structure of
       this parameter.  Protection of the login_hint_token's content is
       specified in Section 6.1.
@@ -318,10 +318,10 @@ Connotte & Bradley        Expires June 14, 2016                 [Page 5]
 
 6.  login_hint_token
 
-   The "login_hint_token" produced by the Discovery service is an
+   The "login_hint_token" produced by the Discovery Service is an
    encrypted Json Web Token JWT [RFC7519] that contains a user hint for
-   a certain OP.  This token is typically created by a MODRNA discovery
-   service [MODRNA.Discovery], if a user has entered a MSISDN during
+   a certain OP.  This token is typically created by a MODRNA Discovery
+   Service [MODRNA.Discovery], if a user has entered a MSISDN during
    discovery process.  The "login_hint_token" SHALL be used by the
    client as login hint with the particular OP.
 
@@ -369,7 +369,7 @@ Connotte & Bradley        Expires June 14, 2016                 [Page 6]
    the claim "jwks_uri" is used to retrieve the OP's key set.
 
    The login_hint token MUST be signed using the private key of the
-   discovery service.
+   Discovery Service.
 
    It is best practice to sign then encrypt tokens, as signatures over
    encrypted information may leak information in the envelope, and may
