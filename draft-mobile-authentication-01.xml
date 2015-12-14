@@ -44,7 +44,7 @@
 
 
 
-    <date day="12" month="Dec" year="2015" />
+    <date day="14" month="Dec" year="2015" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -157,8 +157,7 @@
         	    	Protection of the login_hint_token's content is specified in 
         	    	<xref target="lht_encryption_signing" />.
 				</t>
-				<t hangText="context">
-TBD: There is a request from GSMA to call this "binding_message".
+				<t hangText="binding_message">
 				    OPTIONAL. This is a new parameter. An Interlock message to tie the consumption 
 				    device and the authentication device together.
 				    How to ensure that the message is actually shown on all relevant 
@@ -171,21 +170,20 @@ TBD: There is a request from GSMA to call this "binding_message".
 		</t>
 	</section>
     <section anchor="acr_values" title="acr_values request values and level of assurance">
-        <t> The service terms of service will specify a trust framework for Identity Providers 
+        <t> The service's terms of service will specify a trust framework for Identity Providers 
              to follow for general business processes and other related account security 
              issues.
         </t>
         <t>
-	        This specification defines initial <spanx style="verb">acr</spanx> values
+	        This specification defines an initial set of <spanx style="verb">acr</spanx> values
 	        that clients can use to request the IdP mitigate specific authentication
 	        risks.
 	    </t>
-	    <t>In addition the initial set of <spanx style="verb">acr</spanx> values 
+	    <t>The initial set of <spanx style="verb">acr</spanx> values 
 	       contain no requirements for the IdP to make any guarente of identity proofing 
 	       the subject of the authentication beyond what is required by business practices
 	       for account recovery, and customer service as defined in the trust framework.
-	       Prepaid anonymous users are included 
-	       in responses conforming to these  values.
+	       Prepaid anonymous users may be included in responses conforming to these  values.
 	       </t>
 	    <t>The IANA <xref target="RFC6711">Level of Assurance (LoA) Profiles</xref>
 	    Registry will be used to register the short names for these LoA, and any future
@@ -194,7 +192,7 @@ TBD: There is a request from GSMA to call this "binding_message".
 	    
 	    <t>
 		    <list style="hanging">
-			    <t hangText="http://schemas.openid.net/policies/mod/phishing-resistant">
+			    <t hangText="http://schemas.openid.net/policies/modrna/phishing-resistant">
 			    Short-Name: mod-pr
 			    <vspace/>
 			    This mitigates phishing of credentials.
@@ -206,7 +204,7 @@ The storage mechanism for the secret key and other relevant authentication infor
 The user is not re-prompted if prompt is not login and max_age is more than the elapsed time since the user last authenticated at this acr
 				    
 			    </t>
-			    <t hangText="http://schemas.openid.net/policies/mod/multi-factor">
+			    <t hangText="http://schemas.openid.net/policies/modrna/multi-factor">
 			    Short-Name: mod-mf
 			    <vspace/>
 			    This mitigates phishing and proves the device is recently in the possession of
@@ -218,7 +216,7 @@ Given suitable Mobile device management unlocking the device is also sufficient 
 The storage mechanism for the secret key and other relevant authentication information is returned via the <spanx style="verb">amr</spanx> value.
 The user is not re-prompted if prompt is not login and max_age is more than the elapsed time since the user last authenticated at this acr,
 			    </t>
-			    <t hangText="http://schemas.openid.net/policies/mod/multi-factor-physical">
+			    <t hangText="http://schemas.openid.net/policies/modrna/multi-factor-physical">
 			    Short-Name: mod-mfp
 			     <vspace/> 
 			    This mitigates phishing and proves the device is currently in the possession of
@@ -242,9 +240,14 @@ The Biometric may be captured as part of the consent flow.
 			 OpenID Connect Core 3.1.2.1 <xref target="OpenID.Core"/>.
 		    </t>
 		    
-		    <t>The OP MUST also support receiving <spanx style="verb">acr</spanx> as a
+		    <t>The OP MUST support receiving <spanx style="verb">acr</spanx> as a
 			as a claim request in a signed request per 
-			 OpenID Connect Core 5.5.1 <xref target="OpenID.Core"/>.
+			 OpenID Connect Core 5.5.1 <xref target="OpenID.Core"/>.  This method 
+			 prevents the request from being modified by the user, and allows the
+			 requested <spanx style="verb">acr</spanx> valued to be considered 
+			 essential claims causing the IdP to respond with an authentication 
+			 error if no requested <spanx style="verb">acr</spanx> value can be 
+			 fulfilled.
 		    </t>
 		    <t>Depending on the authentication capabilities of the users device,
 		    the OP must attempt to match the highest requested acr value that the 
@@ -344,16 +347,34 @@ The Biometric may be captured as part of the consent flow.
     </section>
     
     <section anchor="login_hint_token_structure" title="login_hint_token">
+        <t>
+            The <spanx style="verb">login_hint_token</spanx> is used to pass a user hint
+            into the authentication process at the OP. This hint is opaque to the client 
+            by design.
+			There are several ways for a client to obtain a login hint token. 
+			To start with, the 
+			<xref target="MODRNA.Discovery">MODRNA discovery service</xref> creates a
+			hint if the user has entered their MSISDN in the course of the MNO discovery process. 
+			</t>
+
 		<t>
-			The <spanx style="verb">login_hint_token</spanx> produced by the Discovery Service 
+			In the case of a <spanx style="verb">login_hint_token</spanx> produced by the 
+			MODRNA Discovery Service it
         	is an encrypted Json Web Token <xref target="RFC7519">JWT</xref> that contains a user
-        	hint for a certain OP. This token is typically created by a MODRNA Discovery Service
-        	<xref target="MODRNA.Discovery"/>, if a user has entered a MSISDN during discovery process. 
+        	hint for the OP. 
         	The <spanx style="verb">login_hint_token</spanx> SHALL be used by the client as 
-        	login hint with the particular OP.
+        	login hint with OP identified by the 
+        	<xref target="MODRNA.Discovery">MODRNA discovery service</xref>.
 		</t>
 		<t>
-        	 The <spanx style="verb">login_hint_token</spanx> has the following elements:
+			The Authorization server may produce <spanx style="verb">login_hint_token</spanx>
+			tokens in other formats for use in Account Chooser
+			or other discovery profiles, as long as they are confidentiality protected from the client.
+		</t>
+		<t>
+        	 The <spanx style="verb">login_hint_token</spanx> produced by the
+        	 <xref target="MODRNA.Discovery">MODRNA discovery service</xref>
+        	 has the following elements:
             <list style="hanging">
                 <t hangText="iss">
 			        REQUIRED. The party creating the token.
@@ -448,7 +469,7 @@ TBD: do we need a reference to some standard here?
     <section anchor="security_considerations" title="Security Considerations">
 	<t>
 		The login hint token SHOULD be digitally signed by the issuer.
-		This ensures authenticity of the data and reduces the threat of an injedtion attack.
+		This ensures authenticity of the data and reduces the threat of an injection attack.
 	</t>
 	<t>
 		To prevent modification of the context message value, the RP SHOULD send 
@@ -471,7 +492,7 @@ TBD: do we need a reference to some standard here?
 
     <section anchor="privacy_considerations" title="Privacy Considerations">
 	    <t>
-		    The login hint token is encrypted in order to protect eht user's MSISN from 
+		    The login hint token is encrypted in order to protect eht user's MSISDN from 
 		    being revealed to the client unintentionally.
 	    </t>
     </section>
