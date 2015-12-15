@@ -44,7 +44,7 @@
 
 
 
-    <date day="14" month="Dec" year="2015" />
+    <date day="15" month="Dec" year="2015" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -291,7 +291,7 @@ The Biometric may be captured as part of the consent flow.
 			    <t hangText="fpt">
 			    Fingerprint biometric
 			    </t> 
-			    <t hangText="sms">
+			    <t hangText="sms-r">
 			    Confirmation by replying to SMS sent to a known device.
 			    </t>
 			    <t hangText="pop">
@@ -303,11 +303,7 @@ The Biometric may be captured as part of the consent flow.
 			    <t hangText="geo">
 			    Geo-Location of the authentication device.
 			    </t>
-			    <t hangText="mfa">
-			    Multiple-factor authentication. When this is
-                present, specific authentication methods used may also be
-                included.
-			    </t>
+			   
 			    
 			</list>
 	    </t>
