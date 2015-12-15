@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                       December 14, 2015
+                                                       December 15, 2015
 
 
             OpenID Connect MODRNA Authentication Profile 1.0
@@ -49,11 +49,11 @@ Table of Contents
    11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
    12. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      12.1.  Normative References . . . . . . . . . . . . . . . . . .   9
-     12.2.  Informative References . . . . . . . . . . . . . . . . .  10
+     12.2.  Informative References . . . . . . . . . . . . . . . . .   9
 
 
 
-Connotte & Bradley        Expires June 16, 2016                 [Page 1]
+Connotte & Bradley        Expires June 17, 2016                 [Page 1]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -109,7 +109,7 @@ Connotte & Bradley        Expires June 16, 2016                 [Page 1]
 
 
 
-Connotte & Bradley        Expires June 16, 2016                 [Page 2]
+Connotte & Bradley        Expires June 17, 2016                 [Page 2]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -165,7 +165,7 @@ Connotte & Bradley        Expires June 16, 2016                 [Page 2]
 
 
 
-Connotte & Bradley        Expires June 16, 2016                 [Page 3]
+Connotte & Bradley        Expires June 17, 2016                 [Page 3]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -221,7 +221,7 @@ Connotte & Bradley        Expires June 16, 2016                 [Page 3]
 
 
 
-Connotte & Bradley        Expires June 16, 2016                 [Page 4]
+Connotte & Bradley        Expires June 17, 2016                 [Page 4]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -273,11 +273,11 @@ Connotte & Bradley        Expires June 16, 2016                 [Page 4]
 
    fpt  Fingerprint biometric
 
-   sms  Confirmation by replying to SMS sent to a known device.
+   sms-r  Confirmation by replying to SMS sent to a known device.
 
 
 
-Connotte & Bradley        Expires June 16, 2016                 [Page 5]
+Connotte & Bradley        Expires June 17, 2016                 [Page 5]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -287,9 +287,6 @@ Connotte & Bradley        Expires June 16, 2016                 [Page 5]
    hpop  Proof-of-possession (PoP) of a hardware protected key.
 
    geo  Geo-Location of the authentication device.
-
-   mfa  Multiple-factor authentication.  When this is present, specific
-      authentication methods used may also be included.
 
 5.1.  AMR Value Examples
 
@@ -329,18 +326,18 @@ Connotte & Bradley        Expires June 16, 2016                 [Page 5]
    [MODRNA.Discovery] creates a hint if the user has entered their
    MSISDN in the course of the MNO discovery process.
 
+   In the case of a "login_hint_token" produced by the MODRNA Discovery
+   Service it is an encrypted Json Web Token JWT [RFC7519] that contains
+   a user hint for the OP.  The "login_hint_token" SHALL be used by the
 
 
 
 
-Connotte & Bradley        Expires June 16, 2016                 [Page 6]
+Connotte & Bradley        Expires June 17, 2016                 [Page 6]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
 
-   In the case of a "login_hint_token" produced by the MODRNA Discovery
-   Service it is an encrypted Json Web Token JWT [RFC7519] that contains
-   a user hint for the OP.  The "login_hint_token" SHALL be used by the
    client as login hint with OP identified by the MODRNA discovery
    service [MODRNA.Discovery].
 
@@ -385,17 +382,17 @@ Connotte & Bradley        Expires June 16, 2016                 [Page 6]
    openid-configuration the value of the "aud" claim.  In the next step,
    the claim "jwks_uri" is used to retrieve the OP's key set.
 
+   The login_hint token MUST be signed using the private key of the
+   Discovery Service.
 
 
 
 
-Connotte & Bradley        Expires June 16, 2016                 [Page 7]
+
+Connotte & Bradley        Expires June 17, 2016                 [Page 7]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
-
-   The login_hint token MUST be signed using the private key of the
-   Discovery Service.
 
    It is best practice to sign then encrypt tokens, as signatures over
    encrypted information may leak information in the envelope, and may
@@ -441,19 +438,18 @@ Connotte & Bradley        Expires June 16, 2016                 [Page 7]
    The OP MUST sanitize the context message value in order to prevent
    injection attacks.
 
-
-
-
-
-Connotte & Bradley        Expires June 16, 2016                 [Page 8]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
-
    The message being displayed on the consumption and authentication
    device SHOULD contain a random value (e.g. an authorization code) of
    reasonable entropy.  This is a countermeasure against session
    fixation type attacks, where the attacker initiates an authentication
+
+
+
+Connotte & Bradley        Expires June 17, 2016                 [Page 8]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
+
    process on a consumption device under his control, which will result
    in the same text being displayed on the authentication device as for
    legitimate transactions.
@@ -497,18 +493,18 @@ Connotte & Bradley        Expires June 16, 2016                 [Page 8]
               (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
               <http://www.rfc-editor.org/info/rfc7519>.
 
-
-
-
-
-Connotte & Bradley        Expires June 16, 2016                 [Page 9]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
-
 12.2.  Informative References
 
    [E.164]    N., , "Recommendation ITU-T E.164", November 2010.
+
+
+
+
+
+Connotte & Bradley        Expires June 17, 2016                 [Page 9]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
 
    [ISO.29115]
               McAllister, E. and R. Brackney, "ISO/IEC DIS 29115", April
@@ -554,18 +550,18 @@ Appendix B.  Notices
 
    The OpenID Foundation (OIDF) grants to any Contributor, developer,
    implementer, or other interested party a non-exclusive, royalty free,
-
-
-
-Connotte & Bradley        Expires June 16, 2016                [Page 10]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
-
    worldwide copyright license to reproduce, prepare derivative works
    from, distribute, perform and display, this Implementers Draft or
    Final Specification solely for the purposes of (i) developing
    specifications, and (ii) implementing Implementers Drafts and Final
+
+
+
+Connotte & Bradley        Expires June 17, 2016                [Page 10]
+
+                 OIDC MODRNA Authentication Profile 1.0    December 2015
+
+
    Specifications based on such documents, provided that attribution be
    made to the OIDF as the source of the material, but that such
    attribution does not indicate an endorsement by the OIDF.
@@ -613,7 +609,11 @@ Authors' Addresses
 
 
 
-Connotte & Bradley        Expires June 16, 2016                [Page 11]
+
+
+
+
+Connotte & Bradley        Expires June 17, 2016                [Page 11]
 
                  OIDC MODRNA Authentication Profile 1.0    December 2015
 
@@ -669,4 +669,4 @@ Connotte & Bradley        Expires June 16, 2016                [Page 11]
 
 
 
-Connotte & Bradley        Expires June 16, 2016                [Page 12]
+Connotte & Bradley        Expires June 17, 2016                [Page 12]
