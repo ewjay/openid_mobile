@@ -384,7 +384,7 @@
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 AMR Value Examples"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 login_hint_token"/>
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 login_hint_token encryption and signing"/>
-<link href="#rfc.section.7" rel="Chapter" title="7 context"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 binding_message"/>
 <link href="#rfc.section.8" rel="Chapter" title="8 mandatory to implement"/>
 <link href="#rfc.section.9" rel="Chapter" title="9 Security Considerations"/>
 <link href="#rfc.section.10" rel="Chapter" title="10 Privacy Considerations"/>
@@ -465,7 +465,7 @@
 <ul><li>5.1.   <a href="#rfc.section.5.1">AMR Value Examples</a></li>
 </ul><li>6.   <a href="#rfc.section.6">login_hint_token</a></li>
 <ul><li>6.1.   <a href="#rfc.section.6.1">login_hint_token encryption and signing</a></li>
-</ul><li>7.   <a href="#rfc.section.7">context</a></li>
+</ul><li>7.   <a href="#rfc.section.7">binding_message</a></li>
 <li>8.   <a href="#rfc.section.8">mandatory to implement</a></li>
 <li>9.   <a href="#rfc.section.9">Security Considerations</a></li>
 <li>10.   <a href="#rfc.section.10">Privacy Considerations</a></li>
@@ -514,7 +514,7 @@
   <dt>login_hint_token</dt>
   <dd style="margin-left: 8">OPTIONAL. This is a new parameter. The login_hint_token is used to transport a user identifier from the Discovery Service to the OpenID Provider without revealing this identifier to the client.  <a href="#login_hint_token_structure">Section 6</a> specifies the structure of this parameter.  Protection of the login_hint_token's content is specified in <a href="#lht_encryption_signing">Section 6.1</a>.  </dd>
   <dt>binding_message</dt>
-  <dd style="margin-left: 8">OPTIONAL. This is a new parameter. An Interlock message to tie the consumption device and the authentication device together.  How to ensure that the message is actually shown on all relevant devices is out of the scope of this document.  Possible values and constraints are specified in <a href="#context_values">Section 7</a>.  Ways to protect the integrity of the context message are discussed in <a href="#security_considerations">Section 9</a>.  </dd>
+  <dd style="margin-left: 8">OPTIONAL. This is a new parameter. An Interlock message to tie the consumption device and the authentication device together.  How to ensure that the message is actually shown on all relevant devices is out of the scope of this document.  Possible values and constraints are specified in <a href="#binding_message_details">Section 7</a>.  Ways to protect the integrity of the binding_message are discussed in <a href="#security_considerations">Section 9</a>.  </dd>
 </dl>
 
 <p> </p>
@@ -603,9 +603,9 @@
 <p id="rfc.section.6.1.p.4">It is best practice to sign then encrypt tokens, as signatures over encrypted information may leak information in the envelope, and may not be considered legally valid.</p>
 <p id="rfc.section.6.1.p.5">For an example of a nested JWT that is signed and then encrypted see Appendix 2 of <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite>.  </p>
 <p id="rfc.section.6.1.p.6">NOTE:  The <samp>login_hint_token</samp> is opaque to the client by design.  The Authorization server may produce <samp>login_hint_token</samp> tokens in other formats for use in Account Chooser or other discovery profiles, as long as they are confidentiality protected from the client. </p>
-<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#context_values" id="context_values">context</a></h1>
-<p id="rfc.section.7.p.1">The context parameter is a message provided by the RP intended to be shown to the user on the consumption device as well as on the authentication device as an interlock between RP and OP. The context SHOULD be displayable by all participating parties.  </p>
-<p id="rfc.section.7.p.2">The context message MUST be plain text using the "application/x-www-form-urlencoded" format as the authentication device in particular may have limited abilities to show text or formats.  </p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#binding_message_details" id="binding_message_details">binding_message</a></h1>
+<p id="rfc.section.7.p.1">The binding_message parameter is a text provided by the RP intended to be shown to the user on the consumption device as well as on the authentication device as an interlock between RP and OP. The context SHOULD be displayable by all participating parties.  </p>
+<p id="rfc.section.7.p.2">The binding_message MUST be plain text using the "application/x-www-form-urlencoded" format as the authentication device in particular may have limited abilities to show text or formats.  </p>
 <p id="rfc.section.7.p.3">TBD: something about the length of the message? e.g. the message MUST be distingushable from the first 64 characters...  </p>
 <h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#m_t_i" id="m_t_i">mandatory to implement</a></h1>
 <p/>

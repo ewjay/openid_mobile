@@ -162,8 +162,9 @@
 				    device and the authentication device together.
 				    How to ensure that the message is actually shown on all relevant 
 				    devices is out of the scope of this document.
-				    Possible values and constraints are specified in <xref target="context_values" />.
-				    Ways to protect the integrity of the context message are discussed 
+				    Possible values and constraints are specified in 
+				    <xref target="binding_message_details" />.
+				    Ways to protect the integrity of the binding_message are discussed 
 				    in <xref target="security_considerations" />.
 				</t>
 			</list>
@@ -433,16 +434,17 @@ TBD: do we need a reference to some standard here?
     </section>
 
     
-    <section anchor="context_values" title="context">
+    <section anchor="binding_message_details" title="binding_message">
         <t>
-	        The context parameter is a message provided by the RP intended to be shown to the user 
-	        on the consumption device as well as on the authentication device as an interlock 
-	        between RP and OP. The context SHOULD be displayable by all participating parties.
+	        The binding_message parameter is a text provided by the RP intended to be shown 
+	        to the user on the consumption device as well as on the authentication device as an 
+	        interlock between RP and OP. The context SHOULD be displayable by all 
+	        participating parties.
 	     </t>
 	     <t>
-	        The context message MUST be plain text using the "application/x-www-form-urlencoded" 
-	        format as the authentication device in particular may have limited abilities to show text
-	        or formats.
+	        The binding_message MUST be plain text using the "application/x-www-form-urlencoded" 
+	        format as the authentication device in particular may have limited abilities to show 
+	        text or formats.
 	      </t>
 	      <t>
 	        TBD: something about the length of the message? e.g. the message MUST be distingushable from the
