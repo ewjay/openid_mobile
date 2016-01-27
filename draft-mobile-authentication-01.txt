@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                       December 15, 2015
+                                                            Jan 27, 2015
 
 
             OpenID Connect MODRNA Authentication Profile 1.0
@@ -53,9 +53,9 @@ Table of Contents
 
 
 
-Connotte & Bradley        Expires June 17, 2016                 [Page 1]
+Connotte & Bradley        Expires July 31, 2015                 [Page 1]
 
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
+                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
 
 
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  10
@@ -109,9 +109,9 @@ Connotte & Bradley        Expires June 17, 2016                 [Page 1]
 
 
 
-Connotte & Bradley        Expires June 17, 2016                 [Page 2]
+Connotte & Bradley        Expires July 31, 2015                 [Page 2]
 
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
+                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
 
 
 2.  Overview
@@ -165,15 +165,15 @@ Connotte & Bradley        Expires June 17, 2016                 [Page 2]
 
 
 
-Connotte & Bradley        Expires June 17, 2016                 [Page 3]
+Connotte & Bradley        Expires July 31, 2015                 [Page 3]
 
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
+                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
 
 
    The initial set of "acr" values contain no requirements for the IdP
-   to make any guarente of identity proofing the subject of the
+   to make any guarantee of identity proofing the subject of the
    authentication beyond what is required by business practices for
-   account recovery, and customer service as defined in the trust
+   account recovery and customer service as defined in the trust
    framework.  Prepaid anonymous users may be included in responses
    conforming to these values.
 
@@ -209,31 +209,22 @@ Connotte & Bradley        Expires June 17, 2016                 [Page 3]
       max_age is more than the elapsed time since the user last
       authenticated at this acr,
 
-   http://schemas.openid.net/policies/modrna/multi-factor-physical
-      Short-Name: mod-mfp
-      This mitigates phishing and proves the device is currently in the
-      possession of the authorised user verified by a biometric.
-      The user is authenticated via possession of a device (phone)
-      containing a secret key.  The user is required to provide
-      additional authentication information via a local biometric, or a
-      remote paring with a biometric capable device.  If an external
-      device like a EKG band is used for the biometric the user must
+   Identity Providers MUST recognize and process short registered forms
+   of the authentication context strings.  They may recognize and
+   process long forms for custom authentication contexts.
 
-
-
-Connotte & Bradley        Expires June 17, 2016                 [Page 4]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
-
-      still be prompted for consent on the AD.  The Biometric may be
-      captured as part of the consent flow.
-
-   Identity Providers MUST recognize and process both the long URI and
-   short registered forms of the authentication context strings.
+   Clients MUST send the short registered forms of the authentication
+   context strings, if the authentication context is registered.
 
    The OP MUST support receiving "acr_values" as a space separated list
    in order of preference per OpenID Connect Core 3.1.2.1 [OpenID.Core].
+
+
+
+Connotte & Bradley        Expires July 31, 2015                 [Page 4]
+
+                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+
 
    The OP MUST support receiving "acr" as a as a claim request in a
    signed request per OpenID Connect Core 5.5.1 [OpenID.Core].  This
@@ -273,20 +264,23 @@ Connotte & Bradley        Expires June 17, 2016                 [Page 4]
 
    fpt  Fingerprint biometric
 
-   sms-r  Confirmation by replying to SMS sent to a known device.
-
-
-
-Connotte & Bradley        Expires June 17, 2016                 [Page 5]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
+   sms  Confirmation by responding to a SMS sent to a known device.
 
    pop  Proof-of-possession (PoP) of a key.
 
    hpop  Proof-of-possession (PoP) of a hardware protected key.
 
    geo  Geo-Location of the authentication device.
+
+
+
+
+
+
+Connotte & Bradley        Expires July 31, 2015                 [Page 5]
+
+                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+
 
 5.1.  AMR Value Examples
 
@@ -329,17 +323,20 @@ Connotte & Bradley        Expires June 17, 2016                 [Page 5]
    In the case of a "login_hint_token" produced by the MODRNA Discovery
    Service it is an encrypted Json Web Token JWT [RFC7519] that contains
    a user hint for the OP.  The "login_hint_token" SHALL be used by the
-
-
-
-
-Connotte & Bradley        Expires June 17, 2016                 [Page 6]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
-
    client as login hint with OP identified by the MODRNA discovery
-   service [MODRNA.Discovery].
+   service [MODRNA.Discovery].  In this case, the login hint token is
+   supposed to be a signed and encrypted JWT.  The Authorization server
+   may produce "login_hint_token" tokens in other formats for use in
+   Account Chooser or other discovery profiles, as long as they are
+   confidentiality protected from the client.
+
+
+
+
+Connotte & Bradley        Expires July 31, 2015                 [Page 6]
+
+                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+
 
    The Authorization server may produce "login_hint_token" tokens in
    other formats for use in Account Chooser or other discovery profiles,
@@ -385,18 +382,17 @@ Connotte & Bradley        Expires June 17, 2016                 [Page 6]
    The login_hint token MUST be signed using the private key of the
    Discovery Service.
 
-
-
-
-
-Connotte & Bradley        Expires June 17, 2016                 [Page 7]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
-
    It is best practice to sign then encrypt tokens, as signatures over
    encrypted information may leak information in the envelope, and may
    not be considered legally valid.
+
+
+
+
+Connotte & Bradley        Expires July 31, 2015                 [Page 7]
+
+                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+
 
    For an example of a nested JWT that is signed and then encrypted see
    Appendix 2 of JWT [RFC7519].
@@ -429,7 +425,9 @@ Connotte & Bradley        Expires June 17, 2016                 [Page 7]
 
    The login hint token SHOULD be digitally signed by the issuer.  This
    ensures authenticity of the data and reduces the threat of an
-   injection attack.
+   injection attack.  The signature allows the OP to authenicate and
+   authorize the sender of the hint and prevent collecting of phone
+   numbers by rogue clients
 
    To prevent modification of the context message value, the RP SHOULD
    send the parameter to the OP using a signed OpenID Connect Request
@@ -442,21 +440,22 @@ Connotte & Bradley        Expires June 17, 2016                 [Page 7]
    device SHOULD contain a random value (e.g. an authorization code) of
    reasonable entropy.  This is a countermeasure against session
    fixation type attacks, where the attacker initiates an authentication
-
-
-
-Connotte & Bradley        Expires June 17, 2016                 [Page 8]
-
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
-
-
    process on a consumption device under his control, which will result
+
+
+
+
+Connotte & Bradley        Expires July 31, 2015                 [Page 8]
+
+                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+
+
    in the same text being displayed on the authentication device as for
    legitimate transactions.
 
 10.  Privacy Considerations
 
-   The login hint token is encrypted in order to protect eht user's
+   The login hint token is encrypted in order to protect the user's
    MSISDN from being revealed to the client unintentionally.
 
 11.  IANA Considerations
@@ -501,9 +500,10 @@ Connotte & Bradley        Expires June 17, 2016                 [Page 8]
 
 
 
-Connotte & Bradley        Expires June 17, 2016                 [Page 9]
+
+Connotte & Bradley        Expires July 31, 2015                 [Page 9]
 
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
+                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
 
 
    [ISO.29115]
@@ -557,9 +557,9 @@ Appendix B.  Notices
 
 
 
-Connotte & Bradley        Expires June 17, 2016                [Page 10]
+Connotte & Bradley        Expires July 31, 2015                [Page 10]
 
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
+                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
 
 
    Specifications based on such documents, provided that attribution be
@@ -613,9 +613,9 @@ Authors' Addresses
 
 
 
-Connotte & Bradley        Expires June 17, 2016                [Page 11]
+Connotte & Bradley        Expires July 31, 2015                [Page 11]
 
-                 OIDC MODRNA Authentication Profile 1.0    December 2015
+                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
 
 
    John Bradley
@@ -669,4 +669,4 @@ Connotte & Bradley        Expires June 17, 2016                [Page 11]
 
 
 
-Connotte & Bradley        Expires June 17, 2016                [Page 12]
+Connotte & Bradley        Expires July 31, 2015                [Page 12]
