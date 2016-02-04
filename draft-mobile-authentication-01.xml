@@ -448,20 +448,20 @@ TBD: do we need a reference to some standard here?
     
     <section anchor="binding_message_details" title="binding_message">
         <t>
-	        The binding_message parameter is a text provided by the RP intended to be shown 
-	        to the user on the consumption device as well as on the authentication device as an 
-	        interlock between RP and OP. The context SHOULD be displayable by all 
-	        participating parties.
+	        The <spanx style="verb">binding_message</spanx> parameter is a text provided by the RP intended 
+	        to be shown to the user on the consumption device as well as on the authentication device as an 
+	        interlock between RP and OP. The <spanx style="verb">binding_message</spanx> SHOULD be 
+	        displayable by all participating parties.
 	     </t>
 	     <t>
-	        The binding_message MUST be plain text using the "application/x-www-form-urlencoded" 
-	        format as the authentication device in particular may have limited abilities to show 
-	        text or formats.
+	        The <spanx style="verb">binding_message</spanx> MUST be plain text using the 
+	        "application/x-www-form-urlencoded" format as the authentication device in particular 
+	        may have limited abilities to show text or formats.
 	      </t>
 	      <t>
-	        TBD: something about the length of the message? e.g. the message MUST be distingushable from the
-	        first 64 characters...
-	        
+	        The <spanx style="verb">binding_message</spanx> SHOULD be displayable on all participationg 
+	        devices. The RP SHOULD consider that some authentication devices e.g. as SIM-Applets are able to 
+	        show only a very limited number of characters.    
         </t>
     </section>
     
@@ -484,17 +484,18 @@ TBD: do we need a reference to some standard here?
         prevent collecting of phone numbers by rogue clients
 	</t>
 	<t>
-		To prevent modification of the context message value, the RP SHOULD send 
-		the parameter to the OP using a signed OpenID Connect Request Object 
+		To prevent modification of the <spanx style="verb">binding_message</spanx> value, 
+		the RP SHOULD send the parameter to the OP using a signed OpenID Connect Request Object 
 		(section 6.3.2 of <xref target="OpenID.Core"/>). 
 	</t>
 	<t>
-		The OP MUST sanitize the context message value in order to prevent 
-		injection attacks.
+		The OP MUST sanitize the <spanx style="verb">binding_message</spanx> value in order to 
+		prevent injection attacks.
 	</t>
 	<t>
-		The message being displayed on the consumption and authentication device SHOULD
-		contain a random value (e.g. an authorization code) of reasonable entropy.
+		The <spanx style="verb">binding_message</spanx> value being displayed on the consumption 
+		and authentication device SHOULD contain a random value (e.g. an authorization code) of 
+		reasonable entropy.
 		This is a countermeasure against session fixation type attacks, where the 
 		attacker initiates an authentication process on a consumption device under his 
 		control, which will result in the same text being displayed on the authentication

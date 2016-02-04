@@ -404,17 +404,19 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 7]
 
 7.  binding_message
 
-   The binding_message parameter is a text provided by the RP intended
+   The "binding_message" parameter is a text provided by the RP intended
    to be shown to the user on the consumption device as well as on the
-   authentication device as an interlock between RP and OP.  The context
-   SHOULD be displayable by all participating parties.
+   authentication device as an interlock between RP and OP.  The
+   "binding_message" SHOULD be displayable by all participating parties.
 
-   The binding_message MUST be plain text using the "application/x-www-
-   form-urlencoded" format as the authentication device in particular
-   may have limited abilities to show text or formats.
+   The "binding_message" MUST be plain text using the "application/x-
+   www-form-urlencoded" format as the authentication device in
+   particular may have limited abilities to show text or formats.
 
-   TBD: something about the length of the message? e.g. the message MUST
-   be distingushable from the first 64 characters...
+   The "binding_message" SHOULD be displayable on all participationg
+   devices.  The RP SHOULD consider that some authentication devices
+   e.g. as SIM-Applets are able to show only a very limited number of
+   characters.
 
 8.  mandatory to implement
 
@@ -429,19 +431,17 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 7]
    authorize the sender of the hint and prevent collecting of phone
    numbers by rogue clients
 
-   To prevent modification of the context message value, the RP SHOULD
+   To prevent modification of the "binding_message" value, the RP SHOULD
    send the parameter to the OP using a signed OpenID Connect Request
    Object (section 6.3.2 of [OpenID.Core]).
 
-   The OP MUST sanitize the context message value in order to prevent
+   The OP MUST sanitize the "binding_message" value in order to prevent
    injection attacks.
 
-   The message being displayed on the consumption and authentication
-   device SHOULD contain a random value (e.g. an authorization code) of
-   reasonable entropy.  This is a countermeasure against session
-   fixation type attacks, where the attacker initiates an authentication
-   process on a consumption device under his control, which will result
-
+   The "binding_message" value being displayed on the consumption and
+   authentication device SHOULD contain a random value (e.g. an
+   authorization code) of reasonable entropy.  This is a countermeasure
+   against session fixation type attacks, where the attacker initiates
 
 
 
@@ -450,8 +450,9 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 8]
                  OIDC MODRNA Authentication Profile 1.0         Jan 2015
 
 
-   in the same text being displayed on the authentication device as for
-   legitimate transactions.
+   an authentication process on a consumption device under his control,
+   which will result in the same text being displayed on the
+   authentication device as for legitimate transactions.
 
 10.  Privacy Considerations
 
@@ -495,7 +496,6 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 8]
 12.2.  Informative References
 
    [E.164]    N., , "Recommendation ITU-T E.164", November 2010.
-
 
 
 
