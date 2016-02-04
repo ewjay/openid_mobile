@@ -355,8 +355,8 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 6]
 
    iat  REQUIRED.  When the token was issued.
 
-   MSISDN  REQUIRED.  NUMERIC The Subscriber identifier formated
-      according to ITU-T recommendation [E.164]
+   MSISDN  REQUIRED.  The Subscriber identifier formated according to
+      ITU-T recommendation [E.164]
 
    The following is a non-normative example of JWT body (with line wraps
    within values for display purposes only):
@@ -413,7 +413,7 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 7]
    www-form-urlencoded" format as the authentication device in
    particular may have limited abilities to show text or formats.
 
-   The "binding_message" SHOULD be displayable on all participationg
+   The "binding_message" SHOULD be displayable on all participating
    devices.  The RP SHOULD consider that some authentication devices
    e.g. as SIM-Applets are able to show only a very limited number of
    characters.

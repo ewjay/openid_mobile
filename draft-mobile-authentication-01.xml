@@ -399,7 +399,7 @@ The Biometric may be captured as part of the consent flow.
 	      		<t hangText="iat"> 
                     REQUIRED. When the token was issued.
 			    </t>
-			    <t hangText="MSISDN"> REQUIRED. NUMERIC 
+			    <t hangText="MSISDN"> REQUIRED. 
 			        The Subscriber identifier formated according to ITU-T recommendation <xref target="E.164" />
                 </t>	
              </list>
@@ -459,7 +459,7 @@ TBD: do we need a reference to some standard here?
 	        may have limited abilities to show text or formats.
 	      </t>
 	      <t>
-	        The <spanx style="verb">binding_message</spanx> SHOULD be displayable on all participationg 
+	        The <spanx style="verb">binding_message</spanx> SHOULD be displayable on all participating 
 	        devices. The RP SHOULD consider that some authentication devices e.g. as SIM-Applets are able to 
 	        show only a very limited number of characters.    
         </t>
