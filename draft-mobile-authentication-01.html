@@ -603,9 +603,9 @@
 <p id="rfc.section.6.1.p.5">For an example of a nested JWT that is signed and then encrypted see Appendix 2 of <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite>.  </p>
 <p id="rfc.section.6.1.p.6">NOTE:  The <samp>login_hint_token</samp> is opaque to the client by design.  The Authorization server may produce <samp>login_hint_token</samp> tokens in other formats for use in Account Chooser or other discovery profiles, as long as they are confidentiality protected from the client. </p>
 <h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#binding_message_details" id="binding_message_details">binding_message</a></h1>
-<p id="rfc.section.7.p.1">The binding_message parameter is a text provided by the RP intended to be shown to the user on the consumption device as well as on the authentication device as an interlock between RP and OP. The context SHOULD be displayable by all participating parties.  </p>
-<p id="rfc.section.7.p.2">The binding_message MUST be plain text using the "application/x-www-form-urlencoded" format as the authentication device in particular may have limited abilities to show text or formats.  </p>
-<p id="rfc.section.7.p.3">TBD: something about the length of the message? e.g. the message MUST be distingushable from the first 64 characters...  </p>
+<p id="rfc.section.7.p.1">The <samp>binding_message</samp> parameter is a text provided by the RP intended to be shown to the user on the consumption device as well as on the authentication device as an interlock between RP and OP. The <samp>binding_message</samp> SHOULD be displayable by all participating parties.  </p>
+<p id="rfc.section.7.p.2">The <samp>binding_message</samp> MUST be plain text using the "application/x-www-form-urlencoded" format as the authentication device in particular may have limited abilities to show text or formats.  </p>
+<p id="rfc.section.7.p.3">The <samp>binding_message</samp> SHOULD be displayable on all participationg devices. The RP SHOULD consider that some authentication devices e.g. as SIM-Applets are able to show only a very limited number of characters.  </p>
 <h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#m_t_i" id="m_t_i">mandatory to implement</a></h1>
 <p/>
 
@@ -617,9 +617,9 @@
 <p> </p>
 <h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#security_considerations" id="security_considerations">Security Considerations</a></h1>
 <p id="rfc.section.9.p.1">The login hint token SHOULD be digitally signed by the issuer.  This ensures authenticity of the data and reduces the threat of an injection attack.  The signature allows the OP to authenicate and authorize the sender of the hint and prevent collecting of phone numbers by rogue clients </p>
-<p id="rfc.section.9.p.2">To prevent modification of the context message value, the RP SHOULD send the parameter to the OP using a signed OpenID Connect Request Object (section 6.3.2 of <a href="#OpenID.Core">[OpenID.Core]</a>).  </p>
-<p id="rfc.section.9.p.3">The OP MUST sanitize the context message value in order to prevent injection attacks.  </p>
-<p id="rfc.section.9.p.4">The message being displayed on the consumption and authentication device SHOULD contain a random value (e.g. an authorization code) of reasonable entropy.  This is a countermeasure against session fixation type attacks, where the attacker initiates an authentication process on a consumption device under his control, which will result in the same text being displayed on the authentication device as for legitimate transactions.  </p>
+<p id="rfc.section.9.p.2">To prevent modification of the <samp>binding_message</samp> value, the RP SHOULD send the parameter to the OP using a signed OpenID Connect Request Object (section 6.3.2 of <a href="#OpenID.Core">[OpenID.Core]</a>).  </p>
+<p id="rfc.section.9.p.3">The OP MUST sanitize the <samp>binding_message</samp> value in order to prevent injection attacks.  </p>
+<p id="rfc.section.9.p.4">The <samp>binding_message</samp> value being displayed on the consumption and authentication device SHOULD contain a random value (e.g. an authorization code) of reasonable entropy.  This is a countermeasure against session fixation type attacks, where the attacker initiates an authentication process on a consumption device under his control, which will result in the same text being displayed on the authentication device as for legitimate transactions.  </p>
 <h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#privacy_considerations" id="privacy_considerations">Privacy Considerations</a></h1>
 <p id="rfc.section.10.p.1">The login hint token is encrypted in order to protect the user's MSISDN from being revealed to the client unintentionally.  </p>
 <h1 id="rfc.section.11"><a href="#rfc.section.11">11.</a> <a href="#IANA" id="IANA">IANA Considerations</a></h1>
