@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                            Jan 27, 2015
+                                                       February 10, 2016
 
 
             OpenID Connect MODRNA Authentication Profile 1.0
@@ -53,9 +53,9 @@ Table of Contents
 
 
 
-Connotte & Bradley        Expires July 31, 2015                 [Page 1]
+Connotte & Bradley       Expires August 13, 2016                [Page 1]
 
-                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  10
@@ -109,9 +109,9 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 1]
 
 
 
-Connotte & Bradley        Expires July 31, 2015                 [Page 2]
+Connotte & Bradley       Expires August 13, 2016                [Page 2]
 
-                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
 2.  Overview
@@ -165,9 +165,9 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 2]
 
 
 
-Connotte & Bradley        Expires July 31, 2015                 [Page 3]
+Connotte & Bradley       Expires August 13, 2016                [Page 3]
 
-                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
    The initial set of "acr" values contain no requirements for the IdP
@@ -221,9 +221,9 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 3]
 
 
 
-Connotte & Bradley        Expires July 31, 2015                 [Page 4]
+Connotte & Bradley       Expires August 13, 2016                [Page 4]
 
-                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
    The OP MUST support receiving "acr" as a as a claim request in a
@@ -277,9 +277,9 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 4]
 
 
 
-Connotte & Bradley        Expires July 31, 2015                 [Page 5]
+Connotte & Bradley       Expires August 13, 2016                [Page 5]
 
-                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
 5.1.  AMR Value Examples
@@ -333,9 +333,9 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 5]
 
 
 
-Connotte & Bradley        Expires July 31, 2015                 [Page 6]
+Connotte & Bradley       Expires August 13, 2016                [Page 6]
 
-                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
    The Authorization server may produce "login_hint_token" tokens in
@@ -389,9 +389,9 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 6]
 
 
 
-Connotte & Bradley        Expires July 31, 2015                 [Page 7]
+Connotte & Bradley       Expires August 13, 2016                [Page 7]
 
-                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
    For an example of a nested JWT that is signed and then encrypted see
@@ -406,8 +406,7 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 7]
 
    The "binding_message" parameter is a text provided by the RP intended
    to be shown to the user on the consumption device as well as on the
-   authentication device as an interlock between RP and OP.  The
-   "binding_message" SHOULD be displayable by all participating parties.
+   authentication device as an interlock between RP and OP.
 
    The "binding_message" MUST be plain text using the "application/x-
    www-form-urlencoded" format as the authentication device in
@@ -442,15 +441,15 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 7]
    authentication device SHOULD contain a random value (e.g. an
    authorization code) of reasonable entropy.  This is a countermeasure
    against session fixation type attacks, where the attacker initiates
-
-
-
-Connotte & Bradley        Expires July 31, 2015                 [Page 8]
-
-                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
-
-
    an authentication process on a consumption device under his control,
+
+
+
+Connotte & Bradley       Expires August 13, 2016                [Page 8]
+
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
+
+
    which will result in the same text being displayed on the
    authentication device as for legitimate transactions.
 
@@ -501,9 +500,10 @@ Connotte & Bradley        Expires July 31, 2015                 [Page 8]
 
 
 
-Connotte & Bradley        Expires July 31, 2015                 [Page 9]
+
+Connotte & Bradley       Expires August 13, 2016                [Page 9]
 
-                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
    [ISO.29115]
@@ -557,9 +557,9 @@ Appendix B.  Notices
 
 
 
-Connotte & Bradley        Expires July 31, 2015                [Page 10]
+Connotte & Bradley       Expires August 13, 2016               [Page 10]
 
-                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
    Specifications based on such documents, provided that attribution be
@@ -613,9 +613,9 @@ Authors' Addresses
 
 
 
-Connotte & Bradley        Expires July 31, 2015                [Page 11]
+Connotte & Bradley       Expires August 13, 2016               [Page 11]
 
-                 OIDC MODRNA Authentication Profile 1.0         Jan 2015
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
    John Bradley
@@ -669,4 +669,4 @@ Connotte & Bradley        Expires July 31, 2015                [Page 11]
 
 
 
-Connotte & Bradley        Expires July 31, 2015                [Page 12]
+Connotte & Bradley       Expires August 13, 2016               [Page 12]
