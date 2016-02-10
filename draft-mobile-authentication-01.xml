@@ -60,7 +60,7 @@
 	assurance for the authentication.
 </t>
 <t>
-	In addition, the profile will specify an encrypted login hint to 
+	In addition, the profile will specify an encrypted login hint token to 
 	allow for the transport of user identifiers to the OP in a privacy preserving 
 	fashion.
 </t>
@@ -249,7 +249,7 @@ The Biometric may be captured as part of the consent flow.
 		    </t>
 		    
 		    <t>The OP MUST support receiving <spanx style="verb">acr</spanx> as a
-			as a claim request in a signed request per 
+			claim request in a signed request per 
 			 OpenID Connect Core 5.5.1 <xref target="OpenID.Core"/>.  This method 
 			 prevents the request from being modified by the user, and allows the
 			 requested <spanx style="verb">acr</spanx> valued to be considered 
@@ -370,10 +370,7 @@ The Biometric may be captured as part of the consent flow.
         	login hint with OP identified by the 
         	<xref target="MODRNA.Discovery">MODRNA discovery service</xref>.
         	In this case, the login hint token is supposed to be a
-            signed and encrypted JWT. The Authorization server may produce 
-            "login_hint_token" tokens in other formats for use in Account Chooser
-             or other discovery profiles, as long as they are confidentiality protected 
-             from the client.
+            signed and encrypted JWT. 
 		</t>
 		<t>
 			The Authorization server may produce <spanx style="verb">login_hint_token</spanx>
