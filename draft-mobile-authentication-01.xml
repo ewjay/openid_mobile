@@ -44,7 +44,7 @@
 
 
 
-    <date day="27" month="Jan" year="2015" />
+    <date day="10" month="Feb" year="2016" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -450,8 +450,7 @@ TBD: do we need a reference to some standard here?
         <t>
 	        The <spanx style="verb">binding_message</spanx> parameter is a text provided by the RP intended 
 	        to be shown to the user on the consumption device as well as on the authentication device as an 
-	        interlock between RP and OP. The <spanx style="verb">binding_message</spanx> SHOULD be 
-	        displayable by all participating parties.
+	        interlock between RP and OP.
 	     </t>
 	     <t>
 	        The <spanx style="verb">binding_message</spanx> MUST be plain text using the 
