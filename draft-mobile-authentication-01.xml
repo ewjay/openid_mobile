@@ -44,7 +44,7 @@
 
 
 
-    <date day="20" month="Feb" year="2016" />
+    <date day="22" month="Feb" year="2016" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -397,14 +397,15 @@ The Biometric may be captured as part of the consent flow.
             <list style="hanging">
                 <t hangText="iss">
 			        REQUIRED. The party creating the token.
-			        This value MUST be used to obtain the <xref target="RFC7517">JWK</xref>
+			        This value MUST be used by the IdP receiving the token 
+			        to obtain the <xref target="RFC7517">JWK</xref>
 			         file required to validate
 			        the tokens's signature (see <xref target="lht_encryption_signing" />). 
 			    </t>
 			    <t hangText="aud">
                     REQUIRED. The party to receive the token, typically the users OpenID Provider.
                     The value MUST be the issuer URI of the OP as exposed 
-                    in the openid-configuration.
+                    in the IdP's openid-configuration meta-data.
    			    </t>
 	      		<t hangText="iat"> 
                     REQUIRED. When the token was issued.
@@ -430,14 +431,25 @@ The Biometric may be captured as part of the consent flow.
     	<section anchor="lht_encryption_signing" title="login_hint_token encryption and signing">
         	<t>
 	        	The login_hint token MUST be encrypted using the public key of the OpenID Provider
-	        	designated by the claim "aud". The respective public key is obtained using the rules
-	        	defined in OpenID Connect Discovery.
+	        	designated by the claim "aud" in the login_hint_token. 
+	        	The appropriate public key is obtained using the rules
+	        	defined in <xref target="OpenID.Discovery">OpenID Connect Discovery.</xref>
 	        </t>
 	        <t>
-TBD: do we need a reference to some standard here?
-		        In the first step, the openid-configuration is retrieved by appending 
-		        /.well-kown/openid-configuration the value of the "aud" claim. In the next step,
-		        the claim "jwks_uri" is used to retrieve the OP's key set.
+
+		        In the first step, the openid-configuration for the IdP is retrieved by
+		        performing discovery Per Section 4 of <xref target="OpenID.Discovery"/> 
+		        using the issuer string for the users IdP as the input.
+		        <vspace/>
+		        
+		        In the next step,
+		        the value of the "jwks_uri" claim Per Section 3 of 
+		        <xref target="OpenID.Discovery"/> is used to retrieve the OP's 
+		        <xref target="RFC7517">JWK</xref>.
+		        A public key in the JWK with a use paramater of "enc" per
+		        Section 4.2 of <xref target="RFC7517">JWK</xref> 
+		        is used as the encryption key.
+		        The login_hint_token is then encrypted as a JWE using that key.
 		    </t>
     	    <t>The login_hint token MUST be signed using the private key of the Discovery Service.</t>
         	
@@ -535,7 +547,6 @@ TBD: do we need a reference to some standard here?
       <?rfc include="reference.RFC.7517"?>
       <?rfc include="reference.RFC.7519"?>
       <?rfc include="reference.RFC.6711"?>
-
 
       
       <reference anchor="OpenID.Core">
