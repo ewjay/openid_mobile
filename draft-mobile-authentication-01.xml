@@ -44,7 +44,7 @@
 
 
 
-    <date day="10" month="Feb" year="2016" />
+    <date day="20" month="Feb" year="2016" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -129,7 +129,7 @@
 	    It defines additional request parameters in the Authentication Request.
 	    It also specifies authentication class reference values based on the
 	    ISO/IEC DIS 29115 <xref target="ISO.29115"/> to be used for the 
-	    "acr_values" request parameter
+	    "acr_values" request parameter.
 	</t>
 
 
@@ -137,7 +137,7 @@
 	<section anchor="auth_request" title="Authentication Request">
 		<t>
 			MODRNA supports all request parameters as specified in 
-			OpenID Connect Core 3.1.2.1 <xref target="OpenID.Core"/>
+			OpenID Connect Core 3.1.2.1 <xref target="OpenID.Core"/>.
 		</t>
 		<t>In addition the following parameters are defined or made REQUIRED for clients
 		to send. All additional paramaters are REQUIRED for OP to support.</t>
@@ -198,11 +198,16 @@
 			    <vspace/>
 			    This mitigates phishing of credentials.
 			    <vspace/> 
-				    The user is authenticated via possession of a device (phone) containing a secret key. 
-The user is required to provide no additional authentication information to use the key.
-The user is interactively prompted to confirm the authentication. 
-The storage mechanism for the secret key and other relevant authentication information is returned via the <spanx style="verb">amr</spanx>.
-The user is not re-prompted if prompt is not login and max_age is more than the elapsed time since the user last authenticated at this acr
+				    The user is authenticated via possession of a device (phone) 
+				    containing a secret key. 
+                  The user is required to provide no additional authentication information 
+                  to use the key. The user is interactively prompted to confirm the 
+                  authentication. The storage mechanism for the secret key and other 
+                  relevant authentication information is returned via the 
+                  <spanx style="verb">amr</spanx>. The user is not re-prompted for 
+                  credentials if the value of <spanx style="verb">prompt</spanx> 
+                  is not login and <spanx style="verb">max_age</spanx> is more than the 
+                  elapsed time since the user last authenticated at the requested acr.
 				    
 			    </t>
 			    <t hangText="http://schemas.openid.net/policies/modrna/multi-factor">
@@ -211,11 +216,18 @@ The user is not re-prompted if prompt is not login and max_age is more than the 
 			    This mitigates phishing and proves the device is recently in the possession of
 			    the authorised user via pin or device unlock.
 			    <vspace/> 
-				    The user is authenticated via possession of a device (phone) containing a secret key. 
-The user is required to provide additional authentication information via a biometric, pin code or other appropriate factors such as bluetooth paring with a watch.
-Given suitable Mobile device management unlocking the device is also sufficient along with user confirmation of desire to authenticate.
-The storage mechanism for the secret key and other relevant authentication information is returned via the <spanx style="verb">amr</spanx> value.
-The user is not re-prompted if prompt is not login and max_age is more than the elapsed time since the user last authenticated at this acr,
+				The user is authenticated via possession of a device (phone) containing a 
+				secret key. The user is required to provide additional authentication 
+				information via a biometric, pin code or other appropriate factors such 
+				as bluetooth paring with a watch. Given suitable Mobile device management 
+				unlocking the device is also sufficient along with user confirmation of 
+				desire to authenticate. The storage mechanism for the secret key and 
+				other relevant authentication information is returned via the 
+				<spanx style="verb">amr</spanx> value. 
+				The user is not re-prompted for 
+                  credentials if the value of <spanx style="verb">prompt</spanx> 
+                  is not login and <spanx style="verb">max_age</spanx> is more than the 
+                  elapsed time since the user last authenticated at the requested acr.
 			    </t>
 <!--			    
 			    <t hangText="http://schemas.openid.net/policies/modrna/multi-factor-physical">
@@ -277,7 +289,7 @@ The Biometric may be captured as part of the consent flow.
         </t>
         <t>The values for the strings in the <spanx style="verb">amr</spanx> claim are
          registered in a IANA registry defined in 
-         <xref target="AMR">Authentication Method Reference Values</xref>.
+         <xref target="I-D.jones-oauth-amr-values">Authentication Method Reference Values</xref>.
          </t>
         <t>
 	        This specification recommends the use of several of the values, to provide
@@ -316,7 +328,8 @@ The Biometric may be captured as part of the consent flow.
 			</list>
 	    </t>
 	    <section anchor="amr_examples" title="AMR Value Examples">
-			<t>If the authentication is by sending the users mobile device a SMS with a URI
+			<t>If the authentication is performed by sending the users mobile device a 
+			SMS with a URI
 			and having the user click on the link to confirm, it SHOULD have a 
 			<spanx style="verb">amr</spanx> value of ["sms","user"]</t>
 			
@@ -477,7 +490,7 @@ TBD: do we need a reference to some standard here?
 		The login hint token SHOULD be digitally signed by the issuer.
 		This ensures authenticity of the data and reduces the threat of an injection attack.
 		The signature allows the OP to authenicate and authorize the sender of the hint and
-        prevent collecting of phone numbers by rogue clients
+        prevent collecting of phone numbers by rogue clients.
 	</t>
 	<t>
 		To prevent modification of the <spanx style="verb">binding_message</spanx> value, 
@@ -560,43 +573,10 @@ TBD: do we need a reference to some standard here?
 		type="HTML" />
       </reference>
 
-      <reference anchor="AMR">
-	<front>
-	  <title>Authentication Method Reference Values</title>
-
-
-	  <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
-	    <organization abbrev="Microsoft">Microsoft</organization>
-	  </author>
-
-	  <author fullname="Phil Hunt" initials="P." surname="Hunt">
-	    <organization abbrev="Oracle">Oracle</organization>
-	  </author>
-
+	  <?rfc include="reference.I-D.draft-jones-oauth-amr-values-05.xml"?>
 	  
 
-	  <date day="21" month="August" year="2015"/>
-	</front>
-
-	<format target="https://tools.ietf.org/html/draft-jones-oauth-amr-values"
-		type="HTML" />
-      </reference>
-
-
-
-      
-    </references>
-    
-    <references title="Informative References">
-
-      <?rfc include="reference.RFC.6749"?>
-      <?rfc include="reference.RFC.6750"?>
-      <?rfc include="reference.RFC.5246"?>
-      <?rfc include="reference.RFC.2246"?>
-
-
-<!--
-      <reference anchor="OpenID.Discovery">
+      <reference anchor="OpenID.Discovery" target="http://openid.net/specs/openid-connect-discovery-1_0.html">
 	<front>
 	  <title>OpenID Connect Discovery 1.0</title>
 
@@ -616,14 +596,20 @@ TBD: do we need a reference to some standard here?
 	    <organization abbrev="Illumila">Illumila</organization>
 	  </author>
 
-	  <date day="16" month="September" year="2014"/>
+	  <date day="3" month="August" year="2015"/>
 	</front>
-
-	<format target="http://openid.net/specs/openid-connect-discovery-1_0.html"
-		type="HTML" />
       </reference>
+      
+    </references>
+    
+    <references title="Informative References">
 
--->
+      <?rfc include="reference.RFC.6749"?>
+      <?rfc include="reference.RFC.6750"?>
+      <?rfc include="reference.RFC.5246"?>
+      <?rfc include="reference.RFC.2246"?>
+
+
 
       <reference anchor="ISO.29115">
 	<front>
