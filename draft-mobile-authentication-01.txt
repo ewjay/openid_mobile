@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                       February 10, 2016
+                                                       February 22, 2016
 
 
             OpenID Connect MODRNA Authentication Profile 1.0
@@ -22,8 +22,8 @@ Abstract
    The MODRNA Authentication Profile will specify how RP's request a
    certain level of assurance for the authentication.
 
-   In addition, the profile will specify an encrypted login hint to
-   allow for the transport of user identifiers to the OP in a privacy
+   In addition, the profile will specify an encrypted login hint token
+   to allow for the transport of user identifiers to the OP in a privacy
    preserving fashion.
 
    Lastly, the profile will specify an additional messge parameter
@@ -49,19 +49,19 @@ Table of Contents
    11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
    12. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      12.1.  Normative References . . . . . . . . . . . . . . . . . .   9
-     12.2.  Informative References . . . . . . . . . . . . . . . . .   9
+     12.2.  Informative References . . . . . . . . . . . . . . . . .  10
 
 
 
-Connotte & Bradley       Expires August 13, 2016                [Page 1]
+Connotte & Bradley       Expires August 25, 2016                [Page 1]
 
                  OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  10
-   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .  10
+   Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .  11
    Appendix C.  Document History . . . . . . . . . . . . . . . . . .  11
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Connotte & Bradley       Expires August 13, 2016                [Page 1]
 
 
 
-Connotte & Bradley       Expires August 13, 2016                [Page 2]
+Connotte & Bradley       Expires August 25, 2016                [Page 2]
 
                  OIDC MODRNA Authentication Profile 1.0    February 2016
 
@@ -120,12 +120,12 @@ Connotte & Bradley       Expires August 13, 2016                [Page 2]
    [OpenID.Core].  It defines additional request parameters in the
    Authentication Request.  It also specifies authentication class
    reference values based on the ISO/IEC DIS 29115 [ISO.29115] to be
-   used for the "acr_values" request parameter
+   used for the "acr_values" request parameter.
 
 3.  Authentication Request
 
    MODRNA supports all request parameters as specified in OpenID Connect
-   Core 3.1.2.1 [OpenID.Core]
+   Core 3.1.2.1 [OpenID.Core].
 
    In addition the following parameters are defined or made REQUIRED for
    clients to send.  All additional paramaters are REQUIRED for OP to
@@ -165,7 +165,7 @@ Connotte & Bradley       Expires August 13, 2016                [Page 2]
 
 
 
-Connotte & Bradley       Expires August 13, 2016                [Page 3]
+Connotte & Bradley       Expires August 25, 2016                [Page 3]
 
                  OIDC MODRNA Authentication Profile 1.0    February 2016
 
@@ -190,8 +190,9 @@ Connotte & Bradley       Expires August 13, 2016                [Page 3]
       interactively prompted to confirm the authentication.  The storage
       mechanism for the secret key and other relevant authentication
       information is returned via the "amr".  The user is not re-
-      prompted if prompt is not login and max_age is more than the
-      elapsed time since the user last authenticated at this acr
+      prompted for credentials if the value of "prompt" is not login and
+      "max_age" is more than the elapsed time since the user last
+      authenticated at the requested acr.
 
    http://schemas.openid.net/policies/modrna/multi-factor  Short-Name:
       mod-mf
@@ -205,9 +206,9 @@ Connotte & Bradley       Expires August 13, 2016                [Page 3]
       also sufficient along with user confirmation of desire to
       authenticate.  The storage mechanism for the secret key and other
       relevant authentication information is returned via the "amr"
-      value.  The user is not re-prompted if prompt is not login and
-      max_age is more than the elapsed time since the user last
-      authenticated at this acr,
+      value.  The user is not re-prompted for credentials if the value
+      of "prompt" is not login and "max_age" is more than the elapsed
+      time since the user last authenticated at the requested acr.
 
    Identity Providers MUST recognize and process short registered forms
    of the authentication context strings.  They may recognize and
@@ -216,22 +217,24 @@ Connotte & Bradley       Expires August 13, 2016                [Page 3]
    Clients MUST send the short registered forms of the authentication
    context strings, if the authentication context is registered.
 
-   The OP MUST support receiving "acr_values" as a space separated list
-   in order of preference per OpenID Connect Core 3.1.2.1 [OpenID.Core].
 
 
 
-Connotte & Bradley       Expires August 13, 2016                [Page 4]
+
+Connotte & Bradley       Expires August 25, 2016                [Page 4]
 
                  OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
-   The OP MUST support receiving "acr" as a as a claim request in a
-   signed request per OpenID Connect Core 5.5.1 [OpenID.Core].  This
-   method prevents the request from being modified by the user, and
-   allows the requested "acr" valued to be considered essential claims
-   causing the IdP to respond with an authentication error if no
-   requested "acr" value can be fulfilled.
+   The OP MUST support receiving "acr_values" as a space separated list
+   in order of preference per OpenID Connect Core 3.1.2.1 [OpenID.Core].
+
+   The OP MUST support receiving "acr" as a claim request in a signed
+   request per OpenID Connect Core 5.5.1 [OpenID.Core].  This method
+   prevents the request from being modified by the user, and allows the
+   requested "acr" valued to be considered essential claims causing the
+   IdP to respond with an authentication error if no requested "acr"
+   value can be fulfilled.
 
    Depending on the authentication capabilities of the users device, the
    OP must attempt to match the highest requested acr value that the AD
@@ -250,7 +253,7 @@ Connotte & Bradley       Expires August 13, 2016                [Page 4]
 
    The values for the strings in the "amr" claim are registered in a
    IANA registry defined in Authentication Method Reference Values
-   [AMR].
+   [I-D.jones-oauth-amr-values].
 
    This specification recommends the use of several of the values, to
    provide a standard way for clients to understand the authentication
@@ -274,18 +277,15 @@ Connotte & Bradley       Expires August 13, 2016                [Page 4]
 
 
 
-
-
-
-Connotte & Bradley       Expires August 13, 2016                [Page 5]
+Connotte & Bradley       Expires August 25, 2016                [Page 5]
 
                  OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
 5.1.  AMR Value Examples
 
-   If the authentication is by sending the users mobile device a SMS
-   with a URI and having the user click on the link to confirm, it
+   If the authentication is performed by sending the users mobile device
+   a SMS with a URI and having the user click on the link to confirm, it
    SHOULD have a "amr" value of ["sms","user"]
 
    If the authentication is by sending a secure message to a hardware
@@ -325,33 +325,30 @@ Connotte & Bradley       Expires August 13, 2016                [Page 5]
    a user hint for the OP.  The "login_hint_token" SHALL be used by the
    client as login hint with OP identified by the MODRNA discovery
    service [MODRNA.Discovery].  In this case, the login hint token is
-   supposed to be a signed and encrypted JWT.  The Authorization server
-   may produce "login_hint_token" tokens in other formats for use in
-   Account Chooser or other discovery profiles, as long as they are
-   confidentiality protected from the client.
-
-
-
-
-Connotte & Bradley       Expires August 13, 2016                [Page 6]
-
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
-
+   supposed to be a signed and encrypted JWT.
 
    The Authorization server may produce "login_hint_token" tokens in
    other formats for use in Account Chooser or other discovery profiles,
    as long as they are confidentiality protected from the client.
 
+
+
+Connotte & Bradley       Expires August 25, 2016                [Page 6]
+
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
+
+
    The "login_hint_token" produced by the MODRNA discovery service
    [MODRNA.Discovery] has the following elements:
 
    iss  REQUIRED.  The party creating the token.  This value MUST be
-      used to obtain the JWK [RFC7517] file required to validate the
-      tokens's signature (see Section 6.1).
+      used by the IdP receiving the token to obtain the JWK [RFC7517]
+      file required to validate the tokens's signature (see
+      Section 6.1).
 
    aud  REQUIRED.  The party to receive the token, typically the users
       OpenID Provider.  The value MUST be the issuer URI of the OP as
-      exposed in the openid-configuration.
+      exposed in the IdP's openid-configuration meta-data.
 
    iat  REQUIRED.  When the token was issued.
 
@@ -371,28 +368,35 @@ Connotte & Bradley       Expires August 13, 2016                [Page 6]
 6.1.  login_hint_token encryption and signing
 
    The login_hint token MUST be encrypted using the public key of the
-   OpenID Provider designated by the claim "aud".  The respective public
-   key is obtained using the rules defined in OpenID Connect Discovery.
+   OpenID Provider designated by the claim "aud" in the
+   login_hint_token.  The appropriate public key is obtained using the
+   rules defined in OpenID Connect Discovery.  [OpenID.Discovery]
 
-   TBD: do we need a reference to some standard here?  In the first
-   step, the openid-configuration is retrieved by appending /.well-kown/
-   openid-configuration the value of the "aud" claim.  In the next step,
-   the claim "jwks_uri" is used to retrieve the OP's key set.
+   In the first step, the openid-configuration for the IdP is retrieved
+   by performing discovery Per Section 4 of [OpenID.Discovery] using the
+   issuer string for the users IdP as the input.
+   In the next step, the value of the "jwks_uri" claim Per Section 3 of
+   [OpenID.Discovery] is used to retrieve the OP's JWK [RFC7517].  A
+   public key in the JWK with a use paramater of "enc" per Section 4.2
+   of JWK [RFC7517] is used as the encryption key.  The login_hint_token
+   is then encrypted as a JWE using that key.
 
    The login_hint token MUST be signed using the private key of the
    Discovery Service.
 
-   It is best practice to sign then encrypt tokens, as signatures over
-   encrypted information may leak information in the envelope, and may
-   not be considered legally valid.
 
 
 
 
-Connotte & Bradley       Expires August 13, 2016                [Page 7]
+
+Connotte & Bradley       Expires August 25, 2016                [Page 7]
 
                  OIDC MODRNA Authentication Profile 1.0    February 2016
 
+
+   It is best practice to sign then encrypt tokens, as signatures over
+   encrypted information may leak information in the envelope, and may
+   not be considered legally valid.
 
    For an example of a nested JWT that is signed and then encrypted see
    Appendix 2 of JWT [RFC7519].
@@ -428,7 +432,7 @@ Connotte & Bradley       Expires August 13, 2016                [Page 7]
    ensures authenticity of the data and reduces the threat of an
    injection attack.  The signature allows the OP to authenicate and
    authorize the sender of the hint and prevent collecting of phone
-   numbers by rogue clients
+   numbers by rogue clients.
 
    To prevent modification of the "binding_message" value, the RP SHOULD
    send the parameter to the OP using a signed OpenID Connect Request
@@ -437,19 +441,20 @@ Connotte & Bradley       Expires August 13, 2016                [Page 7]
    The OP MUST sanitize the "binding_message" value in order to prevent
    injection attacks.
 
+
+
+
+
+Connotte & Bradley       Expires August 25, 2016                [Page 8]
+
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
+
+
    The "binding_message" value being displayed on the consumption and
    authentication device SHOULD contain a random value (e.g. an
    authorization code) of reasonable entropy.  This is a countermeasure
    against session fixation type attacks, where the attacker initiates
    an authentication process on a consumption device under his control,
-
-
-
-Connotte & Bradley       Expires August 13, 2016                [Page 8]
-
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
-
-
    which will result in the same text being displayed on the
    authentication device as for legitimate transactions.
 
@@ -467,13 +472,21 @@ Connotte & Bradley       Expires August 13, 2016                [Page 8]
 
 12.1.  Normative References
 
-   [AMR]      Jones, M. and P. Hunt, "Authentication Method Reference
-              Values", August 2015.
+   [I-D.jones-oauth-amr-values]
+              Jones, M., Hunt, P., and A. Nadalin, "Authentication
+              Method Reference Values", draft-jones-oauth-amr-values-05
+              (work in progress), February 2016.
 
    [OpenID.Core]
               Sakimura, N., Bradley, J., Jones, M., de Medeiros, B.,
               Mortimore, C., and E. Jay, "OpenID Connect Core 1.0",
               December 2013.
+
+   [OpenID.Discovery]
+              Sakimura, N., Bradley, J., Jones, M., and E. Jay, "OpenID
+              Connect Discovery 1.0", August 2015,
+              <http://openid.net/specs/
+              openid-connect-discovery-1_0.html>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -483,6 +496,15 @@ Connotte & Bradley       Expires August 13, 2016                [Page 8]
    [RFC6711]  Johansson, L., "An IANA Registry for Level of Assurance
               (LoA) Profiles", RFC 6711, DOI 10.17487/RFC6711, August
               2012, <http://www.rfc-editor.org/info/rfc6711>.
+
+
+
+
+
+Connotte & Bradley       Expires August 25, 2016                [Page 9]
+
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
+
 
    [RFC7517]  Jones, M., "JSON Web Key (JWK)", RFC 7517,
               DOI 10.17487/RFC7517, May 2015,
@@ -495,16 +517,6 @@ Connotte & Bradley       Expires August 13, 2016                [Page 8]
 12.2.  Informative References
 
    [E.164]    N., , "Recommendation ITU-T E.164", November 2010.
-
-
-
-
-
-
-Connotte & Bradley       Expires August 13, 2016                [Page 9]
-
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
-
 
    [ISO.29115]
               McAllister, E. and R. Brackney, "ISO/IEC DIS 29115", April
@@ -541,6 +553,15 @@ Appendix A.  Acknowledgements
 
       Matthieu Verdier (matthieu.verdier@orange.com), Orange
 
+
+
+
+
+Connotte & Bradley       Expires August 25, 2016               [Page 10]
+
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
+
+
       Gonzalo Fernandez Rodriguez
       (gonzalo.fernandezrodriguez@telefonica.com), Telefonica
 
@@ -554,14 +575,6 @@ Appendix B.  Notices
    from, distribute, perform and display, this Implementers Draft or
    Final Specification solely for the purposes of (i) developing
    specifications, and (ii) implementing Implementers Drafts and Final
-
-
-
-Connotte & Bradley       Expires August 13, 2016               [Page 10]
-
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
-
-
    Specifications based on such documents, provided that attribution be
    made to the OIDF as the source of the material, but that such
    attribution does not indicate an endorsement by the OIDF.
@@ -597,6 +610,14 @@ Appendix C.  Document History
 
    o  Initial draft
 
+
+
+
+Connotte & Bradley       Expires August 25, 2016               [Page 11]
+
+                 OIDC MODRNA Authentication Profile 1.0    February 2016
+
+
    o  Added OIDF Standard Notice
 
 Authors' Addresses
@@ -605,17 +626,6 @@ Authors' Addresses
    Deutsche Telekom AG
 
    Email: j.connotte@telekom.de
-
-
-
-
-
-
-
-
-Connotte & Bradley       Expires August 13, 2016               [Page 11]
-
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
 
 
    John Bradley
@@ -659,14 +669,4 @@ Connotte & Bradley       Expires August 13, 2016               [Page 11]
 
 
 
-
-
-
-
-
-
-
-
-
-
-Connotte & Bradley       Expires August 13, 2016               [Page 12]
+Connotte & Bradley       Expires August 25, 2016               [Page 12]

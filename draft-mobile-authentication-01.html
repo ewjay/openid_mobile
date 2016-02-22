@@ -403,7 +403,7 @@
 
   <meta name="dct.creator" content="Connotte, J. and J. Bradley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-mobile-authentication-01" />
-  <meta name="dct.issued" scheme="ISO8601" content="2016-2-10" />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-2-22" />
   <meta name="dct.abstract" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
   <meta name="description" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
 
@@ -432,7 +432,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">February 10, 2016</td>
+  <td class="right">February 22, 2016</td>
 </tr>
 
     	
@@ -447,7 +447,7 @@
 </h1>
 <p>RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  </p>
 <p>The MODRNA Authentication Profile will specify how RP's request a certain level of assurance for the authentication.  </p>
-<p>In addition, the profile will specify an encrypted login hint to allow for the transport of user identifiers to the OP in a privacy preserving fashion.  </p>
+<p>In addition, the profile will specify an encrypted login hint token to allow for the transport of user identifiers to the OP in a privacy preserving fashion.  </p>
 <p>Lastly, the profile will specify an additional messge parameter intended to serve as an interlock between the user's consumpution device and authentication device.  </p>
 
   
@@ -502,9 +502,9 @@
 
 <p> </p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#overview" id="overview">Overview</a></h1>
-<p id="rfc.section.2.p.1">This specification serves as a profile based on OpenID Connect Core <a href="#OpenID.Core">[OpenID.Core]</a>.  It defines additional request parameters in the Authentication Request.  It also specifies authentication class reference values based on the ISO/IEC DIS 29115 <a href="#ISO.29115">[ISO.29115]</a> to be used for the "acr_values" request parameter </p>
+<p id="rfc.section.2.p.1">This specification serves as a profile based on OpenID Connect Core <a href="#OpenID.Core">[OpenID.Core]</a>.  It defines additional request parameters in the Authentication Request.  It also specifies authentication class reference values based on the ISO/IEC DIS 29115 <a href="#ISO.29115">[ISO.29115]</a> to be used for the "acr_values" request parameter.  </p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#auth_request" id="auth_request">Authentication Request</a></h1>
-<p id="rfc.section.3.p.1">MODRNA supports all request parameters as specified in OpenID Connect Core 3.1.2.1 <a href="#OpenID.Core">[OpenID.Core]</a> </p>
+<p id="rfc.section.3.p.1">MODRNA supports all request parameters as specified in OpenID Connect Core 3.1.2.1 <a href="#OpenID.Core">[OpenID.Core]</a>.  </p>
 <p id="rfc.section.3.p.2">In addition the following parameters are defined or made REQUIRED for clients to send. All additional paramaters are REQUIRED for OP to support.</p>
 <p/>
 
@@ -527,20 +527,20 @@
 
 <dl>
   <dt>http://schemas.openid.net/policies/modrna/phishing-resistant</dt>
-  <dd style="margin-left: 8">Short-Name: mod-pr <br/> This mitigates phishing of credentials.  <br/> The user is authenticated via possession of a device (phone) containing a secret key.  The user is required to provide no additional authentication information to use the key.  The user is interactively prompted to confirm the authentication.  The storage mechanism for the secret key and other relevant authentication information is returned via the <samp>amr</samp>.  The user is not re-prompted if prompt is not login and max_age is more than the elapsed time since the user last authenticated at this acr </dd>
+  <dd style="margin-left: 8">Short-Name: mod-pr <br/> This mitigates phishing of credentials.  <br/> The user is authenticated via possession of a device (phone) containing a secret key.  The user is required to provide no additional authentication information to use the key. The user is interactively prompted to confirm the authentication. The storage mechanism for the secret key and other relevant authentication information is returned via the <samp>amr</samp>. The user is not re-prompted for credentials if the value of <samp>prompt</samp> is not login and <samp>max_age</samp> is more than the elapsed time since the user last authenticated at the requested acr.  </dd>
   <dt>http://schemas.openid.net/policies/modrna/multi-factor</dt>
-  <dd style="margin-left: 8">Short-Name: mod-mf <br/> This mitigates phishing and proves the device is recently in the possession of the authorised user via pin or device unlock.  <br/> The user is authenticated via possession of a device (phone) containing a secret key.  The user is required to provide additional authentication information via a biometric, pin code or other appropriate factors such as bluetooth paring with a watch.  Given suitable Mobile device management unlocking the device is also sufficient along with user confirmation of desire to authenticate.  The storage mechanism for the secret key and other relevant authentication information is returned via the <samp>amr</samp> value.  The user is not re-prompted if prompt is not login and max_age is more than the elapsed time since the user last authenticated at this acr, </dd>
+  <dd style="margin-left: 8">Short-Name: mod-mf <br/> This mitigates phishing and proves the device is recently in the possession of the authorised user via pin or device unlock.  <br/> The user is authenticated via possession of a device (phone) containing a secret key. The user is required to provide additional authentication information via a biometric, pin code or other appropriate factors such as bluetooth paring with a watch. Given suitable Mobile device management unlocking the device is also sufficient along with user confirmation of desire to authenticate. The storage mechanism for the secret key and other relevant authentication information is returned via the <samp>amr</samp> value.  The user is not re-prompted for credentials if the value of <samp>prompt</samp> is not login and <samp>max_age</samp> is more than the elapsed time since the user last authenticated at the requested acr.  </dd>
 </dl>
 
 <p> </p>
 <p id="rfc.section.4.p.6">Identity Providers MUST recognize and process short registered forms of the authentication context strings. They may recognize and process long forms for custom authentication contexts. </p>
 <p id="rfc.section.4.p.7">Clients MUST send the short registered forms of the authentication context strings, if the authentication context is registered.  </p>
 <p id="rfc.section.4.p.8">The OP MUST support receiving <samp>acr_values</samp> as a space separated list in order of preference per OpenID Connect Core 3.1.2.1 <a href="#OpenID.Core">[OpenID.Core]</a>.  </p>
-<p id="rfc.section.4.p.9">The OP MUST support receiving <samp>acr</samp> as a as a claim request in a signed request per OpenID Connect Core 5.5.1 <a href="#OpenID.Core">[OpenID.Core]</a>.  This method prevents the request from being modified by the user, and allows the requested <samp>acr</samp> valued to be considered essential claims causing the IdP to respond with an authentication error if no requested <samp>acr</samp> value can be fulfilled.  </p>
+<p id="rfc.section.4.p.9">The OP MUST support receiving <samp>acr</samp> as a claim request in a signed request per OpenID Connect Core 5.5.1 <a href="#OpenID.Core">[OpenID.Core]</a>.  This method prevents the request from being modified by the user, and allows the requested <samp>acr</samp> valued to be considered essential claims causing the IdP to respond with an authentication error if no requested <samp>acr</samp> value can be fulfilled.  </p>
 <p id="rfc.section.4.p.10">Depending on the authentication capabilities of the users device, the OP must attempt to match the highest requested acr value that the AD is capable of.  If the acr claim is not marked as essential in the request object, the OP may return another acr value that the device is capable of rather than an error if it cannot match any of the requested acr_values.  </p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#amr_values" id="amr_values">Authentication Method Reference (amr)</a></h1>
 <p id="rfc.section.5.p.1">The <samp>amr</samp> claim <a href="#OpenID.Core">OpenID Connect Core Sec 2</a> <cite title="NONE">[OpenID.Core]</cite> SHOULD be returned in the id_token if a <samp>acr</samp> value is specified in the request.  <br/> The <samp>amr</samp> claim is a JSON array containing one or more string values indicating the authentication methods used in the authentication.  </p>
-<p id="rfc.section.5.p.2">The values for the strings in the <samp>amr</samp> claim are registered in a IANA registry defined in <a href="#AMR">Authentication Method Reference Values</a> <cite title="NONE">[AMR]</cite>.  </p>
+<p id="rfc.section.5.p.2">The values for the strings in the <samp>amr</samp> claim are registered in a IANA registry defined in <a href="#I-D.jones-oauth-amr-values">Authentication Method Reference Values</a> <cite title="NONE">[I-D.jones-oauth-amr-values]</cite>.  </p>
 <p id="rfc.section.5.p.3">This specification recommends the use of several of the values, to provide a standard way for clients to understand the authentication </p>
 <p/>
 
@@ -563,22 +563,22 @@
 
 <p> </p>
 <h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#amr_examples" id="amr_examples">AMR Value Examples</a></h1>
-<p id="rfc.section.5.1.p.1">If the authentication is by sending the users mobile device a SMS with a URI and having the user click on the link to confirm, it SHOULD have a <samp>amr</samp> value of ["sms","user"]</p>
+<p id="rfc.section.5.1.p.1">If the authentication is performed by sending the users mobile device a SMS with a URI and having the user click on the link to confirm, it SHOULD have a <samp>amr</samp> value of ["sms","user"]</p>
 <p id="rfc.section.5.1.p.2">If the authentication is by sending a secure message to a hardware element in mobile device's and the HW element signs a authentication challenge only after the user has entered a local PIN then it SHOULD have a <samp>amr</samp> value of ["hpop","pin"]</p>
 <p id="rfc.section.5.1.p.3">If the authentication is by sending a secure message to a software application in the mobile device that signs a authentication challenge only after the user has entered a local fingerprint biometric then it SHOULD have a <samp>amr</samp> value of ["pop","fpt"]</p>
 <p id="rfc.section.5.1.p.4">If the authentication is by sending a secure message to a hardware element in mobile device's and the HW element signs a authentication challenge only after the user has entered a local fingerprint biometric, and the IdP has preformed additional passive analytics based on geo location, then it SHOULD have a <samp>amr</samp> value of ["hpop","fpt","geo"]</p>
 <p id="rfc.section.5.1.p.5">Note that if two or more authentication factors are used the MNO may include the <samp>amr</samp> value <samp>mfa</samp> and optionally not include the specific factors.  <br/> Note: that the order of elements in the <samp>amr</samp> array is not significant.</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#login_hint_token_structure" id="login_hint_token_structure">login_hint_token</a></h1>
 <p id="rfc.section.6.p.1">The <samp>login_hint_token</samp> is used to pass a user hint into the authentication process at the OP. This hint is opaque to the client by design.  There are several ways for a client to obtain a login hint token.  To start with, the <a href="#MODRNA.Discovery">MODRNA discovery service</a> <cite title="NONE">[MODRNA.Discovery]</cite> creates a hint if the user has entered their MSISDN in the course of the MNO discovery process.  </p>
-<p id="rfc.section.6.p.2">In the case of a <samp>login_hint_token</samp> produced by the MODRNA Discovery Service it is an encrypted Json Web Token <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite> that contains a user hint for the OP.  The <samp>login_hint_token</samp> SHALL be used by the client as login hint with OP identified by the <a href="#MODRNA.Discovery">MODRNA discovery service</a> <cite title="NONE">[MODRNA.Discovery]</cite>.  In this case, the login hint token is supposed to be a signed and encrypted JWT. The Authorization server may produce "login_hint_token" tokens in other formats for use in Account Chooser or other discovery profiles, as long as they are confidentiality protected from the client.  </p>
+<p id="rfc.section.6.p.2">In the case of a <samp>login_hint_token</samp> produced by the MODRNA Discovery Service it is an encrypted Json Web Token <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite> that contains a user hint for the OP.  The <samp>login_hint_token</samp> SHALL be used by the client as login hint with OP identified by the <a href="#MODRNA.Discovery">MODRNA discovery service</a> <cite title="NONE">[MODRNA.Discovery]</cite>.  In this case, the login hint token is supposed to be a signed and encrypted JWT.  </p>
 <p id="rfc.section.6.p.3">The Authorization server may produce <samp>login_hint_token</samp> tokens in other formats for use in Account Chooser or other discovery profiles, as long as they are confidentiality protected from the client.  </p>
 <p id="rfc.section.6.p.4">The <samp>login_hint_token</samp> produced by the <a href="#MODRNA.Discovery">MODRNA discovery service</a> <cite title="NONE">[MODRNA.Discovery]</cite> has the following elements: </p>
 
 <dl>
   <dt>iss</dt>
-  <dd style="margin-left: 8">REQUIRED. The party creating the token.  This value MUST be used to obtain the <a href="#RFC7517">JWK</a> <cite title="NONE">[RFC7517]</cite> file required to validate the tokens's signature (see <a href="#lht_encryption_signing">Section 6.1</a>).  </dd>
+  <dd style="margin-left: 8">REQUIRED. The party creating the token.  This value MUST be used by the IdP receiving the token to obtain the <a href="#RFC7517">JWK</a> <cite title="NONE">[RFC7517]</cite> file required to validate the tokens's signature (see <a href="#lht_encryption_signing">Section 6.1</a>).  </dd>
   <dt>aud</dt>
-  <dd style="margin-left: 8">REQUIRED. The party to receive the token, typically the users OpenID Provider.  The value MUST be the issuer URI of the OP as exposed in the openid-configuration.  </dd>
+  <dd style="margin-left: 8">REQUIRED. The party to receive the token, typically the users OpenID Provider.  The value MUST be the issuer URI of the OP as exposed in the IdP's openid-configuration meta-data.  </dd>
   <dt>iat</dt>
   <dd style="margin-left: 8">REQUIRED. When the token was issued.  </dd>
   <dt>MSISDN</dt>
@@ -596,8 +596,8 @@
   }
                 </pre>
 <h1 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> <a href="#lht_encryption_signing" id="lht_encryption_signing">login_hint_token encryption and signing</a></h1>
-<p id="rfc.section.6.1.p.1">The login_hint token MUST be encrypted using the public key of the OpenID Provider designated by the claim "aud". The respective public key is obtained using the rules defined in OpenID Connect Discovery.  </p>
-<p id="rfc.section.6.1.p.2">TBD: do we need a reference to some standard here? In the first step, the openid-configuration is retrieved by appending /.well-kown/openid-configuration the value of the "aud" claim. In the next step, the claim "jwks_uri" is used to retrieve the OP's key set.  </p>
+<p id="rfc.section.6.1.p.1">The login_hint token MUST be encrypted using the public key of the OpenID Provider designated by the claim "aud" in the login_hint_token.  The appropriate public key is obtained using the rules defined in <a href="#OpenID.Discovery">OpenID Connect Discovery.</a> <cite title="NONE">[OpenID.Discovery]</cite> </p>
+<p id="rfc.section.6.1.p.2">In the first step, the openid-configuration for the IdP is retrieved by performing discovery Per Section 4 of <a href="#OpenID.Discovery">[OpenID.Discovery]</a> using the issuer string for the users IdP as the input.  <br/> In the next step, the value of the "jwks_uri" claim Per Section 3 of <a href="#OpenID.Discovery">[OpenID.Discovery]</a> is used to retrieve the OP's <a href="#RFC7517">JWK</a> <cite title="NONE">[RFC7517]</cite>.  A public key in the JWK with a use paramater of "enc" per Section 4.2 of <a href="#RFC7517">JWK</a> <cite title="NONE">[RFC7517]</cite> is used as the encryption key.  The login_hint_token is then encrypted as a JWE using that key.  </p>
 <p id="rfc.section.6.1.p.3">The login_hint token MUST be signed using the private key of the Discovery Service.</p>
 <p id="rfc.section.6.1.p.4">It is best practice to sign then encrypt tokens, as signatures over encrypted information may leak information in the envelope, and may not be considered legally valid.</p>
 <p id="rfc.section.6.1.p.5">For an example of a nested JWT that is signed and then encrypted see Appendix 2 of <a href="#RFC7519">JWT</a> <cite title="NONE">[RFC7519]</cite>.  </p>
@@ -616,7 +616,7 @@
 
 <p> </p>
 <h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#security_considerations" id="security_considerations">Security Considerations</a></h1>
-<p id="rfc.section.9.p.1">The login hint token SHOULD be digitally signed by the issuer.  This ensures authenticity of the data and reduces the threat of an injection attack.  The signature allows the OP to authenicate and authorize the sender of the hint and prevent collecting of phone numbers by rogue clients </p>
+<p id="rfc.section.9.p.1">The login hint token SHOULD be digitally signed by the issuer.  This ensures authenticity of the data and reduces the threat of an injection attack.  The signature allows the OP to authenicate and authorize the sender of the hint and prevent collecting of phone numbers by rogue clients.  </p>
 <p id="rfc.section.9.p.2">To prevent modification of the <samp>binding_message</samp> value, the RP SHOULD send the parameter to the OP using a signed OpenID Connect Request Object (section 6.3.2 of <a href="#OpenID.Core">[OpenID.Core]</a>).  </p>
 <p id="rfc.section.9.p.3">The OP MUST sanitize the <samp>binding_message</samp> value in order to prevent injection attacks.  </p>
 <p id="rfc.section.9.p.4">The <samp>binding_message</samp> value being displayed on the consumption and authentication device SHOULD contain a random value (e.g. an authorization code) of reasonable entropy.  This is a countermeasure against session fixation type attacks, where the attacker initiates an authentication process on a consumption device under his control, which will result in the same text being displayed on the authentication device as for legitimate transactions.  </p>
@@ -630,15 +630,21 @@
   <tbody>
     <tr>
       <td class="reference">
-        <b id="AMR">[AMR]</b>
+        <b id="I-D.jones-oauth-amr-values">[I-D.jones-oauth-amr-values]</b>
       </td>
-      <td class="top"><a title="Microsoft">Jones, M.</a> and <a title="Oracle">P. Hunt</a>, "<a>Authentication Method Reference Values</a>", August 2015.</td>
+      <td class="top"><a>Jones, M.</a>, <a>Hunt, P.</a> and <a>A. Nadalin</a>, "<a href="http://tools.ietf.org/html/draft-jones-oauth-amr-values-05">Authentication Method Reference Values</a>", Internet-Draft draft-jones-oauth-amr-values-05, February 2016.</td>
     </tr>
     <tr>
       <td class="reference">
         <b id="OpenID.Core">[OpenID.Core]</b>
       </td>
       <td class="top"><a title="Nomura Research Institute, Ltd.">Sakimura, N.</a>, <a title="Ping Identity">Bradley, J.</a>, <a title="Microsoft">Jones, M.</a>, <a title="Google">de Medeiros, B.</a>, <a title="Salesforce">Mortimore, C.</a> and <a title="Illumila">E. Jay</a>, "<a>OpenID Connect Core 1.0</a>", December 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="OpenID.Discovery">[OpenID.Discovery]</b>
+      </td>
+      <td class="top"><a title="Nomura Research Institute, Ltd.">Sakimura, N.</a>, <a title="Ping Identity">Bradley, J.</a>, <a title="Microsoft">Jones, M.</a> and <a title="Illumila">E. Jay</a>, "<a href="http://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery 1.0</a>", August 2015.</td>
     </tr>
     <tr>
       <td class="reference">
