@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type='text/xsl' href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
+<!DOCTYPE rfc PUBLIC "-//IETF//DTD RFC 2629//EN"
+"http://xml2rfc.ietf.org/authoring/rfc2629.dtd">
+<!--
+  NOTE:  This XML file is input used to produce the authoritative copy of an
+  OpenID Foundation specification.  The authoritative copy is the HTML output.
+  This XML source file is not authoritative.  The statement ipr="none" is
+  present only to satisfy the document compilation tool and is not indicative
+  of the IPR status of this specification.  The IPR for this specification is
+  described in the "Notices" section.  This is a public OpenID Foundation
+  document and not a private document, as the private="..." declaration could
+  be taken to indicate.
+-->
+<rfc category="std" docName="draft-account-migration-00" ipr="none">
+
+  <?rfc toc="yes" ?>
+  <?rfc tocdepth="5" ?>
+  <?rfc symrefs="yes" ?>
+  <?rfc sortrefs="yes"?>
+  <?rfc strict="yes" ?>
+  <?rfc iprnotified="no" ?>
+  <?rfc private="Draft" ?>
+  
+  <front>
+    <title abbrev="OpenID Connect Account Migration 1.0">
+            OpenID Connect Account Migration 1.0</title>
+
+
+    <author fullname="Torsten Lodderstedt" initials="T." surname="Lodderstedt">
+      <organization abbrev="">Deutsche Telekom AG</organization>
+      <address>
+        <email>t.lodderstedt@telekom.de</email>
+      </address>
+    </author>
+
+<!--	<author fullname="John Bradley" initials="J." surname="Bradley">
+      <organization abbrev="">Ping Identity</organization>
+      <address>
+        <email>jbradley@pingidentity.com</email>
+      </address>
+    </author>
+-->
+    <date day="08" month="MAY" year="2016" />
+    
+    <workgroup>OpenID MODRNA Working Group</workgroup>
+
+    <abstract>    
+<t>This document specifies a protocol for migrating user accounts among OpenID OPs, which 
+is required in the context of Mobile Connect. Furthermore, the design shall be applicable to 
+other contexts as well. The goal of the design is to allow users to 
+migrate between OPs while retaining access to their services (RPs).  
+</t>
+    </abstract>
+  </front>
+
+  <middle>
+
+    <section anchor="Introduction" title="Introduction">
+
+      <t>
+	    Mobile Connect uses the mobile phone number to identify a certain user identity. So from a
+		user's perspective, the mobile phone number is becoming her digital identity and is used
+		to login to a variety of services. 
+		When the respective subscriber changes among mobile network operators, the mobile phone 
+		number is typically migrated and can be used with the new MNO (mobile phone number portability).
+		And in the same way the user can be reached afterwards via the same mobile phone number as before, 
+		users may also expect to retain access to all the services they had logged into with this mobile
+		phone number before.
+      </t>
+	  
+	  <t>
+	  From a technical perspective, retaining access to the services means to migrate the user id asserted 
+	  for a certain user account by the old OP to a particular RP to the respective (new) user id asserted 
+	  by the new OP for the same user identity. 
+	  This draft proposes a protocol, which allows the new OP to obtain the necessary user data from the old 
+	  OP and provide every RP with the necessary data to migrate the RP's local user account data in a secure 
+	  way. The basic idea of the protocol design is to migrate the identifier used to identify the user 
+	  account at the RP "on-the-fly" while the user is logging into a certain RP using her new OP.
+	  </t>
+
+      <section anchor="rnc" title="Requirements Notation and Conventions">
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+        document are to be interpreted as described in <xref
+        target="RFC2119"/>.</t>
+
+        <t>Throughout this document, values are quoted to indicate that they are
+        to be taken literally. When using these values in protocol messages, the
+        quotes MUST NOT be used as part of the value.</t>
+      </section>
+
+      <section anchor="terminology" title="Terminology">
+        <t>
+          This specification uses the terms "OpenID Provider (OP)" and "Relying Party (RP)" as
+          defined by <xref target="OpenID.Core">OpenID Connect Core</xref>.
+          This specification also defines the following terms: 
+          <list style="hanging">
+             <t hangText="Mobile Network Operator (MNO)">
+               A provider of wireless communication services that owns or controls the wireless 
+               network elements necessary to sell and deliver services to an end user.
+            </t>
+          </list>
+        </t>
+      </section>
+    </section>
+    
+    <section anchor="overview" title="Overview">
+    
+    <t>
+	    The first section defines the protocol flow for transferring data about a user account to be migrated between 
+		old and new OP. The second section describes the extension to the OpenID authentication response and the respective 
+		logic to provide the RP with the necessary data to migrate a particular user account "on-the-fly" during the login 
+		process.
+	</t>
+	</section>
+
+<section anchor="mig_ops" title="Migrating a User Account between OPs">
+
+    <t>Assumption: when the process starts, the old OP is no longer associated with the mobile phone number.</t>
+          <t>(1) The user starts migration explicitly at her new OP. She logs in and starts the account migration process.</t>
+
+		  <t>(2) She identifies the old OP (via issuer URL or name)</t>
+
+		  <t>(3) The new OP determines the migration endpoint (via OpenID configuration or hard wired)
+		  
+          <figure>
+            <preamble>For example, given the issuer URL https://op.mno1.com, the new OP would obtain the following OpenID 
+			configuration of the old OP from https://op.mno1.com/.well-known/openid-configuration (line breaks are for display purposes
+            only):</preamble>
+			 
+            <artwork><![CDATA[HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+   "issuer":
+     "https://op.mno1.com",
+   "authorization_endpoint":
+     "https://op.mno1.com/connect/authorize",
+   "token_endpoint":
+     "https://op.mno1.com/connect/token",
+   "migration_info_endpoint":
+     "https://op.mno1.com/connect/migrate",
+	 ...
+}
+]]></artwork>
+
+          </figure>
+		  </t>
+		  <t>Please note: the discovery document contains a new claim migration_info_endpoint referring to a new endpoint used to provide 
+		  other OPs with user account data in the context of user account migration.
+		  </t>
+
+		  <t>(4) In the next step, the new OP initiates an authorization for access to the migration info endpoint with the old 
+		  OP via a standard OAuth code flow.</t>
+		  <t>(a) The user is redirect to the old OP's authorization endpoint and the OP is asked to permit access to the migration 
+		  endpoint by using a scope value of "migration_info".
+		  <figure>
+            <artwork><![CDATA[GET connect/authorize?client_id=example_client&
+redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fauthz&
+state=676863864872641764&scope=migration_info HTTP/1.1
+Host: discovery.example.com
+]]></artwork>
+          </figure>
+		  </t>
+		  <t>(b) The User is authenticated by the old OP. The means used for authentication are out of scope of this specification. The OP 
+                 could use credentials especially issued for migration. It could also use standard mechanisms/credentials other thann Mobile Connect specific
+				authenticators (because those are no longer available at the old OP).</t>
+		  <t>(c) The old OP issues an authorization code.</t>
+		  <t>(d) The new OP exchanges this authorization code at the old OP's tokens endpoint for an access token, which valid to invoke the
+		  migration info endpoint.</t>
+		  <t>
+		  <figure>
+<preamble>(5) The new OP invokes the migration endpoint and obtains the migration data of the respective user account (represented by the access token). 
+</preamble>
+            <artwork><![CDATA[GET /connect/migrate HTTP/1.1
+Host: discovery.example.com
+Authorization: Bearer mF_9.B5f-4.1JqM
+]]></artwork>
+          </figure></t>
+		<t>
+		  <figure>
+		  <preamble>
+		  The response is a JSON array, which for every RP the respective user account had been used to login to, contains the subject value 
+		along with the respective redirect or sector identifier URI (line breaks are for display purposes only):
+		  </preamble>
+            <artwork><![CDATA[HTTP/1.1 200 OK
+Content-Type: application/json
+
+[{
+	"sub": "45445454",
+  	"redirect_uri": "https://creditagency.example.com/oidc",
+  	"porting_data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJod
+	HRwczovL29wLm1ubzEuY29tIiwic3ViIjoiNDU0NDU0NTQiLCJhdWQiOiJodHRwczovL
+	2JhbmsuZXhhbXBsZS5j	b20vb2lkYyIsIm1pZ3JhdGVkX3RvIjoiaHR0cHM6Ly9vcC5t
+	bm8yLmNvbSIsImV4cCI6MTMxMTI4MTk3MCwiaWF0IjoxMzExMjgwOTcwfQ.G6ySs3hGt
+	tmVgVzRTycuAdnxztHZdl3T4D7nRAigEU"
+ },{
+  	"sub": "67676766",
+	"sector_identifier_uri": 
+	"https://bank.example.com/file_of_redirect_uris.json",
+  	"porting_data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodH
+	RwczovL29wLm1ubzEuY29tIiwic3ViIjoiNjc2NzY3NjYiLCJhdWQiOiJodHRwczovL2
+	NyZWRpdGFnZW5jeS5leGFtcGxlLmNvbS9vaWRjIiwibWlncmF0ZWRfdG8iOiJodHRwcz
+	ovL29wLm1ubzIuY29tIiwiZXhwIjoxMzExMjgxOTcwLCpYXQiOjEzMTEyODA5NzB9.w0
+	9Qd8ngaLLuNMAgyduO589kB8QE3MtPiaZ3yx3DHhs"
+}]
+]]></artwork>
+<postamble>
+The value "porting_data" contains a JWT signed by the old OP, which is used by the new OP to prove
+that the migration of the user account was authorized by the old OP.
+</postamble>
+          </figure>
+</t>
+<t>
+The porting data JWT contains the following claims:
+<list style="hanging">
+<t hangText="iss">Issuer URL of the OP, which asserted the JWT. Basically the same semantics as in an id token.</t>
+<t hangText="sub">subject identifier of the respective user account for the RP identified by the claim "aud". 
+Basically the same semantics as in an id token.</t>
+<t hangText="redirect_uri">value of the redirect of the RP, for which the OP asserted the subject identifier 
+given in the claim "sub".</t>
+<t hangText="sector_identifier_uri">value of the sector identifier URI of a group of RPs, for which the OP asserted 
+the subject identifier given in the claim "sub". redirect_uri and sector_identifier_uri are mutual exclusive.</t>
+<t hangText="migrated_to">Issuer URL of the OP, the user account has been migrated to.</t>
+</list>
+Note: How is the old OP supposed to determine the issuer URL of the new OP or the new OP in general?		  
+<figure>
+<preamble>The following shows an example of a porting data JWT:
+</preamble>
+            <artwork><![CDATA[  
+  {
+   "iss": "https://op.mno1.com",
+   "sub": "45445454",
+   "redirect_uri": "https://creditagency.example.com/oidc",
+   "migrated_to": "https://op.mno2.com"
+   "exp": 1311281970,
+   "iat": 1311280970
+  }
+]]></artwork>
+          </figure>
+Note: The assumption is that the old OP purges the data of the migrated account after a certain grace period.
+</t>
+		  <t>(6) The new OP associate the migration data with the respective local account 
+		  and stores it for later use.</t>
+	</section>
+
+	<section anchor="authn_resp" title="Migrating a User Account at an RP">
+    
+    <t>The actual migration of user accounts at RPs is performed per RP during the respective login process.</t>
+	
+	<t>When generating the authentication response for a particular RP, the new OP verifies, whether 
+	it has stored a PPID for the actual user account and the respective RP. A RP is determined to
+	be the same as with the old OP if the redirect_uri or the selector identifier is the same as 
+	contained in the data obtained from the migration info endpoint as described above.</t>
+	
+	<t>If the OP determines that it has a PPID from the old OP for the particular RP and user account, 
+	it adds the respective porting data to the id token.
+
+		  <figure>
+            <preamble></preamble>
+			 
+            <artwork><![CDATA[  
+ {
+   "iss": "https://op.mno2.com",
+   "sub": "676887676767",
+   "aud": "client_xyz",
+   "porting_data":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL29wLm1ub
+   zEuY29tIiwic3ViIjoiNDU0NDU0NTQiLCJhdWQiOiJodHRwczovL2JhbmsuZXhhbXBsZS5jb20vb2lkYyIs
+   Im1pZ3JhdGVkX3RvIjoiaHR0cHM6Ly9vcC5tbm8yLmNvbSIsImV4cCI6MTMxMTI4MTk3MCwiaWF0IjoxMzE
+   xMjgwOTcwfQ.G6ySs3h-GttmVgVzRTycuAdnxztHZdl3T4D7nRAigEU",
+   "exp": 1311281970,
+   "iat": 1311280970,
+   "auth_time": 1311280969,
+   "acr": "urn:mace:incommon:iap:silver"
+ }
+]]></artwork>
+          </figure>
+	</t>
+	
+	<t>The RP is supposed to act as follows:</t>
+	<t>If the RP does not find a user account within its database using 
+the combination of the iss and sub claim, it checks whether there exists a porting_data claim 
+in the id token. If that's the case the OP inspects the porting data and attempts to migrate the
+user account identified by the porting data JWT within its database to the values asserted by the
+id token.</t>
+
+	<t>
+		  <figure>
+		  <preamble>In the example case, the id token carries a porting data claim, which contains the following JWT:</preamble>
+            <artwork><![CDATA[  
+  {
+   "iss": "https://op.mno1.com",
+   "sub": "45445454",
+   "redirect_uri": "https://creditagency.example.com/oidc",
+   "migrated_to": "https://op.mno2.com"
+   "exp": 1311281970,
+   "iat": 1311280970
+  }
+]]></artwork>
+          </figure>
+  
+</t>
+
+<t>The RP first validates the digital signature of the porting data JWT. It therefore looks up the old OP's openid configuration 
+and obtains the location of its JWK URL (containing the respective public keys of the OP).
+
+          <figure>
+            <preamble>For example, given the issuer URL https://op.mno1.com, the new OP would obtain the following OpenID 
+			configuration of the old OP from https://op.mno1.com/.well-known/openid-configuration (line breaks are for display purposes
+            only):</preamble>
+			 
+            <artwork><![CDATA[  
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+
+{
+   "issuer": "https://op.mno1.com",
+   "jwks_uri": "https://op.mno1.com/jwks.json",
+	 ...
+}
+]]></artwork>
+          </figure>
+</t>
+<t>
+         <figure>
+   		 <preamble>It then loads the public keys material, which could for example look like this (line breaks for are for 
+		 display purposes only):</preamble>
+            <artwork><![CDATA[  
+{
+ "keys": [
+  {
+   "kty": "RSA",
+   "alg": "RS256",
+   "use": "sig",
+   "kid": "b040ea9e48fec8dfd6a8859b07553dee18f19636",
+   "n": "zewQFS4tqHaofLLOTfliLO3gb1WnmjMYrPlVHPNdJc7WTVO5iuSVV1j5bYH0IvuoikdnBUzV0hjZiEg
+   OQVETlCLtXNbi7R54NjaUOSuSBFclNtf8mMXqyB3lz7hfDUPPctdXeOsl-xcfUAvqyVkfEw9FuitB0fsP3zoq
+   OEWa_7Kg8F7clSsz_g0fydT63qa1RyOraoF4SvisjyUWNVPsNmSCznQ1dd64y9HbX1ywkbtfqIzEcX--8ToGo
+   V9dgBB5VJCGem89TkBv25LzdLIoHgy0YfyXOsmPMf2cDr6eZSiZl53TjL2O8VzMF3J5T7_sFkyruGDf1GoK3a
+   lNT5D4YQ",
+   "e": "AQAB"
+  },
+  {
+   "kty": "RSA",
+   "alg": "RS256",
+   "use": "sig",
+   "kid": "fc33f33a95ce227b9956398788a49ca83bea7bf5",
+   "n": "qMW-G5XetV6bfJ4i6yWLLukttyLAoT3Fw3qz6sqqwRnvuS_StqAnVs7A5fWavcR3_AZimy1fJf9Gz9w
+   GS7xtAy_tClHUq3O8Mdixjifl3y0wcIEQpyrAc248ffiha_1YPQWzJvny03H8Pr2ZgOzJlc03A1T9We6z0-R9
+   zhL-wXKSpmbv-ZqbCPw7kWLUmb7OpOKPMxOyWMXHIzDEkJLXIATbekOGaltFrgJVjdXihQdYGD5vVtfJQEw2n
+   B_k_CPjRmMxixhsuNk3s_3V02CdcZZul_Fs4q3uvEk6iXZQviBmPztGR2fpPJ1RlhnvP4jUl8bVi7mA5_Mpft
+   c41tTUJQ",
+   "e": "AQAB"
+  }
+ ]
+}
+]]></artwork>
+<postamble>Note: the right key applicable for the particular migration data JWT is identified by a key id represented by the claim "kid".</postamble>
+          </figure>
+
+</t>
+<t>If the signature has been validated successfully, the RP checks, whether it can find an existing user account in its
+database using the combination of iss and sub obtained from the porting data JWT. In the case of the example above, this
+would be the the issuer "https://op.mno1.com" and the sub "45445454".</t>
+<t>If there is a match, the RP changes the corresponding database values to the values of the claims iss and sub of 
+the actual id token. In the example, the respective values would be "https://op.mno2.com" and "676887676767".</t>
+<t>After this step, the account of the actual user has effectively been migrated to the new OP. If the same user logs
+in to the same RP again, the RP would not consider the porting data again because it would sucessfully lookup the local
+user account using the iss and sub provided by the new OP.</t>
+    </section>    
+
+    <section anchor="security_considerations" title="Security Considerations">
+	<t>
+TBD
+	</t>
+    </section>
+
+    <section anchor="privacy_considerations" title="Privacy Considerations">
+	    <t>
+	TBD
+	    </t>
+    </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>TBD</t>
+    </section>
+
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.7517"?>
+      <?rfc include="reference.RFC.7519"?>
+      <?rfc include="reference.RFC.6711"?>
+
+      <reference anchor="OpenID.Core">
+	<front>
+	  <title>OpenID Connect Core 1.0</title>
+
+	  <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+	    <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+	  </author>
+
+	  <author fullname="John Bradley" initials="J." surname="Bradley">
+	    <organization abbrev="Ping Identity">Ping Identity</organization>
+	  </author>
+
+	  <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+	    <organization abbrev="Microsoft">Microsoft</organization>
+	  </author>
+
+	  <author fullname="Breno de Medeiros" initials="B." surname="de Medeiros">
+	    <organization abbrev="Google">Google</organization>
+	  </author>
+
+	  <author fullname="Chuck Mortimore" initials="C." surname="Mortimore">
+	    <organization abbrev="Salesforce">Salesforce</organization>
+	  </author>
+
+	  <author fullname="Edmund Jay" initials="E." surname="Jay">
+	    <organization abbrev="Illumila">Illumila</organization>
+	  </author>
+
+	  <date day="19" month="December" year="2013"/>
+	</front>
+
+	<format target="http://openid.net/specs/openid-connect-core-1_0.html"
+		type="HTML" />
+      </reference>
+
+	  <?rfc include="reference.I-D.draft-jones-oauth-amr-values-05.xml"?>
+	  
+
+      <reference anchor="OpenID.Discovery" target="http://openid.net/specs/openid-connect-discovery-1_0.html">
+	<front>
+	  <title>OpenID Connect Discovery 1.0</title>
+
+	  <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+	    <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+	  </author>
+
+	  <author fullname="John Bradley" initials="J." surname="Bradley">
+	    <organization abbrev="Ping Identity">Ping Identity</organization>
+	  </author>
+
+	  <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+	    <organization abbrev="Microsoft">Microsoft</organization>
+	  </author>
+
+	  <author fullname="Edmund Jay" initials="E." surname="Jay">
+	    <organization abbrev="Illumila">Illumila</organization>
+	  </author>
+
+	  <date day="3" month="August" year="2015"/>
+	</front>
+      </reference>
+      
+    </references>
+    
+    <references title="Informative References">
+
+      <?rfc include="reference.RFC.6749"?>
+      <?rfc include="reference.RFC.6750"?>
+      <?rfc include="reference.RFC.5246"?>
+      <?rfc include="reference.RFC.2246"?>
+
+
+      <reference anchor="E.164">
+	<front>
+	  <title>Recommendation ITU-T E.164</title>
+
+          <author fullname="N." initials="" surname="N.">
+            <organization abbrev="ITU-T">ITU-T</organization>
+          </author>
+
+	  <date day="01" month="November" year="2010"/>
+	</front>
+
+	<format target="https://www.itu.int/rec/T-REC-E.164-201011-I"
+		type="PDF" />
+      </reference>
+      
+    </references>
+
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>The following have contributed to the development of this specification.</t>
+      <t>
+        <list style="empty">
+			<t>Jörg Connotte (j.connotte@telekom.de), Deutsche Telekom</t>
+        </list>
+      </t>
+    </section>
+
+
+    <section anchor="Notices" title="Notices">
+      <t>Copyright (c) 2015 The OpenID Foundation.</t>
+      <t>
+	The OpenID Foundation (OIDF) grants to any Contributor, developer, 
+	implementer, or other interested party a non-exclusive, royalty free, 
+	worldwide copyright license to reproduce, prepare derivative works from, 
+	distribute, perform and display, this Implementers Draft or 
+	Final Specification solely for the purposes of (i) developing 
+	specifications, and (ii) implementing Implementers Drafts and 
+	Final Specifications based on such documents, provided that attribution 
+	be made to the OIDF as the source of the material, but that such attribution 
+	does not indicate an endorsement by the OIDF.
+      </t>
+      <t>
+	The technology described in this specification was 
+	made available from contributions from various sources, 
+	including members of the OpenID Foundation and others.  
+	Although the OpenID Foundation has taken steps to help ensure 
+	that the technology is available for distribution, it takes 
+	no position regarding the validity or scope of any intellectual 
+	property or other rights that might be claimed to pertain to 
+	the implementation or use of the technology described in 
+	this specification or the extent to which any license under 
+	such rights might or might not be available; neither does it 
+	represent that it has made any independent effort to identify 
+	any such rights.  The OpenID Foundation and the contributors 
+	to this specification make no (and hereby expressly disclaim any) 
+	warranties (express, implied, or otherwise), including implied 
+	warranties of merchantability, non-infringement, fitness for 
+	a particular purpose, or title, related to this specification, 
+	and the entire risk as to implementing this specification is 
+	assumed by the implementer.  The OpenID Intellectual 
+	Property Rights policy requires contributors to offer 
+	a patent promise not to assert certain patent claims against 
+	other contributors and against implementers.  The OpenID Foundation invites 
+	any interested party to bring to its attention any copyrights, 
+	patents, patent applications, or other proprietary rights 
+	that may cover technology that may be required to practice 
+	this specification.
+      </t>
+    </section>
+
+
+    <section anchor="History" title="Document History">
+      <t>[[ To be removed from the final specification ]]</t>
+
+      <t>-00 <list style="symbols">
+          <t>Initial draft</t>
+        </list>
+		</t>
+    </section>
+  </back>
+</rfc>
