@@ -46,10 +46,10 @@
     <workgroup>OpenID MODRNA Working Group</workgroup>
 
     <abstract>    
-<t>This document specifies a protocol for migrating user accounts among OpenID OPs, which 
-is required in the context of Mobile Connect. Furthermore, the design shall be applicable to 
-other contexts as well. The goal of the design is to allow users to 
-migrate between OPs while retaining access to their services (RPs).  
+<t>This document specifies a protocol for migrating user accounts among OpenID Connect OPs. 
+The goal is to allow users to migrate between OpenID Connect OPs while retaining access to 
+their existing services (RPs). Although the need for such a function was first raised in the context of 
+the Mobile Connect initiative, the intend is to design a protocol applicable on a general basis.    
 </t>
     </abstract>
   </front>
@@ -57,18 +57,55 @@ migrate between OPs while retaining access to their services (RPs).
   <middle>
 
     <section anchor="Introduction" title="Introduction">
-
+<!-- describe mobile connect challenges and uses cases
+generalize problem
+introduce solution idea, refer to OpenID 2.0 migration protocol and significant differences two different OPs 
+-->
       <t>
 	    Mobile Connect uses the mobile phone number to identify a certain user identity. So from a
 		user's perspective, the mobile phone number is becoming her digital identity and is used
 		to login to a variety of services. 
+		</t>
+		<t>
 		When the respective subscriber changes among mobile network operators, the mobile phone 
-		number is typically migrated and can be used with the new MNO (mobile phone number portability).
+		number is typically migrated and can be used with the new Mobile Network Operator (mobile phone number portability).
 		And in the same way the user can be reached afterwards via the same mobile phone number as before, 
 		users may also expect to retain access to all the services they had logged into with this mobile
 		phone number before.
       </t>
 	  
+	  <t>
+	  But even if the subscriber does not migrate her mobile phone number, she may want to retain access
+	  to all services they had logged into using the old Mobile Phone Operator's services before. This use case 
+      is not bound to Mobile Connect but can be solved for OpenID Connect in general, opening the opportunity
+ 	  to migrate between all kinds of OpenID OPs, which greatly contributes to the concept of user centricity
+	  since users are not locked in to a certain OP.
+	  </t>
+<!-- introduce solution idea, refer to OpenID 2.0 migration protocol and significant differences two different OPs 
+--> 
+	  
+	  <t>
+	  from a user's perspective if she logs in to an particular RP with the new OP, she must get access to the 
+	  same account with this RP as before. 
+	  
+	  The technical challenge can be expressed as follows: OpenID Connect assumes full autonomy of every OP regarding 
+      the way its user identifier ("sub" claim) are created and managed. The OpenID Connect specification does intentionally
+	  not define the structure of a user identifier or the mechanisms used to create them. This way every OP can implement 
+      user id management the way it suites its needs the best. It also allows to wrap existing user databases with OpenID
+	  Connect without the need to migrate user data (on both OP and RP ends). RPs shall treat a subject as opaque string.
+	  
+	  Global uniqueness is achieved by scoping every user id with the respective OP's identifier ("iss" claim).	  
+
+      User ids (i.e. iss + sub) can therefore not simply be transferred among OPs.	  
+	  
+	  </t>
+	  based on the OpenID 2.0 migration protocol extension
+	  new OP provides its user id (local sub) along with data from the old OP -> creating the link
+	  RP needs to reflect change and update its user database
+	  difference to OpenID 2.0 - two OPs involved, data must be exchanged in a secure and trustworthy way
+	  therefore two step process 1) obtain porting data/migrate OP account 2) migrate RP accounts in-band
+	  <t>
+	  </t>
 	  <t>
 	  From a technical perspective, retaining access to the services means to migrate the user id asserted 
 	  for a certain user account by the old OP to a particular RP to the respective (new) user id asserted 
@@ -106,7 +143,17 @@ migrate between OPs while retaining access to their services (RPs).
     </section>
     
     <section anchor="overview" title="Overview">
-    
+    <!-- processes, fundamental concepts, flows, assumptions, requirements and non requirements - e.g. chained migrations are of scope, authentication
+	 stability and uniqueness of identifiers and justification
+	OP user account migration
+	RP user account migration
+	structural orga afterwards
+	Migration endpoint
+	porting data
+	extended authentication response (all response types?) 
+	MTI: algorithms
+	-->
+	
     <t>
 	    The first section defines the protocol flow for transferring data about a user account to be migrated between 
 		old and new OP. The second section describes the extension to the OpenID authentication response and the respective 
