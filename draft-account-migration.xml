@@ -99,12 +99,12 @@ introduce solution idea, refer to OpenID 2.0 migration protocol and significant 
       User ids (i.e. iss + sub) can therefore not simply be transferred among OPs.	  
 	  
 	  </t>
+	  <t>
 	  based on the OpenID 2.0 migration protocol extension
 	  new OP provides its user id (local sub) along with data from the old OP -> creating the link
 	  RP needs to reflect change and update its user database
 	  difference to OpenID 2.0 - two OPs involved, data must be exchanged in a secure and trustworthy way
 	  therefore two step process 1) obtain porting data/migrate OP account 2) migrate RP accounts in-band
-	  <t>
 	  </t>
 	  <t>
 	  From a technical perspective, retaining access to the services means to migrate the user id asserted 
