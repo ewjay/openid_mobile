@@ -85,7 +85,7 @@ introduce solution idea, refer to OpenID 2.0 migration protocol and significant 
 --> 
 	  
 	  <t>
-	  from a user's perspective if she logs in to an particular RP with the new OP, she must get access to the 
+	  From a user's perspective if she logs in to an particular RP with the new OP, she must get access to the 
 	  same account with this RP as before. 
 	  
 	  The technical challenge can be expressed as follows: OpenID Connect assumes full autonomy of every OP regarding 
@@ -100,13 +100,36 @@ introduce solution idea, refer to OpenID 2.0 migration protocol and significant 
 	  
 	  </t>
 	  <t>
-	  based on the OpenID 2.0 migration protocol extension
-	  new OP provides its user id (local sub) along with data from the old OP -> creating the link
-	  RP needs to reflect change and update its user database
-	  difference to OpenID 2.0 - two OPs involved, data must be exchanged in a secure and trustworthy way
-	  therefore two step process 1) obtain porting data/migrate OP account 2) migrate RP accounts in-band
+	  This extension to the OpenID Connect protocol is based on the concepts of the OpenID 2.0 migration protocol 
+	  extension (<xref target="OpenID20.Migration"/>). In the OpenID 2.0 migration protocol, the same OP that previously offered OpenID 2.0 now
+	  provides identity data to RPs via OpenID Connect. Since the data structures changed between both versions of
+	  OpenID, the respective user identifiers at the RPs need to be migrated. This is supported by providing 
+	  the RP with both sets of data, the old and the new user id referring to the same user account with the OP.
+	  These data is jointly provided in the OpenID Connect authentication response. Based on this data, the RP
+	  can identify the user account in its database (using the OpenID 2.0 identifier) and augment it with the 
+	  iss and sub claim in the respective id token. 
+</t>
+<t>
+		This specification applies the same principle to the migration of user accounts among OPs. If the user
+		has moved its user account to a new OP, this new OP will provide the iss and sub used by the old OP to
+		all RPs along with its iss and the respective sub value used for the particular user account and RP. This 
+		additional data is provided in an extension to the OpenID Connect authentication response and allows the 
+		RP to identify the respective user account in its database (using the old values for iss and sub) and 
+		update the respective user account record to be identified by the new iss and sub. So in subsequent 
+		login attempts, the RP user account is directly be identified (and authenticated) by the sub and iss provided
+		by the new OP.
 	  </t>
 	  <t>
+	  Care must be taken to ensure this protocol is not used for user account take over. An RP is therefore supposed
+	  to perform a user account migration only if the old OP has asserted the transfer of responsibility regarding
+	  the user account under consideration to the actual OP. This specification proposes the necessary mechanisms.
+	  It also specifies a new API used to transfer user account data among OPs. Clearly, this specification ensures
+	  the user is in full control of the whole migration process, especially her consent is needed in order to reveal 
+	  user data to the new OP.
+	  </t>
+
+	  <t>out of scope: authentication, chained migration, deactivation or deletion of old OP account</t>
+	  <!--	  <t>
 	  From a technical perspective, retaining access to the services means to migrate the user id asserted 
 	  for a certain user account by the old OP to a particular RP to the respective (new) user id asserted 
 	  by the new OP for the same user identity. 
@@ -115,7 +138,8 @@ introduce solution idea, refer to OpenID 2.0 migration protocol and significant 
 	  way. The basic idea of the protocol design is to migrate the identifier used to identify the user 
 	  account at the RP "on-the-fly" while the user is logging into a certain RP using her new OP.
 	  </t>
-
+ --> 
+	  
       <section anchor="rnc" title="Requirements Notation and Conventions">
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
         "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
@@ -133,9 +157,18 @@ introduce solution idea, refer to OpenID 2.0 migration protocol and significant 
           defined by <xref target="OpenID.Core">OpenID Connect Core</xref>.
           This specification also defines the following terms: 
           <list style="hanging">
-             <t hangText="Mobile Network Operator (MNO)">
-               A provider of wireless communication services that owns or controls the wireless 
-               network elements necessary to sell and deliver services to an end user.
+             <t hangText="OP account">
+               A user's account with the OP. This account is characterized by credentials used to login with the OP
+			   and certain user identifiers (public as well as pairwise pseudonymous). The latter are asserted by 
+			   the OP to RPs in order to authenticate the user to the respective RP.
+            </t>
+             <t hangText="RP account">
+               A user's account with the respective RP. This account is associated with the user's data with the RP 
+			   (a service or a collection of services). From an authentication perspective, this account is characterized
+			   by a federated user id asserted by a certain OP. This federated user id replaces or supplements local
+			   credentials at the RP and is used to authenticate the RP account. In the context of OpenID Connect, 
+			   the federated user id is build from the iss and sub claims of the id token asserted in the 
+			   OpenID Connect authentication response.
             </t>
           </list>
         </t>
@@ -146,23 +179,137 @@ introduce solution idea, refer to OpenID 2.0 migration protocol and significant 
     <!-- processes, fundamental concepts, flows, assumptions, requirements and non requirements - e.g. chained migrations are of scope, authentication
 	 stability and uniqueness of identifiers and justification
 	OP user account migration
-	RP user account migration
-	structural orga afterwards
-	Migration endpoint
-	porting data
-	extended authentication response (all response types?) 
-	MTI: algorithms
+	RP user account migration - requesting migration data?
+	-->
+    <t>
+	A user account is migrated in two steps. First, the OP account is moved from the old OP to the new OP. 
+	In this process, the user identifiers associated with the respective OP account are obtained by the new OP 
+	and stored in relation to the respective new OP account. In the second step, all RP accounts related to 
+	the OP account in migration are migrated "on the fly" while the user is logging in to the respective RP.
+	During this stage, the new OP use the account data obtained in the first phase to provide the RP 
+	with the required "old" OP account data as part of the OpenID Connect authentication response. Both processes
+	are explained in more detail in the following sub sections.
+	</t>
+	
+	<section anchor="op_account_mig" title="OP account migration">   
+	        <figure>
+          <preamble>The following figure shows the abstract message flow during the
+          OP account migration process. 
+		  Note: the new OP takes the role of an 
+		  OAuth client trying to get access to the old OP's account migration 
+		  endpoint. So the flow is based on the OAuth abstract protocol 
+		  flow.</preamble>
+
+<artwork><![CDATA[
+     +---------+                               +-------------+
+     |         |<-(A)-- Start Migration -------|             |
+     |         |--(B)- Authorization Request ->|    User     |
+     |         |<-(C)-- Authorization Grant ---|             |
+     |         |                               +-------------+
+     |         |                               +---------------------+   
+     |         |                               |   Old OP            |
+     |         |                               +------------------+  |
+     | New OP  |--(D)-- Authorization Grant -->| Tokens Endpoint  |  |
+     |         |<-(E)-- Access Token ----------|                  |  |
+     |         |                               +------------------+  |
+     |         |                               +------------------+  |          
+     |         |--(F)-- Request Account Data ->|   Account Data   |  |
+     |         |<-(G)--- Account Data ---------|   Endpoint       |  |
+     |         |                               +------------------+  |
+     |         |                               |                     |                                 
+     +---------+                               +---------------------+
+]]></artwork>
+
+          <postamble>Figure 1 OP account migration (Abstract Protocol Flow)</postamble>
+        </figure>
+        <t><list style="empty">
+		    <t>(A) The user starts migration explicitly at her new OP. The concrete implementation 
+			of this step is out of scope of this specification. The user could for example
+               login to a self care portal with the new OP and start the process there. In 
+			   this step, the user identifies the new OP either by using the issuer URL
+			   or the name of the OP (which is subsequently transformed into the issuer URL.</t>
+			   
+            <t>(B) The new OP asks the user for permission to obtain her user account data
+			from the old OP. From a technical perspective, this abstract protocol message could be 
+			implemented by sending an OAuth authorization code request to the old OP's authorization
+			endpoint and ask for permission to access the Account Data using a 
+			suitable scope value (see below). Other grant types can be used as well. As a pre-requisite 
+            for giving her permission, the user needs to authenticate to the old OP. So the
+			session with the new OP is bound to the new OP's account whereas the authorization
+			grant to obtain the account data is bound to the old OP's user account.</t>
+
+            <t>(C) The new OP receives an authorization grant (e.g. an authorization code).</t>
+
+            <t>(D) The new OP exchanges the authorization grant obtained from the user for 
+			an access token valid to request the account data endpoint at the old OP.</t>
+
+            <t>(E) The old OP's token endpoint issues a suitable access token.</t>
+
+            <t>(F) The new OP requests the OP account's data from the old OP. The OP 
+			user account is identified by data associated with the access token. </t>
+
+            <t>(G) The old OP provides the new OP with all account data relevant for 
+			account migration in the form of digitally signed assertions (JWTs) and also 
+			attests the new OP has taken over responsibility for the respective user identifiers. 
+			This ensures the RPs latter on can validate that the new OP is the new legitimate OP for 
+			a certain user account.</t>
+
+          </list></t>
+         <t>The new OP stores the newly obtained account data with its respective OP account for 
+		 latter use during the RP account migration.</t>
+		 <t>Note: the new OP may access the account data endpoint as long as the authorization grant
+		 is valid. This could be used to obtain fresh assertions if the originally obtained assertions
+		 expire.</t>
+	
+	</section>
+	<section anchor="rp_account_mig" title="RP account migration">
+	<t>The RP account migration is performed as part of the login process to a particular RP.
+	
+	        <list style="empty">
+		    <t>(A) user wants to access RP and logs in with OP</t>
+			   
+            <t>(B) OP determines whether there are migration data associated with the respective OP account
+
+if so, it adds the respective assertion to the response (how is the client identified? potential privacy issue)			</t>
+
+            <t>(C) The RP performs standard OIDC login process. It inspects the additional user account data only, 
+			if it is unable to lookup a RP account using the standard claims iss and sub.</t>
+
+            <t>(D) if the OP issued user id is unknown and there are migration data attached to the login response, the RP 
+			tries to determine the related RP account. It indeed verifies the validity of the migration data provided by the 
+			additional assertion in the login response (details in latter sections). If there is a matching RP account, the 
+			RP changes the values of iss and sub in its database to the new values asserted by the new OP in the id token
+			issued with the current login process. It is advicable to indicate the migration of the account to the user.</t>
+          </list>
+	 This concludes the migration of the RP from one OP to another OP. The RP will directly login the user with the RP account 
+	 corresponding to the new OP's account.
+	</t>
+	
+	</section>
+</section>
+	<section anchor="account_data" title="Account Data Endpoint">
+	<!-- 
+	all user ids (public and pairwise)
+	respective claims and scope values for user info endpoint, the user consented to
 	-->
 	
-    <t>
-	    The first section defines the protocol flow for transferring data about a user account to be migrated between 
-		old and new OP. The second section describes the extension to the OpenID authentication response and the respective 
-		logic to provide the RP with the necessary data to migrate a particular user account "on-the-fly" during the login 
-		process.
-	</t>
+	<t>data structure, scope value, request, response, authorization, errors, identification of clients</t>
+	<t>client identification (ppid) -> software statement (vendor, software id), just URLs could be not enough (custom schemes), 
+	sector id vs. sector url (latter is always an URL) is also better</t>
+	</section>
+	
+	<section anchor="login_ext" title="Authentication response extension">
+	<!-- all grant types - just define additional id token claims -->
+	<t>new claim</t>
+	<t>unsolicited response or shall the RP ask for migration data (like in OpenID 2.0 migration)?</t>
+	<t>processing rules</t>
+	</section>
+	
+	<section anchor="mti" title="Mandatory to Implement Requirements">
+	
 	</section>
 
-<section anchor="mig_ops" title="Migrating a User Account between OPs">
+	<section anchor="mig_ops" title="Migrating a User Account between OPs">
 
     <t>Assumption: when the process starts, the old OP is no longer associated with the mobile phone number.</t>
           <t>(1) The user starts migration explicitly at her new OP. She logs in and starts the account migration process.</t>
@@ -417,6 +564,7 @@ in to the same RP again, the RP would not consider the porting data again becaus
 user account using the iss and sub provided by the new OP.</t>
     </section>    
 
+	<section anchor="example" title="Example Flow"></section>
     <section anchor="security_considerations" title="Security Considerations">
 	<t>
 TBD
@@ -501,6 +649,30 @@ TBD
 	  </author>
 
 	  <date day="3" month="August" year="2015"/>
+	</front>
+      </reference>
+
+      <reference anchor="OpenID20.Migration" target="http://openid.net/specs/openid-connect-migration-1_0.html">
+	<front>
+	  <title>OpenID 2.0 to OpenID Connect Migration 1.0</title>
+
+	  <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+	    <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+	  </author>
+
+	  <author fullname="John Bradley" initials="J." surname="Bradley">
+	    <organization abbrev="Ping Identity">Ping Identity</organization>
+	  </author>
+
+	  <author fullname="Naveen Agarwal" initials="N.A." surname="Agarwal">
+	    <organization abbrev="Google">Google</organization>
+	  </author>
+
+	  <author fullname="Edmund Jay" initials="E." surname="Jay">
+	    <organization abbrev="Illumila">Illumila</organization>
+	  </author>
+
+	  <date day="16" month="April" year="2015"/>
 	</front>
       </reference>
       
