@@ -392,7 +392,7 @@ Authorization: Bearer mF_9.B5f-4.1JqM
             <artwork><![CDATA[HTTP/1.1 200 OK
 Content-Type: application/json
 
-migration_data : ["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJod
+["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJod
 	HRwczovL29wLm1ubzEuY29tIiwic3ViIjoiNDU0NDU0NTQiLCJhdWQiOiJodHRwczovL
 	2JhbmsuZXhhbXBsZS5jb20vb2lkYyIsIm1pZ3JhdGVkX3RvIjoiaHR0cHM6Ly9vcC5t
 	bm8yLmNvbSIsImV4cCI6MTMxMTI4MTk3MCwiaWF0IjoxMzExMjgwOTcwfQ.G6ySs3hGt
