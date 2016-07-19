@@ -34,7 +34,7 @@
       </address>
     </author>
 
-    <date day="16" month="JULY" year="2016" />
+    <date day="19" month="JULY" year="2016" />
     
     <workgroup>OpenID MODRNA Working Group</workgroup>
 
@@ -306,34 +306,54 @@ introduce solution idea, refer to OpenID 2.0 migration protocol and significant 
 	Access Tokens as OAuth 2.0 Bearer Token Usage <xref target="RFC6750"/>.</t>
 	
 	<section title="Account Migration Data">	
-<t>The account migration JWT contains the following claims:
+<t>The account migration JSON object is a JWT with additional structured claims. On the top level, it 
+contains the following claims:
 <list style="hanging">
-<t hangText="old_iss">Issuer URL of the OP, which asserted the JWT. Basically the same semantics as "iss" in an id token.</t>
-<t hangText="old_sub">subject identifier of the respective user account for the RP identified by the claim "aud". 
-Basically the same semantics as "subs" in an id token.</t>
+<t hangText="from">Data about the user account at the old OP.</t>
+<t hangText="to">Data about the OP this account is being migrated to.</t>
+<t hangText="exp">Expiration time (see <xref target="RFC7519"/>)</t>
+<t hangText="iat">Issued at (see <xref target="RFC7519"/>)</t>
+</list>
+OPEN: do we need nbf and/or jti?
+</t>
+
+<t>Note: this specification intentionally does not use the ID token format to prevent abuse of
+the migration data as ID token.</t>
+
+<t>The "from" claim contains the following sub claims:
+<list style="hanging">
+<t hangText="iss">Issuer URL of the OP, which asserted the JWT, so this is the same semantics as for "iss" 
+in a JWT (see <xref target="RFC7519"/>).</t>
+<t hangText="sub">subject identifier of the respective user account for the RP identified by the claim "aud", so 
+this is the same semantics as "sub" in a JWT (see <xref target="RFC7519"/>).</t>
 <t hangText="sub_type">subject type, may be "pairwise" or "public".</t>
-<t hangText="redirect_uri">In case of an pairwise subject, this value contains the redirect URI of the RP, for which the 
-OP asserted the subject identifier given in the claim "old_sub".</t>
-<t hangText="sector_identifier">In case of an pairwise subject, this claim contains the sector identifier of a group 
-of RPs, for which the OP asserted the subject identifier given in the claim "old_sub". redirect_uri and sector_identifier_uri 
-are mutual exclusive.</t>
-<t hangText="migrated_to">Issuer URL of the OP, the user account has been migrated to. 	The URL is determined based 
-on the access token and the corresponding client_id used to invoke the AccountMigration endpoint.</t>
+<t hangText="aud">In case of an pairwise subject, this claim contains the audience of the particular pairwise 
+subject identifier. The value may be a redirect_uri or a sector_identifier of the client or the set of clients
+the old OP asserted the respective subject identifier to.</t>
+</list></t>
+
+<t>The "to" claim contains the following sub claims:
+<list style="hanging">
+<t hangText="iss">Issuer URL of the OP, which is supposed to take over responsibility for the 
+particular account. The value is subject to the same rules applicable to iss claims in JWTs and ID Tokens.</t>
 </list></t>
 
 <figure>
 <preamble>The following shows an example of a migration data JWT:
 </preamble>
             <artwork><![CDATA[{
-  "old_iss": "https://op.mno1.com",
-  "old_sub": "45445454",
-  "sub_type": "pairwise"
-  "redirect_uri": "https://creditagency.example.com/oidc",
-  "migrated_to": "https://op.mno2.com"
-  "exp": 1311281970,
-  "iat": 1311280970
-}
-]]></artwork>
+  "from": {
+    "iss": "https://op.mno1.com",
+    "sub": "45445454",
+    "sub_type": "pairwise",
+	"aud": "https://creditagency.example.com/oidc"
+  },
+  "to": {
+    "iss": "https://op.mno2.com"
+  },
+  "exp": 1568925762986,
+  "iat": 1468925762986
+}]]></artwork>
           </figure>	
 
     <t>Note: Account migration data may only be signed by the old OP using asymmetric algorithms and never encrypted
@@ -399,7 +419,7 @@ ovL29wLm1ubzIuY29tIiwiZXhwIjoxMzExMjgxOTcwLCpYXQiOjEzMTEyODA5NzB9.w0
 		<t>The new OP is supposed to process the response as follows: 
 <list style="empty">
 <t>(1) It needs to verify the digital signature of every JWT as well as the values
-of "old_iss" and "migrated_to" for the correct values. In order to verify the digital
+of "from/iss" and "to/iss" for the correct values. In order to verify the digital
 signature of the JWT, the new OP obtains the old OP's public key from the OP's 
 JSON Web Key Set <xref target="RFC7517"/>) using the process defined 
 in <xref target="OpenID.Discovery"/>.</t>
@@ -409,7 +429,7 @@ migration of the RP accounts of the respective OP account.</t>
 	</section>
 	
 	<section title="Account Data Error Response">
-	<t>errors: unauthorized, account does not exists, ...</t>
+	<t>TBD errors: unauthorized, account does not exists, already migrated, migrated to different OP, ...</t>
 	</section>
 
 	</section>
@@ -468,21 +488,26 @@ id token.</t>
 		  <figure>
 		  <preamble>In the example case, the id token carries a account data claim, which contains the following JWT:</preamble>
             <artwork><![CDATA[{
-  "iss": "https://op.mno1.com",
-  "sub": "45445454",
-  "redirect_uri": "https://creditagency.example.com/oidc",
-  "migrated_to": "https://op.mno2.com"
-  "exp": 1311281970,
-  "iat": 1311280970
-}
-]]></artwork>
+  "from": {
+    "iss": "https://op.mno1.com",
+    "sub": "45445454",
+    "sub_type": "pairwise",
+	"aud": "https://creditagency.example.com/oidc"
+  },
+  "to": {
+    "iss": "https://op.mno2.com"
+  },
+  "exp": 1568925762986,
+  "iat": 1468925762986
+}]]></artwork>
           </figure>
   
 </t>
 
 <t>The RP first validates the digital signature of the migration data JWT. It therefore looks up the old OP's 
-openid configuration as defined in <xref target="OpenID.Discovery"/> and uses it to obtains the location of 
-the old OP's JSON Web Key Set <xref target="RFC7517"/>) (containing the respective public keys of the OP).
+openid configuration as defined in <xref target="OpenID.Discovery"/> using the "iss" sub claim of the claim "from"
+and uses it to obtains the location of the old OP's JSON Web Key Set <xref target="RFC7517"/>) 
+(containing the respective public keys of the OP).
 
           <figure>
             <preamble>For example, given the issuer URL https://op.mno1.com, the new OP would obtain the following OpenID 
@@ -538,15 +563,22 @@ the key identifier (kid).</postamble>
           </figure>
 
 </t>
-<t>If the signature has been validated successfully, the RP checks, whether it can find an existing user account in its
-database using the combination of iss and sub obtained from the porting data JWT. In the case of the example above, this
+<t>If the signature has been validated successfully, the RP checks whether the iss of the ID token of the
+actual authentication response an the claim "to/iss" contain the same value, i.e. the respective 
+OP account had been transferred to the new OP.</t>
+<t>If this check was successful, the RP checks, whether it can find an existing user account in its
+database using the combination of "from/iss" and "from/sub" obtained from the porting data JWT. In the case of the example above, this
 would be the the issuer "https://op.mno1.com" and the sub "45445454".</t>
 <t>If there is a match, the RP changes the corresponding database values to the values of the claims iss and sub of 
 the actual id token. In the example, the respective values would be "https://op.mno2.com" and "676887676767".</t>
 <t>After this step, the account of the actual user has effectively been migrated to the new OP. If the same user logs
-into the same RP again, the RP would not consider the porting data again because it would sucessfully lookup the local
+into the same RP again, the RP would not consider the porting data again because it would successfully lookup the local
 user account using the iss and sub provided by the new OP.</t>	
 	
+	<t>OPEN: the migration data JWT needs a long-term signature since RP migration might happen years after the 
+	migration between OPs happened. Instead of using a digital signature, we could also introduce a validation endpoint
+	at the old OP to verify the migration data during RP account migration (proposal by James Manger). </t>
+	<t>There was also a further review comment, whether the RP a third party or the old OP should verify the signature.</t>
 	<t>OPEN: unsolicited response or shall the RP ask for migration data (like in OpenID 2.0 migration)?</t>
 	</section>	
 	
@@ -555,9 +587,83 @@ user account using the iss and sub provided by the new OP.</t>
 	</section>  
 
     <section anchor="security_considerations" title="Security Considerations">
-	<t>analyse all kinds of account take over attempts, injection protection for account migration 
-	data/potentially requires ID token/audience restriction - compare sub and account data, XSRF, precaution on new OP 
-	side to prevent account mix up, injection/replay</t>
+	
+	<t>Attackers goal: get access to the victims RP accounts either by taking over the respective OP or RP account. 
+	This section analysis the protocol flow along the lines of the migration process for threat vectors. Note: this 
+	list is a starting point and not meant to be comprehensive (yet).</t>
+    
+	<section title="Impersonation of legitimate user's old OP account">
+	  <t>If the attacker can get hold of the authorization grant 
+	  issued by the old OP for access to the account migration API, the attacker can impersonate the legitimate
+	  user in the migration process at the new OP.
+	  	<list style="symbols">
+	     <t>Prevent leakage of authorization grant at old OP (mix up, referrer header, log files, ...)</t>
+	     <t>Prevent injection at new OP (TBD - state, id_token, nonce, pkce, token binding, ...)</t>
+		 <t>Audience/purpose restrict access tokens on old OP side, in order to strictly limit access
+		 tokens, which can be used for account migration. Combined with a strict limitation (whitelisting) of all
+		 clients, which are allowed to request access tokens for account migration shall reduce attack surface.</t>
+		 <t>idea: use migration specific credential, which is directly entered during migration 
+		 process at new OP (in turn potentially imposes the risk of men in the middle/phishing)</t>
+		 <t>old OP should notify user of account migration process via different communication channel.</t>
+		</list>
+	  </t>
+	  </section>
+
+	  <section title="Trick user into login with attacker's account">
+	  <t>The attacker could try to cause the legitimate user
+	  to login with her new OP with the attacker's account with this new OP. That would cause the new OP
+	  to associate the migration data with the attackers account, which in turn allows the attacker to
+	  migrate all RP accounts of the legitimate user to his account with the new OP.
+	  	<list style="symbols">
+	     <t>Prevent XSRF, session fixation</t>
+		 <t>Explicitly show user identity data of both user accounts, which she is about to tie together and 
+		 ask for consent.</t>
+		 <t>Send information back to old OP about new OP identity? It could inform user of 
+		 the migration, which just happened (too).</t>
+		</list>
+		</t>
+	  </section>
+	  
+	  <section title="Impersonate old OP/replay migration data">
+	  <t>If the attacker gets hold of valid migration data 
+	  of an account at OP1 and "migrates" the account data to his account with OP1. Scenario: The attacker logs into 
+	  the new OP with her OP account and sends the new OP to the OP under her control. This OP returns migration 
+	  data obtained from a legitimate OP in a previous step.
+	    <list style="symbols">
+		 <t>audience restriction: verify subject of migration data (migrated_to must be iss of new OP)</t>
+	     <t>detection: use discovery to match account migration endpoint to endpoint of legitimate OP</t>
+		</list>
+	  </t>
+	  </section>
+	  
+	  <section title="Bad OP">
+	  <t>Attacker could try to trick victim into (unintentionally) migration her OP account to a
+	  OP under the attacker's control
+	  	<list style="symbols">
+		 <t>white listing or blacklisting of OPs for which account migration is supported</t>
+	     <t>clear wording and consent during release of the account migration authorization grant.</t>
+		 <t>no SSO and no auto consent: require re-authentication and explicit consent + specific migration credential 
+		 (just to make the process less convenient and make the victim think about what she is up to.).</t>
+		 <t>old OP should notify user of account migration process via different communication channel.</t>
+		</list>
+		</t>
+	  </section>
+	  
+      <section title="Inject migration data during RP account migration">
+	  <t>Attacker gets hold of valid migration data 
+	  and injects it into the login response. This would only work for implicit grant, not for grant type code.
+	  	<list style="symbols">
+		 <t>use grant type code</t>
+	     <t>migration data is included in ID Token, so it is signed by the new OP and cannot be modfied by the
+		 attacker.</t>
+		</list>	  
+	  </t>
+	  </section>
+	  
+	  <section title="Further Considerations">
+	  <t>Note: the new OP could also accidentally assign the account migration data to the wrong user account 
+	  in its database. Care must be taken that the respective functions are thoroughly tested with every change.</t>
+	  </section>
     </section>
 
     <section anchor="privacy_considerations" title="Privacy Considerations">
@@ -581,7 +687,6 @@ user account using the iss and sub provided by the new OP.</t>
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.6750"?>
       <?rfc include="reference.RFC.5246"?>	  
-	  
 
       <reference anchor="OpenID.Core" target="http://openid.net/specs/openid-connect-core-1_0.html">
 	<front>
@@ -742,10 +847,12 @@ user account using the iss and sub provided by the new OP.</t>
       <t>[[ To be removed from the final specification ]]</t>
       <t>-01 <list style="symbols">
           <t>reorganized the draft</t>
+		  <t>stated scope of the draft and what is currently out of scope</t>
 		  <t>extended introduction and overview</t>
 		  <t>changed terminology from porting to migration</t>
-		  <t>changed claim names in migration data to be different from id token claims</t>
+		  <t>changed migration data structure to be different from an id token</t>
 		  <t>cleaned up references</t>
+		  <t>added initial security considerations</t>
         </list>
 		</t>
 
