@@ -241,7 +241,7 @@ introduce solution idea, refer to OpenID 2.0 migration protocol and significant 
 
             <t>(D) The new OP exchanges the authorization grant obtained from the user for 
 			an access token (and potentially a refresh token) valid to request the user's OP account data 
-			at the ÂccountMigration endpoint of the old OP.</t>
+			at the AccountMigration endpoint of the old OP.</t>
 
             <t>(E) The old OP's token endpoint issues a suitable access token.</t>
 
