@@ -386,7 +386,7 @@ Host: op.mno1.com
 Content-Type: application/x-www-form-urlencoded
 Authorization: Bearer mF_9.B5f-4.1JqM
 ]]></artwork>
-<postamble>OPEN: Is POST the right verb?I think so since user account state is change at the old OP (subject values are invalidated).</postamble>
+<postamble>OPEN: Is POST the right verb? I think so since user account state is change at the old OP (subject values are invalidated).</postamble>
           </figure></t>
 	</section>
 	
