@@ -12,7 +12,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-account-migration-01" ipr="none">
+<rfc category="std" docName="draft-account-migration-02" ipr="none">
 
   <?rfc toc="yes" ?>
   <?rfc tocdepth="5" ?>
@@ -34,7 +34,7 @@
       </address>
     </author>
 
-    <date day="19" month="JULY" year="2016" />
+    <date day="02" month="August" year="2016" />
     
     <workgroup>OpenID MODRNA Working Group</workgroup>
 
@@ -504,9 +504,9 @@ id token.</t>
   
 </t>
 
-<t>The RP first validates the digital signature of the migration data JWT. It therefore looks up the old OP's 
+<t>The RP MUST first validate the digital signature of the migration data JWT. It therefore looks up the old OP's 
 openid configuration as defined in <xref target="OpenID.Discovery"/> using the "iss" sub claim of the claim "from"
-and uses it to obtains the location of the old OP's JSON Web Key Set <xref target="RFC7517"/>) 
+and uses it to obtain the location of the old OP's JSON Web Key Set <xref target="RFC7517"/>) 
 (containing the respective public keys of the OP).
 
           <figure>
@@ -795,6 +795,7 @@ user account using the iss and sub provided by the new OP.</t>
 			<t>Jörg Connotte (j.connotte@telekom.de), Deutsche Telekom</t>
 			<t>James Manger (James.H.Manger@team.telstra.com), Telstra</t>
 			<t>John Bradley (ve7jtb@ve7jtb.com), Ping Identity</t>
+			<t>Axel Nennker (Axel.Nennker@telekom.de), Deutsche Telekom</t>
         </list>
       </t>
     </section>
@@ -845,6 +846,11 @@ user account using the iss and sub provided by the new OP.</t>
 
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      <t>-02 <list style="symbols">
+          <t>fixed typos</t>
+		  <t>made signature validation MUST</t>
+        </list>
+		</t>
       <t>-01 <list style="symbols">
           <t>reorganized the draft</t>
 		  <t>stated scope of the draft and what is currently out of scope</t>
