@@ -34,7 +34,7 @@
       </address>
     </author>
 
-    <date day="02" month="August" year="2016" />
+    <date day="04" month="August" year="2016" />
     
     <workgroup>OpenID MODRNA Working Group</workgroup>
 
@@ -306,7 +306,7 @@ introduce solution idea, refer to OpenID 2.0 migration protocol and significant 
 	Access Tokens as OAuth 2.0 Bearer Token Usage <xref target="RFC6750"/>.</t>
 	
 	<section title="Account Migration Data">	
-<t>The account migration JSON object is a JWT with additional structured claims. On the top level, it 
+<t>The account migration object is a JWT with additional structured claims. On the top level, it 
 contains the following claims:
 <list style="hanging">
 <t hangText="from">Data about the user account at the old OP.</t>
@@ -355,11 +355,27 @@ particular account. The value is subject to the same rules applicable to iss cla
   "iat": 1468925762986
 }]]></artwork>
           </figure>	
-
-    <t>Note: Account migration data may only be signed by the old OP using asymmetric algorithms and never encrypted
-	since it is supposed to be processed by at least two parties, the new OP and the respective RP.</t>
 	
-	<t>OPEN: There are several potential ways to identify the client or set of clients a certain ppid is bound to. 
+<t>Account migration data MUST be signed by the old OP using asymmetric algorithms and MUST NOT be encrypted
+since it is supposed to be processed by at least two parties, the new OP and the respective RP.</t>
+<t>Migration data JWTs are signed by the old OP using JSON Web Signature <xref target="RFC7515"/>. The value of the header parameter "typ" 
+is set to "migration_data". This allows the recipient to distinguish migration data from ID tokens or other JWTs (already 
+while processing the signed object).</t>
+<figure>
+<preamble>The following shows the example migration data JWT from above after signing:
+</preamble>
+            <artwork><![CDATA[
+eyJhbGciOiJSUzI1NiIsInR5cCI6Im1pZ3JhdGlvbl9kYXRhIn0.eyJmcm9tIjp
+7ImlzcyI6Imh0dHBzOi8vb3AubW5vMS5jb20iLCJzdWIiOiI0NTQ0NTQ1NCIsIn
+N1Yl90eXBlIjoicGFpcndpc2UiLCJhdWQiOiJodHRwczovL2NyZWRpdGFnZW5je
+S5leGFtcGxlLmNvbS9vaWRjIn0sInRvIjp7ImlzcyI6Imh0dHBzOi8vb3AubW5v
+Mi5jb20ifSwiZXhwIjoxNTY4OTI1NzYyOTg2LCJpYXQiOjE0Njg5MjU3NjI5ODZ
+9.bMxk--Hmqvs8DRRWvR8RLg4XxSb3wULUrL-8YoLXWSKhKA6bPXsxxoIoUb6Rg
+qbZhp1j2W030RVvKqImT6XjT_83VFEb4TELrxVa_gCEWTwW7u09YFXstpZ9aOeb
+8opDs78ejHyYDFSh3F01qcbdms6AMmqyIGllyOomhVBZpZc]]></artwork>
+          </figure>	
+
+<t>OPEN: There are several potential ways to identify the client or set of clients a certain ppid is bound to. 
 	They all have their pros and cons. Since there is a certain (privacy) risk to expose a ppid to clients, which 
 	are not eligible to get to know it, we need to carefully select the right option(s):
 <list style="hanging">
@@ -403,16 +419,26 @@ Authorization: Bearer mF_9.B5f-4.1JqM
             <artwork><![CDATA[HTTP/1.1 200 OK
 Content-Type: application/json
 
-["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJod
-HRwczovL29wLm1ubzEuY29tIiwic3ViIjoiNDU0NDU0NTQiLCJhdWQiOiJodHRwczovL
-2JhbmsuZXhhbXBsZS5jb20vb2lkYyIsIm1pZ3JhdGVkX3RvIjoiaHR0cHM6Ly9vcC5t
-bm8yLmNvbSIsImV4cCI6MTMxMTI4MTk3MCwiaWF0IjoxMzExMjgwOTcwfQ.G6ySs3hGt
-tmVgVzRTycuAdnxztHZdl3T4D7nRAigEU",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodH
-RwczovL29wLm1ubzEuY29tIiwic3ViIjoiNjc2NzY3NjYiLCJhdWQiOiJodHRwczovL2
-NyZWRpdGFnZW5jeS5leGFtcGxlLmNvbS9vaWRjIiwibWlncmF0ZWRfdG8iOiJodHRwcz
-ovL29wLm1ubzIuY29tIiwiZXhwIjoxMzExMjgxOTcwLCpYXQiOjEzMTEyODA5NzB9.w0
-9Qd8ngaLLuNMAgyduO589kB8QE3MtPiaZ3yx3DHhs"]
+["eyJhbGciOiJSUzI1NiIsInR5cCI6Im1pZ3JhdGlvbl9kYXRhIn0.
+eyJmcm9tIjp7ImlzcyI6Imh0dHBzOi8vb3AubW5vMS5jb20iLCJzd
+WIiOiI0NTQ0NTQ1NCIsInN1Yl90eXBlIjoicGFpcndpc2UiLCJhdW
+QiOiJodHRwczovL2NyZWRpdGFnZW5jeS5leGFtcGxlLmNvbS9vaWR
+jIn0sInRvIjp7ImlzcyI6Imh0dHBzOi8vb3AubW5vMi5jb20ifSwi
+ZXhwIjoxNTY4OTI1NzYyOTg2LCJpYXQiOjE0Njg5MjU3NjI5ODZ9.
+bMxk--Hmqvs8DRRWvR8RLg4XxSb3wULUrL-8YoLXWSKhKA6bPXsxx
+oIoUb6RgqbZhp1j2W030RVvKqImT6XjT_83VFEb4TELrxVa_gCEWT
+wW7u09YFXstpZ9aOeb8opDs78ejHyYDFSh3F01qcbdms6AMmqyIGl
+lyOomhVBZpZc",
+"eyJhbGciOiJSUzI1NiIsInR5cCI6Im1pZ3JhdGlvbl9kYXRhIn0.
+eyJmcm9tIjp7ImlzcyI6Imh0dHBzOi8vb3AubW5vMS5jb20iLCJzd
+WIiOiI1NjU2NTU2NTUiLCJzdWJfdHlwZSI6InBhaXJ3aXNlIiwiYX
+VkIjoiaHR0cHM6Ly9teWJhbmsuZXhhbXBsZS5jb20vb2lkYyJ9LCJ
+0byI6eyJpc3MiOiJodHRwczovL29wLm1ubzIuY29tIn0sImV4cCI6
+MTU2ODkyNTc3Mjk4NiwiaWF0IjoxNDY4OTI1NzcyOTg2fQ.sdCJ0N
+elcpo8qDpPV6Dvs2DThDrvOeWEngyL3SPa0yr-1ooiGKpJA_8EmCW
+3B58eX14Cny0-stB1V9d1Vv4KRjEsulcicC_NV4Qds3Lr6HiUo6oM
+Ph9yHGb209L_g1lHFggb-lltcRTssuM4GWhhJYZDTXoOhMWyTdMDr
+nfzsPc"]
 ]]></artwork>
           </figure>	 
 		  
@@ -464,10 +490,16 @@ migration of the RP accounts of the respective OP account.</t>
   "iss": "https://op.mno2.com",
   "sub": "676887676767",
   "aud": "client_xyz",
-  "migration_data":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL29wLm1ub
-  zEuY29tIiwic3ViIjoiNDU0NDU0NTQiLCJhdWQiOiJodHRwczovL2JhbmsuZXhhbXBsZS5jb20vb2lkYyIs
-  Im1pZ3JhdGVkX3RvIjoiaHR0cHM6Ly9vcC5tbm8yLmNvbSIsImV4cCI6MTMxMTI4MTk3MCwiaWF0IjoxMzE
-  xMjgwOTcwfQ.G6ySs3h-GttmVgVzRTycuAdnxztHZdl3T4D7nRAigEU",
+  "migration_data":"eyJhbGciOiJSUzI1NiIsInR5cCI6Im1pZ3Jhd
+  Glvbl9kYXRhIn0.eyJmcm9tIjp7ImlzcyI6Imh0dHBzOi8vb3AubW5v
+  MS5jb20iLCJzdWIiOiI0NTQ0NTQ1NCIsInN1Yl90eXBlIjoicGFpcnd
+  pc2UiLCJhdWQiOiJodHRwczovL2NyZWRpdGFnZW5jeS5leGFtcGxlLm
+  NvbS9vaWRjIn0sInRvIjp7ImlzcyI6Imh0dHBzOi8vb3AubW5vMi5jb
+  20ifSwiZXhwIjoxNTY4OTI1NzYyOTg2LCJpYXQiOjE0Njg5MjU3NjI5
+  ODZ9.bMxk--Hmqvs8DRRWvR8RLg4XxSb3wULUrL-8YoLXWSKhKA6bPX
+  sxxoIoUb6RgqbZhp1j2W030RVvKqImT6XjT_83VFEb4TELrxVa_gCEW
+  TwW7u09YFXstpZ9aOeb8opDs78ejHyYDFSh3F01qcbdms6AMmqyIGll
+  yOomhVBZpZc",
   "exp": 1311281970,
   "iat": 1311280970,
   "auth_time": 1311280969,
@@ -478,7 +510,7 @@ migration of the RP accounts of the respective OP account.</t>
 	</t>
 	
 	<t>The RP is supposed to act as follows:</t>
-	<t>If the RP does not find a user account within its database using 
+	<t>If the RP does not find an user account within its database using 
 the combination of the iss and sub claim, it checks whether there exists a porting_data claim 
 in the id token. If that's the case the OP inspects the porting data and attempts to migrate the
 user account identified by the porting data JWT within its database to the values asserted by the
@@ -504,65 +536,10 @@ id token.</t>
   
 </t>
 
-<t>The RP MUST first validate the digital signature of the migration data JWT. It therefore looks up the old OP's 
+<t>The RP first MUST validate the digital signature of the migration data JWT. It therefore looks up the old OP's 
 openid configuration as defined in <xref target="OpenID.Discovery"/> using the "iss" sub claim of the claim "from"
 and uses it to obtain the location of the old OP's JSON Web Key Set <xref target="RFC7517"/>) 
-(containing the respective public keys of the OP).
-
-          <figure>
-            <preamble>For example, given the issuer URL https://op.mno1.com, the new OP would obtain the following OpenID 
-			configuration of the old OP from https://op.mno1.com/.well-known/openid-configuration (line breaks are for display purposes
-            only):</preamble>
-			 
-            <artwork><![CDATA[HTTP/1.1 200 OK
-Content-Type: application/json
-{
-  "issuer": "https://op.mno1.com",
-  "jwks_uri": "https://op.mno1.com/jwks.json",
- ...
-}
-]]></artwork>
-          </figure>
-</t>
-<t>
-         <figure>
-   		 <preamble>It then loads the public keys material, which could for example look like this (line breaks for are for 
-		 display purposes only):</preamble>
-            <artwork><![CDATA[  
-{
- "keys": [
-  {
-   "kty": "RSA",
-   "alg": "RS256",
-   "use": "sig",
-   "kid": "b040ea9e48fec8dfd6a8859b07553dee18f19636",
-   "n": "zewQFS4tqHaofLLOTfliLO3gb1WnmjMYrPlVHPNdJc7WTVO5iuSVV1j5bYH0IvuoikdnBUzV0hjZiEg
-   OQVETlCLtXNbi7R54NjaUOSuSBFclNtf8mMXqyB3lz7hfDUPPctdXeOsl-xcfUAvqyVkfEw9FuitB0fsP3zoq
-   OEWa_7Kg8F7clSsz_g0fydT63qa1RyOraoF4SvisjyUWNVPsNmSCznQ1dd64y9HbX1ywkbtfqIzEcX--8ToGo
-   V9dgBB5VJCGem89TkBv25LzdLIoHgy0YfyXOsmPMf2cDr6eZSiZl53TjL2O8VzMF3J5T7_sFkyruGDf1GoK3a
-   lNT5D4YQ",
-   "e": "AQAB"
-  },
-  {
-   "kty": "RSA",
-   "alg": "RS256",
-   "use": "sig",
-   "kid": "fc33f33a95ce227b9956398788a49ca83bea7bf5",
-   "n": "qMW-G5XetV6bfJ4i6yWLLukttyLAoT3Fw3qz6sqqwRnvuS_StqAnVs7A5fWavcR3_AZimy1fJf9Gz9w
-   GS7xtAy_tClHUq3O8Mdixjifl3y0wcIEQpyrAc248ffiha_1YPQWzJvny03H8Pr2ZgOzJlc03A1T9We6z0-R9
-   zhL-wXKSpmbv-ZqbCPw7kWLUmb7OpOKPMxOyWMXHIzDEkJLXIATbekOGaltFrgJVjdXihQdYGD5vVtfJQEw2n
-   B_k_CPjRmMxixhsuNk3s_3V02CdcZZul_Fs4q3uvEk6iXZQviBmPztGR2fpPJ1RlhnvP4jUl8bVi7mA5_Mpft
-   c41tTUJQ",
-   "e": "AQAB"
-  }
- ]
-}
-]]></artwork>
-<postamble>Note: the appropriate key required for a particular migration data JWT is identified by 
-the key identifier (kid).</postamble>
-          </figure>
-
-</t>
+(containing the respective public keys of the OP).</t>
 <t>If the signature has been validated successfully, the RP checks whether the iss of the ID token of the
 actual authentication response an the claim "to/iss" contain the same value, i.e. the respective 
 OP account had been transferred to the new OP.</t>
@@ -681,14 +658,15 @@ user account using the iss and sub provided by the new OP.</t>
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
+	  <?rfc include="reference.RFC.7515"?>
       <?rfc include="reference.RFC.7517"?>
       <?rfc include="reference.RFC.7519"?>
 	  <?rfc include="reference.RFC.2616"?>
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.6750"?>
       <?rfc include="reference.RFC.5246"?>	  
-
-      <reference anchor="OpenID.Core" target="http://openid.net/specs/openid-connect-core-1_0.html">
+	  
+	  <reference anchor="OpenID.Core" target="http://openid.net/specs/openid-connect-core-1_0.html">
 	<front>
 	  <title>OpenID Connect Core 1.0</title>
 
@@ -796,6 +774,7 @@ user account using the iss and sub provided by the new OP.</t>
 			<t>James Manger (James.H.Manger@team.telstra.com), Telstra</t>
 			<t>John Bradley (ve7jtb@ve7jtb.com), Ping Identity</t>
 			<t>Axel Nennker (Axel.Nennker@telekom.de), Deutsche Telekom</t>
+			<t>Arne Georg Gleditsch (argggh@telenordigital.com), Telenor Digital AS</t>
         </list>
       </t>
     </section>
@@ -849,6 +828,10 @@ user account using the iss and sub provided by the new OP.</t>
       <t>-02 <list style="symbols">
           <t>fixed typos</t>
 		  <t>made signature validation MUST</t>
+		  <t>removed jwks example</t>
+		  <t>changed signed example JWTs to be consistent with migration data examples and normative text (RSA instead of HMAC)</t>
+		  <t>defined new JWS "typ" parameter value "migration_data"</t>
+		  <t>made requirements regarding signing and encryption normative</t>
         </list>
 		</t>
       <t>-01 <list style="symbols">
