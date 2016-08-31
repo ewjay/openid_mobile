@@ -1,0 +1,105 @@
+@startuml
+
+title Porting example
+
+actor Alice as U
+participant OP1
+participant OP2
+participant OP3
+participant RP
+
+legend right
+ <-- redirect
+endlegend
+
+== Registration (OAuth 2.0 client apps) ==
+
+OP1 <- OP2: register for porting
+
+OP2 <- OP3: register for porting
+
+note over OP2, OP3
+  Includes discovery to learn port_data_endpoint
+end note
+
+OP1 <- RP: register for login
+OP2 <- RP: register for login
+OP3 <- RP: register for login
+note over RP
+  Includes discovery to learn port_check_endpoints
+end note
+
+
+== Federation via OP1 ==
+
+U -> OP1: sign-up
+...
+group OpenID Connect login
+U -> RP
+U <-- RP
+U -> OP1
+U <-> OP1: login & consent
+U <-- OP1
+U -> RP
+OP1 <- RP
+OP1 -> RP: OP1,sub1A
+end
+...
+
+== Port to OP2 ==
+
+U -> OP2: I want to port from OP1
+U <-- OP2
+U -> OP1: GET /authz?scope=port_data...
+U <-> OP1
+U <-- OP1
+U -> OP2
+OP1 <- OP2: swap code for access token
+OP1 -> OP2
+OP1 <- OP2: GET /port_data/me
+OP1 -> OP2: {"pairwise":{"rp.ex":"port1B"}}
+note right: assign sub2C
+...
+
+== Port to OP3 ==
+
+U -> OP3: I want to port from OP2
+...OAuth 2.0 flow...
+OP2 <- OP3: GET /port_data/me
+OP2 -> OP3: {"pairwise":{"rp.ex":"port2C"}}
+note right: assign sub3D
+
+...
+group OpenID Connect login
+U -> RP
+U <-- RP
+U -> OP3
+U <-> OP3: login, consent
+U <-- OP3
+U -> RP
+OP3 <- RP
+OP3 -> RP: OP3,sub3D,aka:{OP2,port2C}
+note right: OP3,sub3D unknown; try aka
+
+group Automatically verify port
+OP2 <- RP: GET /port_check?port2C,OP3,rp.ex
+note left
+  port2C is valid,
+  matches OP3 & rp.ex
+end note
+OP2 -> RP: sub2C,aka:{OP1,port1B}
+note right: OP2,sub2C unknown; try aka
+OP1 <- RP: GET /port_check?port1B,OP2,rp.ex
+note left
+  port1B is valid,
+  matches OP2 & rp.ex
+end note
+OP1 -> RP: sub1A
+note right
+  OP1,sub1A is Alice;
+  accept OP3,sub3D = OP1,sub1A
+end note
+end
+end
+
+@enduml
