@@ -289,7 +289,7 @@ The Biometric may be captured as part of the consent flow.
         </t>
         <t>The values for the strings in the <spanx style="verb">amr</spanx> claim are
          registered in a IANA registry defined in 
-         <xref target="I-D.jones-oauth-amr-values">Authentication Method Reference Values</xref>.
+         <xref target="I-D.ietf-oauth-amr-values">Authentication Method Reference Values</xref>.
          </t>
         <t>
 	        This specification recommends the use of several of the values, to provide
@@ -314,11 +314,11 @@ The Biometric may be captured as part of the consent flow.
 			    <t hangText="sms">
 			    Confirmation by responding to a SMS sent to a known device.
 			    </t>
-			    <t hangText="pop">
-			    Proof-of-possession (PoP) of a key.
+			    <t hangText="swk">
+			    Proof-of-possession (PoP) of a software-secured key.
 			    </t>
-			    <t hangText="hpop">
-			    Proof-of-possession (PoP) of a hardware protected key.
+			    <t hangText="hwk">
+			    Proof-of-possession (PoP) of a hardware-secured key.
 			    </t>
 			    <t hangText="geo">
 			    Geo-Location of the authentication device.
@@ -584,7 +584,7 @@ The Biometric may be captured as part of the consent flow.
 		type="HTML" />
       </reference>
 
-	  <?rfc include="reference.I-D.draft-jones-oauth-amr-values-05.xml"?>
+	  <?rfc include="reference.I-D.draft-ietf-oauth-amr-values-01.xml"?>
 	  
 
       <reference anchor="OpenID.Discovery" target="http://openid.net/specs/openid-connect-discovery-1_0.html">
