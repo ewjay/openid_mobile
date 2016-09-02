@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                       February 22, 2016
+                                                            Feb 22, 2016
 
 
             OpenID Connect MODRNA Authentication Profile 1.0
@@ -55,7 +55,7 @@ Table of Contents
 
 Connotte & Bradley       Expires August 25, 2016                [Page 1]
 
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
+                 OIDC MODRNA Authentication Profile 1.0         Feb 2016
 
 
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  10
@@ -111,7 +111,7 @@ Connotte & Bradley       Expires August 25, 2016                [Page 1]
 
 Connotte & Bradley       Expires August 25, 2016                [Page 2]
 
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
+                 OIDC MODRNA Authentication Profile 1.0         Feb 2016
 
 
 2.  Overview
@@ -167,7 +167,7 @@ Connotte & Bradley       Expires August 25, 2016                [Page 2]
 
 Connotte & Bradley       Expires August 25, 2016                [Page 3]
 
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
+                 OIDC MODRNA Authentication Profile 1.0         Feb 2016
 
 
    The initial set of "acr" values contain no requirements for the IdP
@@ -223,7 +223,7 @@ Connotte & Bradley       Expires August 25, 2016                [Page 3]
 
 Connotte & Bradley       Expires August 25, 2016                [Page 4]
 
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
+                 OIDC MODRNA Authentication Profile 1.0         Feb 2016
 
 
    The OP MUST support receiving "acr_values" as a space separated list
@@ -253,7 +253,7 @@ Connotte & Bradley       Expires August 25, 2016                [Page 4]
 
    The values for the strings in the "amr" claim are registered in a
    IANA registry defined in Authentication Method Reference Values
-   [I-D.jones-oauth-amr-values].
+   [I-D.ietf-oauth-amr-values].
 
    This specification recommends the use of several of the values, to
    provide a standard way for clients to understand the authentication
@@ -269,9 +269,9 @@ Connotte & Bradley       Expires August 25, 2016                [Page 4]
 
    sms  Confirmation by responding to a SMS sent to a known device.
 
-   pop  Proof-of-possession (PoP) of a key.
+   swk  Proof-of-possession (PoP) of a software-secured key.
 
-   hpop  Proof-of-possession (PoP) of a hardware protected key.
+   hwk  Proof-of-possession (PoP) of a hardware-secured key.
 
    geo  Geo-Location of the authentication device.
 
@@ -279,7 +279,7 @@ Connotte & Bradley       Expires August 25, 2016                [Page 4]
 
 Connotte & Bradley       Expires August 25, 2016                [Page 5]
 
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
+                 OIDC MODRNA Authentication Profile 1.0         Feb 2016
 
 
 5.1.  AMR Value Examples
@@ -335,7 +335,7 @@ Connotte & Bradley       Expires August 25, 2016                [Page 5]
 
 Connotte & Bradley       Expires August 25, 2016                [Page 6]
 
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
+                 OIDC MODRNA Authentication Profile 1.0         Feb 2016
 
 
    The "login_hint_token" produced by the MODRNA discovery service
@@ -391,7 +391,7 @@ Connotte & Bradley       Expires August 25, 2016                [Page 6]
 
 Connotte & Bradley       Expires August 25, 2016                [Page 7]
 
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
+                 OIDC MODRNA Authentication Profile 1.0         Feb 2016
 
 
    It is best practice to sign then encrypt tokens, as signatures over
@@ -447,7 +447,7 @@ Connotte & Bradley       Expires August 25, 2016                [Page 7]
 
 Connotte & Bradley       Expires August 25, 2016                [Page 8]
 
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
+                 OIDC MODRNA Authentication Profile 1.0         Feb 2016
 
 
    The "binding_message" value being displayed on the consumption and
@@ -472,10 +472,10 @@ Connotte & Bradley       Expires August 25, 2016                [Page 8]
 
 12.1.  Normative References
 
-   [I-D.jones-oauth-amr-values]
+   [I-D.ietf-oauth-amr-values]
               Jones, M., Hunt, P., and A. Nadalin, "Authentication
-              Method Reference Values", draft-jones-oauth-amr-values-05
-              (work in progress), February 2016.
+              Method Reference Values", draft-ietf-oauth-amr-values-01
+              (work in progress), July 2016.
 
    [OpenID.Core]
               Sakimura, N., Bradley, J., Jones, M., de Medeiros, B.,
@@ -503,7 +503,7 @@ Connotte & Bradley       Expires August 25, 2016                [Page 8]
 
 Connotte & Bradley       Expires August 25, 2016                [Page 9]
 
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
+                 OIDC MODRNA Authentication Profile 1.0         Feb 2016
 
 
    [RFC7517]  Jones, M., "JSON Web Key (JWK)", RFC 7517,
@@ -559,7 +559,7 @@ Appendix A.  Acknowledgements
 
 Connotte & Bradley       Expires August 25, 2016               [Page 10]
 
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
+                 OIDC MODRNA Authentication Profile 1.0         Feb 2016
 
 
       Gonzalo Fernandez Rodriguez
@@ -615,7 +615,7 @@ Appendix C.  Document History
 
 Connotte & Bradley       Expires August 25, 2016               [Page 11]
 
-                 OIDC MODRNA Authentication Profile 1.0    February 2016
+                 OIDC MODRNA Authentication Profile 1.0         Feb 2016
 
 
    o  Added OIDF Standard Notice
