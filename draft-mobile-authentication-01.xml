@@ -44,7 +44,7 @@
 
 
 
-    <date day="22" month="Feb" year="2016" />
+    <date day="07" month="Sep" year="2016" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -735,6 +735,7 @@ The Biometric may be captured as part of the consent flow.
       <t>-01 <list style="symbols">
           <t>Initial draft</t>
           <t>Added OIDF Standard Notice </t>
+          <t>changed references to amr specification</t>
         </list></t>
         
           
