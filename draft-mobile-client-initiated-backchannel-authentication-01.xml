@@ -54,13 +54,16 @@
         assertions about the identity of signed-in users.
       </t>
       <t>
-        All of these flows require the user to initiate the authentication flow, however, some use cases 
-        not covered for these flows, where the RP needs to be the initiator the user authentication flow, 
-        have been raised.
+        In all of these flows initiated by the RP, the end-user interaction from the consumption device is 
+        required and, they are based on HTTP redirection mechanisms. However, some use cases not covered for 
+        these flows, where the RP needs to be the initiator the user authentication flow and the end-user interaction
+        from the consumption device is not needed have been raised.
       </t>
       <t>
-        The MODRNA Client initiated Backchannel Authentication Flow will specify a new authentication flow
-        by means of which the RP's will be able to initiate an interaction flow to authenticate their users.
+        The MODRNA Client initiated Backchannel Authentication Flow will specify a new authentication flow,
+        by means of which the RP's that know the user identifier they want to authenticate (e-mail, msisdn),
+        will be able to initiate an interaction flow to authenticate their users withouth having end-user interaction
+        from a consumption device.
       </t>
     </abstract>
   </front>
@@ -71,7 +74,7 @@
         OpenID Connect MODRNA Client initiated Backchannel Authentication Flow 1.0 is an authentication 
         flow of the <xref target="OpenID.Core">OpenID Connect Core 1.0</xref> specification intended to 
         allow RP's who already know the MSISDN of an end-user to initiate an authentication flow to request 
-        user authentication from MNO's. Moreover it defines Mandatory to Implement features for MNOs to assure 
+        user authentication from MNO's. Moreover it defines Mandatory to Implement features for MNOs to ensure 
         interoperability of clients across MNO's.
       </t>
       <section anchor="rnc" title="Requirements Notation and Conventions">
@@ -116,56 +119,58 @@
     <section anchor="overview" title="Overview">
       <t>
         This specification defines a new authentication flow based on <xref target="OpenID.Core"/>.
-        It reuses most of the request parameters in the Authentication Request, as the
-        same time it specifies some new parameter.
+        It reuses most of the request parameters in the Authentication Request, at the same time, it specifies 
+        some new parameters as well as a new authentication endpoint.
+      </t>
+    </section>
+
+    <section anchor="auth_backchannel_endpoint" title="Authorization Backchannel Endpoint">
+      <t>
+        The Backchannel Authorization Endpoint performs Authentication of the End-User. This is done by sending an HTTP
+        POST message directly from the Relay Party to the Authorization Server's Backchannel Authorization Endpoint, using 
+        request parameters defined by OAuth 2.0 and additional parameters and parameter values defined by OpenID Connect. 
+
+        Communication with the Authorization Endpoint MUST utilize TLS. See Section 16.17  <xref target="OpenID.Core"/>for more 
+        information on using TLS.
+
       </t>
     </section>
 
     <section anchor="auth_request" title="Authentication Request">
       <t>
-        An Authentication Request is an <xref target="RFC6749">OAuth 2.0</xref> Authorization 
-        Request that requests that the End-User be authenticated by the Authorization Server.
+        An Authentication Request is an <xref target="RFC6749">OAuth 2.0</xref> Authorization Request that requests that 
+        the End-User be authenticated by the Authorization Server.
       </t>
       <t>
-        MODRNA defines an authentication request that is requested directly from the client to
-        the MNO without going through the user's browser. The client MUST send an authentication 
-        request to the OpenID provider (MNO) by building an "HTTP POST" request that will take to 
-        the MNO all the information needed to authenticate the user without asking her for their MSISDN.      
+        MODRNA Client initiated Backchannel Authentication defines an authentication request that is requested directly from 
+        the client to the MNO without going through the user's browser. The client MUST send an authentication request to the 
+        OpenID provider (MNO) by building an "HTTP POST" request that will take to the MNO all the information needed to authenticate
+        the user without asking her for their MSISDN.      
       </t>
       <t>
-        The client MUST authenticate to the Authorization Endpoint using the authentication method registered 
-        for its client_id, as described in Section 9 on <xref target="OpenID.Core"/>.
+        The client MUST authenticate to the Backchannel Authorization Endpoint using the authentication method registered for 
+        its client_id, as described in Section 9 on  <xref target="OpenID.Core"/>.
       </t>
       <t>
-        Authentication Requests are made as defined in Section 3.1.2.1 from <xref target="OpenID.Core"/>,
-        using the MODRNA profile. Only the following parameters are taking in consideration in the Client initiated 
-        Backchannel Authentication flow. The rest of the request parameters defined in <xref target="RFC6749">OAuth 2.0</xref> 
-        MUST be ignored by the Authorization Servers when the scope value parameter is <spanx style="verb">openidserver</spanx>.
+        Authentication Requests are made using the MODRNA profile. Only the following parameters are taking in consideration in the Client initiated Backchannel Authentication flow. The rest of the request parameters defined in <xref target="RFC6749">OAuth 2.0</xref> 
+        MUST be ignored by the Authorization Server.
       </t>
 
       <t>
         <list style="hanging">
           <t hangText="scope">
-            REQUIRED. OpenID Connect implements authentication as an extension to the OAuth 2.0 
-            by including the openid scope value in the Authorization Request and the different flows
-            are determined through the "response_type" parameter. However all of these flows based on
-            redirections are initiated by the end-user. In order to allow the OpenId provider to know
-            that the flow is initiated by the RP directly, MODRNA defines a new value for the scope
-            parameter <spanx style="verb">openidserver</spanx> which MUST be used in the Client initiated 
-            Backchannel Authentication Flow.
+            REQUIRED. OpenID Connect implements authentication as an extension to the OAuth 2.0 by including the 
+            openid scope value in the Authorization Request.
           </t>
-          <t hangText="response_type">
-            REQUIRED. OAuth 2.0 Response Type value that determines the authorization processing flow to be
-            used, including what parameters are returned from the endpoints used. When using the Client initiated 
-            Backchannel Authentication Flow, this value is "id_token token" or "id_token". The meanings of both 
-            of these values are defined in OAuth 2.0 Multiple Response Type Encoding Practices. No Access Token 
-            is returned when the value is "id_token".
+          <t hangText="client_notification_endpoint">            
+            OPTIONAL. Callback URI to which the response will be sent. This URI MUST exactly match one of the "Client initiated
+            Backchannel Authentication" callback URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described in Section 6.2.1 of [RFC3986] (Simple String Comparison). When using this flow, the Callback URI SHOULD 
+            use the https scheme.            
           </t>
-          <t hangText="redirect_uri">            
-            REQUIRED. Redirection URI to which the response will be sent. This URI MUST exactly match 
-            one of the Redirection URI values for the Client pre-registered at the OpenID Provider, with 
-            the matching performed as described in Section 6.2.1 of [RFC3986] (Simple String Comparison). 
-            When using this flow, the Redirection URI SHOULD use the https scheme.
+          <t>
+            NOTE: If the "client_notification_endpoint" is not present the RP MUST polls the authorization server repeatedly 
+            as defined in <xref target="successful_authentication_response">Successful Authentication Response</xref> until 
+            the end-user completes the approval process.
           </t>
           <t hangText="acr_values">
             REQUIRED. As defined in MODRNA Authentication profile. 
@@ -180,17 +185,16 @@
         </list>
       </t>
       <figure>
-        <preamble>The following is a non-normative example from an authentication request with response_type contained "id_token token" (with line wraps within values for display purposes only):
+        <preamble>The following is a non-normative example from an authentication request (with line wraps within values for display purposes only):
         </preamble>
         <artwork>
           <![CDATA[
-            POST /authorize HTTP/1.1
+            POST /bc-authorize HTTP/1.1
             Host: server.example.com
             Content-Type: application/json
             {
-             "scope": "openidserver",
-             "response_type": "id_token token",
-             "redirect_uri": "http://client.example.com/cb",
+             "scope": "openid",
+             "client_notification_endpoint": "https://client.example.com/cb",
              "acr_values": "mod-mf",
              "login_hint_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
                 OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
@@ -223,22 +227,17 @@
             The Authorization Server MUST validate all the OAuth 2.0 parameters according to the MODRNA specification.
           </t>
           <t>
-            Verify that a <spanx style="verb">scope</spanx> parameter is present and contains the <spanx style="verb">serveropenid</spanx> 
-            scope value. (If no <spanx style="verb">openid</spanx> scope value is present nor <spanx style="verb">serveropenid</spanx>, 
-            the request may still be a valid OAuth 2.0 request, but is not an OpenID Connect request.)
+            If the "client_notification_endpoint" parameter is present, it MUST exactly match one of the callback 
+            URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described 
+            in Section 6.2.1 of [RFC3986] (Simple String Comparison).
           </t>
-          <t >
-            The Authorization Server MUST verify that all the REQUIRED parameters are present and their usage 
-            conforms to this specification.
+          <t>
+            NOTE: the callback URI values registered for the "client_notification_endpoint" are different than those registered
+            for the redirect_uri in the Authorization Code flow.
           </t>
-          <t> 
-            If the sub (subject) Claim is requested with a specific value for the ID Token, the Authorization 
-            Server MUST only send a positive response if the End-User identified by that sub value has an active 
-            session with the Authorization Server or has been Authenticated as a result of the request. 
-            The Authorization Server MUST NOT reply with an ID Token or Access Token for a different user, even 
-            if they have an active session with the Authorization Server. Such a request can be made either using 
-            an id_token_hint parameter or by requesting a specific Claim Value as described in Section 5.5.1 on <xref target="OpenID.Core"/>, 
-            if the claims parameter is supported by the implementation.
+          <t>
+            The Authorization Server MUST verify that all the REQUIRED parameters are present and their usage conforms to this 
+            specification.
           </t>
         </list>
       </t>
@@ -250,7 +249,7 @@
        </t>       
     </section>
 
-    <section anchor="auth_request_ack" title="Authentication Request Acknowlegdment">
+    <section anchor="successful_authentication_response" title="Successful Authentication Response">
       <t>
         If the Authentication Validation Request is OK, the Authorization Server will return an HTTP 200 OK response to the RP
         to indicate that the authentication request has been accepted and it is going to be processed. The body of this response 
@@ -263,15 +262,18 @@
             (id_token and access_token).
            </t>
           <t hangText="expires in">
-            REQUIRED. Expiration time of the Authentication in seconds since the auth_request_ack was received.
-           </t>          
+            REQUIRED. Expiration time of the Authentication in seconds since the auth_request was received.
+           </t>
+          <t hangText="interval">
+            OPTIONAL. The minimum amount of time in seconds that the client SHOULD wait between polling requests to the token endpoint. This parameter will only be present in case of the authentication request doesn't take the "client_notification_endpoint" parameter or there are not any callback URI registered as "client_notification_endpoint" for the RP.
+           </t>
         </list>
       </t>
       <t>
         If the Authentication Validation Request is NOK, the Authorization Server MUST return an error response, per Section 3.1.2.6.
       </t>      
       <figure>
-        <preamble>The following is a non-normative example from an authentication request ack.
+        <preamble>The following is a non-normative example from an authentication response
         </preamble>
         <artwork>
           <![CDATA[
@@ -282,19 +284,19 @@
 
             {
               "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1",
-              "expires_in": 3600
+              "expires_in": 3600,
+              "interval": 2
             }
           ]]>
         </artwork>
       </figure>      
     </section>
 
-    <section anchor="auth_request_ack_validation" title="Authentication Request Acknowlegdment Validation">
-
+    <section anchor="auth_response_validation" title="Authentication Response Validation">
       <t>
         If the client (RP) receives an HTTP 200 OK, it MUST validate that all the required parameters are received. The RP should keep the
-        authentication request identifier <spanx style="verb">auth_req_id</spanx> and the expiration time in order to match it with
-        the auhentication response.
+        authentication request identifier <spanx style="verb">auth_req_id</spanx> and the expiration time in order to match it with token
+        response.
       </t>
       <t>
         The client will have to keep the expiration time as well to be able to discard the authentication response.
@@ -303,25 +305,117 @@
 
     <section anchor="auth_server_obtains_consent" title="Authorization Server Obtains End-user Consent/Authorization">
       <t>
-        Once the End-User is authenticated, the Authorization Server MUST obtain an authorization decision before releasing information to the Relying Party. When using the Client initiated Backchannel Authentication flow, there is not any interactive dialogue between the Authorization Server and the end-user through the consumption device, so the consent establishing only can take place via the authentication device or by establishing consent via conditions for processing the request or other means (for example, via previous administrative consent). Sections 2 and 5.3 on <xref target="OpenID.Core"/> describe information release mechanisms.
+        Once the End-User is authenticated, the Authorization Server MUST obtain an authorization decision before releasing information to the Relying Party. When using the Client initiated Backchannel Authentication flow, there is not any interactive dialogue between the Authorization Server and the end-user through the consumption device, so the consent establishing only can take place via the authentication device or by establishing consent via conditions for processing the request or other means (for example, via previous administrative consent). Sections 2 and 5.3 of <xref target="OpenID.Core"/> describe information release mechanisms.
       </t>
       <t>
         NOTE: the current version of the Client initiated Backchannel Authentication Flow spec. does not specify any mechanism to use the authentication device to obtain the end-user consent.
       </t>
     </section>
 
-    <section anchor="successful_authentication_response" title="Successful Authentication Response">
+    <section anchor="token_request" title="Token Request Using Polling Mechanism">
       <t>
-        An Authentication Response is an OAuth 2.0 Authorization Response message returned from the OP's Authorization Endpoint in response to the Authorization Request message sent by the RP. When using the Client initiated Backchannel Authentication flow, the Authorization Response is a "POST HTTP Request" from the Authorization Server to the RP's redirect_uri endpoint that correspond to an HTTP callback as an asynchronous response to an initial authentication request made by the RP.         
+        When the authentication request doesn't include the "client_notification_endpoint" parameter or there are not any callback URI registered for this notification endpoint for this RP in the Identity Provider, the client must polls the token endpoint until the end-user grants or denies the request.
       </t>
       <t>
-        All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received in the request as defined in <xref target="auth_request_ack">Authentication Request Acknowlegdment</xref>.
+        The client polls at reasonable interval which MUST NOT exceed the minimum interval provided by the authorization server via the "interval" parameter (if provided).
       </t>
       <t>
-        The response uses the application/json media type.
+        The client makes a "POST" request to the token endpoint by sending the following parameters using the "application/x-www-form-urlencoded"
+        format with a character encoding of UTF-8 in the HTTP request entity-body:
+      </t>
+      <t>
+        <list style="hanging">
+          <t hangText="grant_type">
+            REQUIRED.  Value MUST be set to "urn:openid:params:modrna:grant-type:backchannel_request".
+           </t>
+          <t hangText="auth_req_id">
+            REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP. The <spanx style="verb">auth_req_id</spanx> will be sent too in the authentication response to allow the RP to correlate the authentication request and the received tokens (id_token and access_token).
+           </t>
+        </list>
+      </t>    
+      <figure>
+        <preamble>The following is a non-normative example of a token request (with line wraps within values for display purposes only).
+        </preamble>
+        <artwork>
+          <![CDATA[
+              POST /token HTTP/1.1
+              Host: server.example.com
+              Content-Type: application/x-www-form-urlencoded
+              Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+              {
+                grant_type="1c266114-a1be-4252-8ad1-04986c5b9ac1"
+                &auth_req_id=40582304823
+              }
+          ]]>
+        </artwork>
+      </figure>
+    </section>
+
+    <section anchor="token_response" title="Token Response">
+      <t>
+        If the "client_notification_endpoint" is not present the Authorization Server will return the token as an HTTP response to the RP's poll request. If the user is well authenticated, the Authorization Server will returns a succesful response that includes an ID Token and an Access Token. Otherwise it responses with an error as defined in <xref target="token_error_response"> Token Error Response</xref>.
+      </t>      
+      <figure>
+        <preamble>The following is a non-normative example of a token response sending as an HTTP 200 OK Response to the RP's poll request
+         (with line wraps within values for display purposes only).
+        </preamble>
+        <artwork>
+          <![CDATA[
+              HTTP/1.1 200 OK
+              Content-Type: application/json
+              Cache-Control: no-store
+              Pragma: no-cache
+
+              {
+               "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1"
+               "access_token": "SlAV32hkKG",
+               "token_type": "Bearer",
+               "refresh_token": "8xLOxBtZp8",
+               "expires_in": 3600,
+               "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
+                 yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
+                 NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
+                 fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
+                 AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
+                 Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
+                 NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
+                 QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
+                 K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
+                 XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
+              }              
+          ]]>
+        </artwork>
+      </figure>
+    </section>    
+
+    <section anchor="token_error_response" title="Token Error Response">
+      <t>
+         If the Token Request is invalid or unauthorized, the Authorization Server constructs the error response according to the section 3.1.3.4 Token Error Response of <xref target="OpenID.Core"/>.
+         In addition to the error codes defined in Section 5.2 of [RFC6749], the following error codes are specific for the Client Initiated Backchannel flow:
+      </t>
+      <t>
+        <list style="hanging">
+          <t hangText="authorization_pending">
+            The authorization request is still pending as the end-user hasn't yet been authenticated.
+          </t>
+          <t hangText="slow_down">
+            The client is polling too quickly and should back off at a reasonable rate.
+          </t>
+        </list>
+      </t>          
+    </section>
+
+
+    <section anchor="issuing_successful_token" title="Issuing Successfull Token">
+      <t>
+        When the authentication request includes a "client_notification_endpoint", the Authorization Server will send the token response making a "POST HTTP Request" to the RP's client_notification_endpoint. If the user is well authenticated, the Authorization Server returns a successful response that includes an ID Token and an Access Token. If the request failed client authentication or is invalid, the authorization server returns an error response as described in <xref target="issuing_token_error">Issuing Token Error</xref>.
+      </t>
+      <t>
+        All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received in the request as defined in <xref target="successful_authentication_response">Successful Authentication Response</xref>. The response uses the application/json media type.
       </t>
       <figure>
-        <preamble>The following is a non-normative example of a response from an authentication request with whose response_type contained "id_token token" (with line wraps within values for display purposes only):
+        <preamble>The following is a non-normative example of a token response sending as a HTTP POST request to the callback uri 
+          specified in the "client_notification_endpoint" parameter by the RP (with line wraps within values for display purposes only).
         </preamble>
         <artwork>
           <![CDATA[
@@ -351,6 +445,11 @@
       </figure>
     </section>
 
+    <section anchor="issuing_token_error" title="Issuing Token Error">
+      <t>
+        If the Token Request is invalid or unauthorized, the Authorization Server constructs the error response. The parameters of the Token Error Response are defined as in Section 3.1.3.4 of <xref target="OpenID.Core"/>.
+      </t>
+    </section>
 
     <section anchor="auth_error_response" title="Authentication Error Response">
       <t>
