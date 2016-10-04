@@ -115,15 +115,13 @@ Content-Type: application/json
 
 <section anchor="port_data" title="Porting data API">
 
-<t>The Porting data API (offered by an Old OP and consumed by a New OP) provides a token to represent a porting event. The New OP passes the token (after encrypting it) to each RP when the user subsequently logs into that RP <xref target="aka" format="none">section 4</xref>. The RP, in turn, passes the token to the Porting check API <xref target="port_check" format="none">section 5</xref> to confirm the port with the Old OP.</t>
-
-<t>When pairwise Subject Ids are used (ie a separate "sub" value for each collection of related RPs identified by a "sector_id"), any porting information revealed to an RP needs to be pairwise as well. This is achieved by the New OP encrypting the token separately for each RP.</t>
+<t>The Porting data API (offered by an Old OP and consumed by a New OP) provides a token to represent a porting event. The New OP passes the token (after encrypting it <xref target="enc_port_data" format="none">section 3.1</xref>) to each RP when the user subsequently logs into that RP <xref target="aka" format="none">section 4</xref>. The RP, in turn, passes the token to the Porting check API <xref target="port_check" format="none">section 5</xref> to confirm the port with the Old OP.</t>
 
 <t>Access to porting data requires the consent of the user to whom it relates. The Old OP MUST support the OAuth 2.0 authorization code flow for accessing the API <xref target="RFC6749"/>. The Old OP MUST support Bearer access tokens <xref target="RFC6750"/>. The New OP MUST include the scope "porting_data" when requesting access.</t>
 
 <t>The API provides a single read-only resource per user. It can be read with a "GET" request. The path "/me" appended to the base URL (from the "port_data_endpoint" member in the Old OP discovery metadata) indicates the resource for the user associated with the access token used to make the request.</t>
 
-<t>The response is a JSON object with a "port_token" member with a string value. A "port_token" value MUST be encrypted by the New OP before being passed on [see the <xref target="enc_port_data" format="none">next sub-section</xref>]. An Old OP MUST choose port token values to have sufficient entropy that they cannot be guessed by other parties. All "port_token" values from an OP MUST be the same length so the length itself (which is typically preserved by encryption) does not allow correlation across RPs.</t>
+<t>The response is a JSON object with a "port_token" member with a string value. An Old OP MUST choose port token values to have sufficient entropy that they cannot be guessed by other parties. All "port_token" values from an OP MUST be the same length so the length itself (which is typically preserved by encryption) does not allow correlation across RPs.</t>
 
 <t>Any unrecognized members MUST be ignored (such as "extra_stuff" in the example below).</t>
 
@@ -150,7 +148,9 @@ Content-Type: application/json
 
 <section anchor="enc_port_data" title='Encrypting "port_data"'>
 
-<t>A "port_token" value is encrypted to create an "enc_port_token" value to include in a "aka" object <xref target="aka" format="none">section 4</xref> passed to an RP. To preserve the privacy benefit of using pairwise Subject Ids, a separate encryption MUST be performed for each separate "sector_id" (identifying a collection of related RPs).</t>
+<t>When pairwise Subject Ids are used (ie a separate "sub" value for each collection of related RPs identified by a "sector_id"), any porting information revealed to an RP needs to be pairwise as well. This is achieved by the New OP encrypting the token separately for each RP.</t>
+
+<t>A "port_token" value MUST be encrypted by the New OP to create an "enc_port_token" value to include in a "aka" object <xref target="aka" format="none">section 4</xref> passed to an RP. To preserve the privacy benefit of using pairwise Subject Ids, a separate encryption MUST be performed for each separate "sector_id" (identifying a collection of related RPs).</t>
 
 <t>The encryption is performed by the New OP using the JSON Web Encryption <xref target="RFC7516"/> process, creating a JWE compact serialization. Direct encryption with a shared symmetric key is used ("alg":"dir"), with a key derived from the "client_secret" value that the New OP uses to authenticate to the Old OP. Deriving the key follows section 10.2 "Encryption" of <xref target="OpenID.Core"/>: using the left-most bits of the SHA2 hash of "client_secret". The key id ("kid") is set to the "client_id" value. The content encryption algorithm is chosen from the "port_enc_algs_supported" list published in the Old OP's discovery metadata. The plaintext is the "port_token" value.</t>
 
