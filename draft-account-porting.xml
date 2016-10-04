@@ -4,7 +4,7 @@
 <!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 ]>
 
-<rfc category="info" docName="draft-account-porting-01" ipr="trust200902">
+<rfc category="info" docName="draft-account-porting-02alpha" ipr="trust200902">
   <?rfc toc="yes" ?>
 
 <front>
@@ -115,7 +115,7 @@ Content-Type: application/json
 
 <section anchor="port_data" title="Porting data API">
 
-<t>The Porting data API (offered by an Old OP and consumed by a New OP) provides a token to represent a porting event. The New OP passes the token (after encrypting it if necessary) to each RP when the user subsequently logs into that RP <xref target="aka" format="none">section 4</xref>. The RP, in turn, passes the token to the Porting check API <xref target="port_check" format="none">section 5</xref> to confirm the port with the Old OP.</t>
+<t>The Porting data API (offered by an Old OP and consumed by a New OP) provides a token to represent a porting event. The New OP passes the token (after encrypting it) to each RP when the user subsequently logs into that RP <xref target="aka" format="none">section 4</xref>. The RP, in turn, passes the token to the Porting check API <xref target="port_check" format="none">section 5</xref> to confirm the port with the Old OP.</t>
 
 <t>When pairwise Subject Ids are used (ie a separate "sub" value for each collection of related RPs identified by a "sector_id"), any porting information revealed to an RP needs to be pairwise as well. This is achieved by the New OP encrypting the token separately for each RP.</t>
 
@@ -123,13 +123,11 @@ Content-Type: application/json
 
 <t>The API provides a single read-only resource per user. It can be read with a "GET" request. The path "/me" appended to the base URL (from the "port_data_endpoint" member in the Old OP discovery metadata) indicates the resource for the user associated with the access token used to make the request.</t>
 
-<t>The response is a JSON object with a "port_token" or "port_token_plain" member with a string value. A "port_token" member can be passed on to RPs as-is. A "port_token_plain" value, however, MUST be encrypted by the New OP before being passed on [see the <xref target="enc_port_data" format="none">next sub-section</xref>]. All "port_token_plain" values from an OP MUST be the same length so the length itself (which is typically preserved by encryption) does not allow correlation across RPs.</t>
+<t>The response is a JSON object with a "port_token" member with a string value. A "port_token" value MUST be encrypted by the New OP before being passed on [see the <xref target="enc_port_data" format="none">next sub-section</xref>]. An Old OP MUST choose port token values to have sufficient entropy that they cannot be guessed by other parties. All "port_token" values from an OP MUST be the same length so the length itself (which is typically preserved by encryption) does not allow correlation across RPs.</t>
 
 <t>Any unrecognized members MUST be ignored (such as "extra_stuff" in the example below).</t>
 
-<t>An Old OP MUST choose port token values to have sufficient entropy that they cannot be guessed by other parties. It is NOT RECOMMENDED that the Subject Id ("sub" value) be used as a port token as that might tempt RP software to process a port token from a New OP without confirming it with the Old OP.</t>
-
-<t>Below is a sample porting data request and response from an Old OP that uses pairwise Subject Ids.</t>
+<t>Below is a sample porting data request and response.</t>
 
 <figure><artwork>
 GET /connect/port_data/me HTTP/1.1
@@ -142,18 +140,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "port_token_plain": "3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI"
-}
-</artwork></figure>
-
-<t>Below is a sample response from an Old OP that identifies the user with the same Subject Id to all RPs.</t>
-
-<figure><artwork>
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-  "port_token": "4vkhLCrpTm1Gidg5H6MZfwt6HnzNDTZJB8cNMFD0834",
+  "port_token": "3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI",
   "extra_stuff": 34
 }
 </artwork></figure>
@@ -163,9 +150,9 @@ Content-Type: application/json
 
 <section anchor="enc_port_data" title='Encrypting "port_data_plain"'>
 
-<t>A "port_token_plain" value is encrypted to create a "port_token" value to include in a "aka" object <xref target="aka" format="none">section 4</xref> passed to an RP. To preserve the privacy benefit of using pairwise Subject Ids, a separate encryption MUST be performed for each separate "sector_id" (identifying a collection of related RPs).</t>
+<t>A "port_token" value is encrypted to create an "enc_port_token" value to include in a "aka" object <xref target="aka" format="none">section 4</xref> passed to an RP. To preserve the privacy benefit of using pairwise Subject Ids, a separate encryption MUST be performed for each separate "sector_id" (identifying a collection of related RPs).</t>
 
-<t>The encryption is performed by the New OP using the JSON Web Encryption <xref target="RFC7516"/> process, creating a JWE compact serialization. Direct encryption with a shared symmetric key is used ("alg":"dir"), with a key derived from the "client_secret" value that the New OP uses to authenticate to the Old OP. Deriving the key follows section 10.2 "Encryption" of <xref target="OpenID.Core"/>: using the left-most bits of the SHA2 hash of "client_secret". The key id ("kid") is set to the "client_id" value. The content encryption algorithm is chosen from the "port_enc_algs_supported" list published in the Old OP's discovery metadata. The plaintext is the "port_token_plain" value.</t>
+<t>The encryption is performed by the New OP using the JSON Web Encryption <xref target="RFC7516"/> process, creating a JWE compact serialization. Direct encryption with a shared symmetric key is used ("alg":"dir"), with a key derived from the "client_secret" value that the New OP uses to authenticate to the Old OP. Deriving the key follows section 10.2 "Encryption" of <xref target="OpenID.Core"/>: using the left-most bits of the SHA2 hash of "client_secret". The key id ("kid") is set to the "client_id" value. The content encryption algorithm is chosen from the "port_enc_algs_supported" list published in the Old OP's discovery metadata. The plaintext is the "port_token" value.</t>
 
 <t>The JWE header MUST include a type parameter ("typ") with the value "oidc-porting" to explicitly indicate the semantics of the message. The JWE header MUST include a "sector_id" parameter, holding the host component (ie a fully-qualified domain name) of the RP's "sector_identifier_uri" or "redirect_uri" <xref target="OpenID.Core"/> &#xA7; 8.1. "Pairwise Identifier Algorithm".</t>
 
@@ -193,7 +180,7 @@ client_secret: vNQ4Pe8F9p67dgXMc4c_NxSABb9y15vOkxRmyxCey7U
            iv: 48V1_ALb6US04U3b (base64url)
 </artwork></figure>
 
-<t>The payload is the "port_token_plain" value from the previous section. The additional authenticated data (AAD) is the base64url-encoding of the JWE protected header.</t>
+<t>The payload is the "port_token" value from the previous section. The additional authenticated data (AAD) is the base64url-encoding of the JWE protected header.</t>
 
 <figure><artwork>
     plaintext: 3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI
@@ -213,7 +200,7 @@ client_secret: vNQ4Pe8F9p67dgXMc4c_NxSABb9y15vOkxRmyxCey7U
 <t>Putting it all together (note the 2nd field of the JWE is empty as there is no encrypted key when using direct encryption):</t>
 
 <figure><artwork>
-"port_token": "eyJ0eX&#x2026;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag"
+"enc_port_token": "eyJ0eX&#x2026;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag"
 </artwork></figure>
 
 </section>
@@ -222,9 +209,9 @@ client_secret: vNQ4Pe8F9p67dgXMc4c_NxSABb9y15vOkxRmyxCey7U
 
 <section anchor="aka" title='Indicating a previous identity: "aka" member'>
 
-<t>This document defines the "aka" (also known as) member that a New OP can include in an id_token delivered to an RP to indicate another identifier for the same user. The "aka" value is a JSON object with "port_token" and "iss" members, both with string values. "iss" identifies the Old OP, while "port_token" can be used at the Old OP's Porting check API <xref target="port_check" format="none">section 5</xref> to confirm the port and obtain the Old OP's "sub" value for the user.</t>
+<t>This document defines the "aka" (also known as) member that a New OP can include in an id_token delivered to an RP to indicate another identifier for the same user. The "aka" value is a JSON object with "enc_port_token" and "iss" members, both with string values. "iss" identifies the Old OP, while "enc_port_token" can be used at the Old OP's Porting check API <xref target="port_check" format="none">section 5</xref> to confirm the port and obtain the Old OP's "sub" value for the user.</t>
 
-<t>On receiving an id_token, a RP uses "iss" &amp; "sub" to lookup the user's account in the RP's systems. If no such account is found, but the id_token contains an "aka" member, then the RP MUST process the "aka" value to determine if the RP knows the user via federation from an Old OP. Processing involves: calling the Porting check API for the Old OP with the given "port_token"; looking for an existing account at the RP that matches the Old OP's "sub" value; and linking that account to the New OP's "sub" value.</t>
+<t>On receiving an id_token, a RP uses "iss" &amp; "sub" to lookup the user's account in the RP's systems. If no such account is found, but the id_token contains an "aka" member, then the RP MUST process the "aka" value to determine if the RP knows the user via federation from an Old OP. Processing involves: calling the Porting check API for the Old OP with the given "enc_port_token"; looking for an existing account at the RP that matches the Old OP's "sub" value; and linking that account to the New OP's "sub" value.</t>
 
 <t>Below is a sample payload of an id_token.</t>
 
@@ -237,7 +224,7 @@ client_secret: vNQ4Pe8F9p67dgXMc4c_NxSABb9y15vOkxRmyxCey7U
   "at_hash": "mrxuWF8TvnILKqFpZgEYCQ",
   "aka": {
     "iss": "https://oldop.example.net/",
-    "port_token": "4vkhLCrpTm1Gidg5H6MZfwt6HnzNDTZJB8cNMFD0834"
+    "enc_port_token": "4vkhLCrpTm1Gidg5H6MZfwt6HnzNDTZJB8cNMFD0834"
   }
 }</artwork></figure>
 
@@ -246,13 +233,13 @@ client_secret: vNQ4Pe8F9p67dgXMc4c_NxSABb9y15vOkxRmyxCey7U
 
 <section anchor="port_check" title="Porting check API">
 
-<t>The Porting check API is offered by an Old OP to RPs so they can confirm that a user did port to a specific New OP. The API converts a port_token to a Subject Id ("sub" value), which the RP needs to identify the ported user's existing account at the RP.</t>
+<t>The Porting check API is offered by an Old OP to RPs so they can confirm that a user did port to a specific New OP. The API converts an "enc_port_token" to a Subject Id ("sub" value), which the RP needs to identify the ported user's existing account at the RP.</t>
 
-<t>An RP makes a "GET" request to the API endpoint (from the "port_check_endpoint" member in the Old OP discovery metadata), adding query parameters identifying the New OP ("iss"), the RP ("sector_id"), and a porting event ("port_token"). A successful response (eg with a status code of 200) conveys a JSON object with a "sub" member and optionally an "aka" member. A successful response means the identified user at the Old OP has ported to the given New OP. Otherwise, if the port_token is invalid, or it is not associated with the given sector_id, or the port was not to the identified New OP, then an unsuccessful HTTP response status code MUST be returned (eg 400 Bad request).</t>
+<t>An RP makes a "GET" request to the API endpoint (from the "port_check_endpoint" member in the Old OP discovery metadata), adding query parameters identifying the New OP ("iss"), the RP ("sector_id"), and a porting event ("enc_port_token"). A successful response (eg with a status code of 200) conveys a JSON object with a "sub" member and optionally an "aka" member. A successful response means the identified user at the Old OP has ported to the given New OP. Otherwise, if the enc_port_token is invalid, or it is not associated with the given sector_id, or the port was not to the identified New OP, then an unsuccessful HTTP response status code MUST be returned (eg 400 Bad request).</t>
 
-<t>The "sector_id" value is ignored by the Old OP if it uses a single public "sub" value for a user at any RP, but an RP cannot assume that is the case so the RP MUST still include the parameter in the request. Note: the default "sector_id" for an RP is the domain name of its "redirect_uri".</t>
+<t>The "sector_id" value is ignored by the Old OP if it uses a single public "sub" value for a user at any RP, but an RP cannot assume that is the case so the RP MUST still include the parameter in the request. Note: the default "sector_id" for an RP is the domain name from its "redirect_uri".</t>
 
-<t>The port_token effectively acts as a bearer token (or capability) for authorizing the request to the Porting check API. No further access control is required. That is, the API is not expected to be further protected by, say, an OAuth 2.0 flow to authenticate the RP.</t>
+<t>The enc_port_token effectively acts as a bearer token (or capability) for authorizing the request to the Porting check API. No further access control is required. That is, the API is not expected to be further protected by, say, an OAuth 2.0 flow to authenticate the RP.</t>
 
 <t>The "aka" value has the same syntax and semantics as when it appears in an id_token <xref target="aka" format="none">section 4</xref>. In a porting check response it indicates that the user ported to the Old OP from an even older OP. When the "sub" value (in combination with the Old OP's "iss" value) is not recognized by the RP, the RP SHOULD process the "aka" value to determine if the RP knows the user via federation from the even older OP. An RP MUST NOT recursively follow "aka" values indefinitely; a limit of a few recursions is likely to be sufficient for valid use cases.</t>
 
@@ -262,7 +249,7 @@ client_secret: vNQ4Pe8F9p67dgXMc4c_NxSABb9y15vOkxRmyxCey7U
 GET /connect/port_check?
   iss=https://newop.example.net/&amp;
   sector_id=rp.example.org&amp;
-  port_token=4vkhLCrpTm1Gidg5H6MZfwt6HnzNDTZJB8cNMFD0834
+  enc_port_token=4vkhLCrpTm1Gidg5H6MZfwt6HnzNDTZJB8cNMFD0834
    HTTP/1.1
 Host: oldop.example.net
 </artwork></figure>
@@ -286,7 +273,7 @@ Content-Type: application/json
   "sub": "kY6N64H86MBTho9I-JlRnpvaLOwAb5m3yYta6pq1VFM",
   "aka": {
            "iss": "https://anotherop.example.net/",
-    "port_token": "QSfmp2V30cNqKShhyOjQEwDaQzLNhji5w5nD-EZq3ok"
+    "enc_port_token": "QSfmp2V30cNqKShhyOjQEwDaQzLNhji5w5nD-EZq3ok"
   }
 }
 </artwork></figure>
@@ -514,7 +501,13 @@ Content-Type: application/problem+json
 
 <t>[[ To be removed from the final specification ]]</t>
 
-<t>-01 </t>
+<t>-02</t>
+
+<t><list style="symbols">
+  <t>Remove unencrypted port tokens</t>
+</list></t>
+
+<t>-01</t>
 
 <t><list style="symbols">
   <t>Single port_token from Old OP to New OP</t>
@@ -522,7 +515,7 @@ Content-Type: application/problem+json
   <t>Torsten and Arne as additional authors</t>
 </list></t>
 
-<t>-00 </t>
+<t>-00</t>
 
 <t><list style="symbols">
   <t>Initial draft</t>
