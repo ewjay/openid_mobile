@@ -59,7 +59,7 @@ U -> OP2
 OP1 <- OP2: swap code for access-token
 OP1 -> OP2
 OP1 <- OP2: GET /port_data/me
-OP1 -> OP2: {"port_token_plain":"prt1C"}
+OP1 -> OP2: {"port_token":"prt1C"}
 ...
 
 == Port to OP3 ==
@@ -68,7 +68,7 @@ U -> OP3: sign-up; I want to port from OP2
 note right: assign sub3D
 ...OAuth 2.0 flow...
 OP2 <- OP3: GET /port_data/me
-OP2 -> OP3: {"port_token_plain":"prt2E"}
+OP2 -> OP3: {"port_token":"prt2E"}
 ...
 
 == Sign-in to RP via OP3 ==

@@ -127,7 +127,7 @@ Content-Type: application/json
 
 <t>Any unrecognized members MUST be ignored (such as "extra_stuff" in the example below).</t>
 
-<t>Below is a sample porting data request and response.</t>
+<t>Below is a sample porting data request and response:</t>
 
 <figure><artwork>
 GET /connect/port_data/me HTTP/1.1
@@ -148,7 +148,7 @@ Content-Type: application/json
 <t>An Old OP will generally know via other processes when and to whom a user is porting. In such circumstances, the API SHOULD reject requests about a user not known to be in the process of porting, and SHOULD reject requests from any OP other than the known porting destination. Only OPs explicitly trusted by the Old OP SHOULD be allowed to use the API (eg to use the "porting_data" scope) as the API is privacy-sensitive since it allows the caller to correlate pairwise Subject Ids.</t>
 
 
-<section anchor="enc_port_data" title='Encrypting "port_data_plain"'>
+<section anchor="enc_port_data" title='Encrypting "port_data"'>
 
 <t>A "port_token" value is encrypted to create an "enc_port_token" value to include in a "aka" object <xref target="aka" format="none">section 4</xref> passed to an RP. To preserve the privacy benefit of using pairwise Subject Ids, a separate encryption MUST be performed for each separate "sector_id" (identifying a collection of related RPs).</t>
 
@@ -156,7 +156,7 @@ Content-Type: application/json
 
 <t>The JWE header MUST include a type parameter ("typ") with the value "oidc-porting" to explicitly indicate the semantics of the message. The JWE header MUST include a "sector_id" parameter, holding the host component (ie a fully-qualified domain name) of the RP's "sector_identifier_uri" or "redirect_uri" <xref target="OpenID.Core"/> &#xA7; 8.1. "Pairwise Identifier Algorithm".</t>
 
-<t>Below is a sample JWE. New OP details:</t>
+<t>Below is a sample JWE, starting with the New OP details:</t>
 
 <figure><artwork>
     client_id: s6BhdRkqt3
