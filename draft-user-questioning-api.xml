@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding='US-ASCII'?>
 <?xml-stylesheet type='text/xsl' href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
+
+<!--
 <!DOCTYPE rfc PUBLIC "-//IETF//DTD RFC 2629//EN" 'http://xml2rfc.ietf.org/authoring/rfc2629.dtd'>
+-->
 <!--
   NOTE:  This XML file is input used to produce the authoritative copy of an
   OpenID Foundation specification.  The authoritative copy is the HTML output.
@@ -11,78 +14,106 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-user-questioning-api-02" ipr='none'>
-  <?rfc toc="yes" ?>
-  <?rfc tocdepth="5" ?>
-  <?rfc symrefs="yes" ?>
-  <?rfc sortrefs="yes"?>
-  <?rfc strict="yes" ?>
-  <?rfc iprnotified="no" ?>
-  <?rfc private="Draft" ?>
-  <front>
+<rfc category="std" docName="draft-user-questioning-api-03" ipr='none'>
+<?rfc toc="yes" ?>
+<?rfc tocdepth="5" ?>
+<?rfc symrefs="yes" ?>
+<?rfc sortrefs="yes"?>
+<?rfc strict="yes" ?>
+<?rfc iprnotified="no" ?>
+<?rfc private="Draft" ?>
+
+<front>
+
     <title abbrev='OIDC User Questioning API 1.0'>
-            OpenID Connect User Questioning API 1.0</title>
-    <author fullname='Nicolas Aillery' initials='N.' surname='Aillery'>
-      <organization abbrev='Orange'>Orange</organization>
-      <address>
-        <email>nicolas.aillery@orange.com</email>
-      </address>
-    </author>
-    <author fullname='Charles Marais' initials='C.' surname='Marais'>
-      <organization abbrev='Orange'>Orange</organization>
-      <address>
-        <email>charles.marais@orange.com</email>
-      </address>
-    </author>
-    <date day='19' month='September' year='2016'/>
+	OpenID Connect User Questioning API 1.0
+	</title>
+			
+	<author fullname='Nicolas Aillery' initials='N.' surname='Aillery'>
+	<organization abbrev='Orange'>Orange</organization>
+	<address>
+	<email>nicolas.aillery@orange.com</email>
+	</address>
+	</author>
+	
+	<author fullname='Charles Marais' initials='C.' surname='Marais'>
+	<organization abbrev='Orange'>Orange</organization>
+	<address>
+	<email>charles.marais@orange.com</email>
+	</address>
+	</author>
+	
+    <date day='5' month='October' year='2016'/>
+	
     <workgroup>OpenID MODRNA Working Group</workgroup>
-    <abstract>
-      <t>This specification defines a specific endpoint used by a Client (i.e. Service Provider)
-      in order to question a End-User and get his Statement (i.e. his answer).</t>
-    </abstract>
-  </front>
-  <middle>
-    <section anchor='Introduction' title='Introduction'>
-      <t>This specification defines a specific endpoint used by a Client (i.e. Service Provider)
-      in order to question a End-User and get his Statement (i.e. his answer).</t>
-      <t>This endpoint is specified as an OAuth 2.0-protected Resource Server accessible with an Access Token.</t>
-      <t>The way the Access Token has been obtained by the Client is out of scope of this specification.</t>
-	  <t>Whether the End-User is currently using the Client or not is also out of scope of this specification.</t>
-      <t>The User Questioning API is an asynchronous API. There are 3 main ways to get the End-User's Statement: the first one requires some polling of the API, the second requires the Client to expose a callback endpoint and the third one requires a user interaction on the Client.</t>
-	  <section anchor='rnc' title='Requirements Notation and Conventions'>
-        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-        document are to be interpreted as described in <xref target='RFC2119'/>.</t>
-        <t>Throughout this document, values are quoted to indicate that they are
-        to be taken literally. When using these values in protocol messages, the
-        quotes MUST NOT be used as part of the value.</t>
-      </section>
-      <section anchor='terminology' title='Terminology'>
-        <t>
-          This specification uses the terms "Access Token", "Resource Server", and "Client" defined by <xref target='RFC6749'>OAuth 2.0</xref>.
-          This specification also defines the following terms: 
-          <list style='hanging'>
-            <t hangText='Questioned User'>
-               <spanx style='strong'></spanx> End-User receiving the question and requested to give his Statement. 
-            </t>
-	  </list>
-        </t>
-      </section>
+	
+	<abstract>
+	<t>This specification defines a specific endpoint used by a Client (i.e. Service Provider)
+	in order to question an End-User and get his Statement (i.e. his answer).</t>
+	</abstract>
+	
+</front>
+<middle>
+  
+	<section anchor='Introduction' title='Introduction'>
+	<t>This specification defines a specific endpoint used by a Client (i.e. Service Provider)
+	in order to question an End-User and get his Statement (i.e. his answer).</t>
+	<t>This endpoint is specified as an OAuth 2.0-protected Resource Server accessible with an Access Token.</t>
+	<t>The way the Access Token has been obtained by the Client is out of scope of this specification.</t>
+	<t>Whether the End-User is currently using the Client or not is also out of scope of this specification.</t>
+	<t>The User Questioning API is an asynchronous API. There are 2 main ways to get the End-User's Statement: the first one requires some polling of the API and the second requires the Client to expose a callback endpoint.</t>
+
+		<section anchor='rnc' title='Requirements Notation and Conventions'>
+		<t>
+		The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", 
+		"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this 
+		document are to be interpreted as described in <xref target='RFC2119'/>.
+		</t>
+		<t>
+		Throughout this document, values are quoted to indicate that they are 
+		to be taken literally. When using these values in protocol messages, the 
+		quotes MUST NOT be used as part of the value.
+		</t>
+		<t>
+		All uses of <xref target="JWS">JSON Web Signature (JWS)</xref> 
+		and <xref target="JWE">JSON Web Encryption (JWE)</xref> 
+		data structures in this specification utilize 
+		the JWS Compact Serialization or the JWE Compact Serialization; 
+		the JWS JSON Serialization and the JWE JSON Serialization are not used.
+		</t>
+		</section>
+		
+		<section anchor='terminology' title='Terminology'>
+		<t>
+		This specification uses the terms "Access Token", "Resource Server", and "Client" defined by <xref target='RFC6749'>OAuth 2.0</xref>, 
+		the terms "JSON Web Token (JWT)",	"JWT Claims Set", and "Nested JWT" defined by <xref target="JWT">JSON Web Token (JWT)</xref>, 
+		and the terms "Header Parameter" and "JOSE Header" defined by <xref target="JWS">JSON Web Signature (JWS)</xref>. 
+		This specification also defines the following terms: 
+		<list style='hanging'>
+		<t hangText='Questioned User'>
+		<spanx style='strong'></spanx> End-User receiving the question and requested to give his statement. 
+		</t>
+		</list>
+		</t>
+		</section>
+
+	</section>
 
 	  
-	  
     <section title='Overview'>
-      <t>The User Questioning protocol, in abstract, follows the following steps.</t>
-      <t>
-        <list style='format %d.'>
-			<t>The Client sends a User Questioning Request to the OpenID Provider (OP).</t>
-			<t>The OP interacts with the Questioned User and obtains his Statement.</t>
-			<t>The OP responds to the Client with a User Questioning Response.</t>
-        </list>
-      </t>
-      <t>These steps are illustrated in the following diagram:</t>
-      <figure>
-        <artwork>
+	<t>The User Questioning protocol, in abstract, follows the following steps.</t>
+	<t>
+	<list style="numbers">
+	<t>The Client sends a User Questioning Request to the OpenID Provider (OP).</t>
+	<t>The OP interacts with the Questioned User and obtains his Statement.</t>
+	<t>The OP responds to the Client with a User Questioning Response.</t>
+	</list>
+	</t>
+<figure>
+<preamble>
+These steps are illustrated in the following diagram:
+</preamble>
+<artwork>
 +--------+                                               +--------+
 |        |                                               |        |
 |        |----(1) User Questioning Request--------------&gt;|        |
@@ -98,174 +129,303 @@
 |        |                                               |        |
 +--------+                                               +--------+
 </artwork>
-      </figure>
-    </section>
+</figure>
+
+		<section title='Example of use cases involving the User Questioning API'>
+		<t>The following use cases are non-normative examples to illustrate the usage of the User Questioning API by a Client.</t>
+		<t>
+		<list style="numbers">
+		<t>The Client can be a bank and the User Questioning API can be used to challenge the End-User when he wants to pay on Internet in order to secure the transaction. This is similar to 3D-Secure. The question could be: "Do you allow a payment of x euros to party y? (Yes) (No)".
+		</t>
+		<t>The Client can be a bank and the User Questioning API can be used to challenge the End-User when he wants to add a new payee for a bank transfer. The question could be: "Do you allow party y to be added to your payees? (I accept) (I refuse)".
+		</t>
+		<t>The Client can be a drive-in food market and the User Questioning API  can be used to ask the End-User if he accepts the exchange of one missing product by another. The question could be: "Do you agree to get product x instead of product y? (I agree) (I disagree)".
+		</t>
+		<t>The Client can be a ticketing platform and the User Questioning API can be used to prevent transactions by bots. The question could be: "Do you confirm that you are currently booking a ticket? (I confirm) (I deny)".
+		</t>
+		<t>The Client can be an airline company and the User Questioning API can be used to be sure that the End-User is notified of a delay. The question could be: "Your flight is postponed. Can you confirm that you are aware? (I read this)".
+		</t>
+		<t>The Client can be a survey company and the User Questioning API can be used to get the End-User's choice. The question could be: "Which is your favorite brand? (brand_A) (brand_B) (brand_C)".
+		</t>
+		</list>
+		</t>
+		</section>
+		
+		<section title='When to use the User Questioning API'>
+		<t>The User Questioning API should be used when the following contraints must be fulfilled:</t>
+		<t>
+		<list style="numbers">
+		<t>The Client needs to have a real-time interaction with an offline End-User.
+		</t>
+		<t>The Client needs to have the End-User's statement on a given question.
+		</t>
+		<t>The Client needs to be sure that the responding End-User has been authenticated before responding.
+		</t>
+		<t>The Client needs to have a non-repudiable proof of the End-User's statement.
+		</t>
+		<t>The Client needs the End-User's statement to enforce a policy (i.e. take a decision).
+		</t>
+		</list>
+		</t>
+		</section>
 	
-    <section title='Example of use cases involving the User Questioning API'>
-      <t>The following use cases are non-normative examples to illustrate the usage of the User Questioning API by a Client.</t>
-      <t>
-        <list style='format %d.'>
-			<t>The Client can be a bank and the User Questioning API is used to challenge the End-User when he wants to pay on Internet in order to secure the transaction. This is similar to 3D-Secure. The question could be: "Do you allow a payment of x euros to party y?".</t>
-			<t>The Client can be a bank and the User Questioning API is used to challenge the End-User when he wants to add a new payee for a bank transfer. The question could be: "Do you allow party y to be added to your payees?".</t>
-			<t>The Client can be a drive-in food market and the User Questioning API is used to ask the End-User if he accepts the exchange of one missing product by another. The question could be: "Do you agree to get product x instead of product y?".</t>
-			<t>The Client can be a ticketing platform and the User Questioning API is used to prevent transactions by bots. The question could be: "Do you confirm that you are currently booking a ticket?".</t>
-			<t>The Client can be an airline company and the User Questioning API is used to be sure that the End-User is notified of a delay. The question could be: "Your flight is postponed. Can you confirm that you are aware?".</t>
-        </list>
-      </t>
+	</section>
 
-    </section>
 	
-      </section>
-
-	    <section anchor='user-statement-token' title='User Statement Token'>
-		
-
-      <t> Here after is described the User Statement Token : </t>
-      <texttable title='User Statement Token'>
-        <ttcol>Attribute</ttcol>
-        <ttcol align='center' width='50%'>Type</ttcol>
-        <ttcol align='left'>Description</ttcol>
-        <ttcol align='left'>Example</ttcol>
-        <!---->
-        <c>status</c>
-        <c>string</c>
-        <c>Status code of the Question. Possible values are described in <xref target='member_status'/>.</c>
-        <c>"pending"</c>
-        <!---->
-        <c>statement</c>
-        <c>string</c>
-        <c>Statement made by the Questioned User. Possible values are described in <xref target='member_statement'/>.</c>
-        <c>"accepted"</c>
-        <!---->
-        <c>creation_date</c>
-        <c>timestamp</c>
-        <c>Date indicating when the User Questioning Request has been received by the OP. Its value is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z as measured in UTC until the date/time.</c>
-        <c>1311281970</c>
-        <!---->
-        <c>last_modification_date</c>
-        <c>timestamp</c>
-        <c>Date indicating the last change of the status. Its value is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z as measured in UTC until the date/time.</c>
-        <c>1311281970</c>
-        <!---->
-        <c>statement_date</c>
-        <c>timestamp</c>
-        <c>Date indicating when the End-User gave his Statement on the Question. Its value is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z as measured in UTC until the date/time.</c>
-        <c>1311282970</c>
-        <!---->
-        <c>user_id</c>
-        <c>string</c>
-        <c>Unique identifier allowing to identify the Questioned User (e.g. Mobile phone , sub, ...). Ignored if the Access Token is tied with a specific End-User, mandatory otherwise.</c>
-        <c>3444975f-1137-47dc-908f-942ac85ab98f</c>
-        <!---->
-        <c>user_id_type</c>
-        <c>string</c>
-        <c>Indicate the type of the End-User's identifier used for User Questioning. Ignored if the Access Token is tied with a specific End-User, mandatory otherwise.	Possible values are described in <xref target='member_user_id_type'/>.</c>
-        <c>MSISDN</c>
-        <!---->
-        <c>question_displayed</c>
-        <c>string</c>
-        <c>Question that was displayed to the Questioned User.</c>
-        <c>An example message to display</c>
-        <!---->
-        <c>used_qcr</c>
-        <c>string</c>
-        <c>Questioning context class reference : Level of Assurance used by the OP (can be 2 3 4).</c>
-        <c>2</c>
-        <!---->
-        <c>used_qmr</c>
-        <c>string</c>
-        <c>Questioning method used by the OP for the User Questioning.</c>
-        <c>SMS_OTP</c>
-        <!---->
-      </texttable>
-	   
-      <section anchor='member_user_id_type' title='user_id_type'>
-        <t>user_id_type member can take the following values :</t>
-        <texttable title='user_id_type possible values'>
-          <ttcol>Value</ttcol>
-          <ttcol align='left'>Description</ttcol>
-          <ttcol align='left'>Example</ttcol>
-          <!---->
-          <c>MSISDN</c>
-          <c>Represents the Mobile Phone number corresponding to the Questioned User. The way this MSISDN has been captured by the Client is out of scope of this specification.</c>
-          <c>33612345678</c>
-          <!---->
-		  <c>sub</c>
-          <c>Represents the sub corresponding to the Questioned User. The way this sub has been captured by the Client is out of scope of this specification.</c>
-          <c>8d858e0a-c91b-426a-92e8-462d3876df7d</c>
-          <!---->
-        </texttable>
-      </section>
-	  
-      <section anchor='member_status' title='status'>
-        <t>status member can take the following values :</t>
-        <texttable title='status possible values'>
-          <ttcol>Value</ttcol>
-          <ttcol align='left'>Description</ttcol>
-          <!---->
-          <c>pending</c>
-          <c>This status name is returned when the User Questioning is ongoing.</c>
-          <!---->
-          <c>terminated</c>
-          <c>This status name is returned when the User Questioning is finished.</c>
-          <!---->
-        </texttable>
-      </section>
-	   
-      <section anchor='member_statement' title='statement'>
-	  
-        <t>By default, statement member can take the following values :</t>
-        <texttable title='status possible values'>
-          <ttcol>Value</ttcol>
-          <ttcol align='left'>Description</ttcol>
-          <!---->
-          <c>accepted</c>
-          <c>This statement is returned when the Questioned User's Statement is an acceptation.</c>
-          <!---->
-          <c>denied</c>
-          <c>This statement is returned when the Questioned User's Statement is a deny.</c>
-          <!---->
-        </texttable>
-		
-		<t>The statement can take other values in order to address specific use cases. For example, the question could ask for a number or a choice amongst several possibilities. These specific statement values SHOULD be specified in extensions of this specification or in an ad-hoc agreement between the Clients and the OP.</t>
-		
-      </section>
-
 
 	  
+	<section anchor='user-statement-token' title='User Statement Token'>
+		
+		
+	<t>
+	The User Statement Token is a security token that contains Claims about the statement made by the Questioned User.
+	The User Statement Token is represented as a <xref target="JWT">JSON Web Token (JWT)</xref>.
+	</t>
+	<t>
+	The following Claims are used within the User Statement Token in all Questioning API flows.
+	</t>	
+	<t>
+	<list style="hanging">
+	<!---->
+	<t hangText="question_id">
+	MANDATORY. 
+	The <spanx style="verb">question_id</spanx> is a unique identifier of the Question.
+	The <spanx style="verb">question_id</spanx> value is a case sensitive string.
+	</t>
+	<!---->
+	<t hangText="iss">
+	MANDATORY. 
+	Issuer Identifier for the Issuer of the response. 
+	The <spanx style="verb">iss</spanx> value is a case-sensitive URL using the <spanx style="verb">https</spanx> scheme that contains scheme, host, and optionally, port number and path components and no query or fragment components.
+	</t>
+	<!---->
+	<t hangText="aud">
+	MANDATORY. 
+	Audience(s) that this User Statement Token is intended for. 
+	It MUST contain the OAuth 2.0 <spanx style="verb">client_id</spanx> of the Relying Party as an audience value. 
+	It MAY also contain identifiers for other audiences. In the general case, the <spanx style="verb">aud</spanx> value is an array of case-sensitive strings. 
+	In the common special case when there is one audience, the <spanx style="verb">aud</spanx> value MAY be a single case-sensitive string.
+	</t>
+	<!---->
+	<t hangText="sub">
+	MANDATORY. 
+	Subject Identifier. 
+	A locally unique and never reassigned identifier within the Issuer for the End-User, which is intended to be consumed by the Client, e.g. <spanx style="verb">g117YBtCZO3mAKPQKP8o</spanx>. 
+	It MUST NOT exceed 255 ASCII <xref target="RFC20"/> characters in length. 
+	The <spanx style="verb">sub</spanx> value is a case-sensitive string.
+	</t>
+	<!---->
+	<t hangText="user_id">
+	OPTIONAL. The <spanx style="verb">user_id</spanx> is present in the User Statement Token only if the <spanx style="verb">user_id</spanx> and <spanx style="verb">user_id_type</spanx> were present in the User Questioning Request.
+	The <spanx style="verb">user_id</spanx> is a unique identifier allowing to identify the Questioned User (e.g. Mobile phone, sub, ...). 
+	The <spanx style="verb">user_id</spanx> value is a case sensitive string. 
+	</t>
+	<!---->
+	<t hangText="user_id_type">
+	OPTIONAL. The <spanx style="verb">user_id_type</spanx> is present in the User Statement Token only if the <spanx style="verb">user_id</spanx> and <spanx style="verb">user_id_type</spanx> were present in the User Questioning Request.
+	The <spanx style="verb">user_id_type</spanx> indicates the type of the End-User's identifier used for User Questioning.
+	The <spanx style="verb">user_id_type</spanx> value is a case sensitive string. 
+	</t>
+	<!---->
+	<t hangText="question_displayed">
+	MANDATORY. 
+	The <spanx style="verb">question_displayed</spanx> is the question displayed to the Questioned User.
+	If the <spanx style="verb">question_to_display</spanx> has not been displayed as is, the <spanx style="verb">question_displayed</spanx> MUST be the exact message displayed to Questioned User.
+	The <spanx style="verb">question_displayed</spanx> value is a case sensitive string. 
+	</t>
+	<!---->
+	<t hangText="statement">
+	MANDATORY. Statement made by the User Questioning.
+	The <spanx style="verb">statement</spanx> SHALL be the exact statement made by the Questioned User.
+	The <spanx style="verb">statement</spanx> value is a case sensitive string.
+	</t>
+	<!---->
+	<t hangText="statement_date">
+	MANDATORY. Date indicating when the End-User gave his Statement on the Question.
+	The <spanx style="verb">statement_date</spanx> value is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z as measured in UTC.
+	</t>
+	<!---->
+	<t hangText="used_qcr">
+	MANDATORY. Questioning Context Class Reference. 
+	Questioning Context Class Reference value that identifies the Authentication Context Class used by the OP to authenticate the Questioned User before he made his statement. 
+	The <spanx style="verb">used_qcr</spanx> value is a case sensitive string.
+	</t>
+	<!---->
+	<t hangText="used_qmr">
+	MANDATORY. Questioning Method Reference. 
+	This is the authentication method used by the OP to authenticate the Questioned User before he made his statement. 
+	The <spanx style="verb">used_qmr</spanx> value is a case sensitive string.
+	</t>
+	<!---->
+	</list>
+	</t>
+
+	<t>
+	User Statement Tokens MUST be signed using <xref 
+	target="JWS">JWS</xref> and optionally both signed and then 
+	encrypted using <xref target="JWS">JWS</xref> and <xref 
+	target="JWE">JWE</xref> respectively, thereby providing 
+	authentication, integrity, 
+	non-repudiation, and optionally, confidentiality, 
+	per <xref target="SigningOrder"/>. 
+	If the User Statement Token is encrypted, it MUST be signed then encrypted, 
+	with the result being a Nested JWT, as defined in <xref target="JWT"/>. 
+	User Statement Tokens MUST NOT use <spanx style="verb">none</spanx> 
+	as the <spanx style="verb">alg</spanx> value.
+	</t>
+	<t>
+	User Statement Tokens SHOULD NOT use the JWS or JWE 
+	<spanx style="verb">x5u</spanx>, 
+	<spanx style="verb">x5c</spanx>, 
+	<spanx style="verb">jku</spanx>, or 
+	<spanx style="verb">jwk</spanx> 
+	Header Parameter fields. 
+	Instead, references to keys used are 
+	communicated in advance using Discovery and Registration parameters, 
+	per <xref target="SigEnc"/>.
+	</t>
+
+<figure>
+<preamble>
+The following is a non-normative example of the set of Claims (the JWT Claims Set) in a User Statement Token:
+</preamble>
+<artwork>
+{
+    "question_id":"984dcc7d3d4d4b0f9f8022e344f9",
+    "iss":"https://server.example.com",
+    "aud":"s8V3wm8IXMW6TboazXZX",
+    "sub":"g117YBtCZO3mAKPQKP8o",
+    "user_id"="+33612345678",
+    "user_id_type"="msisdn",
+    "question_displayed":"Do you allow ...?",
+    "statement":"Yes",
+    "statement_date":"1311282975",
+    "used_qcr":"2",
+    "used_qmr":"CLICK_OK"
+}
+</artwork>
+</figure>	
+
+<figure>
+<preamble>
+Signing the User Statement Token with the <spanx style="verb">RS256</spanx> algorithm
+results in this Object value (with line wraps within values for display purposes only):
+</preamble>
+<artwork><![CDATA[
+eyJhbGciOiJSUzI1NiIsImtpZCI6ImsyYmRjIn0.ew0KICJpc3MiOiAiczZCaGRSa3
+F0MyIsDQogImF1ZCI6ICJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsDQogInJl
+Y2tuYW1lIjogbnVsbCwN     TODO      sIjogeyJlc3NlbnRpYWwiOiB0cnVlfS
+JoZFJrcXQzIiwNCiAicmVkaXJlY3RfdXJpIjogImh0dHBzOi8vY2xpZW50LmV4YW1w
+bGUub3JnL2NiIiwNCiAi               lbmlkIiwNCiAic3RhdGUiOiAiYWYwaW
+Y2tuYW1lIjogbnVsbCwN     TODO      sIjogeyJlc3NlbnRpYWwiOiB0cnVlfS
+bGUub3JnL2NiIiwNCiAi               lbmlkIiwNCiAic3RhdGUiOiAiYWYwaW
+ogICAgICJnaXZlbl9uYW1lIjogeyJlc3NlbnRpYWwiOiB0cnVlfSwNCiAgICAgIm5p
+Y2tuYW1lIjogbnVsbCwN     TODO      sIjogeyJlc3NlbnRpYWwiOiB0cnVlfS
+wNCiAgICAgImVtYWlsX3ZlcmlmaWVkIjogeyJlc3NlbnRpYWwiOiB0cnVlfSwNCiAg
+ICAgInBpY3R1cmUiOiBudWxsDQogICAgfSwNCiAgICJpZF90b2tlbiI6IA0KICAgIH
+bGUub3JnL2NiIiwNCiAi               lbmlkIiwNCiAic3RhdGUiOiAiYWYwaW
+Y2tuYW1lIjogbnVsbCwN     TODO      sIjogeyJlc3NlbnRpYWwiOiB0cnVlfS
+bGUub3JnL2NiIiwNCiAi               lbmlkIiwNCiAic3RhdGUiOiAiYWYwaW
+F6zTHm8CHERFMGQPhos-EJcaH4Hh-sMgk8ePrGhw_trPYs8KQxsn6R9Emo_wHwajyF
+Y2tuYW1lIjogbnVsbCwN     TODO      sIjogeyJlc3NlbnRpYWwiOiB0cnVlfS
+0GxFbuPbj96tVuj11pTnmFCUR6IEOXKYr7iGOCRB3btfJhM0_AKQUfqKnRlrRscc8K
+ol-cSLWoYE9l5QqholImzjT_cMnNIznW9E7CDyWXTsO70xnB4SkG6pXfLSjLLlxmPG
+iyon_-Te111V8uE83IlzCYIb_NMXvtTIVc1jpspnTSD7xMbpL-2QgwUsAlMGzw
+]]></artwork>
+</figure>
+
+<figure>
+<preamble>
+The following RSA public key, represented in JWK format, can be used to
+validate the Object signature in this example
+(with line wraps within values for display purposes only):
+</preamble>
+<artwork><![CDATA[
+{
+"kty":"RSA",
+"kid":"k2bdc",
+"n":"y9Lqv4fCp6Ei-u2-ZCKq83YvbFEk6JMs_pSj76eMkddWRuWX2aBKGHAtKlE5P
+7_vn__PCKZWePt3vGkB6ePgzAFu08NmKemwE5bQI0e6kIChtt_6KzT5OaaXDF
+I6qCLJmk51Cc4VYFaxgqevMncYrzaW_50mZ1yGSFIQzLYP8bijAHGVjdEFgZa
+ZEN9lsn_GdWLaJpHrB3ROlS50E45wxrlg9xMncVb8qDPuXZarvghLL0HzOuYR
+adBJVoWZowDNTpKpk2RklZ7QaBO7XDv3uR7s_sf2g-bAjSYxYUGsqkNA9b3xV
+W53am_UZZ3tZbFTIh557JICWKHlWj5uzeJXaw",
+"e":"AQAB"
+}
+]]></artwork>
+</figure>
+
+	<!-- The private key is archived here, but is not included in the specification output.
+	<figure>
+	<preamble>
+	The following is the RSA private key, represented in JWK format,
+	that was used to sign the Request Object in this
+	and subsequent Request Object examples
+	(with line wraps within values for display purposes only):
+	</preamble>
+
+	<artwork><![CDATA[
+	{
+	"kty": "RSA",
+	"kid":"k2bdc",
+	"n": "y9Lqv4fCp6Ei-u2-ZCKq83YvbFEk6JMs_pSj76eMkddWRuWX2aBKGHAtKlE5P7_vn__PCKZWePt3vGkB6ePgzAFu08NmKemwE5bQI0e6kIChtt_6KzT5OaaXDFI6qCLJmk51Cc4VYFaxgqevMncYrzaW_50mZ1yGSFIQzLYP8bijAHGVjdEFgZaZEN9lsn_GdWLaJpHrB3ROlS50E45wxrlg9xMncVb8qDPuXZarvghLL0HzOuYRadBJVoWZowDNTpKpk2RklZ7QaBO7XDv3uR7s_sf2g-bAjSYxYUGsqkNA9b3xVW53am_UZZ3tZbFTIh557JICWKHlWj5uzeJXaw",
+	"e": "AQAB",
+	"d": "LNwG_pCKrwowALpCpRdcOKlSVqylSurZhE6CpkRiE9cpDgGKIkO9CxPlXOLzjqxXuQc8MdMqRQZTnAwgd7HH0B6gncrruV3NewI-XQV0ckldTjqNfOTz1VRs-jE-57KAXI3YBIhu-_0YpIDzdk_wBuAk661Svn0GsPQe7m9DoxdzenQu9O_soewUhlPzRrTH0EeIqYI715rwI3TYaSzoWBmEPD2fICyj18FF0MPy_SQzk3noVUUIzfzLnnJiWy_p63QBCMqjRoSHHdMnI4z9iVpIwJWQ3jO5n_2lC2-cSgwjmKsFzDBbQNJc7qMG1N6EssJUwgGJxz1eAUFf0w4YAQ",
+	"qi": "J-mG0swR4FTy3atrcQ7dd0hhYn1E9QndN-
+	-sDG4EQO0RnFj6wIefCvwIc47hCtVeFnCTPYJNc_JyV-mU-9vlzS5GSNuyR5qdpsMZXUMpEvQcwKt23ffPZYGaqfKyEesmf_Wi8fFcE68H9REQjnniKrXm7w2-IuG_IrVJA9Ox-uU",
+	"q": "4hlMYAGa0dvogdK1jnxQ7J_Lqpqi99e-AeoFvoYpMPhthChTzwFZO9lQmUoBpMqVQTws_s7vWGmt7ZAB3ywkurf0pV7BD0fweJiUzrWk4KJjxtmP_auuxrjvm3s2FUGn6f0wRY9Z8Hj9A7C72DnYCjuZiJQMYCWDsZ8-d-L1a-s",
+	"p": "5sd9Er3I2FFT9R-gy84_oakEyCmgw036B_nfYEEOCwpSvi2z7UcIVK3bSEL5WCW6BNgB3HDWhq8aYPirwQnqm0K9mX1E-4xM10WWZ-rP3XjYpQeS0Snru5LFVWsAzi-FX7BOqBibSAXLdEGXcXa44l08iec_bPD3xduq5V_1YoE",
+	"dq": "Nz2PF3XM6bEc4XsluKZO70ErdYdKgdtIJReUR7Rno_tOZpejwlPGBYVW19zpAeYtCT82jxroB2XqhLxGeMxEPQpsz2qTKLSe4BgHY2ml2uxSDGdjcsrbbNoKUKaN1CuyZszhWl1n0AT_bENl4bJgQj_Fh0UEsQj5YBBUJt5gr_k",
+	"dp": "Zc877jirkkLOtyTs2vxyNe9KnMNAmOidlUc2tE_-0gAL4Lpo1hSwKCtKweZJ-gkqt1hT-dwNx_0Xtg_-NXsadMRMwJnzBMYwYAfjApUkfqABc0yUCJJl3KozRCugf1WXkU9GZAH2_x8PUopdNUEa70ISowPRh04HANKX4fkjWAE"
+	}
+	]]></artwork>
+	</figure>
+	-->
+
     </section>
 	
+	
+    <section anchor="client_registration" title='Client registration'>
+
+		<t>In order to use the User Questioning API, the Client should:
+		<list style='hanging' hangIndent='6'>
+		<t hangText='Have the right to access the User Questioning API:'>
+		MANDATORY. 
+		The right for a Client to access the User Questioning API is the right to use the User Questioning API's scope. This scope value is <spanx style="verb">question</spanx>.
+		</t>
+		<t hangText='Register its Client Notification Endpoint:'>
+		OPTIONAL. 
+		If the Client wants to be notified of the User Question Response (cf. <xref target='Pushed-To-Client-Flow'/>), it MUST register its client_notification_endpoint. The client_notification_endpoint is a callback URL on the Client.
+		</t>
+		</list>
+		</t>
+	
+    </section>
 	
 	
     <section title='User Questioning flows'>
 	
-	  	<t>This document specifies three User Questioning flows:
+	  	<t>This document specifies two User Questioning flows:
 		<list style='hanging' hangIndent='6'>
-		<t hangText='Pulled-By-Client flow:'>In this flow, after the User Questioning Request, the Client must call the OP in order to get the User Questioning Response. Refer to <xref target='Pulled-By-Client-Flow'/> for more details.</t>
-		<t hangText='Pushed-To-Client  flow:'>In this flow, after the User Questioning Request, the OP calls the Client to deliver the User Questioning Response. Refer to <xref target='Pushed-To-Client-Flow'/> for more details.</t>
-		<t hangText='Terminated-By-Client flow:'>In this flow, after the User Questioning Request, the Client must call the OP with an additional verification_code in order to get the User Questioning Response. Refer to <xref target='Terminated-By-Client-Flow'/> for more details.</t>
+		<t hangText='Pulled-By-Client flow:'>
+		In this flow, after the User Questioning Request, the Client must call the OP in order to get the User Questioning Response. Refer to <xref target='Pulled-By-Client-Flow'/> for more details.
+		</t>
+		<t hangText='Pushed-To-Client  flow:'>
+		In this flow, after the User Questioning Request, the OP calls the Client to deliver the User Questioning Response. Refer to <xref target='Pushed-To-Client-Flow'/> for more details.
+		</t>
 		</list>
 		</t>
-
-	  	<t>The flow to use is decided by the OP and depends on the User Questioning Request and the available User Questioning mechanisms:
-		<list style='hanging' hangIndent='6'>
-		<t hangText='Pulled-By-Client flow:'>If the Client does not include a client_notification_endpoint in the User Questioning Request and if the User Questioning mechanism selected by the OP does not require additional information from the Client (e.g. verification_code). Refer to <xref target='Pulled-By-Client-Flow'/> for more details.</t>
-		<t hangText='Pushed-To-Client flow:'>If the Client includes a client_notification_endpoint in the User Questioning Request and if the User Questioning mechanism selected by the OP does not require additional information from the Client (e.g. verification_code). Refer to <xref target='Pushed-To-Client-Flow'/> for more details.</t>
-		<t hangText='Terminated-By-Client flow:'>If the User Questioning mechanism selected by the OP requires additional information from the Client (e.g. verification_code). Refer to <xref target='Terminated-By-Client-Flow'/> for more details.</t>
-		</list>
+		<t>
+		The flow a Client will use is configured at registration. Refer to <xref target='client_registration'/> for more details.
 		</t>
 		
-
+		<section anchor='Pulled-By-Client-Flow' title='Pulled-By-Client Flow'>
+		<t>
+		In this flow, the Client will poll the OP to get the User Statement Token.
+		</t>
 	
-      <section anchor='Pulled-By-Client-Flow' title='Pulled-By-Client Flow'>
-		<t>In this flow, the Client MUST NOT include a client_notification_endpoint in the User Questioning Request. The Client will poll the OP until the User Questioning is finished (accepted, denied, error...).</t>
-		<t>If a verification_code is needed for the mecanism chosen by the OP, the flow will be the Terminated-By-Client Flow (cf. <xref target='Terminated-By-Client-Flow'/>).</t> 
-
-	
-      <section title='Pulled-By-Client Flow steps'>
-
-        <figure>
-          <artwork>
+<figure>
+<artwork>
 +--------+                                               +--------+
 |        |---(1a) User Questioning Request--------------&gt;|        |
 |        |                                               |        |
@@ -281,331 +441,21 @@
 |        |&lt;---(3b) User Questioning Response-------------|        |
 +--------+                                               +--------+
 </artwork>
-        </figure>
+</figure>
 		
-		</section>
-		
-		<section title='User Questioning Endpoint'>
-
-			<section title='(1a) User Questioning Request'>
-			
-<t>The Client sends the User Questioning Request using HTTP GET or HTTP POST.</t>
-<t>The Access Token obtained from an OAuth Authorization request MUST be sent as a Bearer Token.</t>
-<t>The User Questioning Request MUST contain the following attributes, either in the query string for the HTTP GET method or form serialized in the body for the HTTP POST method.</t>
-
-      <texttable>
-        <ttcol>Attribute name</ttcol>
-		<ttcol align='left'>Presence</ttcol>
-        <ttcol align='center' width='50%'>Type</ttcol>
-        <ttcol align='left'>Description</ttcol>
-        <ttcol align='left'>Example</ttcol>
-        <!---->
-        <c>user_id</c>
-		<c>FORBIDDEN if the access_token is tied with a End-User, MANDATORY if the access_token is not tied with a End-User</c>
-        <c>string</c>
-        <c>Unique identifier allowing to identify the Questioned User (e.g. Mobile phone , sub, ...). Ignored if the Access Token is tied with a specific End-User, mandatory otherwise.</c>
-        <c>3444975f-1137-47dc-908f-942ac85ab98f</c>
-        <!---->
-        <c>user_id_type</c>
-		<c>FORBIDDEN if the access_token is tied with a End-User, MANDATORY if the access_token is not tied with a End-User</c>
-        <c>string</c>
-        <c>Indicate the type of the End-User's identifier used for User Questioning. Ignored if the Access Token is tied with a specific End-User, mandatory otherwise.	Possible values are described in <xref target='member_user_id_type'/>.</c>
-        <c>MSISDN</c>
-        <!---->
-        <c>question_to_display</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Question to be displayed to the Questioned User.</c>
-        <c>An example message to display</c>
-        <!---->
-        <c>wished_qcr</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Questioning context class reference : Level of Assurance wished by the Client (can be 2 3 4).</c>
-        <c>3</c>
-        <!---->
-        <c>wished_qmr</c>
-		<c>OPTIONAL</c>
-        <c>string</c>
-        <c>Questioning method wished by the Client</c>
-        <c>SMS_OTP</c>
-        <!---->
-      </texttable>
-	  
-	<t>In this flow, the Client MUST NOT include a client_notification_endpoint in the User Questioning Request.</t>
-		
-<section title='Example with an access_token tied with a specific End-User'>
-<t>This example describes a context where the access_token is tied with a specific End-User. If the Client add user_id / user_id_type in the request, these parameters will be ignored.</t>
-<t>The following is a non-normative example using HTTP GET.</t>
-<figure>
-<artwork>
-GET /questions?
-   question_to_display=An%20example%20message%20to%20display
-   &amp;wished_qcr=3
-Host: server.example.com
-Accept: application/json
-Authorization: Bearer SlAV32hkKG         
-</artwork>
-</figure>
-
-
-<t>This example describes a context where the access_token is tied with a specific End-User. If the Client add user_id / user_id_type in the request, these parameters will be ignored.</t>
-<t>The following is a non-normative example using HTTP POST.</t>
-<figure>
-<artwork>
-POST /questions HTTP/1.1
-Host: server.example.com
-Content-Type: application/x-www-form-urlencoded
-Accept: application/json
-Authorization: Bearer SlAV32hkKG         
-
-question_to_display=An%20example%20message%20to%20display&amp;wished_qcr=3
-</artwork>
-</figure>
-</section>
-
-
-<section title='Example with an access_token NOT tied with a specific End-User'>
-<t>This example describes a context where the access_token is not tied with a specific End-User. The Client MUST add user_id and user_id_type in the request.</t>
-<t>The following is a non-normative example using HTTP GET.</t>
-<figure>
-<artwork>
-GET /questions?
-   user_id=33612345678
-   &amp;user_id_type=MSISDN
-   &amp;question_to_display=An%20example%20message%20to%20display
-   &amp;wished_qcr=3
-Host: server.example.com
-Accept: application/json
-Authorization: Bearer SlAV32hkKG         
-</artwork>
-</figure>
-
-<t>The following is a non-normative example using HTTP POST.</t>
-<figure>
-<artwork>
-POST /questions HTTP/1.1
-Host: server.example.com
-Content-Type: application/x-www-form-urlencoded
-Accept: application/json
-Authorization: Bearer SlAV32hkKG         
-
-user_id=33612345678&amp;user_id_type=MSISDN
-&amp;question_to_display=An%20example%20message%20to%20display&amp;wished_qcr=3
-</artwork>
-</figure>
-
-</section>
-
-
-			</section>
-
-			
-			<section title='(1b) Question Created'>
-
-			
-			<section anchor='question-created-successful-response' title='Successful response'>
-			
-	
-<t>The Client receives a HTTP 201 Created response.</t>
-<t>The response body contains a JSON object with the following attributes.</t>
-
-      <texttable title='Parameters'>
-        <ttcol>Parameter name</ttcol>
-		<ttcol align='left'>Presence</ttcol>
-        <ttcol align='center' width='50%'>Type</ttcol>
-        <ttcol align='left'>Description</ttcol>
-        <ttcol align='left'>Example</ttcol>
-        <!---->
-        <c>id</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Unique identifier of the Question.</c>
-        <c>984dcc7d-3d4d-4b0f-9f80-22e344f9a956</c>
-        <!---->
-        <c>status</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Status code of the Question (note that Error codes are handled by the HTTP protocol).</c>
-        <c>"pending"</c>
-        <!---->
-      </texttable>
-
-			
-<t>In this flow, there are two possible status in the received JSON object:
-<list style='hanging' hangIndent='6'>
-<t hangText='{"status":"pending"}'>This is the temporary status when the User Questioning Response is not ready.</t>
-<t hangText='{"status":"verification_code_required"}'>This is a temporary status when an additional verification_code is required.</t>
-<t>If the status is verification_code_required, then the current flow is the Terminated-By-Client Flow (<xref target='Terminated-By-Client-Flow'/>).</t>					
-</list>
-</t>
-						
-<section title='Example'>
-
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-HTTP/1.1 201 Created
-Content-Type: application/json
-Content-Location: https://server.example.com/questions/84c1d9d6-62e5-4803-ac0e-36b858c
-Content-Length: xxx
-
-{
-    "id":"84c1d9d6-62e5-4803-ac0e-36b858c",
-    "status":"pending",
-}
-</artwork>
-</figure>
-</section>
-
-			
-			</section>
-
-			<section title='Error response'>
-<t>The Client receives a HTTP 400 Bad Request as specified in <xref target='error-400'/>.</t>
-			</section>
-			
-		
-
-
-			</section>
-			
-			<section title="(2a) User interactions to get the Questioned User's Statement">
-<t>The way the User Questioning Endpoint obtains the Questioned User's Statement for the Question is out of the scope of this specification.</t>
-			</section>
-			
-
-			<section title='(3a) Get User Questioning Response'>
-
-			
-<t>The Client get the User Questioning Response using HTTP GET.</t>
-<t>The Access Token obtained from an OAuth Authorization request MUST be sent as a Bearer Token.</t>			
-<t>In order to detect that User Questioning Response is ready, the Client MUST request the User Questioning Response. If User Questioning Response is ready, it will be returned in the response. Else, the OP responds with HTTP 304 Not Modified.</t>
-
-<section title='Example'>
-<t>The following is a non-normative example.</t>
-<figure>
-<artwork>
-GET /questions/84c1d9d6-62e5-4803-ac0e-36b858c HTTP/1.1
-Host: server.example.com
-Accept: application/json
-Authorization: Bearer SlAV32hkKG 
-</artwork>
-</figure>
-</section>
-			</section>
-			
-			
-			<section title='(3b) User Questioning Response'>
-
-<t>The Client receives the User Questioning Response in a HTTP 200 OK or HTTP 304 Not Modified response.</t>
-
-
-			<section title='User Questioning Response is not ready'>
-
-<t>If the User Questioning Response is not ready, the Client will get a HTTP 304 Not Modified.</t>
-
-
-			<section title='Example when User Questioning Response is not ready'>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-HTTP/1.1 304 Not Modified
-</artwork>
-</figure>
-			
-			</section>
-			
-			</section>
-
-			
-			<section title='User Questioning Response is ready'>
-
-<t>The Client receives the User Questioning Response in a HTTP 200 OK response.</t>
-<t>The User Questioning Response contains a User Statement Token in the response body <xref target='user-statement-token'/>.</t>
-			
-<section title='Example of User Questioning Response with Accepted Statement'>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Location: https://server.example.com/questions/84c1d9d6-62e5-4803-ac0e-36b858c
-Content-Length: xxx
-
-{
-    "id":"84c1d9d6-62e5-4803-ac0e-36b858c",
-    "status":"accepted",
-    "creation_date":"1311281970",
-    "last_modification_date":"1311282970",
-    "statement_date":"1311282970",
-    "question_displayed":"An example message to display",
-    "used_qcr":"2",
-    "used_qmr":"SMS_OTP"
-}
-</artwork>
-</figure>
-			
-			</section>
-
-<section title='Example of User Questioning Response with Denied Statement'>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Location: https://server.example.com/questions/84c1d9d6-62e5-4803-ac0e-36b858c
-Content-Length: xxx
-
-{
-    "id":"84c1d9d6-62e5-4803-ac0e-36b858c",
-    "status":"denied",
-    "creation_date":"1311281970",
-    "last_modification_date":"1311282970",
-    "statement_date":"1311282970",
-    "question_displayed":"An example message to display",
-    "used_qcr":"2",
-    "used_qmr":"SMS_OTP"
-}
-</artwork>
-</figure>
-			
-			</section>
-
-
-
-	</section>
-	
-
-
-			<section title='Error response'>
-<t>The Client receives a HTTP 400 Bad Request as specified in <xref target='error-400'/>.</t>
-			</section>
-	
-
-
-		</section>
-		</section>
-		
+		<t>
+		About the "(2a) User interactions to get the Questioned User's Statement" step, note that the way the OP obtains the Questioned User's Statement is out of the scope of this specification.
+		</t>
 		</section>
 
 		
-		
+		<section  anchor='Pushed-To-Client-Flow' title='Pushed-To-Client Flow'>
+		<t>
+		In this flow, the OP will send the User Statement Token on the client_notification_endpoint registered by the Client.
+		</t> 
 
-      <section  anchor='Pushed-To-Client-Flow' title='Pushed-To-Client Flow'>
-		<t>In this flow, the Client MUST include a client_notification_endpoint in the User Questioning Request. The Client will be informed at this endpoint by the OP when the User Questioning is finished (accepted, denied, error...).</t> 
-		<t>If a verification_code is needed for the mecanism chosen by the OP, the flow will be the Terminated-By-Client Flow (cf. <xref target='Terminated-By-Client-Flow'/>), despite the client_notification_endpoint in the request.</t> 
-
-
-		<section title='Pushed-To-Client Flow Steps'>
-
-		
-        <figure>
-          <artwork>
+<figure>
+<artwork>
 +--------+                                               +--------+
 |        |---(1a) User Questioning Request--------------&gt;|        |
 |        |                                               |        |
@@ -621,802 +471,547 @@ Content-Length: xxx
 |        |---(3b) Acknowledgement-----------------------&gt;|        |
 +--------+                                               +--------+
 </artwork>
-        </figure>
+</figure>
+
+		<t>
+		About the "(2a) User interactions to get the Questioned User's Statement" step, note that the way the OP obtains the Questioned User's Statement is out of the scope of this specification.
+		</t>
 		</section>
-
-		
-		<section title='User Questioning Endpoint'>
-		
-
-			<section title='(1a) User Questioning Request'>
-		
-<t>The Client sends the User Questioning Request using HTTP POST.</t>
-<t>The Access Token obtained from an OAuth Authorization request MUST be sent as a Bearer Token.</t>
-<t>The User Questioning Request MUST contain a JSON object in the request body, with the following attributes.</t>
-				
-      <texttable>
-        <ttcol>Attribute name</ttcol>
-		<ttcol align='left'>Presence</ttcol>
-        <ttcol align='center' width='50%'>Type</ttcol>
-        <ttcol align='left'>Description</ttcol>
-        <ttcol align='left'>Example</ttcol>
-        <!---->
-        <c>user_id</c>
-		<c>FORBIDDEN if the access_token is tied with a End-User, MANDATORY if the access_token is not tied with a End-User</c>
-        <c>string</c>
-        <c>Unique identifier allowing to identify the Questioned User (e.g. Mobile phone , sub, ...). Ignored if the Access Token is tied with a specific End-User, mandatory otherwise.</c>
-        <c>3444975f-1137-47dc-908f-942ac85ab98f</c>
-        <!---->
-        <c>user_id_type</c>
-		<c>FORBIDDEN if the access_token is tied with a End-User, MANDATORY if the access_token is not tied with a End-User</c>
-        <c>string</c>
-        <c>Indicate the type of the End-User's identifier used for User Questioning. Ignored if the Access Token is tied with a specific End-User, mandatory otherwise.	Possible values are described in <xref target='member_user_id_type'/>.</c>
-        <c>MSISDN</c>
-        <!---->
-        <c>question_to_display</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Question to be displayed to the Questioned User.</c>
-        <c>An example message to display</c>
-        <!---->
-        <c>wished_qcr</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Questioning context class reference : Level of Assurance wished by the Client (can be 2 3 4).</c>
-        <c>3</c>
-        <!---->
-        <c>wished_qmr</c>
-		<c>OPTIONAL</c>
-        <c>string</c>
-        <c>Questioning method wished by the Client</c>
-        <c>SMS_OTP</c>
-        <!---->
-        <c>client_notification_endpoint</c>
-		<c>MANDATORY</c>
-        <c>uri</c>
-        <c>URL exposed by the Client's backend to receive a notification from OP when a User Questioning is finished (accepted, denied, error...). Needed if the Client wants to use Pushed-To-Client Flow (See <xref target='Pushed-To-Client-Flow'/>).</c>
-        <c>https://client.example.com/questions</c>
-        <!---->
-      </texttable>
-		
-		
-<section title='Example with an access_token tied with a specific End-User'>
-<t>This example describes a context where the access_token is tied with a specific End-User. If the Client add user_id / user_id_type in the request, these parameters will be ignored.</t>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-POST /questions HTTP/1.1
-Host: server.example.com
-Content-Type: application/json
-Accept: application/json
-Authorization: Bearer SlAV32hkKG         
-
-{
-    "question_to_display":"An example message to display",
-    "wished_qcr":"3",
-    "client_notification_endpoint":"https://server.client.com/questions"
-}
-</artwork>
-</figure>
-</section>
-
-
-<section title='Example with an access_token NOT tied with a specific End-User'>
-<t>This example describes a context where the access_token is not tied with a specific End-User. The Client MUST add user_id and user_id_type in the request.</t>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-POST /questions HTTP/1.1
-Host: server.example.com
-Content-Type: application/json
-Accept: application/json
-Authorization: Bearer SlAV32hkKG         
-
-{
-    "user_id":"33612345678",
-    "user_id_type":"MSISDN",
-    "question_to_display":"An example message to display",
-    "wished_qcr":"3",
-    "client_notification_endpoint":"https://server.client.com/questions"
-}
-</artwork>
-</figure>
-</section>
-
-
-			</section>
-
-			
-			
-			<section title='(1b) Question Created'>
-			
-			
-			<section title='Successful response'>
-<t>The Client receives a HTTP 201 Created response.</t>
-<t>The response body contains a JSON object with the following attributes.</t>
-
-      <texttable title='Parameters'>
-        <ttcol>Parameter name</ttcol>
-		<ttcol align='left'>Presence</ttcol>
-        <ttcol align='center' width='50%'>Type</ttcol>
-        <ttcol align='left'>Description</ttcol>
-        <ttcol align='left'>Example</ttcol>
-        <!---->
-        <c>id</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Unique identifier of the Question.</c>
-        <c>984dcc7d-3d4d-4b0f-9f80-22e344f9a956</c>
-        <!---->
-        <c>status</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Status code of the Question (note that Error codes are handled by the HTTP protocol).</c>
-        <c>"pending"</c>
-      </texttable>
-			
-<t>In this flow, there are two possible status in the received JSON object:
-<list style='hanging' hangIndent='6'>
-<t hangText='{"status":"pending"}'>This is the temporary status when the User Questioning Response is not ready.</t>
-<t hangText='{"status":"verification_code_required"}'>This is a temporary status when an additional verification_code is required.</t>
-<t>If the status is verification_code_required, then the current flow is the Terminated-By-Client Flow (<xref target='Terminated-By-Client-Flow'/>).</t>					
-</list>
-</t>
-						
-<section title='Example with an access_token tied with a specific End-User'>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-HTTP/1.1 201 Created
-Content-Type: application/json
-Content-Location: https://server.example.com/questions/84c1d9d6-62e5-4803-ac0e-36b858c
-Content-Length: xxx
-
-{
-    "id":"84c1d9d6-62e5-4803-ac0e-36b858c",
-    "status":"pending",
-}
-</artwork>
-</figure>
-</section>
-
-
-<section title='Example with an access_token not tied with a specific End-User'>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-HTTP/1.1 201 Created
-Content-Type: application/json
-Content-Location: https://server.example.com/questions/84c1d9d6-62e5-4803-ac0e-36b858c
-Content-Length: xxx
-
-{
-    "id":"84c1d9d6-62e5-4803-ac0e-36b858c",
-    "status":"pending",
-}
-</artwork>
-</figure>
-</section>
-
-			
-			</section>
-
-			<section title='Error response'>
-<t>The Client receives a HTTP 400 Bad Request as specified in <xref target='error-400'/>.</t>
-			</section>
-			
-			</section>			
-			
-	
-			
-			
-			<section title="(2a) User interactions to get the Questioned User's Statement">
-<t>The way the User Questioning Endpoint obtains the Questioned User's Statement for the Question is out of the scope of this specification.</t>
-			</section>
-		
-		</section>
-		
-		
-		<section anchor='client_notification_endpoint_section' title='Client Notification Endpoint'>
-			
-			<section title='(3a) User Questioning Response'>
-
-<section title='Successful response'>
-
-			
-<t>The OP sends the User Questioning Response to the Client using HTTP POST.</t>
-<t>The User Questioning Response MUST contain a JSON object in the request body, with the following attributes.</t>
-		
-        <texttable>
-          <ttcol>Attribute name</ttcol>
-		  <ttcol align='left'>Presence</ttcol>
-          <c>id</c><c>MANDATORY</c>
-          <c>status</c><c>MANDATORY</c>
-          <c>creation_date</c><c>MANDATORY</c>
-          <c>last_modification_date</c><c>MANDATORY</c>
-          <c>statement_date</c><c>MANDATORY</c>
-          <c>user_id</c><c>OPTIONAL if the access_token is tied with a End-User, MANDATORY if the access_token is not tied with a End-User</c>
-          <c>user_id_type</c><c>OPTIONAL if the access_token is tied with a End-User, MANDATORY if the access_token is not tied with a End-User</c>
-          <c>question_displayed</c><c>MANDATORY</c>
-          <c>used_qcr</c><c>MANDATORY</c>		  
-          <c>used_qmr</c><c>OPTIONAL</c>		  
-          <c>...any other...</c><c>IGNORED</c>
-        </texttable>
+	</section>
 	
 	
-<t>In this flow, there are three possible status (cf. <xref target='member_status'/>) in the User Questioning Response:
-<list style='hanging' hangIndent='6'>
-<t hangText='{"status":"accepted"}'>This is the final status when the End-User accepted the User Questioning Request.</t>
-<t hangText='{"status":"denied"}'>This is the final status when the End-User denied the User Questioning Request.</t>
-<t hangText='{"status":"error"}'>This is the final status when there is an error. Refer to <xref target='Errors'/> for more details.</t>
-</list>
-</t>
+    <section anchor="endpoints" title='Endpoints'>
+
+	    <section title='User Questioning Request Endpoint'>
+
+		    <section title='Request with User Questioning Request'>
+			<t>
+			The Client sends the User Questioning Request using an HTTP POST Request.
+			</t>
+			<t>
+			The Client MUST have a valid Access Token for the scope <spanx style="verb">question</spanx>.
+			</t>
 			
+			<t>
+			The HTTP POST request contains the following header:
+			<list style="hanging">
+			<!---->
+			<t hangText="Authorization">
+			MANDATORY. 
+			The <spanx style="verb">Authorization</spanx> value is an Access Token obtained from an OAuth Authorization request and used as a <xref target='RFC6750'/> Bearer Token. 
+			The <spanx style="verb">Authorization</spanx> value is a case sensitive string. 
+			</t>
+			<!---->		
+			</list>
+			</t>
 			
-<section title='Example of Accepted Statement'>
-<t>The following is a non-normative example.</t>
-		
+			<t>
+			The User Questioning Request MUST contain a JSON structure in the body of the HTTP POST, with the following attributes:
+			</t>
+			
+			<t>
+			<list style="hanging">
+			<!---->
+			<t hangText="client_notification_token">
+			MANDATORY if the Client uses the Pushed-To-Client Flow described in <xref target='Pushed-To-Client-Flow'></xref>. IGNORED otherwise.
+			The <spanx style="verb">client_notification_token</spanx> is an opaque token issued by the Client. 
+			The <spanx style="verb">client_notification_token</spanx> is Bearer Token used by the Client to authorize the OP when the OP sends the User Questioning Response to the Client Notification Endpoint.
+			The <spanx style="verb">client_notification_token</spanx> value is a case sensitive string.
+			</t>
+			<!---->
+			<t hangText="user_id">
+			FORBIDDEN if the Access Token is tied with an End-User, MANDATORY if the Access Token is not tied with an End-User. 
+			The <spanx style="verb">user_id</spanx> is a unique identifier allowing to identify the Questioned User (e.g. Mobile phone, sub, ...).
+			The <spanx style="verb">user_id</spanx> value is a case sensitive string.
+			</t>
+			<!---->
+			<t hangText="user_id_type">
+			FORBIDDEN if the Access Token is tied with an End-User, MANDATORY if the Access Token is not tied with an End-User. 
+			The <spanx style="verb">user_id_type</spanx> indicates the type of the End-User's identifier used for User Questioning.
+			The <spanx style="verb">user_id_type</spanx> value is a case sensitive string.
+			</t>
+			<!---->
+			<t hangText="question_to_display">
+			MANDATORY. 
+			The <spanx style="verb">question_to_display</spanx> is the question to be displayed to the Questioned User. 
+			The <spanx style="verb">question_to_display</spanx> SHALL be displayed with no modification to Questioned User. If some modifications occur, it MUST be due to restrictions imposed by the Questioning Method.  
+			The <spanx style="verb">question_to_display</spanx> value is a case sensitive string.
+			</t>
+			<!---->
+			<t hangText="statements_to_display">
+			MANDATORY. 
+			The <spanx style="verb">statements_to_display</spanx> is the list of possible statements to be displayed to the Questioned User. 
+			The <spanx style="verb">statements_to_display</spanx> SHALL be displayed with no modification to Questioned User. 
+			The <spanx style="verb">statements_to_display</spanx> value is a JSON array of case sensitive strings.
+			</t>
+			<!---->
+			<t hangText="wished_qcr">
+			MANDATORY. Questioning Context Class Reference. 
+			The <spanx style="verb">wished_qcr</spanx> is Questioning Context Class Reference value that identifies the Authentication Context Class to be used by the OP to authenticate the Questioned User before he made his statement.
+			The <spanx style="verb">wished_qcr</spanx> value is a case sensitive string.
+			</t>
+			<!---->
+			<t hangText="wished_qmr">
+			OPTIONAL. Questioning Method Reference. 
+			The <spanx style="verb">wished_qmr</spanx> is the authentication method to be used by the OP to authenticate the Questioned User before he made his statement.  
+			The <spanx style="verb">wished_qmr</spanx> value is a case sensitive string.
+			</t>
+			<!---->			
+			</list>
+			</t>
+
+			
+			<t>
+			The parameters are included in the entity-body of the HTTP POST
+			using the "application/json" media type as defined by <xref target="RFC4627"/>. The
+			parameters are serialized into a JavaScript Object Notation (JSON)
+			structure by adding each parameter at the highest structure level.
+			Parameter names and string values are included as JSON strings.
+			Numerical values are included as JSON numbers. The order of
+			parameters does not matter and can vary.
+			</t>
+
 <figure>
+<preamble>
+The following is a non-normative example of the JSON structure.
+</preamble>
 <artwork>
 POST /questions HTTP/1.1
 Host: server.client.com
 Accept: application/json
-
-{
-    "id":"84c1d9d6-62e5-4803-ac0e-36b858c",
-    "status":"accepted",
-    "creation_date":"1311281970",
-    "last_modification_date":"1311282970",
-    "statement_date":"1311282970",
-    "question_displayed":"An example message to display",
-    "used_qcr":"3",
-    "used_qmr":"SIM_APPLET",
-}
-</artwork>
-</figure>
-</section>
-	
-<section title='Example of Denied Statement'>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-POST /questions HTTP/1.1
-Host: server.client.com
-Accept: application/json
-
-{
-    "id":"84c1d9d6-62e5-4803-ac0e-36b858c",
-    "status":"denied",
-    "creation_date":"1311281970",
-    "last_modification_date":"1311282970",
-    "statement_date":"1311282970",
-    "question_displayed":"An example message to display",
-    "used_qcr":"3",
-    "used_qmr":"SIM_APPLET",
-}
-</artwork>
-</figure>
-</section>
-
-</section>
-
-
-<section title='Error response'>
-<t>The Client receives a HTTP POST as specified in <xref target='error-post'/>.</t>
-</section>
-			
-			
-
-			</section>
-		
-			<section title='(3b) Acknowledgement'>
-			<t>The acknowledgement MUST be a HTTP 200 OK. The HTTP code is the only parameter to consider. The rest of the HTTP response should be ignored.</t>
-			
-			
-<section title='Example of the simplest acknowledgement'>			
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-HTTP/1.1 200 OK
-</artwork>
-</figure>
-</section>
-
-
-			</section>
-		
-		</section>
-		
-		
-		</section>
-
-		
-		
-		
-		
-      <section anchor='Terminated-By-Client-Flow' title='Terminated-By-Client Flow'>
-		<t>In this flow, after the first User Questioning Request, the Client must supply the OP with a verification_code in order to finish the User Questioning (accepted, denied, error...).</t> 
-
-      <section title='Terminated-By-Client Flow steps'>
-		
-        <figure>
-          <artwork>	  
-+--------+                                               +--------+
-|        |---(1a) User Questioning Request--------------&gt;|        |
-|        |                                               |        |
-|        |&lt;--(1b) Question Created-----------------------|        |
-|        |                                               |        |
-|        |  +--------+                                   |        |
-|        |  |        |&lt;--(2a) User interactions to get--&gt;|        |
-|        |  |  End-  |  the Questioned User's Statement  |        |
-|        |  |  User  |                                   |        |
-| Client |  |        |&lt;----(2b) Verification_code--------|   OP   |
-|        |  +--------+                                   |        |
-|        |      |                                        |        |
-|        |&lt;-----+ (2c) Verification_code                 |        |
-|        |                                               |        |
-|        |---(3a) Verification_code---------------------&gt;|        |
-|        |                                               |        |
-|        |&lt;---(3b) User Questioning Response-------------|        |
-+--------+                                               +--------+
-</artwork>
-        </figure>
-      </section>
-
-		<section title='User Questioning Endpoint'>
-
-			<section title='(1a) User Questioning Request'>
-
-<t>The Client sends the User Questioning Request using HTTP POST.</t>
-<t>The Access Token obtained from an OAuth Authorization request MUST be sent as a Bearer Token.</t>
-<t>The User Questioning Request MUST contain a JSON object in the request body, with the following attributes.</t>
-		
-      <texttable>
-        <ttcol>Attribute name</ttcol>
-		<ttcol align='left'>Presence</ttcol>
-        <ttcol align='center' width='50%'>Type</ttcol>
-        <ttcol align='left'>Description</ttcol>
-        <ttcol align='left'>Example</ttcol>
-        <!---->
-        <c>user_id</c>
-		<c>FORBIDDEN if the access_token is tied with a End-User, MANDATORY if the access_token is not tied with a End-User</c>
-        <c>string</c>
-        <c>Unique identifier allowing to identify the Questioned User (e.g. Mobile phone , sub, ...). Ignored if the Access Token is tied with a specific End-User, mandatory otherwise.</c>
-        <c>3444975f-1137-47dc-908f-942ac85ab98f</c>
-        <!---->
-        <c>user_id_type</c>
-		<c>FORBIDDEN if the access_token is tied with a End-User, MANDATORY if the access_token is not tied with a End-User</c>
-        <c>string</c>
-        <c>Indicate the type of the End-User's identifier used for User Questioning. Ignored if the Access Token is tied with a specific End-User, mandatory otherwise.	Possible values are described in <xref target='member_user_id_type'/>.</c>
-        <c>MSISDN</c>
-        <!---->
-        <c>question_to_display</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Question to be displayed to the Questioned User.</c>
-        <c>An example message to display</c>
-        <!---->
-        <c>wished_qcr</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Questioning context class reference : Level of Assurance wished by the Client (can be 2 3 4).</c>
-        <c>3</c>
-        <!---->
-        <c>wished_qmr</c>
-		<c>OPTIONAL</c>
-        <c>string</c>
-        <c>Questioning method wished by the Client</c>
-        <c>SMS_OTP</c>
-        <!---->
-        <c>client_notification_endpoint</c>
-		<c>IGNORED</c>
-        <c>uri</c>
-        <c>URL exposed by the Client's backend to receive a notification from OP when a User Questioning is finished (accepted, denied, error...). Needed if the Client wants to use Pushed-To-Client Flow (See <xref target='Pushed-To-Client-Flow'/>).</c>
-        <c>https://client.example.com/questions</c>
-        <!---->
-      </texttable>
-		
-		
-<section title='Example with an access_token tied with a specific End-User'>
-<t>This example describes a context where the access_token is tied with a specific End-User. If the Client add user_id / user_id_type in the request, these parameters will be ignored.</t>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-POST /questions HTTP/1.1
-Host: server.example.com
-Content-Type: application/json
-Accept: application/json
-Authorization: Bearer SlAV32hkKG         
-
-{
-    "question_to_display":"An example message to display",
-    "wished_qcr":"3"
-}
-</artwork>
-</figure>
-</section>
-
-
-<section title='Example with an access_token NOT tied with a specific End-User'>
-<t>This example describes a context where the access_token is not tied with a specific End-User. The Client MUST add user_id and user_id_type in the request.</t>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-POST /questions HTTP/1.1
-Host: server.example.com
-Content-Type: application/json
-Accept: application/json
-Authorization: Bearer SlAV32hkKG         
-
-{
-    "user_id":"33612345678",
-    "user_id_type":"MSISDN",
-    "question_to_display":"An example message to display",
-    "wished_qcr":"3"
-}
-</artwork>
-</figure>
-</section>
-
-
-			</section>
-			
-			
-					
-			
-			<section title='(1b) Question Created'>
-
-			
-			<section title='Successful response'>
-<t>The Client receives a HTTP 201 Created response.</t>
-<t>The response body contains a JSON object with the following attributes.</t>
-
-      <texttable title='Parameters'>
-        <ttcol>Parameter name</ttcol>
-		<ttcol align='left'>Presence</ttcol>
-        <ttcol align='center' width='50%'>Type</ttcol>
-        <ttcol align='left'>Description</ttcol>
-        <ttcol align='left'>Example</ttcol>
-        <!---->
-        <c>id</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Unique identifier of the Question.</c>
-        <c>984dcc7d-3d4d-4b0f-9f80-22e344f9a956</c>
-        <!---->
-        <c>status</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Status code of the Question (note that Error codes are handled by the HTTP protocol).</c>
-        <c>"pending"</c>
-      </texttable>
-			
-<t>In this flow, there are two possible status in the JSON object received:
-<list style='hanging' hangIndent='6'>
-<t hangText='{"status":"pending"}'>This is the temporary status when the User Questioning Response is not ready.</t>
-<t>If the status is "pending", then the current flow is either the Pulled-By-Client Flow (<xref target='Pulled-By-Client-Flow'/>) or the Pushed-To-Client Flow (<xref target='Pushed-To-Client-Flow'/>).</t>					
-<t hangText='{"status":"verification_code_required"}'>This is a temporary status when an additional verification_code is required. This is the normal status for this flow.</t>
-</list>
-</t>
-						
-<section title='Example with an access_token tied with a specific End-User'>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-HTTP/1.1 201 Created
-Content-Type: application/json
-Content-Location: https://server.example.com/questions/84c1d9d6-62e5-4803-ac0e-36b858c
-Content-Length: xxx
-
-{
-    "id":"84c1d9d6-62e5-4803-ac0e-36b858c",
-    "status":"verification_code_required",
-}
-</artwork>
-</figure>
-</section>
-
-
-<section title='Example with an access_token not tied with a specific End-User'>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-HTTP/1.1 201 Created
-Content-Type: application/json
-Content-Location: https://server.example.com/questions/84c1d9d6-62e5-4803-ac0e-36b858c
-Content-Length: xxx
-
-{
-    "id":"84c1d9d6-62e5-4803-ac0e-36b858c",
-    "status":"verification_code_required",
-}
-</artwork>
-</figure>
-</section>
-
-			
-			</section>
-
-			<section title='Error response'>
-<t>The Client receives a HTTP 400 Bad Request as specified in <xref target='error-400'/>.</t>
-			</section>
-			
-			
-
-
-			</section>
-			
-
-			
-			<section title="(2a) User interactions to get the Questioned User's Statement">
-<t>The way the User Questioning Endpoint obtains the Questioned User's Statement for the Question is out of the scope of this specification.</t>
-			</section>
-			
-			<section title='(2b) User Questioning Endpoint Sends Verification_code to Questioned User'>
-<t>The way the User Questioning Endpoint sends the verification_code to the Questioned User is out of the scope of this specification.</t>
-			</section>
-			
-			<section title='(2c) Questioned User Sends Verification_code to Client'>
-<t>The way the End-User sends the verification_code to the Client is out of the scope of this specification.</t>
-			</section>
-
-			<section title='(3a) Client Sends Verification_code to User Questioning Endpoint'>
-			
-			
-<t>The Client sends the verification_code to the OP using HTTP PUT.</t>
-<t>The Access Token obtained from an OAuth Authorization request MUST be sent as a Bearer Token.</t>
-<t>The HTTP request MUST contain the following attribute, form serialized in the body for the HTTP PUT method.</t>
-
-        <texttable>
-          <ttcol>Attribute name</ttcol>
-		  <ttcol align='left'>Presence</ttcol>
-          <c>verification_code</c><c>MANDATORY</c>
-          <c>...any other...</c><c>IGNORED</c>
-        </texttable>
-		
-<section title='Example'>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-PUT /questions/84c1d9d6-62e5-4803-ac0e-36b858c HTTP/1.1
-Host: server.example.com
-Accept: application/x-www-form-urlencoded
-Content-Type: application/json
 Authorization: Bearer SlAV32hkKG 
-
-verification_code=12345
-</artwork>
-</figure>
-</section>
-
-			</section>
-
-			<section title='(3b) User Questioning Response'>
-			
-			
-			<section title='Successful response'>
-
-<t>The Client receives the User Questioning Response in a HTTP 200 OK response.</t>
-<t>The successful User Questioning Response MUST contain a User Statement Token in the response body <xref target='user-statement-token'/>.</t>
-			
-<section title='Example of Accepted Statement'>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Location: https://server.example.com/questions/84c1d9d6-62e5-4803-ac0e-36b858c
 Content-Length: xxx
 
 {
-    "status":"accepted",
-    "creation_date":"1311281970",
-    "last_modification_date":"1311282970",
-    "statement_date":"1311282970",
-    "question_displayed":"An example message to display",
-    "used_qcr":"2",
-    "used_qmr":"SMS_OTP"
-}
-</artwork>
-</figure>	
-</section>
-
-<section title='Example of Denied Statement'>
-<t>The following is a non-normative example.</t>
-
-<figure>
-<artwork>
-HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Location: https://server.example.com/questions/84c1d9d6-62e5-4803-ac0e-36b858c
-Content-Length: xxx
-
-{
-    "status":"denied",
-    "creation_date":"1311281970",
-    "last_modification_date":"1311282970",
-    "statement_date":"1311282970",
-    "question_displayed":"An example message to display",
-    "used_qcr":"2",
-    "used_qmr":"SMS_OTP"
-}
+	"client_notification_token":"vO4n2DAeRrcWE0VAlo4I",
+	"user_id":"+33612345678",
+	"user_id_type":"msisdn",
+	"question_to_display":"Do you allow ...?",
+	"statements_to_display":["Yes","No"],
+	"wished_qcr":"3",
+	"wished_qmr":"PIN_OK"
+}    
 </artwork>
 </figure>
-</section>
+			
+				<section title='user_id_type and user_id'>
+				
+				<t>
+				The <spanx style="verb">user_id</spanx> is an identifier used to identify the Questioned User and to retrieve a reachability mean. 
+				If the <spanx style="verb">user_id</spanx> is a reachability identifier, it SHOULD be used by reachability mean. 
+				</t>		
+				
+				<t><spanx style="verb">user_id_type</spanx> member can take the following values:</t>
+				<t>
+				<list style="hanging">
+				<!---->
+				<t hangText="msisdn">	
+				If the <spanx style="verb">user_id_type</spanx> value is <spanx style="verb">msisdn</spanx>, 
+				the <spanx style="verb">user_id</spanx> value is the mobile phone number corresponding to the Questioned User. 
+				<xref target="E.164">E.164</xref> 
+				is RECOMMENDED as the format of this Claim, 
+				for example, <spanx style="verb">+1 (425) 555-1212</spanx> 
+				or <spanx style="verb">+5626872400</spanx>.
+				</t>
+				<!---->
+				<t hangText="email">
+				If the <spanx style="verb">user_id_type</spanx> value is <spanx style="verb">email</spanx>, 
+				the <spanx style="verb">user_id</spanx> value is the email adress corresponding to the Questioned User. 
+				Its value MUST conform to the <xref target="RFC5322">RFC 5322</xref> addr-spec syntax.
+				</t>
+				<!---->
+				<t hangText="sub">
+				If the <spanx style="verb">user_id_type</spanx> value is <spanx style="verb">sub</spanx>, 
+				the <spanx style="verb">user_id</spanx> value is the <spanx style="verb">sub</spanx> corresponding to the Questioned User for the requesting <spanx style="verb">client_id</spanx>. 
+				</t>
+				<!---->		
+				</list>
+				</t>
+				</section>
+
 			</section>
-
-
-			<section title='Error response'>
-<t>The Client receives a HTTP 400 Bad Request as specified in <xref target='error-400'/>.</t>
-			</section>
-	
-			</section>
-
-		</section>
-
-    </section>
-
-</section>
-
-<section anchor='Errors' title='Errors'>
-
-
-      <section anchor='error_info' title='error_info Object'>
-        <t>error_info is a JSON object which contains the following properties :</t>
-        <texttable title='error_info properties'>
-          <ttcol>Value</ttcol>
-          <ttcol align='left'>Description</ttcol>
-          <ttcol align='left'>Example</ttcol>
-          <!---->
-          <c>error_code</c>
-          <c>REQUIRED. Code representing the error. See section <xref target='member_error_code'/> for possible values.</c>
-          <c>unknown_user</c>
-          <!---->
-          <c>error_description</c>
-          <c>OPTIONAL. Human-readable ASCII encoded text description of the error.</c>
-          <c>The user is unknown</c>
-          <!---->
-          <c>error_uri</c>
-          <c>OPTIONAL. URI of a web page that includes additional information about the error.</c>
-          <c>https://server.example.com/errors/unknown_user</c>
-          <!---->
-        </texttable>
-		
-      <section anchor='member_error_code' title='error_code'>
-        <t>error_code is a property of the error_info Object. It can takes the following values :</t>
-        <texttable title='error_code possible values'>
-          <ttcol>Value</ttcol>
-          <ttcol align='left'>Description</ttcol>
-          <!---->
-          <c>unknown_user</c>
-          <c>The Questioned User is unknown.</c>
-          <!---->
-          <c>timeout</c>
-          <c>The User Questioning has expired (timeout - no action from Questioned User).</c>
-          <!---->
-          <c>verification_code_failed</c>
-          <c>The verification_code provided was not correct. </c>
-          <!---->
-          <c>verification_code_too_many_tries</c>
-          <c>The verification_code has already been check without success several times (the number of time is up to the OP).</c>
-          <!---->
-        </texttable>
-      </section>
-		
-		
-		
-      </section>
-
-<section anchor='error-400' title='Error received by the Client in a HTTP 400 Bad Request'>
-
-
-<t>The Client receives the error in a HTTP 400 Bad Request.</t>
-<t>The response body contains a JSON object with the following attributes.</t>
-
-      <texttable title='Parameters'>
-        <ttcol>Parameter name</ttcol>
-		<ttcol align='left'>Presence</ttcol>
-        <ttcol align='center' width='50%'>Type</ttcol>
-        <ttcol align='left'>Description</ttcol>
-        <ttcol align='left'>Example</ttcol>
-        <!---->
-        <c>error_info</c>
-		<c>MANDATORY</c>
-        <c>JSON Object</c>
-        <c>See <xref target='error_info'/>.</c>
-        <c>{"error_code":"unknown_user"}</c>
-        <!---->
-      </texttable>
-
-
-
-<section title='Example of error in a HTTP 400 Bad Request'>
-
-<t>This example can occur in the Pulled-By-Client (cf. <xref target='Pulled-By-Client-Flow'/>), Pushed-To-Client (cf. <xref target='Pushed-To-Client-Flow'/>) and Terminated-By-Client (cf. <xref target='Terminated-By-Client-Flow'/>) flows.</t>		
-<t>The following is a non-normative example.</t>
+			
+			
+			
+			<section title='Successful Response'>
+			<t>
+			A successful response to the User Questioning Request is a HTTP 201 Created response.
+			</t>
+			<t>
+			The HTTP 201 Created response contains the following headers:
+			<list style="hanging">
+			<!---->
+			<t hangText="Location">	
+			MANDATORY. 
+			The <spanx style="verb">Location</spanx> value is a unique polling URL for the Question. 
+			The <spanx style="verb">Location</spanx> value is a URL on the User Questioning Polling Endpoint. 
+			</t>
+			<!---->
+			<t hangText="Question_id">
+			MANDATORY. 
+			The <spanx style="verb">Question_id</spanx> contains the <spanx style="verb">question_id</spanx> value.  
+			The <spanx style="verb">Question_id</spanx> value is a case sensitive string.
+			</t>
+			<!---->		
+			</list>
+			</t>
 
 <figure>
+<preamble>
+The following is a non-normative example of the JSON structure.
+</preamble>
+<artwork>
+HTTP/1.1 201 Created
+Location: https://server.example.com/questions_polling/984dcc7d3d4d4b0f9f8022e344f9
+question_id: 984dcc7d3d4d4b0f9f8022e344f9
+</artwork>
+</figure>
+			</section>
+			
+			
+			<section title='Error Response'>
+			<t>The Client receives the error in a HTTP 400 Bad Request.</t>
+			<t>The response body contains an <spanx style="verb">error_info</spanx> JSON structure as defined in <xref target='errors'/>.</t>
+			<t>The <spanx style="verb">error_info</spanx> JSON structure can contain the following error codes, defined in <xref target='error_codes'/>:
+			<list style="symbols">
+			<t>invalid_request</t>
+			<t>no_suitable_method</t>
+			<t>unknown_user</t>
+			<t>unreachable_user</t>
+			</list>
+			</t>
+<figure>
+<preamble>
+The following is a non-normative example of error in a HTTP 400 Bad Request. This example can occur in the Pulled-By-Client flow (cf. <xref target='Pulled-By-Client-Flow'/>) and Pushed-To-Client flow (cf. <xref target='Pushed-To-Client-Flow'/>).
+</preamble>
 <artwork>
 HTTP/1.1 400 Bad Request
 Content-Type: application/json
-Content-Location: https://server.example.com/questions/84c1d9d6-62e5-4803-ac0e-36b858c
 Content-Length: xxx
 
 {
     "error_info":
     {
-        "error_code":"unknown_user",
-        "error_description":"The user is unknown",
-        "error_uri":"https://server.example.com/errors/unknown_user"
+        "error_code":"invalid_request",
+        "error_description":"user_id is FORBIDDEN 
+		    if the Access Token is tied with an End-User",
+        "error_uri":"https://server.example.com/errors/invalid_request"
     }
 }
 </artwork>
 </figure>
 			</section>
 
+		</section>
 
-</section>
+		
 
+		
+		<section title='User Questioning Polling Endpoint'>
+			
+			<t>In order to detect that User Questioning Response is ready, the Client MUST request the User Questioning Polling Endpoint.
+			If User Questioning Response is ready, it will be returned in the response. 
+			Else, the OP responds with HTTP 304 Not Modified.
+			</t>
+			<t>			
+			A Client configured with a <spanx style="verb">client_notification_endpoint</spanx> MUST NOT sent a request to the User Questioning Polling Endpoint.
+			</t>
+			
+		    <section title='Polling Request'>
+			
+			<t>The Client get the User Questioning Response using HTTP GET.</t>
+			<t>
+			The HTTP GET request contains the following headers:
+			<list style="hanging">
+			<!---->
+			<t hangText="Authorization">
+			MANDATORY. 
+			The <spanx style="verb">Authorization</spanx> value is an Access Token obtained from an OAuth Authorization request and used as a <xref target='RFC6750'/> Bearer Token. 
+			The <spanx style="verb">Authorization</spanx> value is a case sensitive string. 
+			</t>
+			<!---->
+			<t hangText="Client_timeout">
+			The <spanx style="verb">Client_timeout</spanx> indicates how much time, in seconds, the Client will wait for a HTTP response. 
+			The <spanx style="verb">Client_timeout</spanx> value is a number.
+			</t>
+			<!---->		
+			</list>
+			</t>
 
-
-<section anchor='error-post' title='Error received by the Client in a HTTP POST'>
-
-<t>The Client receives the error in a HTTP POST.</t>
-<t>The request body contains a JSON object with the following attributes.</t>
-
-      <texttable title='Parameters'>
-        <ttcol>Parameter name</ttcol>
-		<ttcol align='left'>Presence</ttcol>
-        <ttcol align='center' width='50%'>Type</ttcol>
-        <ttcol align='left'>Description</ttcol>
-        <ttcol align='left'>Example</ttcol>
-        <!---->
-		<c>id</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Unique identifier of the Question.</c>
-        <c>984dcc7d-3d4d-4b0f-9f80-22e344f9a956</c>
-        <!---->
-		<c>status</c>
-		<c>MANDATORY</c>
-        <c>string</c>
-        <c>Status code of the Question.</c>
-        <c>"error"</c>
-        <!---->
-        <c>error_info</c>
-		<c>MANDATORY</c>
-        <c>JSON Object</c>
-        <c>See <xref target='error_info'/>.</c>
-        <c>{"error_code":"unknown_user"}</c>
-        <!---->
-      </texttable>
-
-
-<section title='Example of error in a HTTP POST'>	
-
-<t>This example can occur in the Pushed-To-Client flow (cf. <xref target='Pushed-To-Client-Flow'/>).</t>	
-<t>The following is a non-normative example.</t>
-	
 <figure>
+<preamble>
+The following is a non-normative example.
+</preamble>
 <artwork>
-POST /questions HTTP/1.1
-Host: server.client.com
+GET /questions_polling/984dcc7d3d4d4b0f9f8022e344f9 HTTP/1.1
+Host: server.example.com
 Accept: application/json
+Authorization: Bearer SlAV32hkKG 
+Client_timeout: 10
+</artwork>
+</figure>
+			</section>
+			
+			
+			<section title='Pending Response'>
+			<t>
+			If the User Questioning Response is not ready, the Client will get a HTTP 304 Not Modified.
+			</t>
+<figure>
+<preamble>
+The following is a non-normative example.
+</preamble>
+<artwork>
+HTTP/1.1 304 Not Modified
+</artwork>
+</figure>			
+			</section>
+
+			
+			<section title='Successful Response with User Questioning Response'>
+			<t>The Client receives the successful User Questioning Response in a HTTP 200 OK response.</t>
+			<t>The successful User Questioning Response is a JSON object, with the following attributes.</t>
+			<t>
+			<list style="hanging">
+			<!---->
+			<t hangText="question_id">
+			MANDATORY.
+			The <spanx style="verb">question_id</spanx> is a unique identifier of the Question.
+			The <spanx style="verb">question_id</spanx> value is a case sensitive string.
+			</t>
+			<!---->
+			<t hangText="user_statement_token">
+			MANDATORY.
+			The <spanx style="verb">user_statement_token</spanx> is a User Statement Token as described in <xref target='user-statement-token'/>
+			</t>
+			<!---->	
+			</list>
+			</t>
+			<t>
+			The parameters are included in the entity-body of the HTTP 200 OK
+			using the "application/json" media type as defined by <xref target="RFC4627"/>. The
+			parameters are serialized into a JavaScript Object Notation (JSON)
+			structure by adding each parameter at the highest structure level.
+			Parameter names and string values are included as JSON strings.
+			Numerical values are included as JSON numbers. The order of
+			parameters does not matter and can vary.
+			</t>
+<figure>
+<preamble>
+The following is a non-normative example.
+</preamble>
+<artwork>
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: xxx
 
 {
-    "id":"84c1d9d6-62e5-4803-ac0e-36b858c",
+    "question_id":"984dcc7d3d4d4b0f9f8022e344f9",
+    "user_statement_token":"eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazci
+	fQ.ewogImlzci8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
+	NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
+	fV3pBMk1qIiwKICJleHAiO                   ImlhdCI6IDEzMTEyODA5Nz
+	AKfQ.ggW8hZ1EuVLuxNuuI       TODO        6jgdqrOOF4daGU96Sr_P6q
+	Jp6IcmD3HP99Obi1PRs-cw                   L7F09JdijmBqkvPeB2T9CJ
+	NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
+	QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
+	K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
+	XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
+}
+</artwork>
+</figure>
+			</section>
+
+			
+			<section title='Error Response'>
+			<t>The Client receives the error in a HTTP 400 Bad Request.</t>
+			<t>The response body contains an <spanx style="verb">error_info</spanx> JSON structure as defined in <xref target='errors'/>.</t>
+			<t>The <spanx style="verb">error_info</spanx> JSON structure can contain the following error codes, defined in <xref target='error_codes'/>:
+			<list style="symbols">
+			<t>duplicate_requests</t>
+			<t>forbidden</t>
+			<t>high_rate_client</t>
+			<t>high_rate_question</t>
+			<t>invalid_question_id</t>
+			<t>invalid_request</t>
+			<t>timeout</t>
+			<t>user_refused_to_answer</t>
+			</list>
+			</t>	
+<figure>
+<preamble>
+The following is a non-normative example of error in a HTTP 400 Bad Request. This example can occur in the Pulled-By-Client flow (cf. <xref target='Pulled-By-Client-Flow'/>) and Pushed-To-Client flow (cf. <xref target='Pushed-To-Client-Flow'/>).
+</preamble>
+<artwork>
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+Content-Length: xxx
+
+{
+    "error_info":
+    {
+        "error_code":"duplicate_requests",
+        "error_description":"A newer request was sent for this question_id",
+        "error_uri":"https://server.example.com/errors/invalid_request"
+    }
+}
+</artwork>
+</figure>
+			</section>
+
+	    </section>
+
+		
+
+	    <section title='Client Notification Endpoint'>
+		<t>
+		The OP sends the User Questioning Response to the Client using HTTP POST.
+		The User Questioning Response is a JSON object.
+		The User Questioning Response contains a <spanx style="verb">status</spanx> attribute that indicates if the User Questioning Response is successful or not.
+		</t>
+		
+			<section title='Successful Response with User Questioning Response'>
+			<t>
+			The OP sends the User Questioning Response to the Client using HTTP POST.
+			</t>
+			
+			<t>
+			The HTTP POST request contains the following header:
+			<list style="hanging">
+			<!---->
+			<t hangText="Authorization">
+			MANDATORY. 
+			The <spanx style="verb">Authorization</spanx> value is the <spanx style="verb">client_notification_token</spanx> specified in the User Questioning Request and used as a <xref target='RFC6750'/> Bearer Token. 
+			The <spanx style="verb">Authorization</spanx> value is a case sensitive string. 
+			</t>
+			<!---->		
+			</list>
+			</t>
+			
+			<t>
+			A successful User Questioning Response is a JSON object, with the following attributes.
+			</t>
+			
+			<t>
+			<list style="hanging">
+			<!---->
+			<t hangText="question_id">
+			MANDATORY.
+			The <spanx style="verb">question_id</spanx> is a unique identifier of the Question.
+			The <spanx style="verb">question_id</spanx> value is a case sensitive string.
+			</t>
+			<!---->
+			<t hangText="status">
+			MANDATORY.
+			Status of the User Questioning Response.
+			When the User Questioning Response is successful, the value of <spanx style="verb">status</spanx> is <spanx style="verb">ok</spanx>.
+			</t>
+			<!---->	
+			<t hangText="user_statement_token">
+			MANDATORY.
+			The <spanx style="verb">user_statement_token</spanx> is a User Statement Token as described in <xref target='user-statement-token'/>.
+			</t>
+			<!---->	
+			</list>
+			</t>
+			
+<figure>
+<preamble>
+The following is a non-normative example.
+</preamble>
+<artwork>
+POST /notification HTTP/1.1
+Host: client.example.com
+Content-Type: application/json
+Authorization: Bearer vO4n2DAeRrcWE0VAlo4I 
+Content-Length: xxx
+
+{
+    "question_id":"984dcc7d3d4d4b0f9f8022e344f9",
+    "status":"ok",
+    "user_statement_token":"eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazci
+	fQ.ewogImlzci8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
+	NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
+	fV3pBMk1qIiwKICJleHAiO                   ImlhdCI6IDEzMTEyODA5Nz
+	AKfQ.ggW8hZ1EuVLuxNuuI       TODO        6jgdqrOOF4daGU96Sr_P6q
+	Jp6IcmD3HP99Obi1PRs-cw                   L7F09JdijmBqkvPeB2T9CJ
+	NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
+	QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
+	K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
+	XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
+}
+</artwork>
+</figure>
+			
+			</section>
+
+			<section title='Error Response'>
+			<t>
+			The OP sends the erroneous User Questioning Response to the Client using HTTP POST.
+			</t>
+
+			
+			<t>
+			The HTTP POST request contains the following header:
+			<list style="hanging">
+			<!---->
+			<t hangText="Authorization">
+			MANDATORY. 
+			The <spanx style="verb">Authorization</spanx> value is the <spanx style="verb">client_notification_token</spanx> specified in the User Questioning Request and used as a <xref target='RFC6750'/> Bearer Token. 
+			The <spanx style="verb">Authorization</spanx> value is a case sensitive string. 
+			</t>
+			<!---->		
+			</list>
+			</t>
+			
+			<t>
+			An erroneous User Questioning Response is a JSON object, with the following attributes.
+			</t>
+			
+			<t>
+			<list style="hanging">
+			<!---->
+			<t hangText="question_id">
+			MANDATORY.
+			The <spanx style="verb">question_id</spanx> is a unique identifier of the Question.
+			The <spanx style="verb">question_id</spanx> value is a case sensitive string.
+			</t>
+			<!---->
+			<t hangText="status">
+			MANDATORY.
+			Status of the User Questioning Response.
+			An erroneous User Questioning Response contains a <spanx style="verb">status</spanx> attribute with the value <spanx style="verb">error</spanx>.
+			</t>
+			<!---->	
+			<t hangText="error_info">
+			MANDATORY.
+			An erroneous User Questioning Response contains a <spanx style="verb">error_info</spanx> JSON structure as defined in <xref target='errors'/>.
+			</t>
+			<!---->	
+			</list>
+			</t>
+
+			<t>The <spanx style="verb">error_info</spanx> JSON structure can contain the following error codes, defined in <xref target='error_codes'/>:
+			<list style="symbols">
+			<t>timeout</t>
+			<t>user_refused_to_answer</t>
+			</list>
+			</t>
+			
+<figure>
+<preamble>
+The following is a non-normative example.
+</preamble>
+<artwork>
+POST /notification HTTP/1.1
+Host: client.example.com
+Content-Type: application/json
+Authorization: Bearer vO4n2DAeRrcWE0VAlo4I 
+Content-Length: xxx
+
+{
+    "question_id":"984dcc7d3d4d4b0f9f8022e344f9",
     "status":"error",
     "error_info":
     {
@@ -1427,133 +1022,322 @@ Accept: application/json
 }
 </artwork>
 </figure>
-</section>
+			</section>
 
 
-</section>
+			<section title='Acknowledgement'>
+			<t>
+			The acknowledgement MUST be a HTTP 200 OK. This HTTP response SHOULD be ignored by the OP.
+			</t>	
+<figure>
+<preamble>
+The following is a non-normative example.
+</preamble>
+<artwork>
+HTTP/1.1 200 OK
+</artwork>
+</figure>
+			</section>
+
+	    </section>
+
+    </section>
+	
+	
 
 
-</section>
+	<section anchor='errors' title='Errors'>
+	<t><spanx style="verb">error_info</spanx> is a JSON object which contains the following properties:</t>
+	<t>
+	<list style="hanging">
+	<!---->
+	<t hangText="error_code">
+	REQUIRED. Code representing the error. See <xref target='endpoints'/> for possible values.
+	</t>
+	<!---->
+	<t hangText="error_description">
+	OPTIONAL. Human-readable ASCII encoded text description of the error.
+	</t>
+	<!---->
+	<t hangText="error_uri">
+	OPTIONAL. URI of a web page that includes additional information about the error.
+	</t>
+	<!---->			
+	</list>
+	</t>
+	<t>
+	The parameters are serialized into a JavaScript Object Notation (JSON)
+	structure by adding each parameter at the highest structure level.
+	Parameter names and string values are included as JSON strings.
+	Numerical values are included as JSON numbers. The order of
+	parameters does not matter and can vary.
+	</t>
+<figure>
+<preamble>
+The following is a non-normative example.
+</preamble>
+<artwork>
+{
+	"error_code":"unknown_user",
+	"error_description":"The user is unknown",
+	"error_uri":"https://server.example.com/errors/unknown_user"
+}
+</artwork>
+</figure>
+
+		<section anchor='error_codes' title='Error Codes'>
+
+			<t>The <spanx style="verb">error_info</spanx> JSON structure can contain the following error codes:</t>
+			<t>
+			<list style="hanging">
+			<!---->
+			<t hangText="duplicate_requests">
+			The Client sent simultaneous requests to the User Questioning Polling Endpoint for the same <spanx style="verb">question_id</spanx>. This error is responded to oldest requests. The last request is processed normally.
+			</t>
+			<!---->
+			<t hangText="forbidden">
+			The Client sent a request to the User Questioning Polling Endpoint whereas it is configured with a <spanx style="verb">client_notification_endpoint</spanx>.
+			</t>
+			<!---->
+			<t hangText="high_rate_client">
+			The Client sent requests at a too high rate, amongst all <spanx style="verb">question_id</spanx>. Information about the allowed and recommended rates can be included in the <spanx style="verb">error_description</spanx>.
+			</t>
+			<!---->
+			<t hangText="high_rate_question">
+			The Client sent requests at a too high rate for a given <spanx style="verb">question_id</spanx>. Information about the allowed and recommended rates can be included in the <spanx style="verb">error_description</spanx>.
+			</t>
+			<!---->
+			<t hangText="invalid_question_id">
+			The Client sent a request to the User Questioning Polling Endpoint for a <spanx style="verb">question_id</spanx> that does not exist or is not valid for the requesting Client.
+			</t>
+			<!---->
+			<t hangText="invalid_request">
+			The User Questioning Request is not valid.
+			</t>
+			<!---->
+			<t hangText="no_suitable_method">
+			There is no Questioning Method suitable with the User Questioning Request.
+			</t>
+			<!---->
+			<t hangText="timeout">
+			The Questioned User did not answer in the allowed period of time.
+			</t>
+			<!---->	
+			<t hangText="unknown_user">
+			The Questioned User mentioned in the <spanx style="verb">user_id</spanx> attribute of the User Questioning Request is unknown.
+			</t>
+			<!---->
+			<t hangText="unreachable_user">
+			The Questioned User mentioned in User Questioning Request (either in the Access Token or in the <spanx style="verb">user_id</spanx> attribute) is unreachable.
+			</t>
+			<!---->
+			<t hangText="user_refused_to_answer">
+			The Questioned User refused to give a statement to the question.
+			</t>
+			<!---->	
+			</list>
+			</t>
+		
+		</section>
 
 
-			
-			
+	</section>
 
 
 
-    <section anchor='signatures-and-encryption' title='Signatures and Encryption'>
-      <t>cf. OpenID Connect - chapter 10</t>
+
+    <section anchor='SigEnc' title='Signatures and Encryption'>
+	<t>
+	cf. OpenID Connect - chapter 10
+	</t>
     </section>
 	
     <section anchor='security_considerations' title='Security Considerations'>
-      <t>TBD</t>
+	<t>TBD</t>
+		<section anchor="SigningOrder" title="Signing and Encryption Order">
+		<t>
+		cf. OpenID Connect - chapter 16.14
+		</t>
+		</section>
     </section>
+	
     <section anchor='privacy_considerations' title='Privacy Considerations'>
-      <t>TBD</t>
+	<t>TBD</t>
     </section>
+	
     <section anchor='IANA' title='IANA Considerations'>
-      <t>This document makes no requests of IANA.</t>
+	<t>This document makes no requests of IANA.</t>
     </section>
 	
+</middle>
 
+<back>
+ 
+	<references title='Normative References'>
+	<?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119"?>
+	<?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2246"?>
+	<?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4627"?>
+	<?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5246"?>
+	<?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5322"?>
+	<?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6749"?>
+	<?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6750"?>
+
+		<reference anchor='OpenID.Core'>
+		<front>
+		<title>OpenID Connect Standard 1.0</title>
+		<author fullname="Nat Sakimura" initials="N." surname='Sakimura'>
+		<organization abbrev='NRI'>Nomura Research Institute, Ltd.</organization>
+		</author>
+		<author fullname="John Bradley" initials="J." surname='Bradley'>
+		<organization abbrev='Ping Identity'>Ping Identity</organization>
+		</author>
+		<author fullname="Michael B. Jones" initials="M.B." surname='Jones'>
+		<organization abbrev='Microsoft'>Microsoft</organization>
+		</author>
+		<author fullname="Breno de Medeiros" initials="B." surname='de Medeiros'>
+		<organization abbrev='Google'>Google</organization>
+		</author>
+		<author fullname="Chuck Mortimore" initials="C." surname='Mortimore'>
+		<organization abbrev='Salesforce'>Salesforce</organization>
+		</author>
+		<author fullname="Edmund Jay" initials="E." surname='Jay'>
+		<organization abbrev='Illumila'>Illumila</organization>
+		</author>
+		<date day="19" month="December" year='2013'/>
+		</front>
+		<format target='http://openid.net/specs/openid-connect-core-1_0.html' type='HTML'/>
+		</reference>
 	
-  </middle>
-  <back>
-    <references title='Normative References'>
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119"?>
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6749"?>
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6750"?>
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5246"?>
-      <?rfc include="http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2246"?>
-      <reference anchor='OpenID.Core'>
-        <front>
-          <title>OpenID Connect Standard 1.0</title>
-          <author fullname="Nat Sakimura" initials="N." surname='Sakimura'>
-            <organization abbrev='NRI'>Nomura Research Institute, Ltd.</organization>
-          </author>
-          <author fullname="John Bradley" initials="J." surname='Bradley'>
-            <organization abbrev='Ping Identity'>Ping Identity</organization>
-          </author>
-          <author fullname="Michael B. Jones" initials="M.B." surname='Jones'>
-            <organization abbrev='Microsoft'>Microsoft</organization>
-          </author>
-          <author fullname="Breno de Medeiros" initials="B." surname='de Medeiros'>
-            <organization abbrev='Google'>Google</organization>
-          </author>
-          <author fullname="Chuck Mortimore" initials="C." surname='Mortimore'>
-            <organization abbrev='Salesforce'>Salesforce</organization>
-          </author>
-          <author fullname="Edmund Jay" initials="E." surname='Jay'>
-            <organization abbrev='Illumila'>Illumila</organization>
-          </author>
-          <date day="19" month="December" year='2013'/>
-        </front>
-        <format target='http://openid.net/specs/openid-connect-core-1_0.html' type='HTML'/>
-      </reference>
-      <reference anchor='OpenID.Registration'>
-        <front>
-          <title>OpenID Connect Dynamic Client Registration 1.0</title>
-          <author fullname="Nat Sakimura" initials="N." surname='Sakimura'>
-            <organization abbrev='NRI'>Nomura Research Institute, Ltd.</organization>
-          </author>
-          <author fullname="John Bradley" initials="J." surname='Bradley'>
-            <organization abbrev='Ping Identity'>Ping Identity</organization>
-          </author>
-          <author fullname="Michael B. Jones" initials="M.B." surname='Jones'>
-            <organization abbrev='Microsoft'>Microsoft</organization>
-          </author>
-          <date day="19" month="December" year='2013'/>
-        </front>
-        <format target='http://openid.net/specs/openid-connect-registration-1_0-19.html' type='HTML'/>
-      </reference>
-      <reference anchor='OpenID.Discovery'>
-        <front>
-          <title>OpenID Connect Discovery 1.0</title>
-          <author fullname="Nat Sakimura" initials="N." surname='Sakimura'>
-            <organization abbrev='NRI'>Nomura Research Institute, Ltd.</organization>
-          </author>
-          <author fullname="John Bradley" initials="J." surname='Bradley'>
-            <organization abbrev='Ping Identity'>Ping Identity</organization>
-          </author>
-          <author fullname="Michael B. Jones" initials="M.B." surname='Jones'>
-            <organization abbrev='Microsoft'>Microsoft</organization>
-          </author>
-          <author fullname="Edmund Jay" initials="E." surname='Jay'>
-            <organization abbrev='Illumila'>Illumila</organization>
-          </author>
-          <date day="16" month="September" year='2014'/>
-        </front>
-        <format target='http://openid.net/specs/openid-connect-discovery-1_0.html' type='HTML'/>
-      </reference>
-      <reference anchor='JWT'>
-        <front>
-          <title>JSON Web Token (JWT)</title>
-          <author fullname="Michael B. Jones" initials="M.B." surname='Jones'>
-            <organization abbrev='Microsoft'>Microsoft</organization>
-          </author>
-          <author fullname="John Bradley" initials="J." surname='Bradley'>
-            <organization abbrev='Ping Identity'>Ping Identity</organization>
-          </author>
-          <author fullname="Nat Sakimura" initials="N." surname='Sakimura'>
-            <organization abbrev='NRI'>Nomura Research Institute, Ltd.</organization>
-          </author>
-          <date day="28" month="May" year='2013'/>
-        </front>
-        <seriesInfo value="draft-ietf-oauth-json-web-token" name='Internet-Draft'/>
-        <format target='http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08' type='HTML'/>
-      </reference>
-    </references>
-    <section anchor='Acknowledgements' title='Acknowledgements'>
-      <t>The following have contributed to the development of this specification.</t>
-      <t>
-        <list style='empty'>
-          <t/>
-        </list>
-      </t>
-    </section>
-    <section anchor='Notices' title='Notices'>
-      <t>Copyright (c) 2014 The OpenID Foundation.</t>
-      <t>
+		<reference anchor='OpenID.Registration'>
+		<front>
+		<title>OpenID Connect Dynamic Client Registration 1.0</title>
+		<author fullname="Nat Sakimura" initials="N." surname='Sakimura'>
+		<organization abbrev='NRI'>Nomura Research Institute, Ltd.</organization>
+		</author>
+		<author fullname="John Bradley" initials="J." surname='Bradley'>
+		<organization abbrev='Ping Identity'>Ping Identity</organization>
+		</author>
+		<author fullname="Michael B. Jones" initials="M.B." surname='Jones'>
+		<organization abbrev='Microsoft'>Microsoft</organization>
+		</author>
+		<date day="19" month="December" year='2013'/>
+		</front>
+		<format target='http://openid.net/specs/openid-connect-registration-1_0-19.html' type='HTML'/>
+		</reference>
+	
+		<reference anchor='OpenID.Discovery'>
+		<front>
+		<title>OpenID Connect Discovery 1.0</title>
+		<author fullname="Nat Sakimura" initials="N." surname='Sakimura'>
+		<organization abbrev='NRI'>Nomura Research Institute, Ltd.</organization>
+		</author>
+		<author fullname="John Bradley" initials="J." surname='Bradley'>
+		<organization abbrev='Ping Identity'>Ping Identity</organization>
+		</author>
+		<author fullname="Michael B. Jones" initials="M.B." surname='Jones'>
+		<organization abbrev='Microsoft'>Microsoft</organization>
+		</author>
+		<author fullname="Edmund Jay" initials="E." surname='Jay'>
+		<organization abbrev='Illumila'>Illumila</organization>
+		</author>
+		<date day="16" month="September" year='2014'/>
+		</front>
+		<format target='http://openid.net/specs/openid-connect-discovery-1_0.html' type='HTML'/>
+		</reference>
+	
+		<reference anchor='JWT'>
+		<front>
+		<title>JSON Web Token (JWT)</title>
+		<author fullname="Michael B. Jones" initials="M.B." surname='Jones'>
+		<organization abbrev='Microsoft'>Microsoft</organization>
+		</author>
+		<author fullname="John Bradley" initials="J." surname='Bradley'>
+		<organization abbrev='Ping Identity'>Ping Identity</organization>
+		</author>
+		<author fullname="Nat Sakimura" initials="N." surname='Sakimura'>
+		<organization abbrev='NRI'>Nomura Research Institute, Ltd.</organization>
+		</author>
+		<date day="28" month="May" year='2013'/>
+		</front>
+		<seriesInfo value="draft-ietf-oauth-json-web-token" name='Internet-Draft'/>
+		<format target='http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-08' type='HTML'/>
+		</reference>
+	
+		<reference anchor="JWS" target="http://tools.ietf.org/html/rfc7515">
+		<front>
+		<title>JSON Web Signature (JWS)</title>
+		<author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+		<organization abbrev="Microsoft">Microsoft</organization>
+		</author>
+		<author fullname="John Bradley" initials="J." surname="Bradley">
+		<organization abbrev="Ping Identity">Ping Identity</organization>
+		</author>
+		<author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+		<organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+		</author>
+		<date month="May" year="2015" />
+		</front>
+		<seriesInfo name="RFC" value="7515"/>
+		<seriesInfo name="DOI" value="10.17487/RFC7515"/>
+		</reference>
+
+		<reference anchor="JWE" target="http://tools.ietf.org/html/rfc7516">
+		<front>
+		<title>JSON Web Encryption (JWE)</title>
+		<author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+		<organization>Microsoft</organization>
+		</author>
+		<author fullname="Eric Rescorla" initials="E." surname="Rescorla">
+		<organization>RTFM, Inc.</organization>
+		</author>
+		<author fullname="Joe Hildebrand" initials="J." surname="Hildebrand">
+		<organization>Cisco Systems, Inc.</organization>
+		</author>
+		<date month="May" year="2015" />
+		</front>
+		<seriesInfo name="RFC" value="7516"/>
+		<seriesInfo name="DOI" value="10.17487/RFC7516"/>
+		</reference>
+	
+		<reference anchor="RFC20" target="http://www.rfc-editor.org/info/rfc20">
+		<front>
+		<title>ASCII format for Network Interchange</title>
+		<author fullname="Vint Cerf" surname="Cerf" initials="V.">
+		<organization>University California Los Angeles (UCLA)</organization>
+		</author>
+		<date month="October" year="1969"/>
+		</front>
+		<seriesInfo name="STD" value="80"/>
+		<seriesInfo name="RFC" value="20"/>
+		<seriesInfo name="DOI" value="10.17487/RFC0020"/>
+		</reference>
+		
+		<reference anchor="E.164" target="http://www.itu.int/rec/T-REC-E.164-201011-I/en">
+		<front>
+		<title>E.164: The international public telecommunication numbering plan</title>
+		<author fullname="International Telecommunication Union">
+		<organization abbrev="ITU">International Telecommunication Union</organization>
+		</author>
+		<date year="2010" />
+		</front>
+		</reference>
+		
+	</references>
+
+
+	<section anchor='Acknowledgements' title='Acknowledgements'>
+	<t>The following have contributed to the development of this specification.</t>
+	<t>
+	<list style='empty'>
+	<t/>
+	</list>
+	</t>
+	</section>
+
+
+	<section anchor='Notices' title='Notices'>
+	<t>Copyright (c) 2014 The OpenID Foundation.</t>
+	<t>
 	The OpenID Foundation (OIDF) grants to any Contributor, developer, 
 	implementer, or other interested party a non-exclusive, royalty free, 
 	worldwide copyright license to reproduce, prepare derivative works from, 
@@ -1563,8 +1347,8 @@ Accept: application/json
 	Final Specifications based on such documents, provided that attribution 
 	be made to the OIDF as the source of the material, but that such attribution 
 	does not indicate an endorsement by the OIDF.
-      </t>
-      <t>
+	</t>
+	<t>
 	The technology described in this specification was 
 	made available from contributions from various sources, 
 	including members of the OpenID Foundation and others.  
@@ -1590,11 +1374,14 @@ Accept: application/json
 	patents, patent applications, or other proprietary rights 
 	that may cover technology that may be required to practice 
 	this specification.
-      </t>
-    </section>
-    <section anchor='History' title='Document History'>
-      <t>[[ To be removed from the final specification ]]</t>
-      <t>-01 <list style='symbols'><t>Initial draft</t><t>Added OIDF Standard Notice </t></list></t>
-    </section>
-  </back>
+	</t>
+	</section>
+
+
+	<section anchor='History' title='Document History'>
+	<t>[[ To be removed from the final specification ]]</t>
+	<t>-01 <list style='symbols'><t>Initial draft</t><t>Added OIDF Standard Notice </t></list></t>
+	</section>
+
+</back>
 </rfc>
