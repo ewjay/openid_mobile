@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type='text/xsl' href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
+<?xml-stylesheet type='text/xsl' 
+href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc2119 SYSTEM 
+"http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 ]>
 
 <rfc category="info" docName="draft-account-porting-02alpha" ipr="trust200902">
@@ -32,11 +34,15 @@
 <workgroup>OpenID MODRNA Working Group</workgroup>
   
 <abstract>
-<t>This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change.</t>
+<t>This specification defines mechanisms to support a user porting from one 
+OpenID Connect Provider to another, such that relying parties can automatically 
+recognize and verify the change.</t>
 </abstract>
 
 <note title="Note">
-<t>Discussions on this draft occur in the <eref target="https://openid.net/wg/mobile/">OpenID Foundation MODRNA working group</eref>.</t>
+<t>Discussions on this draft occur in the <eref 
+target="https://openid.net/wg/mobile/">OpenID Foundation MODRNA working 
+group</eref>.</t>
 </note>
 
 </front>
@@ -46,27 +52,83 @@
 
 <section anchor="intro" title="Introduction">
 
-<t>OpenID Connect is a federated identity protocol that allows a user to leverage his or her authentication to an OpenID Connect Provider (OP) to login to Relying Parties (RPs). An RP can (and often will) accept logins via many OPs. The primary identifier for a user at an RP is the combination of a Subject Id ("sub" value) and OP identifier ("iss" value). The "sub" value is only defined to be unambiguous within the context of an "iss" value <xref target="OpenID.Core"/> &#xA7;5.7. "Claim Stability and Uniqueness". This design deliberately isolates each OP's user population so one OP cannot adversely affect the security of another OP. One consequence, however, is that a user porting from one OP to another appears to an RP as two unrelated users.</t>
+<t>OpenID Connect is a federated identity protocol that allows a user to 
+leverage his or her authentication to an OpenID Connect Provider (OP) to login 
+to Relying Parties (RPs). An RP can (and often will) accept logins via many 
+OPs. The primary identifier for a user at an RP is the combination of a Subject 
+Id ("sub" value) and OP identifier ("iss" value). The "sub" value is only 
+defined to be unambiguous within the context of an "iss" value
+<xref target="OpenID.Core"/> &#xA7;5.7. "Claim Stability and Uniqueness".
+This design deliberately isolates each OP's user population so one OP cannot
+adversely affect the security of another OP. One consequence, however, is that
+a user porting from one OP to another appears to an RP as two unrelated
+users.</t>
 
-<t>This specification extends OpenID Connect to enable an RP to recognize when a user logging in via a New OP is the same user who has previously logged in via an Old OP. That is, it enables porting between OPs to be handled automatically by RPs. The central idea is that the user logs into both Old and New OPs in a single session to establish the link between the user's accounts at each. Subsequently, RPs can interact with both OPs to confirm that link, without needing the user to repeat the dual logins.</t>
+<t>This specification extends OpenID Connect to enable an RP to recognize when 
+a user logging in via a New OP is the same user who has previously logged in 
+via an Old OP. That is, it enables porting between OPs to be handled 
+automatically by RPs. The central idea is that the user logs into both Old and 
+New OPs in a single session to establish the link between the user's accounts 
+at each. Subsequently, RPs can interact with both OPs to confirm that link, 
+without needing the user to repeat the dual logins.</t>
 
-<t>Portability is achieved by defining three processes: 1) how the New OP obtains details about the user from the Old OP; 2) how the New OP indicates the previous relationship with the Old OP in an id_token issued to an RP; and 3) how the RP can confirm a port is legitimate by interacting with the Old OP. The first process occurs when a user ports between two OPs. The other two processes occur for each RP the first time the user logs into that RP after porting. The processes maintain the privacy benefit offered by the use of pairwise Subject Ids. It is possible for an OP to implemented the processes without maintaining details of the RPs each user has visited.</t>
+<t>Portability is achieved by defining three processes: 1) how the New OP 
+obtains details about the user from the Old OP; 2) how the New OP indicates the 
+previous relationship with the Old OP in an id_token issued to an RP; and 3) 
+how the RP can confirm a port is legitimate by interacting with the Old OP. The 
+first process occurs when a user ports between two OPs. The other two processes 
+occur for each RP the first time the user logs into that RP after porting. The 
+processes maintain the privacy benefit offered by the use of pairwise Subject 
+Ids. It is possible for an OP to implemented the processes without maintaining 
+details of the RPs each user has visited.</t>
 
-<t>OpenID Connect account porting is motivated by the GSMA Mobile Connect scheme, in which mobile network operators collectively offer federated identity services <xref target="MobileConnect"/>. Most jurisdictions allow users to port their mobile phone number between network operators, and a reasonable expectation of those users will be that their Mobile Connect account (provided by those same operators) can also be ported at the same time. There is a significant difference between phone number and account porting, however. Other parties are generally unaware when number porting occurs; they simply keep using the same phone number to communicate with the user. In contrast, RPs are aware when an OpenID Connect account is ported as they interact with a New OP.</t>
+<t>OpenID Connect account porting is motivated by the GSMA Mobile Connect 
+scheme, in which mobile network operators collectively offer federated identity 
+services <xref target="MobileConnect"/>. Most jurisdictions allow users to port 
+their mobile phone number between network operators, and a reasonable 
+expectation of those users will be that their Mobile Connect account (provided 
+by those same operators) can also be ported at the same time. There is a 
+significant difference between phone number and account porting, however. Other 
+parties are generally unaware when number porting occurs; they simply keep 
+using the same phone number to communicate with the user. In contrast, RPs are 
+aware when an OpenID Connect account is ported as they interact with a New 
+OP.</t>
 
-<t>Section 2 defines metadata that indicates an OP supports porting, which can be obtained via <xref target="OpenID.Discovery"/>. Section 3 specifies an API offered by an Old OP that a New OP uses to obtain porting-related details about a user. This API is protected by an OAuth 2.0 exchange to ensure the user consents to releasing the details to the New OP. Section 4 specifies how a New OP can identify the Old OP in an id_token presented to an RP. Section 5 describes how an RP can confirm the porting information with the Old OP. Annex A provides a example of a complete porting flow.</t>
+<t>Section 2 defines metadata that indicates an OP supports porting, which can 
+be obtained via <xref target="OpenID.Discovery"/>. Section 3 specifies an API 
+offered by an Old OP that a New OP uses to obtain porting-related details about 
+a user. This API is protected by an OAuth 2.0 exchange to ensure the user 
+consents to releasing the details to the New OP. Section 4 specifies how a New 
+OP can identify the Old OP in an id_token presented to an RP. Section 5 
+describes how an RP can confirm the porting information with the Old OP. Annex 
+A provides a example of a complete porting flow.</t>
 
 
-<t>[[MODEL: consider a section describing the model for the porting process: user, Old OP, new OP, any number of sector_ids, any number of client_ids per sector_id; sector_id vs client_id vs redirect_uri; user can auth to Old and New during porting, but doesn't have to afterwards; might need something special like port code to auth to Old OP, but that is out-of-scope; RP doesn't need to auth to Old OP after port; porting info needs to be provided at least once per RP client_id (suggest more), not just once per sector_id; OP iss value and associated discovery doc as point of trust]]</t>
+<t>[[MODEL: consider a section describing the model for the porting process: 
+user, Old OP, new OP, any number of sector_ids, any number of client_ids per 
+sector_id; sector_id vs client_id vs redirect_uri; user can auth to Old and New 
+during porting, but doesn't have to afterwards; might need something special 
+like port code to auth to Old OP, but that is out-of-scope; RP doesn't need to 
+auth to Old OP after port; porting info needs to be provided at least once per 
+RP client_id (suggest more), not just once per sector_id; OP iss value and 
+associated discovery doc as point of trust]]</t>
 
 
-<section anchor="rnc" title="Requirements Notation, Conventions, and Terminology">
+<section anchor="rnc"
+    title="Requirements Notation, Conventions, and Terminology">
 
-<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
+<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT", 
+"RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as 
+described in <xref target="RFC2119"/>.</t>
 
-<t>Throughout this document, values are quoted to indicate that they are to be taken literally in protocol messages.</t>
+<t>Throughout this document, values are quoted to indicate that they are to be 
+taken literally in protocol messages.</t>
 
-<t>Terms such as "OpenID Provider" (OP), "Relying Party" (RP), "Subject Id" (sub), and "Sector Id" are defined in <xref target="OpenID.Core"/>. This document uses the terms "Old OP" and "New OP" to indicate OpenID Providers that support users porting out and porting in respectively. An OP can support both roles (and hopefully most will).</t>
+<t>Terms such as "OpenID Provider" (OP), "Relying Party" (RP), "Subject Id" 
+(sub), and "Sector Id" are defined in <xref target="OpenID.Core"/>. This 
+document uses the terms "Old OP" and "New OP" to indicate OpenID Providers that 
+support users porting out and porting in respectively. An OP can support both 
+roles (and hopefully most will).</t>
 
 </section>
 
@@ -75,7 +137,9 @@
 
 <section anchor="discovery" title="Discovery">
 
-<t>OpenID Discovery offers details about the features supported by an OP <xref target="OpenID.Discovery"/>. The following members MUST be included in the metadata for an Old OP that supports users porting out:</t>
+<t>OpenID Discovery offers details about the features supported by an OP
+<xref target="OpenID.Discovery"/>. The following members MUST be included in
+the metadata for an Old OP that supports users porting out:</t>
 
 <t><list style="hanging">
 
@@ -122,11 +186,26 @@ Content-Type: application/json
 
 <section anchor="port_data" title="Porting data API">
 
-<t>The Porting data API (offered by an Old OP and consumed by a New OP) provides a token to represent a porting event. The New OP passes the token (after encrypting it <xref target="enc" format="none">section 3.1</xref>) to each RP when the user subsequently logs into that RP <xref target="aka" format="none">section 4</xref>. The RP, in turn, passes the token to the Porting check API <xref target="port_check" format="none">section 5</xref> to confirm the port with the Old OP.</t>
+<t>The Porting data API (offered by an Old OP and consumed by a New OP) 
+provides a token to represent a porting event. The New OP passes the token 
+(after encrypting it <xref target="enc" format="none">section 3.1</xref>) to 
+each RP when the user subsequently logs into that RP
+<xref target="aka" format="none">section 4</xref>. The RP, in turn, passes the
+token to the Porting check API
+<xref target="port_check" format="none">section 5</xref> to confirm the port
+with the Old OP.</t>
 
-<t>Access to porting data requires the consent of the user to whom it relates. The Old OP MUST support the OAuth 2.0 authorization code flow for accessing the API <xref target="RFC6749"/>. The Old OP MUST support Bearer access tokens <xref target="RFC6750"/>. The New OP MUST include the scope "port_data" when requesting access.</t>
+<t>Access to porting data requires the consent of the user to whom it relates. 
+The Old OP MUST support the OAuth 2.0 authorization code flow for accessing the 
+API <xref target="RFC6749"/>. The Old OP MUST support Bearer access tokens 
+<xref target="RFC6750"/>. The New OP MUST include the scope "port_data" when 
+requesting access.</t>
 
-<t>The API provides a single read-only resource per user. It can be read with a "GET" request. The path "/me" appended to the base URL (from the "port_data_endpoint" member in the Old OP discovery metadata) indicates the resource for the user associated with the access token used to make the request.</t>
+<t>The API provides a single read-only resource per user. It can be read with a 
+"GET" request. The path "/me" appended to the base URL (from the 
+"port_data_endpoint" member in the Old OP discovery metadata) indicates the 
+resource for the user associated with the access token used to make the 
+request.</t>
 
 <t>The response is a JSON object with a "port_token" member that has a string
 value. The Old OP needs to be able to identify the user and New OP involved in
@@ -161,7 +240,12 @@ Content-Type: application/json
 }
 </artwork></figure>
 
-<t>An Old OP will generally know via other processes when and to whom a user is porting. In such circumstances, the API SHOULD reject requests about a user not known to be in the process of porting, and SHOULD reject requests from any OP other than the known porting destination. Only OPs explicitly trusted by the Old OP SHOULD be allowed to use the API (eg to use the "port_data" scope) as the API is security and privacy sensitive.</t>
+<t>An Old OP will generally know via other processes when and to whom a user is 
+porting. In such circumstances, the API SHOULD reject requests about a user not 
+known to be in the process of porting, and SHOULD reject requests from any OP 
+other than the known porting destination. Only OPs explicitly trusted by the 
+Old OP SHOULD be allowed to use the API (eg to use the "port_data" scope) as 
+the API is security and privacy sensitive.</t>
 
 </section>
 
@@ -178,7 +262,13 @@ be used at the Old OP's Porting check API
 <xref target="port_check" format="none">section 5</xref> to confirm the port
 and obtain the Old OP's "sub" value for the user.</t>
 
-<t>On receiving an id_token, a RP uses "iss" &amp; "sub" to lookup the user's account in the RP's systems. If no such account is found, but the id_token contains an "aka" member, then the RP MUST process the "aka" value to determine if the RP knows the user via federation from an Old OP. Processing involves: calling the Porting check API for the Old OP with the given "enc_port_token"; looking for an existing account at the RP that matches the Old OP's "sub" value; and linking that account to the New OP's "sub" value.</t>
+<t>On receiving an id_token, a RP uses "iss" &amp; "sub" to lookup the user's 
+account in the RP's systems. If no such account is found, but the id_token 
+contains an "aka" member, then the RP MUST process the "aka" value to determine 
+if the RP knows the user via federation from an Old OP. Processing involves: 
+calling the Porting check API for the Old OP with the given "enc_port_token"; 
+looking for an existing account at the RP that matches the Old OP's "sub" 
+value; and linking that account to the New OP's "sub" value.</t>
 
 <t>Below is a sample payload of an id_token.</t>
 
@@ -226,7 +316,16 @@ Subject Ids. However, encryption is still used in such cases to avoid
 introducing additional options to the porting mechanism.</t>
 
 <t>A "port_token" value is encrypted to create an "enc_port_token" value.
-The encryption follows the JSON Web Encryption <xref target="RFC7516"/> process, creating a JWE compact serialization. Direct encryption with a shared symmetric key is used ("alg":"dir"), with a key derived from the "client_secret" value that the New OP uses to authenticate to the Old OP. Deriving the key follows section 10.2 "Encryption" of <xref target="OpenID.Core"/>: using the left-most bits of the SHA2 hash of "client_secret". The key id ("kid") is set to the "client_id" value. The content encryption algorithm is chosen from the "port_enc_algs_supported" list published in the Old OP's discovery metadata. The plaintext is the "port_token" value.</t>
+The encryption follows the JSON Web Encryption <xref target="RFC7516"/> 
+process, creating a JWE compact serialization. Direct encryption with a shared 
+symmetric key is used ("alg":"dir"), with a key derived from the 
+"client_secret" value that the New OP uses to authenticate to the Old OP. 
+Deriving the key follows section 10.2 "Encryption" of
+<xref target="OpenID.Core"/>: using the left-most bits of the SHA2 hash of 
+"client_secret". The key id ("kid") is set to the "client_id" value. The 
+content encryption algorithm is chosen from the "port_enc_algs_supported" list 
+published in the Old OP's discovery metadata. The plaintext is the "port_token" 
+value.</t>
 
 <t>The JWE header MUST include a type parameter ("typ") with the value
 "oidc-porting" to explicitly indicate the semantics of the message.
@@ -263,7 +362,9 @@ and random 96-bit nonce (iv); shown in hex and base64url respectively:</t>
            iv: 48V1_ALb6US04U3b
 </artwork></figure>
 
-<t>The payload is the "port_token" value from the previous section. The additional authenticated data (AAD) is the base64url-encoding of the JWE protected header.</t>
+<t>The payload is the "port_token" value from the previous section. The 
+additional authenticated data (AAD) is the base64url-encoding of the JWE 
+protected header.</t>
 
 <figure><artwork>
     plaintext: 3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI
@@ -281,7 +382,8 @@ and random 96-bit nonce (iv); shown in hex and base64url respectively:</t>
 
 <t>[[TO BE COMPLETED: calculate real ciphertext/tag values]]</t>
 
-<t>Putting it all together (note the 2nd field of the JWE is empty as there is no encrypted key when using direct encryption):</t>
+<t>Putting it all together (note the 2nd field of the JWE is empty as there is 
+no encrypted key when using direct encryption):</t>
 
 <figure><artwork>
 "enc_port_token": "eyJ0eX&#x2026;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag"
@@ -293,7 +395,10 @@ and random 96-bit nonce (iv); shown in hex and base64url respectively:</t>
 
 <section anchor="port_check" title="Porting check API">
 
-<t>The Porting check API is offered by an Old OP to RPs so they can confirm that a user did port to a specific New OP. The API converts an "enc_port_token" to a Subject Id ("sub" value), which the RP needs to identify the ported user's existing account at the RP.</t>
+<t>The Porting check API is offered by an Old OP to RPs so they can confirm 
+that a user did port to a specific New OP. The API converts an "enc_port_token" 
+to a Subject Id ("sub" value), which the RP needs to identify the ported user's 
+existing account at the RP.</t>
 
 <t>Access to the Porting check API requires authentication of the RP.
 The Old OP and RP MUST support the OAuth 2.0 client credentials flow
@@ -311,21 +416,27 @@ response status code MUST be returned (eg 400 Bad request).</t>
 
 <t>The Old OP makes the following checks:</t>
 <t><list style="symbols">
-<t>MUST verify the authenticated encryption of the "enc_port_token" JWE,
-which MUST include verifying that it is actually authenticated (ie that "alg"
-is an acceptable AEAD algorithm, and certainly not "none").</t>
-<t>MUST verify that the JWE "typ" member is present with the value
-"oidc_porting", to avoid misinterpretting the meaning of the JWE.</t>
-<t>MUST verify that the "iss" query parameter is consistent with the key used to
-verify the JWE. This confirms that the RP and Old OP have the same
-understanding of who the New OP is.</t>
-<t>MUST verify that the "port_token" (the plaintext from the JWE) was issued by
-the Old OP.</t>
-<t>MUST verify that the New OP identified from the "port_token" is consistent
-with the key used to verify the JWE.</t>
-<t>SHOULD verify that the "sector_id" from the JWE header (if present) matches
-the value for the RP. The only exception to this is when the Old OP uses public
-Subject Ids and does not know the "sector_id".</t>
+
+  <t>MUST verify the authenticated encryption of the "enc_port_token" JWE,
+  which MUST include verifying that it is actually authenticated (ie that "alg"
+  is an acceptable AEAD algorithm, and certainly not "none").</t>
+
+  <t>MUST verify that the JWE "typ" member is present with the value
+  "oidc_porting", to avoid misinterpretting the meaning of the JWE.</t>
+
+  <t>MUST verify that the "iss" query parameter is consistent with the key used
+  to verify the JWE. This confirms that the RP and Old OP have the same
+  understanding of who the New OP is.</t>
+
+  <t>MUST verify that the "port_token" (the plaintext from the JWE) was issued
+  by the Old OP.</t>
+
+  <t>MUST verify that the New OP identified from the "port_token" is consistent
+  with the key used to verify the JWE.</t>
+
+  <t>SHOULD verify that the "sector_id" from the JWE header (if present)
+  matches the value for the RP. The only exception to this is when the Old OP
+  uses public Subject Ids and does not know the "sector_id".</t>
 </list></t>
 
 <t>A successful response is a JSON object that can include the following members
@@ -428,61 +539,97 @@ Content-Type: application/json
 
 <section anchor="security" title="Security Considerations">
 
-<t>Attackers goal: get access to the victims RP accounts either by taking over the respective OP or RP account.  This section analysis the protocol flow along the lines of the migration process for threat vectors. Note: this list is a starting point and not meant to be comprehensive (yet).</t>
+<t>Attackers goal: get access to the victims RP accounts either by taking over 
+the respective OP or RP account.  This section analysis the protocol flow along 
+the lines of the migration process for threat vectors. Note: this list is a 
+starting point and not meant to be comprehensive (yet).</t>
 
 <section title="Impersonation of legitimate user's old OP account">
-<t>If the attacker can get hold of the authorization grant issued by the old OP for access to the account migration API, the attacker can impersonate the legitimate user in the migration process at the new OP.  </t>
+<t>If the attacker can get hold of the authorization grant issued by the old OP 
+for access to the account migration API, the attacker can impersonate the 
+legitimate user in the migration process at the new OP.  </t>
 
 <t><list style="symbols">
-  <t>Prevent leakage of authorization grant at old OP (mix up, referrer header, log files, ...)</t>
-  <t>Prevent injection at new OP (TBD - state, id_token, nonce, pkce, token binding, ...)</t>
-  <t>Audience/purpose restrict access tokens on old OP side, in order to strictly limit access tokens, which can be used for account migration. Combined with a strict limitation (whitelisting) of all clients, which are allowed to request access tokens for account migration shall reduce attack surface.</t>
-  <t>idea: use migration specific credential, which is directly entered during migration process at new OP (in turn potentially imposes the risk of men in the middle/phishing)</t>
-  <t>old OP should notify user of account migration process via different communication channel.</t>
+  <t>Prevent leakage of authorization grant at old OP (mix up, referrer header, 
+log files, ...)</t>
+  <t>Prevent injection at new OP (TBD - state, id_token, nonce, pkce, token 
+binding, ...)</t>
+  <t>Audience/purpose restrict access tokens on old OP side, in order to 
+strictly limit access tokens, which can be used for account migration. Combined 
+with a strict limitation (whitelisting) of all clients, which are allowed to 
+request access tokens for account migration shall reduce attack surface.</t>
+  <t>idea: use migration specific credential, which is directly entered during 
+migration process at new OP (in turn potentially imposes the risk of men in the 
+middle/phishing)</t>
+  <t>old OP should notify user of account migration process via different 
+communication channel.</t>
 </list></t>
 </section>
 
 <section title="Trick user into login with attacker's account">
-<t>The attacker could try to cause the legitimate user to login with her new OP with the attacker's account with this new OP. That would cause the new OP to associate the migration data with the attackers account, which in turn allows the attacker to migrate all RP accounts of the legitimate user to his account with the new OP.  </t>
+<t>The attacker could try to cause the legitimate user to login with her new OP 
+with the attacker's account with this new OP. That would cause the new OP to 
+associate the migration data with the attackers account, which in turn allows 
+the attacker to migrate all RP accounts of the legitimate user to his account 
+with the new OP.  </t>
 
 <t><list style="symbols">
   <t>Prevent XSRF, session fixation</t>
-  <t>Explicitly show user identity data of both user accounts, which she is about to tie together and ask for consent.</t>
-  <t>Send information back to old OP about new OP identity? It could inform user of the migration, which just happened (too).</t>
+  <t>Explicitly show user identity data of both user accounts, which she is 
+about to tie together and ask for consent.</t>
+  <t>Send information back to old OP about new OP identity? It could inform 
+user of the migration, which just happened (too).</t>
 </list></t>
 </section>
 
 <section title="Impersonate old OP/replay migration data">
-<t>If the attacker gets hold of valid migration data of an account at OP1 and "migrates" the account data to his account with OP1. Scenario: The attacker logs into the new OP with her OP account and sends the new OP to the OP under her control. This OP returns migration data obtained from a legitimate OP in a previous step.  </t>
+<t>If the attacker gets hold of valid migration data of an account at OP1 and 
+"migrates" the account data to his account with OP1. Scenario: The attacker 
+logs into the new OP with her OP account and sends the new OP to the OP under 
+her control. This OP returns migration data obtained from a legitimate OP in a 
+previous step.  </t>
 
 <t><list style="symbols">
-  <t>audience restriction: verify subject of migration data (migrated_to must be iss of new OP)</t>
-  <t>detection: use discovery to match account migration endpoint to endpoint of legitimate OP</t>
+  <t>audience restriction: verify subject of migration data (migrated_to must 
+be iss of new OP)</t>
+  <t>detection: use discovery to match account migration endpoint to endpoint 
+of legitimate OP</t>
 </list></t>
 </section>
 
 <section title="Bad OP">
-<t>Attacker could try to trick victim into (unintentionally) migration her OP account to a OP under the attacker's control </t>
+<t>Attacker could try to trick victim into (unintentionally) migration her OP 
+account to a OP under the attacker's control </t>
 
 <t><list style="symbols">
-  <t>white listing or blacklisting of OPs for which account migration is supported</t>
-  <t>clear wording and consent during release of the account migration authorization grant.</t>
-  <t>no SSO and no auto consent: require re-authentication and explicit consent + specific migration credential (just to make the process less convenient and make the victim think about what she is up to.).</t>
-  <t>old OP should notify user of account migration process via different communication channel.</t>
+  <t>white listing or blacklisting of OPs for which account migration is 
+supported</t>
+  <t>clear wording and consent during release of the account migration 
+authorization grant.</t>
+  <t>no SSO and no auto consent: require re-authentication and explicit consent 
++ specific migration credential (just to make the process less convenient and 
+make the victim think about what she is up to.).</t>
+  <t>old OP should notify user of account migration process via different 
+communication channel.</t>
 </list></t>
 </section>
 
 <section title="Inject migration data during RP account migration">
-<t>Attacker gets hold of valid migration data and injects it into the login response. This would only work for implicit grant, not for grant type code.  </t>
+<t>Attacker gets hold of valid migration data and injects it into the login 
+response. This would only work for implicit grant, not for grant type code.  
+</t>
 
 <t><list style="symbols">
   <t>use grant type code</t>
-  <t>migration data is included in ID Token, so it is signed by the new OP and cannot be modfied by the attacker.</t>
+  <t>migration data is included in ID Token, so it is signed by the new OP and 
+cannot be modfied by the attacker.</t>
 </list></t>
 </section>
 
 <section title="Further Considerations">
-<t>Note: the new OP could also accidentally assign the account migration data to the wrong user account in its database. Care must be taken that the respective functions are thoroughly tested with every change.</t>
+<t>Note: the new OP could also accidentally assign the account migration data 
+to the wrong user account in its database. Care must be taken that the 
+respective functions are thoroughly tested with every change.</t>
 </section>
 
 </section>
@@ -497,23 +644,31 @@ Content-Type: application/json
 
 <section anchor="iana" title="IANA Considerations">
 
-<t>This document registers the "aka" claim in the IANA "JSON Web Token Claims" registry <xref target="IANA.JWT_Claims"/>.</t>
+<t>This document registers the "aka" claim in the IANA "JSON Web Token Claims" 
+registry <xref target="IANA.JWT_Claims"/>.</t>
 
 <t><list style="symbols">
   <t>Claim Name: "aka"</t>
   <t>Claim Description: Also Known As</t>
-  <t>Change Controller: OpenID Foundation MODRNA working group &lt;https://openid.net/wg/mobile/&gt;</t>
-  <t>Specification Document(s): <xref target="aka" format="none">Section 4</xref> of [[ this specification ]]</t>
+  <t>Change Controller: OpenID Foundation MODRNA working group 
+&lt;https://openid.net/wg/mobile/&gt;</t>
+  <t>Specification Document(s): <xref target="aka" format="none">Section 
+4</xref> of [[ this specification ]]</t>
 </list></t>
 
-<t>This document registers the "sector_id" claim in the IANA "JSON Web Signature and Encryption Header Parameters" registry <xref target="IANA.JOSE"/>.</t>
+<t>This document registers the "sector_id" claim in the IANA "JSON Web 
+Signature and Encryption Header Parameters" registry <xref 
+target="IANA.JOSE"/>.</t>
 
 <t><list style="symbols">
   <t>Header Parameter Name: "sector_id"</t>
-  <t>Header Parameter Description: Sector identifier for a group of websites under common administrative control</t>
+  <t>Header Parameter Description: Sector identifier for a group of websites 
+under common administrative control</t>
   <t>Header Parameter Usage Location: JWE</t>
-  <t>Change Controller: OpenID Foundation MODRNA working group &lt;https://openid.net/wg/mobile/&gt;</t>
-  <t>Specification Document(s): <xref target="enc" format="none">Section 3.1</xref> of [[ this specification ]]</t>
+  <t>Change Controller: OpenID Foundation MODRNA working group 
+&lt;https://openid.net/wg/mobile/&gt;</t>
+  <t>Specification Document(s): <xref target="enc" format="none">Section 
+3.1</xref> of [[ this specification ]]</t>
 </list></t>
 
 </section>
@@ -526,31 +681,44 @@ Content-Type: application/json
 
 <references title="Normative References">
 
-<reference  anchor='OpenID.Core' target='https://openid.net/specs/openid-connect-core-1_0.html'>
+<reference  anchor='OpenID.Core' 
+target='https://openid.net/specs/openid-connect-core-1_0.html'>
 <front>
 <title>OpenID Connect Core 1.0</title>
-<author initials='N.' surname='Sakimura' fullname='N. Sakimua'><organization /></author>
-<author initials='J.' surname='Bradley' fullname='J. Bradley'><organization /></author>
-<author initials='M.' surname='Jones' fullname='M. Jones'><organization /></author>
-<author initials='B.' surname='de Medeiros' fullname='B. de Medeiros'><organization /></author>
-<author initials='C.' surname='Mortimore' fullname='C. Mortimore'><organization /></author>
-<author initials='E.' surname='Jay' fullname='E. Jay'><organization /></author>
+<author initials='N.' surname='Sakimura' fullname='N. Sakimua'>
+<organization/></author>
+<author initials='J.' surname='Bradley' fullname='J. Bradley'>
+<organization ></author>
+<author initials='M.' surname='Jones' fullname='M. Jones'>
+<organization/></author>
+<author initials='B.' surname='de Medeiros' fullname='B. de Medeiros'>
+<organization /></author>
+<author initials='C.' surname='Mortimore' fullname='C. Mortimore'>
+<organization/></author>
+<author initials='E.' surname='Jay' fullname='E. Jay'>
+<organization/></author>
 <date year='2013' month='December' />
 </front>
 </reference>
 
-<reference  anchor='OpenID.Discovery' target='https://openid.net/specs/openid-connect-discovery-1_0.html'>
+<reference  anchor='OpenID.Discovery' 
+target='https://openid.net/specs/openid-connect-discovery-1_0.html'>
 <front>
 <title>OpenID Connect Discovery 1.0</title>
-<author initials='N.' surname='Sakimura' fullname='N. Sakimua'><organization /></author>
-<author initials='J.' surname='Bradley' fullname='J. Bradley'><organization /></author>
-<author initials='M.' surname='Jones' fullname='M. Jones'><organization /></author>
-<author initials='E.' surname='Jay' fullname='E. Jay'><organization /></author>
+<author initials='N.' surname='Sakimura' fullname='N. Sakimua'>
+<organization/></author>
+<author initials='J.' surname='Bradley' fullname='J. Bradley'>
+<organization/></author>
+<author initials='M.' surname='Jones' fullname='M. Jones'>
+<organization/></author>
+<author initials='E.' surname='Jay' fullname='E. Jay'>
+<organization/></author>
 <date year='2015' month='August' />
 </front>
 </reference>
 
-<reference  anchor='IANA.JWT_Claims' target='https://www.iana.org/assignments/jwt/'>
+<reference  anchor='IANA.JWT_Claims' 
+target='https://www.iana.org/assignments/jwt/'>
 <front>
 <title>JSON Web Token Claims</title>
 <author><organization>IANA</organization></author>
@@ -575,7 +743,7 @@ Content-Type: application/json
 
 <references title="Informative References">
 
-<reference  anchor='MobileConnect' target='https://mobileconnect.io/'>
+<reference anchor='MobileConnect' target='https://mobileconnect.io/'>
 <front>
 <title>Mobile Connect</title>
 <author><organization>GSMA</organization></author>
@@ -583,26 +751,18 @@ Content-Type: application/json
 </front>
 </reference>
 
-<!--
-<reference  anchor='OpenID.20_Migration' target='https://openid.net/specs/openid-connect-migration-1_0.html'>
-<front>
-<title>OpenID 2.0 to OpenID Connect Migration 1.0</title>
-<author initials='N.' surname='Sakimura' fullname='N. Sakimua'><organization /></author>
-<author initials='J.' surname='Bradley' fullname='J. Bradley'><organization /></author>
-<author initials='N.' surname='Agarwal' fullname='N. Agarwal'><organization /></author>
-<author initials='E.' surname='Jay' fullname='E. Jay'><organization /></author>
-<date year='2015' month='April' />
-</front>
-</reference>
--->
-
   <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7807"?>
 </references>
 
 
 <section anchor="example" title="Example flow">
 
-<t>This example involves a user (Alice), an RP, and 3 OPs (OP1, OP2, and OP3). Alice originally federated to the RP via OP1; ported to OP2; then (shortly afterwards) ported to OP3. When Alice logs in to RP via OP3 for the first time she is not recognized directly from OP3's id_token. But by following the "aka" trail, the RP automatically establishes the link to an id from OP1 that the RP recognizes as Alice.</t>
+<t>This example involves a user (Alice), an RP, and 3 OPs (OP1, OP2, and OP3). 
+Alice originally federated to the RP via OP1; ported to OP2; then (shortly 
+afterwards) ported to OP3. When Alice logs in to RP via OP3 for the first time 
+she is not recognized directly from OP3's id_token. But by following the "aka" 
+trail, the RP automatically establishes the link to an id from OP1 that the RP 
+recognizes as Alice.</t>
 
 <t>Many details are elided. Dotted arrows represent HTTP redirects.</t>
 
@@ -615,7 +775,8 @@ Content-Type: application/json
 
 <section anchor="ack" title="Acknowledgements">
 
-<t>The following people in particular have contributed to the development of this specification: J&#246;rg Connotte; John Bradley; Axel Nennker.</t>
+<t>The following people in particular have contributed to the development of 
+this specification: J&#246;rg Connotte; John Bradley; Axel Nennker.</t>
 
 </section>
 
@@ -624,9 +785,34 @@ Content-Type: application/json
 
 <t>Copyright (c) 2016 The OpenID Foundation.</t>
 
-<t>The OpenID Foundation (OIDF) grants to any Contributor, developer, implementer, or other interested party a non-exclusive, royalty free, worldwide copyright license to reproduce, prepare derivative works from, distribute, perform and display, this Implementers Draft or Final Specification solely for the purposes of (i) developing specifications, and (ii) implementing Implementers Drafts and Final Specifications based on such documents, provided that attribution be made to the OIDF as the source of the material, but that such attribution does not indicate an endorsement by the OIDF.</t>
+<t>The OpenID Foundation (OIDF) grants to any Contributor, developer, 
+implementer, or other interested party a non-exclusive, royalty free, worldwide 
+copyright license to reproduce, prepare derivative works from, distribute, 
+perform and display, this Implementers Draft or Final Specification solely for 
+the purposes of (i) developing specifications, and (ii) implementing 
+Implementers Drafts and Final Specifications based on such documents, provided 
+that attribution be made to the OIDF as the source of the material, but that 
+such attribution does not indicate an endorsement by the OIDF.</t>
 
-<t>The technology described in this specification was made available from contributions from various sources, including members of the OpenID Foundation and others. Although the OpenID Foundation has taken steps to help ensure that the technology is available for distribution, it takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this specification or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any independent effort to identify any such rights. The OpenID Foundation and the contributors to this specification make no (and hereby expressly disclaim any) warranties (express, implied, or otherwise), including implied warranties of merchantability, non-infringement, fitness for a particular purpose, or title, related to this specification, and the entire risk as to implementing this specification is assumed by the implementer. The OpenID Intellectual Property Rights policy requires contributors to offer a patent promise not to assert certain patent claims against other contributors and against implementers. The OpenID Foundation invites any interested party to bring to its attention any copyrights, patents, patent applications, or other proprietary rights that may cover technology that may be required to practice this specification.</t>
+<t>The technology described in this specification was made available from 
+contributions from various sources, including members of the OpenID Foundation 
+and others. Although the OpenID Foundation has taken steps to help ensure that 
+the technology is available for distribution, it takes no position regarding 
+the validity or scope of any intellectual property or other rights that might 
+be claimed to pertain to the implementation or use of the technology described 
+in this specification or the extent to which any license under such rights 
+might or might not be available; neither does it represent that it has made any 
+independent effort to identify any such rights. The OpenID Foundation and the 
+contributors to this specification make no (and hereby expressly disclaim any) 
+warranties (express, implied, or otherwise), including implied warranties of 
+merchantability, non-infringement, fitness for a particular purpose, or title, 
+related to this specification, and the entire risk as to implementing this 
+specification is assumed by the implementer. The OpenID Intellectual Property 
+Rights policy requires contributors to offer a patent promise not to assert 
+certain patent claims against other contributors and against implementers. The 
+OpenID Foundation invites any interested party to bring to its attention any 
+copyrights, patents, patent applications, or other proprietary rights that may 
+cover technology that may be required to practice this specification.</t>
 
 </section>
 
