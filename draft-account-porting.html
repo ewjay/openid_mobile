@@ -1,7 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 
   <title>OpenID Connect Account Porting</title>
 
@@ -341,16 +343,16 @@
 		   content: "Internet-Draft"; 
 	  } 
 	  @top-right {
-		   content: "August 2016"; 
+		   content: "December 2010"; 
 	  } 
 	  @top-center {
-		   content: "OIDC Porting";
+		   content: "Abbreviated Title";
 	  } 
 	  @bottom-left {
-		   content: "Manger"; 
+		   content: "Doe"; 
 	  } 
 	  @bottom-center {
-		   content: "Expires Febuary 2017"; 
+		   content: "Expires June 2011"; 
 	  } 
 	  @bottom-right {
 		   content: "[Page " counter(page) "]"; 
@@ -371,138 +373,157 @@
   /*]]>*/
   </style>
 
+  <link href="#rfc.toc" rel="Contents"/>
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
+<link href="#rfc.section.1.1" rel="Chapter" title="1.1 Requirements Notation, Conventions, and Terminology"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Discovery"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 Porting data API"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Indicating a previous identity: &quot;aka&quot; member"/>
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Encrypting &quot;port_token&quot;"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Porting check API"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations"/>
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Impersonation of legitimate user's old OP account"/>
+<link href="#rfc.section.6.2" rel="Chapter" title="6.2 Trick user into login with attacker's account"/>
+<link href="#rfc.section.6.3" rel="Chapter" title="6.3 Impersonate old OP/replay migration data"/>
+<link href="#rfc.section.6.4" rel="Chapter" title="6.4 Bad OP"/>
+<link href="#rfc.section.6.5" rel="Chapter" title="6.5 Inject migration data during RP account migration"/>
+<link href="#rfc.section.6.6" rel="Chapter" title="6.6 Further Considerations"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 Privacy Considerations"/>
+<link href="#rfc.section.8" rel="Chapter" title="8 IANA Considerations"/>
+<link href="#rfc.references" rel="Chapter" title="9 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References"/>
+<link href="#rfc.appendix.A" rel="Chapter" title="A Example flow"/>
+<link href="#rfc.appendix.B" rel="Chapter" title="B Acknowledgements"/>
+<link href="#rfc.appendix.C" rel="Chapter" title="C Notices"/>
+<link href="#rfc.appendix.D" rel="Chapter" title="D Document history"/>
+<link href="#rfc.authors" rel="Chapter"/>
+
+
+  <meta name="generator" content="xml2rfc version 2.5.1 - http://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Manger, J., Lodderstedt, T., and A. Gleditsch" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-account-porting-02alpha" />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-10-7" />
+  <meta name="dct.abstract" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
+  <meta name="description" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
+
 </head>
 
 <body>
 
-<table class="header">
-  <tbody>
-   	<tr>
-      <td class="left"></td>
-      <td class="right">J. Manger</td>
-    </tr>
-    <tr>
-      <td class="left"></td>
-      <td class="right">Telstra</td>
-    </tr>
-   	<tr>
-      <td class="left"></td>
-      <td class="right">T. Lodderstedt</td>
-    </tr>
-    <tr>
-      <td class="left"></td>
-      <td class="right">Deutsche Telekom AG</td>
-    </tr>
-   	<tr>
-      <td class="left"></td>
-      <td class="right">A. Gleditsch</td>
-    </tr>
-    <tr>
-      <td class="left"></td>
-      <td class="right">Telenor</td>
-    </tr>
-    <tr>
-      <td class="left"></td>
-      <td class="right">September 22, 2016</td>
-    </tr>
-  </tbody>
-</table>
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+  <td class="left"></td>
+  <td class="right">J. Manger</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">Telstra</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">T. Lodderstedt</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">Deutsche Telekom AG</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">A. Gleditsch</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">Telenor</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">October 7, 2016</td>
+</tr>
 
-<p class="title">OpenID Connect Account Porting<br />
-<span class="filename">draft-account-porting-01</span></p>
+    	
+    </tbody>
+  </table>
+
+  <p class="title">OpenID Connect Account Porting<br />
+  <span class="filename">draft-account-porting-02alpha</span></p>
   
-
-<h1 id="rfc.abstract">Abstract</a></h1>
-
+  <h1 id="rfc.abstract">
+  <a href="#rfc.abstract">Abstract</a>
+</h1>
 <p>This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change.</p>
+<h1>
+  <a>Note</a>
+</h1>
+<p>Discussions on this draft occur in the <a href="https://openid.net/wg/mobile/">OpenID Foundation MODRNA working group</a>.</p>
 
-<hr class="noprint" />
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
+<ul><li>1.1.   <a href="#rfc.section.1.1">Requirements Notation, Conventions, and Terminology</a></li>
+</ul><li>2.   <a href="#rfc.section.2">Discovery</a></li>
+<li>3.   <a href="#rfc.section.3">Porting data API</a></li>
+<li>4.   <a href="#rfc.section.4">Indicating a previous identity: "aka" member</a></li>
+<ul><li>4.1.   <a href="#rfc.section.4.1">Encrypting "port_token"</a></li>
+</ul><li>5.   <a href="#rfc.section.5">Porting check API</a></li>
+<li>6.   <a href="#rfc.section.6">Security Considerations</a></li>
+<ul><li>6.1.   <a href="#rfc.section.6.1">Impersonation of legitimate user's old OP account</a></li>
+<li>6.2.   <a href="#rfc.section.6.2">Trick user into login with attacker's account</a></li>
+<li>6.3.   <a href="#rfc.section.6.3">Impersonate old OP/replay migration data</a></li>
+<li>6.4.   <a href="#rfc.section.6.4">Bad OP</a></li>
+<li>6.5.   <a href="#rfc.section.6.5">Inject migration data during RP account migration</a></li>
+<li>6.6.   <a href="#rfc.section.6.6">Further Considerations</a></li>
+</ul><li>7.   <a href="#rfc.section.7">Privacy Considerations</a></li>
+<li>8.   <a href="#rfc.section.8">IANA Considerations</a></li>
+<li>9.   <a href="#rfc.references">References</a></li>
+<ul><li>9.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>9.2.   <a href="#rfc.references.2">Informative References</a></li>
+</ul><li>Appendix A.   <a href="#rfc.appendix.A">Example flow</a></li>
+<li>Appendix B.   <a href="#rfc.appendix.B">Acknowledgements</a></li>
+<li>Appendix C.   <a href="#rfc.appendix.C">Notices</a></li>
+<li>Appendix D.   <a href="#rfc.appendix.D">Document history</a></li>
+<li><a href="#rfc.authors">Authors' Addresses</a></li>
 
 
-<h1 class="np" id="rfc.toc">Table of Contents</h1>
-
-<ul class="toc">
-  <li>1.   <a href="#rfc.section.1">Introduction</a></li>
-  <ul>
-    <li>1.1.   <a href="#rfc.section.1.1">Requirements Notation, Conventions, and Terminology</a></li>
   </ul>
-  <li>2.   <a href="#rfc.section.2">Discovery</a></li>
-  <li>3.   <a href="#rfc.section.3">Porting data API</a></li>
-  <ul>
-    <li>3.1.   <a href="#rfc.section.3.1">Encrypting "<tt>port_data_plain</tt>"</a></li>
-  </ul>
-  <li>4.   <a href="#rfc.section.4">Indicating a previous identity: "<tt>aka</tt>" member</a></li>
-  <li>5.   <a href="#rfc.section.5">Porting check API</a></li>
-  <li>6.   <a href="#rfc.section.6">Security Considerations</a></li>
-  <ul>
-    <li>6.1.   <a href="#rfc.section.6.1">Impersonation of legitimate user's old OP account</a></li>
-    <li>6.2.   <a href="#rfc.section.6.2">Trick user into login with attacker's account</a></li>
-    <li>6.3.   <a href="#rfc.section.6.3">Impersonate old OP/replay migration data</a></li>
-    <li>6.4.   <a href="#rfc.section.6.4">Bad OP</a></li>
-    <li>6.5.   <a href="#rfc.section.6.5">Inject migration data during RP account migration</a></li>
-    <li>6.6.   <a href="#rfc.section.6.6">Further Considerations</a></li>
-  </ul>
-  <li>7.   <a href="#rfc.section.7">Privacy Considerations</a></li>
-  <li>8.   <a href="#rfc.section.8">IANA Considerations</a></li>
-  <li>9.   <a href="#rfc.references">References</a></li>
-  <ul>
-    <li>9.1.   <a href="#rfc.references.1">Normative References</a></li>
-    <li>9.2.   <a href="#rfc.references.2">Informative References</a></li>
-  </ul>
-  <li>Appendix A.   <a href="#rfc.appendix.A">Full example</a></li>
-  <li>Appendix B.   <a href="#rfc.appendix.B">Acknowledgements</a></li>
-  <li>Appendix C.   <a href="#rfc.appendix.C">Notices</a></li>
-  <li>Appendix D.   <a href="#rfc.appendix.D">Document history</a></li>
-  <li><a href="#rfc.authors">Author's Address</a></li>
-</ul>
 
-
-<h1 id="rfc.section.1">1. <a id="Introduction">Introduction</a></h1>
-
-<p>OpenID Connect is a federated identity protocol that allows a user to leverage his or her authentication to an OpenID Connect Provider (OP) to login to Relying Parties (RPs). An RP can (and often will) accept logins via many OPs. The primary identifier for a user at an RP is the combination of a Subject Id ("<tt>sub</tt>" value) and OP identifier ("<tt>iss</tt>" value). The "<tt>sub</tt>" value is only defined to be unambiguous within the context of an "<tt>iss</tt>" value [<a href="#OpenID.Core">OIDC</a> &#xA7;5.7. Claim Stability and Uniqueness]. This design deliberately isolates each OP's user population so one OP cannot adversely affect the security of another OP. One consequence, however, is that a user porting from one OP to another appears to an RP as two unrelated users.</p>
-
-<p>This specification extends OpenID Connect to enable an RP to recognize when a user logging in via a New OP is the same user who has previously logged in via an Old OP. That is, it enables porting between OPs to be handled automatically by RPs. The central idea is that the user logs into both Old and New OPs in a single session to establish the link between the user's accounts at each. Subsequently, RPs can interact with both OPs to confirm that link, without needing the user to repeat the dual logins.</p>
-
-<p>Portability is achieved by defining three processes: 1) how the New OP obtains details about the user from the Old OP; 2) how the New OP indicates the previous relationship with the Old OP in an id_token issued to an RP; and 3) how the RP can confirm a port is legitimate by interacting with the Old OP. The first process occurs when a user ports between two OPs. The other two processes occur for each RP the first time the user logs into that RP after porting. The processes maintain the privacy benefit offered by the use of pairwise Subject Ids. It is possible for an OP to implemented the processes without maintaining details of the RPs each user has visited.</p>
-
-<p>OpenID Connect account porting is motivated by the GSMA Mobile Connect scheme, in which mobile network operators collectively offer federated identity services [<a href="#MobileConnect">MobileConnect</a>]. Most jurisdictions allow users to port their mobile phone number between network operators, and a reasonable expectation of those users will be that their Mobile Connect account (provided by those same operators) can also be ported at the same time. There is a significant difference between phone number and account porting, however. Other parties are generally unaware when number porting occurs; they simply keep using the same phone number to communicate with the user. In contrast, RPs are aware when an OpenID Connect account is ported as they interact with a New OP.</p>
-
-<p>Section 2 defines metadata that indicates an OP supports porting, which can be obtained via OpenID Discovery [<a href="#OpenID.Discovery">Discovery</a>]. Section 3 specifies an API offered by an Old OP that a New OP uses to obtain porting-related details about a user. This API is protected by an OAuth 2.0 exchange to ensure the user consents to releasing the details to the New OP. Section 4 specifies how a New OP can identify the Old OP in an id_token presented to an RP. Section 5 describes how an RP can confirm the porting information with the Old OP. Annex A provides a example of a complete porting flow.</p>
-
-
-<p>[[MODEL: consider a section describing the model for the porting process: user, Old OP, new OP, any number of sector_ids, any number of client_ids per sector_id; sector_id vs client_id vs redirect_uri; user can auth to Old and New during porting, but doesn't have to afterwards; might need something special like port code to auth to Old OP, but that is out-of-scope; RP doesn't need to auth to Old OP after port; porting info needs to be provided at least once per RP client_id (suggest more), not just once per sector_id; OP iss value and associated discovery doc as point of trust]]
-
-<h1 id="rfc.section.1.1">1.1. <a id="rnc">Requirements Notation, Conventions, and Terminology</a></h1>
-
-<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
-
-<p>Throughout this document, values are quoted to indicate that they are to be taken literally in protocol messages.</p>
-
-<p>Terms such as "OpenID Provider" (OP), "Relying Party" (RP), "Subject Id" (sub), and "Sector Id" are defined in [<a href="#OpenID.Core">OIDC</a>]. This document uses the terms "Old OP" and "New OP" to indicate OpenID Providers that support users porting out and porting in respectively. An OP can support both roles (and hopefully most will).</p>
-
-
-<h1 id="rfc.section.2">2. <a id="discovery">Discovery</a></h1>
-
-<p>OpenID Discovery offers details about the features supported by an OP [<a href="#OpenID.Discovery">Discovery</a>]. The following members MUST be included in the metadata for an Old OP that supports users porting out:</p>
+  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#intro" id="intro">Introduction</a></h1>
+<p id="rfc.section.1.p.1">OpenID Connect is a federated identity protocol that allows a user to leverage his or her authentication to an OpenID Connect Provider (OP) to login to Relying Parties (RPs). An RP can (and often will) accept logins via many OPs. The primary identifier for a user at an RP is the combination of a Subject Id ("sub" value) and OP identifier ("iss" value). The "sub" value is only defined to be unambiguous within the context of an "iss" value <a href="#OpenID.Core">[OpenID.Core]</a> &#167;5.7. "Claim Stability and Uniqueness". This design deliberately isolates each OP's user population so one OP cannot adversely affect the security of another OP. One consequence, however, is that a user porting from one OP to another appears to an RP as two unrelated users.</p>
+<p id="rfc.section.1.p.2">This specification extends OpenID Connect to enable an RP to recognize when a user logging in via a New OP is the same user who has previously logged in via an Old OP. That is, it enables porting between OPs to be handled automatically by RPs. The central idea is that the user logs into both Old and New OPs in a single session to establish the link between the user's accounts at each. Subsequently, RPs can interact with both OPs to confirm that link, without needing the user to repeat the dual logins.</p>
+<p id="rfc.section.1.p.3">Portability is achieved by defining three processes: 1) how the New OP obtains details about the user from the Old OP; 2) how the New OP indicates the previous relationship with the Old OP in an id_token issued to an RP; and 3) how the RP can confirm a port is legitimate by interacting with the Old OP. The first process occurs when a user ports between two OPs. The other two processes occur for each RP the first time the user logs into that RP after porting. The processes maintain the privacy benefit offered by the use of pairwise Subject Ids. It is possible for an OP to implemented the processes without maintaining details of the RPs each user has visited.</p>
+<p id="rfc.section.1.p.4">OpenID Connect account porting is motivated by the GSMA Mobile Connect scheme, in which mobile network operators collectively offer federated identity services <a href="#MobileConnect">[MobileConnect]</a>. Most jurisdictions allow users to port their mobile phone number between network operators, and a reasonable expectation of those users will be that their Mobile Connect account (provided by those same operators) can also be ported at the same time. There is a significant difference between phone number and account porting, however. Other parties are generally unaware when number porting occurs; they simply keep using the same phone number to communicate with the user. In contrast, RPs are aware when an OpenID Connect account is ported as they interact with a New OP.</p>
+<p id="rfc.section.1.p.5">Section 2 defines metadata that indicates an OP supports porting, which can be obtained via <a href="#OpenID.Discovery">[OpenID.Discovery]</a>. Section 3 specifies an API offered by an Old OP that a New OP uses to obtain porting-related details about a user. This API is protected by an OAuth 2.0 exchange to ensure the user consents to releasing the details to the New OP. Section 4 specifies how a New OP can identify the Old OP in an id_token presented to an RP. Section 5 describes how an RP can confirm the porting information with the Old OP. Annex A provides a example of a complete porting flow.</p>
+<p id="rfc.section.1.p.6">[[MODEL: consider a section describing the model for the porting process: user, Old OP, new OP, any number of sector_ids, any number of client_ids per sector_id; sector_id vs client_id vs redirect_uri; user can auth to Old and New during porting, but doesn't have to afterwards; might need something special like port code to auth to Old OP, but that is out-of-scope; RP doesn't need to auth to Old OP after port; porting info needs to be provided at least once per RP client_id (suggest more), not just once per sector_id; OP iss value and associated discovery doc as point of trust]]</p>
+<h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> <a href="#rnc" id="rnc">Requirements Notation, Conventions, and Terminology</a></h1>
+<p id="rfc.section.1.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
+<p id="rfc.section.1.1.p.2">Throughout this document, values are quoted to indicate that they are to be taken literally in protocol messages.</p>
+<p id="rfc.section.1.1.p.3">Terms such as "OpenID Provider" (OP), "Relying Party" (RP), "Subject Id" (sub), and "Sector Id" are defined in <a href="#OpenID.Core">[OpenID.Core]</a>. This document uses the terms "Old OP" and "New OP" to indicate OpenID Providers that support users porting out and porting in respectively. An OP can support both roles (and hopefully most will).</p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#discovery" id="discovery">Discovery</a></h1>
+<p id="rfc.section.2.p.1">OpenID Discovery offers details about the features supported by an OP <a href="#OpenID.Discovery">[OpenID.Discovery]</a>. The following members MUST be included in the metadata for an Old OP that supports users porting out:</p>
+<p/>
 
 <dl>
-
-  <dt>port_data_endpoint</dt>
-  <dd style="margin-left: 8">Base URL for the Porting data API described in section 3 that a New OP can use to obtain details about an account that is being ported. The URL MUST use the <tt>https</tt> scheme.</dd>
-
-  <dt>port_check_endpoint</dt>
-  <dd style="margin-left: 8">Base URL for the Porting check API described in section 5 that an RP can use to confirm that an account has been ported to a specific New OP. The URL MUST use the <tt>https</tt> scheme.</dd>
-
-  <dt>port_enc_algs_supported</dt>
-  <dd style="margin-left: 8">Array of string algorithm names [<a href="#RFC7518.JWA">JWA</a>] identifying the content encryption algorithms that the OP supports for decrypting data received at the <tt>port_check_endpoint</tt>.</dd>
+  <dt>"port_data_endpoint"</dt>
+  <dd style="margin-left: 8">Base URL for the Porting data API described in section 3 that a New OP can use to obtain details about an account that is being ported. The URL MUST use the "https" scheme.</dd>
+  <dt>"port_check_endpoint"</dt>
+  <dd style="margin-left: 8">Base URL for the Porting check API described in section 5 that an RP can use to confirm that an account has been ported to a specific New OP. The URL MUST use the "https" scheme.</dd>
+  <dt>"port_enc_algs_supported"</dt>
+  <dd style="margin-left: 8">Array of string algorithm names <a href="#RFC7518">[RFC7518]</a> identifying the content encryption algorithms that the OP supports for decrypting data received at the "port_check_endpoint".</dd>
 </dl>
-
-<p>Below is a sample metadata request and respone.</p>
-
-<pre>GET /.well-known/openid-configuration HTTP/1.1
-Host: oldop.example.net</pre>
-
-<pre>HTTP/1.1 200 OK
+<p id="rfc.section.2.p.3">Below is a sample metadata request and respone.</p>
+<pre>
+GET /.well-known/openid-configuration HTTP/1.1
+Host: oldop.example.net
+</pre>
+<pre>
+HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
@@ -512,110 +533,35 @@ Content-Type: application/json
        "port_data_endpoint": "https://oldop.example.net/connect/port_data",
       "port_check_endpoint": "https://oldop.example.net/connect/port_check",
   "port_enc_algs_supported": [ "A256GCM", "A256CBC-HS512" ],
-  &#x2026;
-}</pre>
-
-
-<h1 id="rfc.section.3">3. <a id="port_data">Porting data API</a></h1>
-
-<p>The Porting data API (offered by an Old OP and consumed by a New OP) provides a token to represent a porting event. The New OP passes the token (after encrypting it if necessary) to each RP when the user subsequently logs into that RP [<a href="#aka">section 4</a>]. The RP, in turn, passes the token to the Porting check API [<a href="#port_check">section 5</a>] to confirm the port with the Old OP.</p>
-
-<p>When pairwise Subject Ids are used (ie a separate "<tt>sub</tt>" value for each collection of related RPs identified by a <tt>sector_id</tt>), any porting information revealed to an RP needs to be pairwise as well. This is achieved by the New OP encrypting the token separately for each RP.</p>
-
-<p>Access to porting data requires the consent of the user to whom it relates. The Old OP MUST support the OAuth 2.0 authorization code flow for accessing the API [RFC6749]. The Old OP MUST support Bearer access tokens [<a href="#RFC6450.Bearer">RFC6450</a>]. The New OP MUST include the scope "<tt>porting_data</tt>" when requesting access.</p>
-
-<p>The API provides a single read-only resource per user. It can be read with a <tt>GET</tt> request. The path "<tt>/me</tt>" appended to the base URL (from the "<tt>port_data_endpoint</tt>" member in the Old OP discovery metadata) indicates the resource for the user associated with the access token used to make the request.</p>
-
-<p>The response is a JSON object with a "<tt>port_token</tt>" or "<tt>port_token_plain</tt>" member with a string value. A "<tt>port_token</tt>" member can be passed on to RPs as-is. A "<tt>port_token_plain</tt>" value, however, MUST be encrypted by the New OP before being passed on [see the <a href="#enc_port_data">next sub-section</a>]. All "<tt>port_token_plain</tt>" values from an OP MUST be the same length so the length itself (which is typically preserved by encryption) does not allow correlation across RPs.</p>
-
-<p>Any unrecognized members MUST be ignored (such as "extra_stuff" in the example below).</p>
-
-<p>An Old OP MUST choose port token values to have sufficient entropy that they cannot be guessed by other parties. It is NOT RECOMMENDED that the Subject Id ("<tt>sub</tt>" value) be used as a port token as that might tempt RP software to process a port token from a New OP without confirming it with the Old OP.</p>
-
-<p>Below is a sample porting data request and response from an Old OP that uses pairwise Subject Ids.</p>
-
-<pre>GET /connect/port_data/me HTTP/1.1
+  &#8230;
+}
+</pre>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#port_data" id="port_data">Porting data API</a></h1>
+<p id="rfc.section.3.p.1">The Porting data API (offered by an Old OP and consumed by a New OP) provides a token to represent a porting event. The New OP passes the token (after encrypting it <a href="#enc">section 3.1</a> <cite title="NONE">[enc]</cite>) to each RP when the user subsequently logs into that RP <a href="#aka">section 4</a> <cite title="NONE">[aka]</cite>. The RP, in turn, passes the token to the Porting check API <a href="#port_check">section 5</a> <cite title="NONE">[port_check]</cite> to confirm the port with the Old OP.</p>
+<p id="rfc.section.3.p.2">Access to porting data requires the consent of the user to whom it relates. The Old OP MUST support the OAuth 2.0 authorization code flow for accessing the API <a href="#RFC6749">[RFC6749]</a>. The Old OP MUST support Bearer access tokens <a href="#RFC6750">[RFC6750]</a>. The New OP MUST include the scope "port_data" when requesting access.</p>
+<p id="rfc.section.3.p.3">The API provides a single read-only resource per user. It can be read with a "GET" request. The path "/me" appended to the base URL (from the "port_data_endpoint" member in the Old OP discovery metadata) indicates the resource for the user associated with the access token used to make the request.</p>
+<p id="rfc.section.3.p.4">The response is a JSON object with a "port_token" member that has a string value. The Old OP needs to be able to identify the user and New OP involved in the porting from the port token. The Old OP MUST choose port token values to have sufficient entropy that they cannot be guessed by other parties, including by New OPs and RPs that have seen other port tokens. All "port_token" values from the Old OP for a given New OP MUST be the same length so the length itself (which is typically preserved by encryption) does not allow correlation across RPs. Consequently, a port token cannot simply be the concatenation of ids for the user and New OP. It could be a combination of the user and New OP ids signed by the Old OP. It could also be a random number used as a reference to porting details recorded by the Old OP.</p>
+<p id="rfc.section.3.p.5">Any unrecognized members in the response MUST be ignored (such as "extra_stuff" in the example below).</p>
+<p id="rfc.section.3.p.6">Below is a sample porting data request and response:</p>
+<pre>
+GET /connect/port_data/me HTTP/1.1
 Host: oldop.example.net
-Authorization: Bearer E3yyDiR5_i8CFCVDo3h8T5qgKpAdu8XkGZBv81vn428</pre>
-
-<pre>HTTP/1.1 200 OK
+Authorization: Bearer E3yyDiR5_i8CFCVDo3h8T5qgKpAdu8XkGZBv81vn428
+</pre>
+<pre>
+HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "port_token_plain": "3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI"
-}</pre>
-
-<p>Below is a sample response from an Old OP that identifies the user with the same Subject Id to all RPs.</p>
-
-<pre>HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-  "port_token": "4vkhLCrpTm1Gidg5H6MZfwt6HnzNDTZJB8cNMFD0834",
+  "port_token": "3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI",
   "extra_stuff": 34
-}</pre>
-
-<p>An Old OP will generally know via other processes when and to whom a user is porting. In such circumstances, the API SHOULD reject requests about a user not known to be in the process of porting, and SHOULD reject requests from any OP other than the known porting destination. Only OPs explicitly trusted by the Old OP SHOULD be allowed to use the API (eg to use the "<tt>porting_data</tt>" scope) as the API is privacy-sensitive since it allows the caller to correlate pairwise Subject Ids.</p>
-
-
-<h2 id="rfc.section.3.1">3.1. <a id="enc_port_data">Encrypting "<tt>port_data_plain</tt>"</a></h2>
-
-<p>A "<tt>port_token_plain</tt>" value is encrypted to create a "<tt>port_token</tt>" value to include in a "<tt>aka</tt>" object [<a href="#aka">section 4</a>] passed to an RP. To preserve the privacy benefit of using pairwise Subject Ids, a separate encryption MUST be performed for each separate <tt>sector_id</tt> (identifying a collection of related RPs).</p>
-
-<p>The encryption is performed by the New OP using the JSON Web Encryption [<a href="#RFC7516.JWE">JWE</a>] process, creating a JWE compact serialization. Direct encryption with a shared symmetric key is used (<tt>"alg":"dir"</tt>), with a key derived from the "<tt>client_secret</tt>" value that the New OP uses to authenticate to the Old OP. Deriving the key follows section 10.2 "Encryption" of [<a href="#OpenID.Core">OIDC</a>]: using the left-most bits of the SHA2 hash of "<tt>client_secret</tt>". The key id (<tt>kid</tt>) is set to the "<tt>client_id</tt>" value. The content encryption algorithm is chosen from the "<tt>port_enc_algs_supported</tt>" list published in the Old OP's discovery metadata. The plaintext is the "<tt>port_token_plain</tt>" value.</p>
-
-<p>The JWE header MUST include a type parameter (<tt>typ</tt>) with the value "<tt>oidc-porting</tt>" to explicitly indicate the semantics of the message. The JWE header MUST include a "<tt>sector_id</tt>" parameter, holding the host component (ie a fully-qualified domain name) of the RP's <tt>sector_identifier_uri</tt> or <tt>redirect_uri</tt> [<a href="#OpenID.Core">OIDC</a> section 8.1. Pairwise Identifier Algorithm].</p>
-
-<p>Below is a sample JWE. New OP details:</p>
-
-<pre>
-    client_id: s6BhdRkqt3
-client_secret: vNQ4Pe8F9p67dgXMc4c_NxSABb9y15vOkxRmyxCey7U</pre>
-
-<p>JWE protected header:</p>
-
-<pre>{
-        "typ": "oidc-porting",
-        "alg": "dir",
-        "enc": "A256GCM",
-        "kid": "s6BhdRkqt3",
-  "sector_id": "rp.example.org"
-}</pre>
-
-<p>Content encryption key (CEK), calculated as SHA-256(client_secret); random 96-bit nonce (iv):</p>
-
-<pre>
-          cek: b7b80342942f94b4d873fd4a0e0470fa2b94afe02f94162c34cefdcd1d4b3f58 (hex)
-           iv: 48V1_ALb6US04U3b (base64url)</pre>
-
-<p>The payload is the "<tt>port_token_plain</tt>" value from the previous section. The additional authenticated data (AAD) is the base64url-encoding of the JWE protected header.</p>
-
-<pre>
-    plaintext: 3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI
-          aad: eyJ0eXAiOiJvaWRjLXBvcnRpbmciLCJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIi
-               wia2lkIjoiczZCaGRSa3F0MyIsInNlY3Rvcl9pZCI6InJwLmV4YW1wbGUub3JnIn0</pre>
-
-<p>Applying AES-GCM encryption gives ciphertext and an authentication tag:</p>
-
-<pre>
-    ciphertext: …
-           tag: …</pre>
-
-<p>[[TO BE COMPLETED: calculate real ciphertext/tag values]]</p>
-
-<p>Putting it all together (note the 2nd field of the JWE is empty as there is no encrypted key when using direct encryption):<p>
-
-<pre>"port_token": "eyJ0eX…3JnIn0..48V1_ALb6US04U3b.<i>ciphertext</i>.<i>tag</i>"</pre>
-
-
-<h1 id="rfc.section.4">4. <a id="aka">Indicating a previous identity: "<tt>aka</tt>" member</a></h1>
-
-<p>This document defines the "<tt>aka</tt>" (also known as) member that a New OP can include in an id_token delivered to an RP to indicate another identifier for the same user. The "<tt>aka</tt>" value is a JSON object with "<tt>port_token</tt>" and "<tt>iss</tt>" members, both with string values. "<tt>iss</tt>" identifies the Old OP, while "<tt>port_token</tt>" can be used at the Old OP's Porting check API [<a href="#port_check">section 5</a>] to confirm the port and obtain the Old OP's "<tt>sub</tt>" value for the user.</p>
-
-<p>On receiving an id_token, a RP uses "<tt>iss</tt>" &amp; "<tt>sub</tt>" to lookup the user's account in the RP's systems. If no such account is found, but the id_token contains an "<tt>aka</tt>" member, then the RP MUST process the "<tt>aka</tt>" value to determine if the RP knows the user via federation from an Old OP. Processing involves: calling the Porting check API for the Old OP with the given "<tt>port_token</tt>"; looking for an existing account at the RP that matches the Old OP's "<tt>sub</tt>" value; and linking that account to the New OP's "<tt>sub</tt>" value.</p>
-
-<p>Below is a sample payload of an id_token.</p>
-
+}
+</pre>
+<p id="rfc.section.3.p.7">An Old OP will generally know via other processes when and to whom a user is porting. In such circumstances, the API SHOULD reject requests about a user not known to be in the process of porting, and SHOULD reject requests from any OP other than the known porting destination. Only OPs explicitly trusted by the Old OP SHOULD be allowed to use the API (eg to use the "port_data" scope) as the API is security and privacy sensitive.</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#aka" id="aka">Indicating a previous identity: "aka" member</a></h1>
+<p id="rfc.section.4.p.1">This document defines the "aka" (also known as) member that a New OP can include in an id_token delivered to an RP to indicate another identifier for the same user. The "aka" value is a JSON object with "enc_port_token" and "iss" members, both with string values. "iss" identifies the Old OP, while "enc_port_token" holds an encrypted port token as per the <a href="#enc">next sub-section</a> <cite title="NONE">[enc]</cite>. "enc_port_token" can be used at the Old OP's Porting check API <a href="#port_check">section 5</a> <cite title="NONE">[port_check]</cite> to confirm the port and obtain the Old OP's "sub" value for the user.</p>
+<p id="rfc.section.4.p.2">On receiving an id_token, a RP uses "iss" &amp; "sub" to lookup the user's account in the RP's systems. If no such account is found, but the id_token contains an "aka" member, then the RP MUST process the "aka" value to determine if the RP knows the user via federation from an Old OP. Processing involves: calling the Porting check API for the Old OP with the given "enc_port_token"; looking for an existing account at the RP that matches the Old OP's "sub" value; and linking that account to the New OP's "sub" value.</p>
+<p id="rfc.section.4.p.3">Below is a sample payload of an id_token.</p>
 <pre>{
   "iss": "https://newop.example.net/",
   "sub": "JRrr09BzhZ6BJ9t0yD8DzyZjg7ziB3a40jeoUvZkUgw",
@@ -625,70 +571,139 @@ client_secret: vNQ4Pe8F9p67dgXMc4c_NxSABb9y15vOkxRmyxCey7U</pre>
   "at_hash": "mrxuWF8TvnILKqFpZgEYCQ",
   "aka": {
     "iss": "https://oldop.example.net/",
-    "port_token": "4vkhLCrpTm1Gidg5H6MZfwt6HnzNDTZJB8cNMFD0834"
+    "enc_port_token": "eyJ0eX&#8230;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag"
   }
 }</pre>
+<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#enc" id="enc">Encrypting "port_token"</a></h1>
+<p id="rfc.section.4.1.p.1">When pairwise Subject Ids are used for enhanced privacy (ie a user is assigned a separate "sub" value for each collection of related RPs identified by a "sector_id"), any porting information revealed to RPs also needs to be at least pairwise so as not to undermine that privacy. This is achieved by using encrypted versions of a "port_token". Encryption is performed by the New OP, and decryption by the Old OP.</p>
+<p id="rfc.section.4.1.p.2">A separate encryption MUST be used whenever a different "sub" value is involved. The encryptions MUST involve nonces so each ciphertext is different.  The nonces themselves MUST NOT allow extra correlations, which effectively means multiple encryptions of a given "port_token" for multiple RPs MUST NOT be pre-calculated during the porting process if the nonces include a counter or time-based component. Instead, it is safe to perform the encryption for an RP when the user subsequently logs in to that RP.</p>
+<p id="rfc.section.4.1.p.3">A New OP can reuse an "enc_port_token" for logins to multiple RPs that share the same "sector_id", but can also calculate a separate "enc_port_token" for each. Similarly, an "enc_port_token" can be reused for multiple logins to the same RP, or separate "enc_port_token" values can be calculated each time. It is RECOMMENDED that "enc_port_token" values not be cached, or only be cached for a short time (eg minutes), so they can have short lifetimes, hence avoiding requirements for revocation.</p>
+<p id="rfc.section.4.1.p.4">Encryption does not offer a privacy benefit if the New OP uses public Subject Ids. However, encryption is still used in such cases to avoid introducing additional options to the porting mechanism.</p>
+<p id="rfc.section.4.1.p.5">A "port_token" value is encrypted to create an "enc_port_token" value.  The encryption follows the JSON Web Encryption <a href="#RFC7516">[RFC7516]</a> process, creating a JWE compact serialization. Direct encryption with a shared symmetric key is used ("alg":"dir"), with a key derived from the "client_secret" value that the New OP uses to authenticate to the Old OP. Deriving the key follows section 10.2 "Encryption" of <a href="#OpenID.Core">[OpenID.Core]</a>: using the left-most bits of the SHA2 hash of "client_secret". The key id ("kid") is set to the "client_id" value. The content encryption algorithm is chosen from the "port_enc_algs_supported" list published in the Old OP's discovery metadata. The plaintext is the "port_token" value.</p>
+<p id="rfc.section.4.1.p.6">The JWE header MUST include a type parameter ("typ") with the value "oidc-porting" to explicitly indicate the semantics of the message.  The JWE header SHOULD include a "sector_id" parameter, holding the host component (ie a fully-qualified domain name) of the RP's "sector_identifier_uri" or "redirect_uri" <a href="#OpenID.Core">[OpenID.Core]</a> &#167; 8.1. "Pairwise Identifier Algorithm".  The only exception to this is when the New OP uses public Subject Ids and does not know the "sector_id", in which case this parameter is omitted from the JWE header.</p>
+<p id="rfc.section.4.1.p.7">Below is a sample JWE, starting with the New OP details:</p>
+<pre>
+    client_id: s6BhdRkqt3
+client_secret: vNQ4Pe8F9p67dgXMc4c_NxSABb9y15vOkxRmyxCey7U
+</pre>
+<p id="rfc.section.4.1.p.8">JWE protected header:</p>
+<pre>{
+        "typ": "oidc-porting",
+        "alg": "dir",
+        "enc": "A256GCM",
+        "kid": "s6BhdRkqt3",
+  "sector_id": "rp.example.org"
+}</pre>
+<p id="rfc.section.4.1.p.9">Content encryption key (CEK), calculated as SHA-256(client_secret); and random 96-bit nonce (iv); shown in hex and base64url respectively:</p>
+<pre>
+          cek: b7b80342942f94b4d873fd4a0e0470fa2b94afe02f94162c34cefdcd1d4b3f58
+           iv: 48V1_ALb6US04U3b
+</pre>
+<p id="rfc.section.4.1.p.10">The payload is the "port_token" value from the previous section. The additional authenticated data (AAD) is the base64url-encoding of the JWE protected header.</p>
+<pre>
+    plaintext: 3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI
+          aad: eyJ0eXAiOiJvaWRjLXBvcnRpbmciLCJhbGciOiJkaXIiLCJl
+               bmMiOiJBMjU2R0NNIiwia2lkIjoiczZCaGRSa3F0MyIsInNl
+               Y3Rvcl9pZCI6InJwLmV4YW1wbGUub3JnIn0
+</pre>
+<p id="rfc.section.4.1.p.11">Applying AES-GCM encryption gives ciphertext and an authentication tag:</p>
+<pre>
+    ciphertext: &#8230;
+           tag: &#8230;
+</pre>
+<p id="rfc.section.4.1.p.12">[[TO BE COMPLETED: calculate real ciphertext/tag values]]</p>
+<p id="rfc.section.4.1.p.13">Putting it all together (note the 2nd field of the JWE is empty as there is no encrypted key when using direct encryption):</p>
+<pre>
+"enc_port_token": "eyJ0eX&#8230;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag"
+</pre>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#port_check" id="port_check">Porting check API</a></h1>
+<p id="rfc.section.5.p.1">The Porting check API is offered by an Old OP to RPs so they can confirm that a user did port to a specific New OP. The API converts an "enc_port_token" to a Subject Id ("sub" value), which the RP needs to identify the ported user's existing account at the RP.</p>
+<p id="rfc.section.5.p.2">Access to the Porting check API requires authentication of the RP.  The Old OP and RP MUST support the OAuth 2.0 client credentials flow <a href="#RFC6749">[RFC6749]</a> and Bearer access tokens <a href="#RFC6750">[RFC6750]</a>.  The RP MUST include the scope "port_check" when requesting access.</p>
+<p id="rfc.section.5.p.3">An RP makes a "GET" request to the API endpoint (from the "port_check_endpoint" member in the Old OP discovery metadata), adding query parameters identifying the New OP ("iss") and a porting event ("enc_port_token"). A successful response (eg with a status code of 200) conveys a JSON object that can have "sub" and "aka" members.  A successful response means the user associated with "enc_port_token" has ported from the Old OP to the given New OP. Otherwise an unsuccessful HTTP response status code MUST be returned (eg 400 Bad request).</p>
+<p id="rfc.section.5.p.4">The Old OP makes the following checks:</p>
+<p/>
 
+<ul>
+  <li>MUST verify the authenticated encryption of the "enc_port_token" JWE, which MUST include verifying that it is actually authenticated (ie that "alg" is an acceptable AEAD algorithm, and certainly not "none").</li>
+  <li>MUST verify that the JWE "typ" member is present with the value "oidc_porting", to avoid misinterpretting the meaning of the JWE.</li>
+  <li>MUST verify that the "iss" query parameter is consistent with the key used to verify the JWE. This confirms that the RP and Old OP have the same understanding of who the New OP is.</li>
+  <li>MUST verify that the "port_token" (the plaintext from the JWE) was issued by the Old OP.</li>
+  <li>MUST verify that the New OP identified from the "port_token" is consistent with the key used to verify the JWE.</li>
+  <li>SHOULD verify that the "sector_id" from the JWE header (if present) matches the value for the RP. The only exception to this is when the Old OP uses public Subject Ids and does not know the "sector_id".</li>
+</ul>
+<p id="rfc.section.5.p.6">A successful response is a JSON object that can include the following members (any unrecognized members MUST be ignored):</p>
+<p/>
 
-<h1 id="rfc.section.5">5. <a id="port_check">Porting check API</a></h1>
-
-<p>The Porting check API is offered by an Old OP to RPs so they can confirm that a user did port to a specific New OP. The API converts a port_token to a Subject Id ("<tt>sub</tt>" value), which the RP needs to identify the ported user's existing account at the RP.</p>
-
-<p>An RP makes a <tt>GET</tt> request to the API endpoint (from the "<tt>port_check_endpoint</tt>" member in the Old OP discovery metadata), adding query parameters identifying the New OP ("<tt>iss</tt>"), the RP ("<tt>sector_id</tt>"), and a porting event ("<tt>port_token</tt>"). A successful response (eg with a status code of 200) conveys a JSON object with a "<tt>sub</tt>" member and optionally an "<tt>aka</tt>" member. A successful response means the identified user at the Old OP has ported to the given New OP. Otherwise, if the port_token is invalid, or it is not associated with the given sector_id, or the port was not to the identified New OP, then an unsuccessful HTTP response status code MUST be returned (eg 400 Bad request).</p>
-
-<p>The "<tt>sector_id</tt>" value is ignored by the Old OP if it uses a single public "<tt>sub</tt>" value for a user at any RP, but an RP cannot assume that is the case so the RP MUST still include the parameter in the request. Note: the default <tt>sector_id</tt> for an RP is the domain name of its <tt>redirect_uri</tt>.</p>
-
-<p>The port_token effectively acts as a bearer token (or capability) for authorizing the request to the Porting check API. No further access control is required. That is, the API is not expected to be further protected by, say, an OAuth 2.0 flow to authenticate the RP.</p>
-
-<p>The "<tt>aka</tt>" value has the same syntax and semantics as when it appears in an id_token [<a href="#aka">section 4</a>]. In a porting check response it indicates that the user ported to the Old OP from an even older OP. When the "<tt>sub</tt>" value (in combination with the Old OP's "<tt>iss</tt>" value) is not recognized by the RP, the RP SHOULD process the "<tt>aka</tt>" value to determine if the RP knows the user via federation from the even older OP. An RP MUST NOT recursively follow "<tt>aka</tt>" values indefinitely; a limit of a few recursions is likely to be sufficient for valid use cases.</p>
-
-<p>Below is a sample request with a successful response. [The long request line is wrapped over 5 lines just for display purposes.] The RP would lookup <tt>sub=kY6N6&#x2026;</tt> &amp; <tt>iss=https://oldop&#x2026;</tt> in its systems to find the existing account that had ported to the New OP.</p>
-
-<pre>GET /connect/port_check?
+<dl>
+  <dt>"sub"</dt>
+  <dd style="margin-left: 8">Subject Id of the ported user for the RP. This member MAY be absent if the Old OP knows the user has never logged in to this RP.</dd>
+  <dt>"aka"</dt>
+  <dd style="margin-left: 8">Another identifier for the same user, with the same syntax and semantics as when it appears in an id_token <a href="#aka">section 4</a> <cite title="NONE">[aka]</cite>. Here it indicates that the user ported to the Old OP from an even older OP.  When the "sub" value (in combination with the Old OP's "iss" value) is not recognized by the RP, the RP SHOULD process the "aka" value to determine if the RP knows the user via federation from the even older OP. An RP MUST NOT recursively follow "aka" values indefinitely; a limit of a few recursions is likely to be sufficient for valid use cases.</dd>
+</dl>
+<p id="rfc.section.5.p.8">Below is a sample request with a successful response. [The long request line is wrapped over 4 lines just for display purposes.] The RP would lookup "sub=kY6N6&#8230;" &amp; "iss=https://oldop&#8230;" in its user database to find the existing account that has ported to the New OP.</p>
+<pre>
+GET /connect/port_check?
   iss=https://newop.example.net/&amp;
-  sector_id=rp.example.org&amp;
-  port_token=4vkhLCrpTm1Gidg5H6MZfwt6HnzNDTZJB8cNMFD0834
+  enc_port_token=eyJ0eX&#8230;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag
    HTTP/1.1
 Host: oldop.example.net
+Authorization: Bearer JOpIXW60qfjKQOlQ8trLBTSzwDl8zGgujLxBVTvWMG8
 </pre>
-
-<pre>HTTP/1.1 200 OK
+<pre>
+HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
   "sub": "kY6N64H86MBTho9I-JlRnpvaLOwAb5m3yYta6pq1VFM"
-}</pre>
-
-<p>Below is a sample resonse that identifies a previous port. If the RP did not recognize <tt>sub=kY6N6&#x2026;</tt> &amp; <tt>iss=https://oldop&#x2026;</tt> it can process the "<tt>aka</tt>" value to see if that leads back to an account known to the RP.</p>
-
-<pre>HTTP/1.1 200 OK
+}
+</pre>
+<p id="rfc.section.5.p.9">Below is a sample resonse that identifies a previous port. If the RP did not recognize "sub=kY6N6&#8230;" &amp; "iss=https://oldop&#8230;" it can process the "aka" value to see if that leads back to an account known to the RP.</p>
+<pre>
+HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
   "sub": "kY6N64H86MBTho9I-JlRnpvaLOwAb5m3yYta6pq1VFM",
   "aka": {
            "iss": "https://anotherop.example.net/",
-    "port_token": "QSfmp2V30cNqKShhyOjQEwDaQzLNhji5w5nD-EZq3ok"
+    "enc_port_token": "QSfmp2V30cNqKShhyOjQEwDaQzLNhji5w5nD-EZq3ok"
   }
-}</pre>
-
-<p>Below is a sample unsuccessful response (which happens to use the Problem Details format specified in [<a href="#RFC7807">RFC7807</a>]).</p>
-
-<pre>HTTP/1.1 400 Bad request
+}
+</pre>
+<p id="rfc.section.5.p.10">Below is a sample unsuccessful response (which happens to use the Problem Details format specified in <a href="#RFC7807">[RFC7807]</a>).</p>
+<pre>
+HTTP/1.1 400 Bad request
 Content-Type: application/problem+json
 
 {
    "type": "https://oldop.example.net/probs/porting_rp",
   "title": "Port_token presented by the wrong RP"
-}</pre>
+}
+</pre>
+<p id="rfc.section.5.p.11">Below is a sample OAuth 2.0 client credentials flow to obtain the "access_token" used in sample call above:</p>
+<pre>
+POST /connect/token HTTP/1.1
+Host: oldop.example.net
+Authorization: Basic cnAxMTcyNjM1MjpteV9zZWNyZXQ=
+Content-Type: application/x-www-form-urlencoded
 
+grant_type=client_credentials&amp;scope=port_check
+</pre>
+<pre>
+HTTP/1.1 200 OK
+Content-Type: application/json
 
-<h1 id="rfc.section.6">6. <a id="security_considerations">Security Considerations</a></h1>
-
-<p>Attackers goal: get access to the victims RP accounts either by taking over the respective OP or RP account.  This section analysis the protocol flow along the lines of the migration process for threat vectors. Note: this list is a starting point and not meant to be comprehensive (yet).</p>
-
-<h2 id="rfc.section.6.1">6.1. Impersonation of legitimate user's old OP account</h2>
-<p>If the attacker can get hold of the authorization grant issued by the old OP for access to the account migration API, the attacker can impersonate the legitimate user in the migration process at the new OP.  </p>
+{
+  "access_token": "JOpIXW60qfjKQOlQ8trLBTSzwDl8zGgujLxBVTvWMG8",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+</pre>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#security" id="security">Security Considerations</a></h1>
+<p id="rfc.section.6.p.1">Attackers goal: get access to the victims RP accounts either by taking over the respective OP or RP account.  This section analysis the protocol flow along the lines of the migration process for threat vectors. Note: this list is a starting point and not meant to be comprehensive (yet).</p>
+<h1 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> Impersonation of legitimate user's old OP account</h1>
+<p id="rfc.section.6.1.p.1">If the attacker can get hold of the authorization grant issued by the old OP for access to the account migration API, the attacker can impersonate the legitimate user in the migration process at the new OP.  </p>
+<p/>
 
 <ul>
   <li>Prevent leakage of authorization grant at old OP (mix up, referrer header, log files, ...)</li>
@@ -697,26 +712,26 @@ Content-Type: application/problem+json
   <li>idea: use migration specific credential, which is directly entered during migration process at new OP (in turn potentially imposes the risk of men in the middle/phishing)</li>
   <li>old OP should notify user of account migration process via different communication channel.</li>
 </ul>
-
-<h2 id="rfc.section.6.2">6.2. Trick user into login with attacker's account</h2>
-<p>The attacker could try to cause the legitimate user to login with her new OP with the attacker's account with this new OP. That would cause the new OP to associate the migration data with the attackers account, which in turn allows the attacker to migrate all RP accounts of the legitimate user to his account with the new OP.  </p>
+<h1 id="rfc.section.6.2"><a href="#rfc.section.6.2">6.2.</a> Trick user into login with attacker's account</h1>
+<p id="rfc.section.6.2.p.1">The attacker could try to cause the legitimate user to login with her new OP with the attacker's account with this new OP. That would cause the new OP to associate the migration data with the attackers account, which in turn allows the attacker to migrate all RP accounts of the legitimate user to his account with the new OP.  </p>
+<p/>
 
 <ul>
   <li>Prevent XSRF, session fixation</li>
   <li>Explicitly show user identity data of both user accounts, which she is about to tie together and ask for consent.</li>
   <li>Send information back to old OP about new OP identity? It could inform user of the migration, which just happened (too).</li>
 </ul>
-
-<h2 id="rfc.section.6.3">6.3. Impersonate old OP/replay migration data</h2>
+<h1 id="rfc.section.6.3"><a href="#rfc.section.6.3">6.3.</a> Impersonate old OP/replay migration data</h1>
 <p id="rfc.section.6.3.p.1">If the attacker gets hold of valid migration data of an account at OP1 and "migrates" the account data to his account with OP1. Scenario: The attacker logs into the new OP with her OP account and sends the new OP to the OP under her control. This OP returns migration data obtained from a legitimate OP in a previous step.  </p>
+<p/>
 
 <ul>
   <li>audience restriction: verify subject of migration data (migrated_to must be iss of new OP)</li>
   <li>detection: use discovery to match account migration endpoint to endpoint of legitimate OP</li>
 </ul>
-
-<h2 id="rfc.section.6.4">6.4. Bad OP</h2>
-<p>Attacker could try to trick victim into (unintentionally) migration her OP account to a OP under the attacker's control </p>
+<h1 id="rfc.section.6.4"><a href="#rfc.section.6.4">6.4.</a> Bad OP</h1>
+<p id="rfc.section.6.4.p.1">Attacker could try to trick victim into (unintentionally) migration her OP account to a OP under the attacker's control </p>
+<p/>
 
 <ul>
   <li>white listing or blacklisting of OPs for which account migration is supported</li>
@@ -724,196 +739,161 @@ Content-Type: application/problem+json
   <li>no SSO and no auto consent: require re-authentication and explicit consent + specific migration credential (just to make the process less convenient and make the victim think about what she is up to.).</li>
   <li>old OP should notify user of account migration process via different communication channel.</li>
 </ul>
-
-<h2 id="rfc.section.6.5">6.5. Inject migration data during RP account migration</h2>
-<p>Attacker gets hold of valid migration data and injects it into the login response. This would only work for implicit grant, not for grant type code.  </p>
+<h1 id="rfc.section.6.5"><a href="#rfc.section.6.5">6.5.</a> Inject migration data during RP account migration</h1>
+<p id="rfc.section.6.5.p.1">Attacker gets hold of valid migration data and injects it into the login response. This would only work for implicit grant, not for grant type code.  </p>
+<p/>
 
 <ul>
   <li>use grant type code</li>
   <li>migration data is included in ID Token, so it is signed by the new OP and cannot be modfied by the attacker.</li>
 </ul>
-
-<h2 id="rfc.section.6.6">6.6. Further Considerations</h2>
-<p>Note: the new OP could also accidentally assign the account migration data to the wrong user account in its database. Care must be taken that the respective functions are thoroughly tested with every change.</p>
-
-
-<h1 id="rfc.section.7">7. <a id="privacy_considerations">Privacy Considerations</a></h1>
-
-<p>TBD</p>
-
-
-<h1 id="rfc.section.8">8. <a id="IANA">IANA Considerations</a></h1>
-
-<p>This document registers the "<tt>aka</tt>" claim in the IANA "JSON Web Token Claims" registry [<a href="#IANA.JWT.Claims">IANA.JWT.Claims</a>].</p>
+<h1 id="rfc.section.6.6"><a href="#rfc.section.6.6">6.6.</a> Further Considerations</h1>
+<p id="rfc.section.6.6.p.1">Note: the new OP could also accidentally assign the account migration data to the wrong user account in its database. Care must be taken that the respective functions are thoroughly tested with every change.</p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#privacy" id="privacy">Privacy Considerations</a></h1>
+<p id="rfc.section.7.p.1">TBD</p>
+<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#iana" id="iana">IANA Considerations</a></h1>
+<p id="rfc.section.8.p.1">This document registers the "aka" claim in the IANA "JSON Web Token Claims" registry <a href="#IANA.JWT_Claims">[IANA.JWT_Claims]</a>.</p>
+<p/>
 
 <ul>
-  <li>Claim Name: "<tt>aka</tt>"</li>
+  <li>Claim Name: "aka"</li>
   <li>Claim Description: Also Known As</li>
-  <li>Change Controller: OpenID Foundation MODRNA working group &lt;<a href="https://openid.net/wg/mobile/">openid.net/wg/mobile/</a>&gt;</li>
-  <li>Specification Document(s): <a href="#aka">Section 4</a> of [[ this specification ]]</li>
+  <li>Change Controller: OpenID Foundation MODRNA working group &lt;https://openid.net/wg/mobile/&gt;</li>
+  <li>Specification Document(s): <a href="#aka">Section 4</a> <cite title="NONE">[aka]</cite> of [[ this specification ]]</li>
 </ul>
-
-<p>This document registers the "<tt>sector_id</tt>" claim in the IANA "JSON Web Signature and Encryption Header Parameters" registry [<a href="#IANA.JOSE">IANA.JOSE</a>].</p>
+<p id="rfc.section.8.p.3">This document registers the "sector_id" claim in the IANA "JSON Web Signature and Encryption Header Parameters" registry <a href="#IANA.JOSE">[IANA.JOSE]</a>.</p>
+<p/>
 
 <ul>
-  <li>Header Parameter Name: "<tt>sector_id</tt>"</li>
+  <li>Header Parameter Name: "sector_id"</li>
   <li>Header Parameter Description: Sector identifier for a group of websites under common administrative control</li>
   <li>Header Parameter Usage Location: JWE</li>
-  <li>Change Controller: OpenID Foundation MODRNA working group &lt;<a href="https://openid.net/wg/mobile/">openid.net/wg/mobile/</a>&gt;</li>
-  <li>Specification Document(s): <a href="#enc_port_data">Section 3.1</a> of [[ this specification ]]</li>
+  <li>Change Controller: OpenID Foundation MODRNA working group &lt;https://openid.net/wg/mobile/&gt;</li>
+  <li>Specification Document(s): <a href="#enc">Section 3.1</a> <cite title="NONE">[enc]</cite> of [[ this specification ]]</li>
 </ul>
-
-
-<h1 id="rfc.references">9. References</h1>
-
-<h2 id="rfc.references.1">9.1. Normative References</h2>
-
+<h1 id="rfc.references"><a href="#rfc.references">9.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">9.1.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
       <td class="reference">
-        <b id="OpenID.Core">[OIDC]</b>
+        <b id="OpenID.Core">[OpenID.Core]</b>
       </td>
-      <td class="top"><a title="Nomura Research Institute, Ltd.">Sakimura, N.</a>, <a title="Ping Identity">Bradley, J.</a>, <a title="Microsoft">Jones, M.</a>, <a title="Google">de Medeiros, B.</a>, <a title="Salesforce">Mortimore, C.</a> and <a title="Illumila">E. Jay</a>, "<a href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a>", December 2013.</td>
+      <td class="top"><a>Sakimura, N.</a>, <a>Bradley, J.</a>, <a>Jones, M.</a>, <a>de Medeiros, B.</a>, <a>Mortimore, C.</a> and <a>E. Jay</a>, "<a href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a>", December 2013.</td>
     </tr>
     <tr>
       <td class="reference">
-        <b id="OpenID.Discovery">[Discovery]</b>
+        <b id="OpenID.Discovery">[OpenID.Discovery]</b>
       </td>
-      <td class="top"><a title="Nomura Research Institute, Ltd.">Sakimura, N.</a>, <a title="Ping Identity">Bradley, J.</a>, <a title="Microsoft">Jones, M.</a> and <a title="Illumila">E. Jay</a>, "<a href="https://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery 1.0</a>", August 2015.</td>
+      <td class="top"><a>Sakimura, N.</a>, <a>Bradley, J.</a>, <a>Jones, M.</a> and <a>E. Jay</a>, "<a href="https://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery 1.0</a>", August 2015.</td>
     </tr>
     <tr>
       <td class="reference">
-        <b id="RFC7516.JWE">[JWE]</b>
+        <b id="IANA.JWT_Claims">[IANA.JWT_Claims]</b>
       </td>
-      <td class="top">Jones, M. and Hildebrand, J., "<a href="https://tools.ietf.org/html/rfc7516">JSON Web Encryption (JWE)</a>", RFC 7516, May 2015.</td>
+      <td class="top"><a>IANA</a>, "<a href="https://www.iana.org/assignments/jwt/">JSON Web Token Claims</a>", January 2015.</td>
     </tr>
     <tr>
       <td class="reference">
-        <b id="RFC7518.JWA">[JWA]</b>
+        <b id="IANA.JOSE">[IANA.JOSE]</b>
       </td>
-      <td class="top">Jones, M., "<a href="https://tools.ietf.org/html/rfc7518">JSON Web Algorithms (JWA)</a>", RFC 7518, May 2015.</td>
+      <td class="top"><a>IANA</a>, "<a href="https://www.iana.org/assignments/jose/">JSON Object Signing and Encryption (JOSE)</a>", January 2015.</td>
     </tr>
     <tr>
       <td class="reference">
-        <b id="RFC2119">[RFC2119]</b>
+        <b id="RFC7516">[RFC7516]</b>
       </td>
-      <td class="top"><a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+      <td class="top"><a>Jones, M.</a> and <a>J. Hildebrand</a>, "<a href="http://tools.ietf.org/html/rfc7516">JSON Web Encryption (JWE)</a>", RFC 7516, DOI 10.17487/RFC7516, May 2015.</td>
     </tr>
     <tr>
       <td class="reference">
-        <b id="RFC7230">[RFC7230]</b>
+        <b id="RFC7518">[RFC7518]</b>
       </td>
-      <td class="top">Fielding, R. and Reschke, J., "<a href="https://tools.ietf.org/html/rfc7230">Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</a>", RFC 7230, June 2014.</td>
-    </tr>
-    <tr>
-      <td class="reference">
-        <b id="RFC5246">[RFC5246]</b>
-      </td>
-      <td class="top"><a>Dierks, T.</a> and <a>E. Rescorla</a>, "<a href="https://tools.ietf.org/html/rfc5246">The Transport Layer Security (TLS) Protocol Version 1.2</a>", RFC 5246, DOI 10.17487/RFC5246, August 2008.</td>
+      <td class="top"><a>Jones, M.</a>, "<a href="http://tools.ietf.org/html/rfc7518">JSON Web Algorithms (JWA)</a>", RFC 7518, DOI 10.17487/RFC7518, May 2015.</td>
     </tr>
     <tr>
       <td class="reference">
         <b id="RFC6749">[RFC6749]</b>
       </td>
-      <td class="top"><a>Hardt, D.</a>, "<a href="https://tools.ietf.org/html/rfc6749">The OAuth 2.0 Authorization Framework</a>", RFC 6749, DOI 10.17487/RFC6749, October 2012.</td>
+      <td class="top"><a>Hardt, D.</a>, "<a href="http://tools.ietf.org/html/rfc6749">The OAuth 2.0 Authorization Framework</a>", RFC 6749, DOI 10.17487/RFC6749, October 2012.</td>
     </tr>
     <tr>
       <td class="reference">
         <b id="RFC6750">[RFC6750]</b>
       </td>
-      <td class="top"><a>Jones, M.</a> and <a>D. Hardt</a>, "<a href="https://tools.ietf.org/html/rfc6750">The OAuth 2.0 Authorization Framework: Bearer Token Usage</a>", RFC 6750, DOI 10.17487/RFC6750, October 2012.</td>
+      <td class="top"><a>Jones, M.</a> and <a>D. Hardt</a>, "<a href="http://tools.ietf.org/html/rfc6750">The OAuth 2.0 Authorization Framework: Bearer Token Usage</a>", RFC 6750, DOI 10.17487/RFC6750, October 2012.</td>
     </tr>
     <tr>
       <td class="reference">
-        <b id="IANA.JWT.Claims">[IANA.JWT.Claims]</b>
+        <b id="RFC2119">[RFC2119]</b>
       </td>
-      <td class="top">IANA, "JSON Web Token Claims", &lt;<a href="https://www.iana.org/assignments/jwt/">https://www.iana.org/assignments/jwt/</a>&gt;</td>
+      <td class="top"><a>Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
     </tr>
-
   </tbody>
 </table>
-
-
-<h2 id="rfc.references.2">9.2. Informative References</h2>
-
+<h1 id="rfc.references.2"><a href="#rfc.references.2">9.2.</a> Informative References</h1>
 <table>
   <tbody>
     <tr>
       <td class="reference">
         <b id="MobileConnect">[MobileConnect]</b>
       </td>
-      <td class="top">GSMA, "Mobile Connect", &lt;<a href="https://mobileconnect.io/">mobileconnect.io</a>&gt;.</td>
-    </tr>
-    <tr>
-      <td class="reference">
-        <b id="OpenID20.Migration">[OpenID20.Migration]</b>
-      </td>
-      <td class="top"><a title="Nomura Research Institute, Ltd.">Sakimura, N.</a>, <a title="Ping Identity">Bradley, J.</a>, <a title="Google">Agarwal, N.</a> and <a title="Illumila">E. Jay</a>, "<a href="https://openid.net/specs/openid-connect-migration-1_0.html">OpenID 2.0 to OpenID Connect Migration 1.0</a>", April 2015.</td>
+      <td class="top"><a>GSMA</a>, "<a href="https://mobileconnect.io/">Mobile Connect</a>", January 2015.</td>
     </tr>
     <tr>
       <td class="reference">
         <b id="RFC7807">[RFC7807]</b>
       </td>
-      <td class="top">Nottingham, N. and Wilde, E., "<a href="https://tools.ietf.org/html/rfc7807">Problem Details for HTTP APIs</a>", RFC 7807, March 2016.</td>
+      <td class="top"><a>Nottingham, M.</a> and <a>E. Wilde</a>, "<a href="http://tools.ietf.org/html/rfc7807">Problem Details for HTTP APIs</a>", RFC 7807, DOI 10.17487/RFC7807, March 2016.</td>
     </tr>
   </tbody>
 </table>
+<h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#example" id="example">Example flow</a></h1>
+<p id="rfc.section.A.p.1">This example involves a user (Alice), an RP, and 3 OPs (OP1, OP2, and OP3). Alice originally federated to the RP via OP1; ported to OP2; then (shortly afterwards) ported to OP3. When Alice logs in to RP via OP3 for the first time she is not recognized directly from OP3's id_token. But by following the "aka" trail, the RP automatically establishes the link to an id from OP1 that the RP recognizes as Alice.</p>
+<p id="rfc.section.A.p.2">Many details are elided. Dotted arrows represent HTTP redirects.</p>
+<pre>
+<img src="draft-account-porting.eg.png"/>
+</pre>
+<h1 id="rfc.appendix.B"><a href="#rfc.appendix.B">Appendix B.</a> <a href="#ack" id="ack">Acknowledgements</a></h1>
+<p id="rfc.section.B.p.1">The following people in particular have contributed to the development of this specification: J&#246;rg Connotte; John Bradley; Axel Nennker.</p>
+<h1 id="rfc.appendix.C"><a href="#rfc.appendix.C">Appendix C.</a> <a href="#notices" id="notices">Notices</a></h1>
+<p id="rfc.section.C.p.1">Copyright (c) 2016 The OpenID Foundation.</p>
+<p id="rfc.section.C.p.2">The OpenID Foundation (OIDF) grants to any Contributor, developer, implementer, or other interested party a non-exclusive, royalty free, worldwide copyright license to reproduce, prepare derivative works from, distribute, perform and display, this Implementers Draft or Final Specification solely for the purposes of (i) developing specifications, and (ii) implementing Implementers Drafts and Final Specifications based on such documents, provided that attribution be made to the OIDF as the source of the material, but that such attribution does not indicate an endorsement by the OIDF.</p>
+<p id="rfc.section.C.p.3">The technology described in this specification was made available from contributions from various sources, including members of the OpenID Foundation and others. Although the OpenID Foundation has taken steps to help ensure that the technology is available for distribution, it takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this specification or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any independent effort to identify any such rights. The OpenID Foundation and the contributors to this specification make no (and hereby expressly disclaim any) warranties (express, implied, or otherwise), including implied warranties of merchantability, non-infringement, fitness for a particular purpose, or title, related to this specification, and the entire risk as to implementing this specification is assumed by the implementer. The OpenID Intellectual Property Rights policy requires contributors to offer a patent promise not to assert certain patent claims against other contributors and against implementers. The OpenID Foundation invites any interested party to bring to its attention any copyrights, patents, patent applications, or other proprietary rights that may cover technology that may be required to practice this specification.</p>
+<h1 id="rfc.appendix.D"><a href="#rfc.appendix.D">Appendix D.</a> <a href="#history" id="history">Document history</a></h1>
+<p id="rfc.section.D.p.1">[[ To be removed from the final specification ]]</p>
+<p id="rfc.section.D.p.2">-02</p>
+<p/>
 
-
-<h1 id="rfc.appendix.A">Appendix A. <a id="example">Full example</a></h1>
-
-<p>This example involves a user (Alice), an RP, and 3 OPs (OP1, OP2, and OP3). Alice originally federated to the RP via OP1; ported to OP2; then (shortly afterwards) ported to OP3. When Alice logs in to RP via OP3 for the first time she is not recognized directly from OP3's id_token. But by following the "<tt>aka</tt>" trail, the RP automatically establishes the link to an id from OP1 that the RP recognizes as Alice.</p>
-
-<p>Many details are elided. Dotted arrows represent HTTP redirects.</p>
-
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1938px" style="width:1090px;height:1938px;" version="1.1" viewBox="0 0 1090 1938" width="1090px"><defs><filter height="300%" id="f8kgyyv" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="114" x="487" y="24.5332">Porting example</text><rect fill="#FFFFFF" filter="url(#f8kgyyv)" height="163.0547" style="stroke: #000000; stroke-width: 2.0;" width="825.5" x="30" y="553.7344"/><rect fill="#FFFFFF" filter="url(#f8kgyyv)" height="415.8672" style="stroke: #000000; stroke-width: 2.0;" width="1062" x="13" y="1322.4922"/><rect fill="#FFFFFF" filter="url(#f8kgyyv)" height="228.8125" style="stroke: #000000; stroke-width: 2.0;" width="1042" x="23" y="1502.5469"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="58" y1="119.2188" y2="406.0313"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="58" x2="58" y1="406.0313" y2="434.0313"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="58" y1="434.0313" y2="518.7344"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="58" x2="58" y1="518.7344" y2="546.7344"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="58" y1="546.7344" y2="723.7891"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="58" x2="58" y1="723.7891" y2="751.7891"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="58" y1="751.7891" y2="1027.8984"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="58" x2="58" y1="1027.8984" y2="1055.8984"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="58" y1="1055.8984" y2="1140.6016"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="58" x2="58" y1="1140.6016" y2="1182.4375"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="58" y1="1182.4375" y2="1243.1406"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="58" x2="58" y1="1243.1406" y2="1271.1406"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="58" y1="1271.1406" y2="1785.7109"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="264" x2="264" y1="119.2188" y2="406.0313"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="264" x2="264" y1="406.0313" y2="434.0313"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="264" x2="264" y1="434.0313" y2="518.7344"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="264" x2="264" y1="518.7344" y2="546.7344"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="264" x2="264" y1="546.7344" y2="723.7891"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="264" x2="264" y1="723.7891" y2="751.7891"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="264" x2="264" y1="751.7891" y2="1027.8984"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="264" x2="264" y1="1027.8984" y2="1055.8984"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="264" x2="264" y1="1055.8984" y2="1140.6016"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="264" x2="264" y1="1140.6016" y2="1182.4375"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="264" x2="264" y1="1182.4375" y2="1243.1406"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="264" x2="264" y1="1243.1406" y2="1271.1406"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="264" x2="264" y1="1271.1406" y2="1785.7109"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="450" x2="450" y1="119.2188" y2="406.0313"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="450" x2="450" y1="406.0313" y2="434.0313"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="450" x2="450" y1="434.0313" y2="518.7344"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="450" x2="450" y1="518.7344" y2="546.7344"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="450" x2="450" y1="546.7344" y2="723.7891"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="450" x2="450" y1="723.7891" y2="751.7891"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="450" x2="450" y1="751.7891" y2="1027.8984"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="450" x2="450" y1="1027.8984" y2="1055.8984"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="450" x2="450" y1="1055.8984" y2="1140.6016"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="450" x2="450" y1="1140.6016" y2="1182.4375"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="450" x2="450" y1="1182.4375" y2="1243.1406"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="450" x2="450" y1="1243.1406" y2="1271.1406"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="450" x2="450" y1="1271.1406" y2="1785.7109"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="632" x2="632" y1="119.2188" y2="406.0313"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="632" x2="632" y1="406.0313" y2="434.0313"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="632" x2="632" y1="434.0313" y2="518.7344"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="632" x2="632" y1="518.7344" y2="546.7344"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="632" x2="632" y1="546.7344" y2="723.7891"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="632" x2="632" y1="723.7891" y2="751.7891"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="632" x2="632" y1="751.7891" y2="1027.8984"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="632" x2="632" y1="1027.8984" y2="1055.8984"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="632" x2="632" y1="1055.8984" y2="1140.6016"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="632" x2="632" y1="1140.6016" y2="1182.4375"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="632" x2="632" y1="1182.4375" y2="1243.1406"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="632" x2="632" y1="1243.1406" y2="1271.1406"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="632" x2="632" y1="1271.1406" y2="1785.7109"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="826.5" x2="826.5" y1="119.2188" y2="406.0313"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="826.5" x2="826.5" y1="406.0313" y2="434.0313"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="826.5" x2="826.5" y1="434.0313" y2="518.7344"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="826.5" x2="826.5" y1="518.7344" y2="546.7344"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="826.5" x2="826.5" y1="546.7344" y2="723.7891"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="826.5" x2="826.5" y1="723.7891" y2="751.7891"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="826.5" x2="826.5" y1="751.7891" y2="1027.8984"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="826.5" x2="826.5" y1="1027.8984" y2="1055.8984"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="826.5" x2="826.5" y1="1055.8984" y2="1140.6016"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="826.5" x2="826.5" y1="1140.6016" y2="1182.4375"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="826.5" x2="826.5" y1="1182.4375" y2="1243.1406"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;" x1="826.5" x2="826.5" y1="1243.1406" y2="1271.1406"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="826.5" x2="826.5" y1="1271.1406" y2="1785.7109"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="30" x="40" y="116.1426">Alice</text><ellipse cx="58" cy="44.6094" fill="#FEFECE" filter="url(#f8kgyyv)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><path d="M58,52.6094 L58,79.6094 M45,60.6094 L71,60.6094 M58,79.6094 L45,94.6094 M58,79.6094 L71,94.6094 " fill="#FEFECE" filter="url(#f8kgyyv)" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="30" x="40" y="1799.2441">Alice</text><ellipse cx="58" cy="1812.3203" fill="#FEFECE" filter="url(#f8kgyyv)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><path d="M58,1820.3203 L58,1847.3203 M45,1828.3203 L71,1828.3203 M58,1847.3203 L45,1862.3203 M58,1847.3203 L71,1862.3203 " fill="#FEFECE" filter="url(#f8kgyyv)" style="stroke: #A80036; stroke-width: 2.0;"/><rect fill="#FEFECE" filter="url(#f8kgyyv)" height="31.6094" style="stroke: #A80036; stroke-width: 1.5;" width="42" x="241" y="82.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="248" y="104.1426">OP1</text><rect fill="#FEFECE" filter="url(#f8kgyyv)" height="31.6094" style="stroke: #A80036; stroke-width: 1.5;" width="42" x="241" y="1784.7109"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="248" y="1806.2441">OP1</text><rect fill="#FEFECE" filter="url(#f8kgyyv)" height="31.6094" style="stroke: #A80036; stroke-width: 1.5;" width="42" x="427" y="82.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="434" y="104.1426">OP2</text><rect fill="#FEFECE" filter="url(#f8kgyyv)" height="31.6094" style="stroke: #A80036; stroke-width: 1.5;" width="42" x="427" y="1784.7109"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="434" y="1806.2441">OP2</text><rect fill="#FEFECE" filter="url(#f8kgyyv)" height="31.6094" style="stroke: #A80036; stroke-width: 1.5;" width="42" x="609" y="82.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="616" y="104.1426">OP3</text><rect fill="#FEFECE" filter="url(#f8kgyyv)" height="31.6094" style="stroke: #A80036; stroke-width: 1.5;" width="42" x="609" y="1784.7109"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="616" y="1806.2441">OP3</text><rect fill="#FEFECE" filter="url(#f8kgyyv)" height="31.6094" style="stroke: #A80036; stroke-width: 1.5;" width="33" x="808.5" y="82.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="19" x="815.5" y="104.1426">RP</text><rect fill="#FEFECE" filter="url(#f8kgyyv)" height="31.6094" style="stroke: #A80036; stroke-width: 1.5;" width="33" x="808.5" y="1784.7109"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="19" x="815.5" y="1806.2441">RP</text><rect fill="#EEEEEE" filter="url(#f8kgyyv)" height="3" style="stroke: #EEEEEE; stroke-width: 1.0;" width="1082" x="3" y="150.3945"/><line style="stroke: #000000; stroke-width: 1.0;" x1="3" x2="1085" y1="150.3945" y2="150.3945"/><line style="stroke: #000000; stroke-width: 1.0;" x1="3" x2="1085" y1="153.3945" y2="153.3945"/><rect fill="#EEEEEE" filter="url(#f8kgyyv)" height="24.3516" style="stroke: #000000; stroke-width: 2.0;" width="240" x="424" y="139.2188"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="222" x="430" y="156.7139">Registration (OAuth 2.0 client apps)</text><polygon fill="#A80036" points="275,191.5703,265,195.5703,275,199.5703,271,195.5703" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="269" x2="449" y1="195.5703" y2="195.5703"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="104" x="281" y="191.0654">register for porting</text><polygon fill="#A80036" points="461,221.9219,451,225.9219,461,229.9219,457,225.9219" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="455" x2="631" y1="225.9219" y2="225.9219"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="104" x="467" y="221.417">register for porting</text><polygon fill="#FBFB77" filter="url(#f8kgyyv)" points="395,239.2734,395,265.2734,683,265.2734,683,249.2734,673,239.2734,395,239.2734" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="673" x2="673" y1="239.2734" y2="249.2734"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="683" x2="673" y1="249.2734" y2="249.2734"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="267" x="401" y="257.7686">Includes discovery to learn port_data_endpoint</text><polygon fill="#A80036" points="275,292.625,265,296.625,275,300.625,271,296.625" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="269" x2="826" y1="296.625" y2="296.625"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="103" x="281" y="292.1201">register for sign-in</text><polygon fill="#A80036" points="461,322.9766,451,326.9766,461,330.9766,457,326.9766" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="455" x2="826" y1="326.9766" y2="326.9766"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="103" x="467" y="322.4717">register for sign-in</text><polygon fill="#A80036" points="643,353.3281,633,357.3281,643,361.3281,639,357.3281" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="637" x2="826" y1="357.3281" y2="357.3281"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="103" x="649" y="352.8232">register for sign-in</text><polygon fill="#FBFB77" filter="url(#f8kgyyv)" points="672,370.6797,672,396.6797,977,396.6797,977,380.6797,967,370.6797,672,370.6797" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="967" x2="967" y1="370.6797" y2="380.6797"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="977" x2="967" y1="380.6797" y2="380.6797"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="284" x="678" y="389.1748">Includes discovery to learn port_check_endpoints</text><rect fill="#EEEEEE" filter="url(#f8kgyyv)" height="3" style="stroke: #EEEEEE; stroke-width: 1.0;" width="1082" x="3" y="455.207"/><line style="stroke: #000000; stroke-width: 1.0;" x1="3" x2="1085" y1="455.207" y2="455.207"/><line style="stroke: #000000; stroke-width: 1.0;" x1="3" x2="1085" y1="458.207" y2="458.207"/><rect fill="#EEEEEE" filter="url(#f8kgyyv)" height="24.3516" style="stroke: #000000; stroke-width: 2.0;" width="116" x="486" y="444.0313"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="98" x="492" y="461.5264">Sign-in via OP1</text><polygon fill="#A80036" points="252,501.3828,262,505.3828,252,509.3828,256,505.3828" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="258" y1="505.3828" y2="505.3828"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="42" x="65" y="500.8779">sign-up</text><polygon fill="#FBFB77" filter="url(#f8kgyyv)" points="269,483.3828,269,509.3828,369,509.3828,369,493.3828,359,483.3828,269,483.3828" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="359" x2="359" y1="483.3828" y2="493.3828"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="369" x2="359" y1="493.3828" y2="493.3828"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="79" x="275" y="501.8779">assign sub1A</text><rect fill="none" height="163.0547" style="stroke: #000000; stroke-width: 2.0;" width="825.5" x="30" y="553.7344"/><polygon fill="#EEEEEE" points="30,553.7344,224,553.7344,224,561.7344,214,571.7344,30,571.7344,30,553.7344" style="stroke: #000000; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="149" x="45" y="568.2295">OpenID Connect sign-in</text><polygon fill="#A80036" points="815,574.0859,825,578.0859,815,582.0859,819,578.0859" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="821" y1="578.0859" y2="578.0859"/><polygon fill="#A80036" points="69,588.0859,59,592.0859,69,596.0859,65,592.0859" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="63" x2="826" y1="592.0859" y2="592.0859"/><polygon fill="#A80036" points="252,602.0859,262,606.0859,252,610.0859,256,606.0859" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="258" y1="606.0859" y2="606.0859"/><polygon fill="#A80036" points="69,632.0859,59,636.0859,69,640.0859,65,636.0859" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="252,632.0859,262,636.0859,252,640.0859,256,636.0859" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="63" x2="258" y1="636.0859" y2="636.0859"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="101" x="75" y="631.5811">sign-in &amp; consent</text><polygon fill="#A80036" points="69,646.4375,59,650.4375,69,654.4375,65,650.4375" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="63" x2="263" y1="650.4375" y2="650.4375"/><polygon fill="#A80036" points="815,660.4375,825,664.4375,815,668.4375,819,664.4375" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="821" y1="664.4375" y2="664.4375"/><polygon fill="#A80036" points="275,674.4375,265,678.4375,275,682.4375,271,678.4375" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="269" x2="826" y1="678.4375" y2="678.4375"/><polygon fill="#A80036" points="815,704.4375,825,708.4375,815,712.4375,819,708.4375" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="264" x2="821" y1="708.4375" y2="708.4375"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="67" x="271" y="703.9326">OP1,sub1A</text><rect fill="#EEEEEE" filter="url(#f8kgyyv)" height="3" style="stroke: #EEEEEE; stroke-width: 1.0;" width="1082" x="3" y="772.9648"/><line style="stroke: #000000; stroke-width: 1.0;" x1="3" x2="1085" y1="772.9648" y2="772.9648"/><line style="stroke: #000000; stroke-width: 1.0;" x1="3" x2="1085" y1="775.9648" y2="775.9648"/><rect fill="#EEEEEE" filter="url(#f8kgyyv)" height="24.3516" style="stroke: #000000; stroke-width: 2.0;" width="90" x="499" y="761.7891"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="72" x="505" y="779.2842">Port to OP2</text><polygon fill="#A80036" points="438,819.1406,448,823.1406,438,827.1406,442,823.1406" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="444" y1="823.1406" y2="823.1406"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="184" x="65" y="818.6357">sign-up; I want to port from OP1</text><polygon fill="#FBFB77" filter="url(#f8kgyyv)" points="455,801.1406,455,827.1406,555,827.1406,555,811.1406,545,801.1406,455,801.1406" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="545" x2="545" y1="801.1406" y2="811.1406"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="555" x2="545" y1="811.1406" y2="811.1406"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="79" x="461" y="819.6357">assign sub2B</text><polygon fill="#A80036" points="69,838.4922,59,842.4922,69,846.4922,65,842.4922" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="63" x2="449" y1="842.4922" y2="842.4922"/><polygon fill="#A80036" points="252,868.4922,262,872.4922,252,876.4922,256,872.4922" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="258" y1="872.4922" y2="872.4922"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="182" x="65" y="867.9873">GET /authz?scope=port_data...</text><polygon fill="#A80036" points="69,882.8438,59,886.8438,69,890.8438,65,886.8438" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="252,882.8438,262,886.8438,252,890.8438,256,886.8438" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="63" x2="258" y1="886.8438" y2="886.8438"/><polygon fill="#A80036" points="69,896.8438,59,900.8438,69,904.8438,65,900.8438" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="63" x2="263" y1="900.8438" y2="900.8438"/><polygon fill="#A80036" points="438,910.8438,448,914.8438,438,918.8438,442,914.8438" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="444" y1="914.8438" y2="914.8438"/><polygon fill="#A80036" points="275,940.8438,265,944.8438,275,948.8438,271,944.8438" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="269" x2="449" y1="944.8438" y2="944.8438"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="162" x="281" y="940.3389">swap code for access-token</text><polygon fill="#A80036" points="438,955.1953,448,959.1953,438,963.1953,442,959.1953" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="264" x2="444" y1="959.1953" y2="959.1953"/><polygon fill="#A80036" points="275,985.1953,265,989.1953,275,993.1953,271,989.1953" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="269" x2="449" y1="989.1953" y2="989.1953"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="110" x="281" y="984.6904">GET /port_data/me</text><polygon fill="#A80036" points="438,1015.5469,448,1019.5469,438,1023.5469,442,1019.5469" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="264" x2="444" y1="1019.5469" y2="1019.5469"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="158" x="271" y="1015.042">{"port_token_plain":"prt1C"}</text><rect fill="#EEEEEE" filter="url(#f8kgyyv)" height="3" style="stroke: #EEEEEE; stroke-width: 1.0;" width="1082" x="3" y="1077.0742"/><line style="stroke: #000000; stroke-width: 1.0;" x1="3" x2="1085" y1="1077.0742" y2="1077.0742"/><line style="stroke: #000000; stroke-width: 1.0;" x1="3" x2="1085" y1="1080.0742" y2="1080.0742"/><rect fill="#EEEEEE" filter="url(#f8kgyyv)" height="24.3516" style="stroke: #000000; stroke-width: 2.0;" width="90" x="499" y="1065.8984"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="72" x="505" y="1083.3936">Port to OP3</text><polygon fill="#A80036" points="620,1123.25,630,1127.25,620,1131.25,624,1127.25" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="626" y1="1127.25" y2="1127.25"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="184" x="65" y="1122.7451">sign-up; I want to port from OP2</text><polygon fill="#FBFB77" filter="url(#f8kgyyv)" points="637,1105.25,637,1131.25,737,1131.25,737,1115.25,727,1105.25,637,1105.25" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="727" x2="727" y1="1105.25" y2="1115.25"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="737" x2="727" y1="1115.25" y2="1115.25"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="79" x="643" y="1123.7451">assign sub3D</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="405.5" y="1166.0205">OAuth 2.0 flow</text><polygon fill="#A80036" points="461,1200.4375,451,1204.4375,461,1208.4375,457,1204.4375" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="455" x2="631" y1="1204.4375" y2="1204.4375"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="110" x="467" y="1199.9326">GET /port_data/me</text><polygon fill="#A80036" points="620,1230.7891,630,1234.7891,620,1238.7891,624,1234.7891" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="450" x2="626" y1="1234.7891" y2="1234.7891"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="158" x="457" y="1230.2842">{"port_token_plain":"prt2E"}</text><rect fill="#EEEEEE" filter="url(#f8kgyyv)" height="3" style="stroke: #EEEEEE; stroke-width: 1.0;" width="1082" x="3" y="1292.3164"/><line style="stroke: #000000; stroke-width: 1.0;" x1="3" x2="1085" y1="1292.3164" y2="1292.3164"/><line style="stroke: #000000; stroke-width: 1.0;" x1="3" x2="1085" y1="1295.3164" y2="1295.3164"/><rect fill="#EEEEEE" filter="url(#f8kgyyv)" height="24.3516" style="stroke: #000000; stroke-width: 2.0;" width="154" x="467" y="1281.1406"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="136" x="473" y="1298.6357">Sign-in to RP via OP3</text><rect fill="none" height="415.8672" style="stroke: #000000; stroke-width: 2.0;" width="1062" x="13" y="1322.4922"/><polygon fill="#EEEEEE" points="13,1322.4922,197,1322.4922,197,1330.4922,187,1340.4922,13,1340.4922,13,1322.4922" style="stroke: #000000; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="139" x="28" y="1336.9873">OpenID Connect login</text><polygon fill="#A80036" points="815,1342.8438,825,1346.8438,815,1350.8438,819,1346.8438" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="821" y1="1346.8438" y2="1346.8438"/><polygon fill="#A80036" points="69,1356.8438,59,1360.8438,69,1364.8438,65,1360.8438" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="63" x2="826" y1="1360.8438" y2="1360.8438"/><polygon fill="#A80036" points="620,1370.8438,630,1374.8438,620,1378.8438,624,1374.8438" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="626" y1="1374.8438" y2="1374.8438"/><polygon fill="#A80036" points="69,1400.8438,59,1404.8438,69,1408.8438,65,1404.8438" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="620,1400.8438,630,1404.8438,620,1408.8438,624,1404.8438" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="63" x2="626" y1="1404.8438" y2="1404.8438"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="92" x="75" y="1400.3389">sign-in, consent</text><polygon fill="#A80036" points="69,1415.1953,59,1419.1953,69,1423.1953,65,1419.1953" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="63" x2="631" y1="1419.1953" y2="1419.1953"/><polygon fill="#A80036" points="815,1429.1953,825,1433.1953,815,1437.1953,819,1433.1953" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="58" x2="821" y1="1433.1953" y2="1433.1953"/><polygon fill="#A80036" points="643,1443.1953,633,1447.1953,643,1451.1953,639,1447.1953" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="637" x2="826" y1="1447.1953" y2="1447.1953"/><polygon fill="#A80036" points="815,1478.1953,825,1482.1953,815,1486.1953,819,1482.1953" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="632" x2="821" y1="1482.1953" y2="1482.1953"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="171" x="639" y="1477.6904">OP3,sub3D,aka:{OP2,xxx2E}</text><polygon fill="#FBFB77" filter="url(#f8kgyyv)" points="832,1460.1953,832,1486.1953,1023,1486.1953,1023,1470.1953,1013,1460.1953,832,1460.1953" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="1013" x2="1013" y1="1460.1953" y2="1470.1953"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="1023" x2="1013" y1="1470.1953" y2="1470.1953"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="170" x="838" y="1478.6904">OP3,sub3D unknown; try aka</text><rect fill="none" height="228.8125" style="stroke: #000000; stroke-width: 2.0;" width="1042" x="23" y="1502.5469"/><polygon fill="#EEEEEE" points="23,1502.5469,223,1502.5469,223,1510.5469,213,1520.5469,23,1520.5469,23,1502.5469" style="stroke: #000000; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="155" x="38" y="1517.042">Automatically verify port</text><polygon fill="#A80036" points="461,1552.0742,451,1556.0742,461,1560.0742,457,1556.0742" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="455" x2="826" y1="1556.0742" y2="1556.0742"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="205" x="467" y="1551.5693">GET /port_check?xxx2E,OP3,rp.ex</text><polygon fill="#FBFB77" filter="url(#f8kgyyv)" points="219,1525.8984,219,1567.8984,441,1567.8984,441,1535.8984,431,1525.8984,219,1525.8984" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="431" x2="431" y1="1525.8984" y2="1535.8984"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="441" x2="431" y1="1535.8984" y2="1535.8984"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="201" x="225" y="1544.3936">xxx2E decrypts to prt2E &amp; is valid,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="126" x="225" y="1560.7451">matches OP3 &amp; rp.ex</text><polygon fill="#A80036" points="815,1600.6016,825,1604.6016,815,1608.6016,819,1604.6016" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="450" x2="821" y1="1604.6016" y2="1604.6016"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="141" x="457" y="1600.0967">sub2B,aka:{OP1,xxx1C}</text><polygon fill="#FBFB77" filter="url(#f8kgyyv)" points="832,1582.6016,832,1608.6016,1023,1608.6016,1023,1592.6016,1013,1582.6016,832,1582.6016" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="1013" x2="1013" y1="1582.6016" y2="1592.6016"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="1023" x2="1013" y1="1592.6016" y2="1592.6016"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="170" x="838" y="1601.0967">OP2,sub2B unknown; try aka</text><polygon fill="#A80036" points="275,1649.1289,265,1653.1289,275,1657.1289,271,1653.1289" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="269" x2="826" y1="1653.1289" y2="1653.1289"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="205" x="281" y="1648.624">GET /port_check?xxx1C,OP2,rp.ex</text><polygon fill="#FBFB77" filter="url(#f8kgyyv)" points="33,1622.9531,33,1664.9531,255,1664.9531,255,1632.9531,245,1622.9531,33,1622.9531" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="245" x2="245" y1="1622.9531" y2="1632.9531"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="255" x2="245" y1="1632.9531" y2="1632.9531"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="201" x="39" y="1641.4482">xxx1C decrypts to prt1C &amp; is valid,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="126" x="39" y="1657.7998">matches OP2 &amp; rp.ex</text><polygon fill="#A80036" points="815,1705.832,825,1709.832,815,1713.832,819,1709.832" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="264" x2="821" y1="1709.832" y2="1709.832"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="37" x="271" y="1705.3271">sub1A</text><polygon fill="#FBFB77" filter="url(#f8kgyyv)" points="832,1679.6563,832,1721.6563,1046,1721.6563,1046,1689.6563,1036,1679.6563,832,1679.6563" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="1036" x2="1036" y1="1679.6563" y2="1689.6563"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="1046" x2="1036" y1="1689.6563" y2="1689.6563"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="118" x="838" y="1698.1514">OP1,sub1A is Alice;</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="193" x="838" y="1714.5029">accept OP3,sub3D = OP1,sub1A</text><polygon fill="#A80036" points="69,1763.3594,59,1767.3594,69,1771.3594,65,1767.3594" style="stroke: #A80036; stroke-width: 1.0;"/><line style="stroke: #A80036; stroke-width: 1.0;" x1="63" x2="826" y1="1767.3594" y2="1767.3594"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="84" x="75" y="1762.8545">welcome Alice</text><polygon fill="#DDDDDD" points="885,1909.9297,885,1937.5391,1076,1937.5391,1076,1909.9297,885,1909.9297" style="stroke: #000000; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="179" x="891" y="1929.4629">&lt;-- dotted lines are redirects</text></g></svg>
-<h1 id="rfc.appendix.B">Appendix B. <a id="Acknowledgements">Acknowledgements</a></h1>
-
-<p>The following people in particular have contributed to the development of this specification.</p>
-
-<ul class="empty">
-  <li>J&#246;rg Connotte (j.connotte@telekom.de), Deutsche Telekom</li>
-  <li>John Bradley (ve7jtb@ve7jtb.com), Ping Identity</li>
-  <li>Axel Nennker (Axel.Nennker@telekom.de), Deutsche Telekom</li>
+<ul>
+  <li>Remove unencrypted port tokens</li>
+  <li>Authenticate RPs to Old OP</li>
 </ul>
-
-
-<h1 id="rfc.appendix.C">Appendix C. <a id="notices">Notices</a></h1>
-
-<p>Copyright (c) 2016 The OpenID Foundation.</p>
-
-<p>The OpenID Foundation (OIDF) grants to any Contributor, developer, implementer, or other interested party a non-exclusive, royalty free, worldwide copyright license to reproduce, prepare derivative works from, distribute, perform and display, this Implementers Draft or Final Specification solely for the purposes of (i) developing specifications, and (ii) implementing Implementers Drafts and Final Specifications based on such documents, provided that attribution be made to the OIDF as the source of the material, but that such attribution does not indicate an endorsement by the OIDF.</p>
-
-<p>The technology described in this specification was made available from contributions from various sources, including members of the OpenID Foundation and others. Although the OpenID Foundation has taken steps to help ensure that the technology is available for distribution, it takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this specification or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any independent effort to identify any such rights. The OpenID Foundation and the contributors to this specification make no (and hereby expressly disclaim any) warranties (express, implied, or otherwise), including implied warranties of merchantability, non-infringement, fitness for a particular purpose, or title, related to this specification, and the entire risk as to implementing this specification is assumed by the implementer. The OpenID Intellectual Property Rights policy requires contributors to offer a patent promise not to assert certain patent claims against other contributors and against implementers. The OpenID Foundation invites any interested party to bring to its attention any copyrights, patents, patent applications, or other proprietary rights that may cover technology that may be required to practice this specification.</p>
-
-
-<h1 id="rfc.appendix.D">Appendix D. <a id="history">Document history</a></h1>
-
-<p>[[ To be removed from the final specification ]]</p>
-
-<p>-01 </p>
+<p id="rfc.section.D.p.4">-01</p>
+<p/>
 
 <ul>
   <li>Single port_token from Old OP to New OP</li>
   <li>Encrypted port_token from New OP to RP</li>
   <li>Torsten and Arne as additional authors</li>
 </ul>
-
-<p>-00 </p>
+<p id="rfc.section.D.p.6">-00</p>
+<p/>
 
 <ul>
   <li>Initial draft</li>
-  <li>Proposed as an alternative approach draft-account-migration-02</li>
+  <li>Proposed as an alternative approach to draft-account-migration-02</li>
 </ul>
-
-
-<h1 id="rfc.authors"><a id="rfc.authors">Author's Address</a></h1>
-
+<h1 id="rfc.authors">
+  <a href="#rfc.authors">Authors' Addresses</a>
+</h1>
 <div class="avoidbreak">
   <address class="vcard">
 	<span class="vcardline">
 	  <span class="fn">James Manger</span> 
+	  <span class="n hidden">
+		<span class="family-name">Manger</span>
+	  </span>
 	</span>
 	<span class="org vcardline">Telstra</span>
 	<span class="adr">
@@ -928,12 +908,13 @@ Content-Type: application/problem+json
 	<span class="vcardline">EMail: <a href="mailto:james.h.manger@team.telstra.com">james.h.manger@team.telstra.com</a></span>
 
   </address>
-</div>
-
-<div class="avoidbreak">
+</div><div class="avoidbreak">
   <address class="vcard">
 	<span class="vcardline">
 	  <span class="fn">Torsten Lodderstedt</span> 
+	  <span class="n hidden">
+		<span class="family-name">Lodderstedt</span>
+	  </span>
 	</span>
 	<span class="org vcardline">Deutsche Telekom AG</span>
 	<span class="adr">
@@ -948,12 +929,13 @@ Content-Type: application/problem+json
 	<span class="vcardline">EMail: <a href="mailto:t.lodderstedt@telekom.de">t.lodderstedt@telekom.de</a></span>
 
   </address>
-</div>
-
-<div class="avoidbreak">
+</div><div class="avoidbreak">
   <address class="vcard">
 	<span class="vcardline">
 	  <span class="fn">Arne Georg Gleditsch</span> 
+	  <span class="n hidden">
+		<span class="family-name">Gleditsch</span>
+	  </span>
 	</span>
 	<span class="org vcardline">Telenor</span>
 	<span class="adr">
@@ -969,7 +951,6 @@ Content-Type: application/problem+json
 
   </address>
 </div>
-
 
 </body>
 </html>
