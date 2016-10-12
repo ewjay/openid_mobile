@@ -62,7 +62,7 @@
       <t>
         The MODRNA Client initiated Backchannel Authentication Flow will specify a new authentication flow,
         by means of which the RP's that know the user identifier they want to authenticate (e-mail, msisdn),
-        will be able to initiate an interaction flow to authenticate their users withouth having end-user interaction
+        will be able to initiate an interaction flow to authenticate their users without having end-user interaction
         from a consumption device.
       </t>
     </abstract>
