@@ -580,6 +580,22 @@ The Biometric may be captured as part of the consent flow.
 		type="HTML" />
       </reference>
  
+    <reference anchor="MODRNA.Discovery"
+               target="https://bitbucket.org/openid/mobile/raw/default/draft-mobile-discovery-01.txt">
+        <front>
+          <title>OpenID Connect Mobile Discovery Profile 1.0</title>
+
+          <author fullname="Torsten Lodderstedt" initials="T." surname="Lodderstedt">
+            <organization abbrev="">Deutsche Telekom AG</organization>
+          </author>
+
+          <author fullname="John Bradley" initials="J." surname="Bradley">
+            <organization abbrev="Ping Identity">Ping Identity</organization>
+          </author>
+
+          <date day="08" month="August" year="2015"/>
+        </front>
+      </reference>
     </references>
     
     <references title="Informative References">
