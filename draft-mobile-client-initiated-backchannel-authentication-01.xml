@@ -502,32 +502,7 @@
       </reference>
 
       <?rfc include="reference.I-D.draft-jones-oauth-amr-values-05.xml"?>
-    
 
-      <reference anchor="OpenID.Discovery" target="http://openid.net/specs/openid-connect-discovery-1_0.html">
-        <front>
-          <title>OpenID Connect Discovery 1.0</title>
-
-          <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
-            <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
-          </author>
-
-          <author fullname="John Bradley" initials="J." surname="Bradley">
-            <organization abbrev="Ping Identity">Ping Identity</organization>
-          </author>
-
-          <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
-            <organization abbrev="Microsoft">Microsoft</organization>
-          </author>
-
-          <author fullname="Edmund Jay" initials="E." surname="Jay">
-            <organization abbrev="Illumila">Illumila</organization>
-          </author>
-
-          <date day="3" month="August" year="2015"/>
-        </front>
-      </reference>
-      
     </references>
     
     <references title="Informative References">
@@ -537,57 +512,6 @@
       <?rfc include="reference.RFC.5246"?>
       <?rfc include="reference.RFC.2246"?>
 
-
-
-      <reference anchor="ISO.29115">
-        <front>
-          <title>ISO/IEC DIS 29115</title>
-
-                <author fullname="Erika McCallister" initials="E." surname="McAllister">
-                 <organization abbrev="ISO">ISO</organization>
-                </author>
-
-                <author fullname="Richard Brackney" initials="R." surname="Brackney">
-                  <organization abbrev="ITU-T">ITU-T</organization>
-                </author>
-
-          <date day="01" month="April" year="2013"/>
-        </front>
-
-        <format target="http://www.iso.org/iso/catalogue_detail.htm?csnumber=45138" type="HTML" />
-      </reference>
-
-      <reference anchor="E.164">
-        <front>
-          <title>Recommendation ITU-T E.164</title>
-
-                <author fullname="N." initials="" surname="N.">
-                  <organization abbrev="ITU-T">ITU-T</organization>
-                </author>
-
-          <date day="01" month="November" year="2010"/>
-        </front>
-
-        <format target="https://www.itu.int/rec/T-REC-E.164-201011-I" type="PDF" />
-      </reference>
-
-      <reference anchor="MODRNA.Discovery"
-                 target="https://bitbucket.org/openid/mobile/raw/default/draft-mobile-discovery-01.txt">
-        <front>
-          <title>OpenID Connect Mobile Discovery Profile 1.0</title>
-
-          <author fullname="Torsten Lodderstedt" initials="T." surname="Lodderstedt">
-            <organization abbrev="">Deutsche Telekom AG</organization>
-          </author>
-
-          <author fullname="John Bradley" initials="J." surname="Bradley">
-            <organization abbrev="Ping Identity">Ping Identity</organization>
-          </author>
-
-          <date day="08" month="August" year="2015"/>
-        </front>
-      </reference>
-      
     </references>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
