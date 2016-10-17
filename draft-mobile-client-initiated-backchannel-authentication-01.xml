@@ -462,10 +462,6 @@
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
-      <?rfc include="reference.RFC.7517"?>
-      <?rfc include="reference.RFC.7519"?>
-      <?rfc include="reference.RFC.6711"?>
-
       
       <reference anchor="OpenID.Core">
         <front>
@@ -508,9 +504,6 @@
     <references title="Informative References">
 
       <?rfc include="reference.RFC.6749"?>
-      <?rfc include="reference.RFC.6750"?>
-      <?rfc include="reference.RFC.5246"?>
-      <?rfc include="reference.RFC.2246"?>
 
     </references>
 
