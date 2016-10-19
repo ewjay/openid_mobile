@@ -343,8 +343,8 @@
               Content-Type: application/x-www-form-urlencoded
               Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
               {
-                grant_type="1c266114-a1be-4252-8ad1-04986c5b9ac1"
-                &auth_req_id=40582304823
+                grant_type="urn:openid:params:modrna:grant-type:backchannel_request"
+                &auth_req_id=1c266114-a1be-4252-8ad1-04986c5b9ac1
               }
           ]]>
         </artwork>
