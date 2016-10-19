@@ -164,7 +164,7 @@
           </t>
           <t hangText="client_notification_endpoint">            
             OPTIONAL. Callback URI to which the response will be sent. This URI MUST exactly match one of the "Client initiated
-            Backchannel Authentication" callback URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described in Section 6.2.1 of [RFC3986] (Simple String Comparison). When using this flow, the Callback URI SHOULD 
+            Backchannel Authentication" callback URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described in Section 6.2.1 of <xref target="RFC3986" /> (Simple String Comparison). When using this flow, the Callback URI SHOULD 
             use the https scheme.            
           </t>
           <t>
@@ -229,7 +229,7 @@
           <t>
             If the "client_notification_endpoint" parameter is present, it MUST exactly match one of the callback 
             URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described 
-            in Section 6.2.1 of [RFC3986] (Simple String Comparison).
+            in Section 6.2.1 of <xref target="RFC3986" /> (Simple String Comparison).
           </t>
           <t>
             NOTE: the callback URI values registered for the "client_notification_endpoint" are different than those registered
@@ -242,7 +242,7 @@
         </list>
       </t>
       <t>
-          As specified in OAuth 2.0 [RFC6749], Authorization Servers SHOULD ignore unrecognized request parameters.
+          As specified in OAuth 2.0 <xref target="RFC6749" />, Authorization Servers SHOULD ignore unrecognized request parameters.
        </t>          
       <t>
           If the Authorization Server encounters any error, it MUST return an error response, per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
@@ -391,7 +391,7 @@
     <section anchor="token_error_response" title="Token Error Response">
       <t>
          If the Token Request is invalid or unauthorized, the Authorization Server constructs the error response according to the section 3.1.3.4 Token Error Response of <xref target="OpenID.Core"/>.
-         In addition to the error codes defined in Section 5.2 of [RFC6749], the following error codes are specific for the Client Initiated Backchannel flow:
+         In addition to the error codes defined in Section 5.2 of <xref target="RFC6749"/>, the following error codes are specific for the Client Initiated Backchannel flow:
       </t>
       <t>
         <list style="hanging">
@@ -504,6 +504,7 @@
     <references title="Informative References">
 
       <?rfc include="reference.RFC.6749"?>
+      <?rfc include="reference.RFC.3986"?>
 
     </references>
 
