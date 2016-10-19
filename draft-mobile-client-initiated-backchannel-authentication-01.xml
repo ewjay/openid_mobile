@@ -168,7 +168,7 @@
             use the https scheme.            
           </t>
           <t>
-            NOTE: If the "client_notification_endpoint" is not present the RP MUST polls the authorization server repeatedly 
+            NOTE: If the "client_notification_endpoint" is not present the RP MUST poll the authorization server repeatedly 
             as defined in <xref target="successful_authentication_response">Successful Authentication Response</xref> until 
             the end-user completes the approval process.
           </t>
@@ -314,7 +314,7 @@
 
     <section anchor="token_request" title="Token Request Using Polling Mechanism">
       <t>
-        When the authentication request doesn't include the "client_notification_endpoint" parameter or there are not any callback URI registered for this notification endpoint for this RP in the Identity Provider, the client must polls the token endpoint until the end-user grants or denies the request.
+        When the authentication request doesn't include the "client_notification_endpoint" parameter or there are not any callback URI registered for this notification endpoint for this RP in the Identity Provider, the client must poll the token endpoint until the end-user grants or denies the request.
       </t>
       <t>
         The client polls at reasonable interval which MUST NOT exceed the minimum interval provided by the authorization server via the "interval" parameter (if provided).
