@@ -258,7 +258,7 @@
       <t>
         <list style="hanging">
           <t hangText="auth_req_id">
-            REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP. The <spanx style="verb">auth_req_id</spanx> will be sent too in the authentication response to allow the RP to correlate the authentication request and the received tokens
+            REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP. The <spanx style="verb">auth_req_id</spanx> will be sent too in the <xref target="token_response" format="title" /> to allow the RP to correlate the authentication request and the received tokens
             (id_token and access_token).
            </t>
           <t hangText="expires in">
@@ -329,7 +329,7 @@
             REQUIRED.  Value MUST be set to "urn:openid:params:modrna:grant-type:backchannel_request".
            </t>
           <t hangText="auth_req_id">
-            REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP. The <spanx style="verb">auth_req_id</spanx> will be sent too in the authentication response to allow the RP to correlate the authentication request and the received tokens (id_token and access_token).
+            REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP. The <spanx style="verb">auth_req_id</spanx> will be sent too in the <xref target="token_response" format="title" /> to allow the RP to correlate the authentication request and the received tokens (id_token and access_token).
            </t>
         </list>
       </t>    
