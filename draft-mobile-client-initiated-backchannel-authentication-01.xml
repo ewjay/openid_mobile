@@ -167,7 +167,7 @@
           </t>
           <t hangText="client_notification_endpoint">            
             OPTIONAL. Callback URI to which the response will be sent. This URI MUST exactly match one of the "Client initiated
-            Backchannel Authentication" callback URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described in Section 6.2.1 of [RFC3986] (Simple String Comparison). When using this flow, the Callback URI SHOULD use the https scheme.            
+            Backchannel Authentication" callback URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described in Section 6.2.1 of <xref target="RFC3986"/> (Simple String Comparison). When using this flow, the Callback URI SHOULD use the https scheme.            
           </t>
           <t>
             At the time of registering in Mobile Connect, the RP must provide the information about whether receiving the token response through a callback to the "client_notification_endpoint" or through a polling mechanism where the RP MUST polls the authorization server repeatedly as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref> until the end-user completes the approval process.
@@ -244,7 +244,7 @@
           <t>
             If the "client_notification_endpoint" parameter is present, it MUST exactly match one of the callback 
             URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described 
-            in Section 6.2.1 of [RFC3986] (Simple String Comparison).
+            in Section 6.2.1 of <xref target="RFC3986"/> (Simple String Comparison).
           </t>
           <t>
             NOTE: the callback URI values registered for the "client_notification_endpoint" are different than those registered
@@ -257,7 +257,7 @@
         </list>
       </t>
       <t>
-          As specified in OAuth 2.0 [RFC6749], Authorization Servers SHOULD ignore unrecognized request parameters.
+          As specified in OAuth 2.0 <xref target="RFC6749"/>, Authorization Servers SHOULD ignore unrecognized request parameters.
        </t>          
       <t>
           If the Authorization Server encounters any error, it MUST return an error response, per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
@@ -401,7 +401,7 @@
     <section anchor="token_error_response" title="Token Error Response">
       <t>
          If the Token Request is invalid or unauthorized, the Authorization Server constructs the error response according to the section 3.1.3.4 Token Error Response of <xref target="OpenID.Core"/>.
-         In addition to the error codes defined in Section 5.2 of [RFC6749], the following error codes are specific for the Client Initiated Backchannel flow:
+         In addition to the error codes defined in Section 5.2 of <xref target="RFC6749"/>, the following error codes are specific for the Client Initiated Backchannel flow:
       </t>
       <t>
         <list style="hanging">
@@ -421,7 +421,7 @@
         When the authentication request includes a "client_notification_endpoint", the Authorization Server will send the token response making a "POST HTTP Request" to the RP's client_notification_endpoint. If the user is well authenticated, the Authorization Server returns a successful response that includes an ID Token and an Access Token. If the request failed client authentication or is invalid, the authorization server returns an error response as described in <xref target="issuing_token_error">Issuing Token Error</xref>.
       </t>
       <t>
-        All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received in the request as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref>. The response uses the application/json media type.
+        All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 <xref target="RFC6749"/> except the new one "auth_req_id" that will be the same received in the request as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref>. The response uses the application/json media type.
       </t>
       <figure>
         <preamble>The following is a non-normative example of a token response sending as a HTTP POST request to the callback uri 
@@ -547,7 +547,7 @@
       <?rfc include="reference.RFC.6750"?>
       <?rfc include="reference.RFC.5246"?>
       <?rfc include="reference.RFC.2246"?>
-
+      <?rfc include="reference.RFC.3986"?>
 
 
       <reference anchor="ISO.29115">
