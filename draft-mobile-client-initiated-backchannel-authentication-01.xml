@@ -48,19 +48,19 @@
 
     <abstract>    
       <t>
-        OpenID Connect allows RP's authenticate their users for clients of all types, including 
+        OpenID Connect allows RP's to authenticate their users for clients of all types, including 
         browser-based JavaScript and native mobile apps, to launch sign-in flows and receive verifiable 
         assertions about the identity of signed-in users.
       </t>
       <t>
         In all of these flows initiated by the RP, the end-user interaction from the consumption device is 
-        required and, they are based on HTTP redirection mechanisms. However, some use cases not covered for 
-        these flows, where the RP needs to be the initiator the user authentication flow and the end-user interaction
-        from the consumption device is not needed have been raised.
+        required and, they are based on HTTP redirection mechanisms. However, some use cases not covered by
+        these flows have been raised, where the RP needs to be the initiator of the user authentication flow and the end-user interaction
+        from the consumption device is not needed.
       </t>
       <t>
-        The MODRNA Client initiated Backchannel Authentication Flow will specify a new authentication flow,
-        by means of which the RP's that know the user identifier they want to authenticate (e-mail, msisdn),
+        The MODRNA Client initiated Backchannel Authentication Flow specifies a new authentication flow,
+        by means of which the RP's that know the user identifier they want to authenticate (e-mail, telefon number),
         will be able to initiate an interaction flow to authenticate their users without having end-user interaction
         from a consumption device.
       </t>
@@ -72,9 +72,9 @@
       <t>
         OpenID Connect MODRNA Client initiated Backchannel Authentication Flow 1.0 is an authentication 
         flow of the <xref target="OpenID.Core">OpenID Connect Core 1.0</xref> specification intended to 
-        allow RP's who already know the MSISDN of an end-user to initiate an authentication flow to request 
-        user authentication from MNO's. Moreover it defines Mandatory to Implement features for MNOs to ensure 
-        interoperability of clients across MNO's.
+        allow RP's who already know the identifier of an end-user to initiate an authentication flow to request 
+        user authentication. Moreover it defines Mandatory to Implement features to ensure 
+        interoperability of clients.
       </t>
       <section anchor="rnc" title="Requirements Notation and Conventions">
         <t>
@@ -92,19 +92,12 @@
     </section>
     <section anchor="terminology" title="Terminology">
       <t>
-        This specification uses the termn "OpenID Provider (OP)" and "Relying Party (RP)" as
+        This specification uses the term "OpenID Provider (OP)" and "Relying Party (RP)" as
         defined by <xref target="OpenID.Core">OpenID Connect Core</xref>.
-        This specification also defines the following terms: 
+        This specification also uses the following terms: 
       </t>
       <t>
         <list style="hanging">
-         <t hangText="Mobile Network Operator (MNO)">
-          A provider of wireless communication services that owns or controls the wireless 
-          network elements necessary to sell and deliver services to an end user.
-         </t>
-         <t hangText="Mobile Station International Subscriber Directory Number (MSISDN)">
-          A telephone number uniquely identifying a subscription in a mobile network.  
-         </t>
          <t hangText="Consumption Device (CD)">
           A user agent, most probably a browser, on which the user consumes the actual service
           provided by the Relying Party.  
@@ -123,10 +116,10 @@
       </t>
     </section>
 
-    <section anchor="auth_backchannel_endpoint" title="Authorization Backchannel Endpoint">
+    <section anchor="auth_backchannel_endpoint" title="Backchannel Authorization Endpoint">
       <t>
         The Backchannel Authorization Endpoint performs Authentication of the End-User. This is done by sending an HTTP
-        POST message directly from the Relay Party to the Authorization Server's Backchannel Authorization Endpoint, using 
+        POST message directly from the Relying Party to the Authorization Server's Backchannel Authorization Endpoint, using 
         request parameters defined by OAuth 2.0 and additional parameters and parameter values defined by OpenID Connect. 
 
         Communication with the Authorization Endpoint MUST utilize TLS. See Section 16.17  <xref target="OpenID.Core"/>for more 
@@ -142,9 +135,9 @@
       </t>
       <t>
         MODRNA Client initiated Backchannel Authentication defines an authentication request that is requested directly from 
-        the client to the MNO without going through the user's browser. The client MUST send an authentication request to the 
-        OpenID provider (MNO) by building an "HTTP POST" request that will take to the MNO all the information needed to authenticate
-        the user without asking her for their MSISDN.      
+        the client to the Authorization Server without going through the user's browser. The client MUST send an authentication request to the 
+        Authorization Server by building an "HTTP POST" request that will take to the Authorization Server all the information needed to authenticate
+        the user without asking her for their identifier.      
       </t>
       <t>
         The client MUST authenticate to the Backchannel Authorization Endpoint using the authentication method registered for 
@@ -168,7 +161,7 @@
           </t>
           <t>
             NOTE: If the "client_notification_endpoint" is not present the RP MUST poll the authorization server repeatedly 
-            as defined in <xref target="successful_authentication_response">Successful Authentication Response</xref> until 
+            as defined in <xref target="successful_authentication_response" format="title"/> until 
             the end-user completes the approval process.
           </t>
           <t hangText="acr_values">
@@ -219,8 +212,9 @@
       <t>
         <list style="numbers">
           <t>
-            Authenticate the Client if it was issued Client Credentials or if it uses another Client Authentication method, 
-            as described in Section 9 on <xref target="OpenID.Core"/>.
+            Authenticate the Client.
+            <vspace />
+            e.g.: by validating the Client Credentials as described in Section 9 on <xref target="OpenID.Core"/>.
           </t>
           <t>
             The Authorization Server MUST validate all the OAuth 2.0 parameters according to the MODRNA specification.
@@ -229,8 +223,7 @@
             If the "client_notification_endpoint" parameter is present, it MUST exactly match one of the callback 
             URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described 
             in Section 6.2.1 of <xref target="RFC3986" /> (Simple String Comparison).
-          </t>
-          <t>
+            <vspace />
             NOTE: the callback URI values registered for the "client_notification_endpoint" are different than those registered
             for the redirect_uri in the Authorization Code flow.
           </t>
@@ -242,7 +235,7 @@
       </t>
       <t>
           As specified in OAuth 2.0 <xref target="RFC6749" />, Authorization Servers SHOULD ignore unrecognized request parameters.
-       </t>          
+      </t>          
       <t>
           If the Authorization Server encounters any error, it MUST return an error response, per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
        </t>       
@@ -350,9 +343,9 @@
       </figure>
     </section>
 
-    <section anchor="token_response" title="Token Response">
+    <section anchor="token_response" title="Successful Token Polling">
       <t>
-        If the "client_notification_endpoint" is not present the Authorization Server will return the token as an HTTP response to the RP's poll request. If the user is well authenticated, the Authorization Server will returns a succesful response that includes an ID Token and an Access Token. Otherwise it responses with an error as defined in <xref target="token_error_response"> Token Error Response</xref>.
+        If the "client_notification_endpoint" is not present the Authorization Server will return the token as an HTTP response to the RP's poll request. If the user is well authenticated, the Authorization Server will returns a succesful response that includes an ID Token and an Access Token. Otherwise it responses with an error as defined in <xref target="token_error_response" format="title"/>.
       </t>      
       <figure>
         <preamble>The following is a non-normative example of a token response sending as an HTTP 200 OK Response to the RP's poll request
@@ -405,12 +398,12 @@
     </section>
 
 
-    <section anchor="issuing_successful_token" title="Issuing Successfull Token">
+    <section anchor="issuing_successful_token" title="Successful Token Notification">
       <t>
-        When the authentication request includes a "client_notification_endpoint", the Authorization Server will send the token response making a "POST HTTP Request" to the RP's client_notification_endpoint. If the user is well authenticated, the Authorization Server returns a successful response that includes an ID Token and an Access Token. If the request failed client authentication or is invalid, the authorization server returns an error response as described in <xref target="issuing_token_error">Issuing Token Error</xref>.
+        When the authentication request includes a "client_notification_endpoint", the Authorization Server will send the token response making a "POST HTTP Request" to the RP's client_notification_endpoint. If the user is well authenticated, the Authorization Server returns a successful response that includes an ID Token and an Access Token. If the request failed client authentication or is invalid, the authorization server returns an error response as described in <xref target="issuing_token_error" format="title"/>.
       </t>
       <t>
-        All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received in the request as defined in <xref target="successful_authentication_response">Successful Authentication Response</xref>. The response uses the application/json media type.
+        All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received in the request as defined in <xref target="successful_authentication_response" format="title"/>. The response uses the application/json media type.
       </t>
       <figure>
         <preamble>The following is a non-normative example of a token response sending as a HTTP POST request to the callback uri 
