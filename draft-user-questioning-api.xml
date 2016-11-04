@@ -14,7 +14,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-user-questioning-api-04" ipr='none'>
+<rfc category="std" docName="draft-user-questioning-api-05" ipr='none'>
 <?rfc toc="yes" ?>
 <?rfc tocdepth="5" ?>
 <?rfc symrefs="yes" ?>
@@ -43,7 +43,7 @@
 	</address>
 	</author>
 	
-    <date day='2' month='November' year='2016'/>
+    <date day='4' month='November' year='2016'/>
 	
     <workgroup>OpenID MODRNA Working Group</workgroup>
 	
@@ -296,7 +296,7 @@ The following is a non-normative example of the set of Claims (the JWT Claims Se
     "statement":"Yes",
     "statement_date":1311282975,
     "used_acr":"2",
-    "used_amr":"CLICK_OK"
+    "used_amr":["CLICK_OK"]
 }
 </artwork>
 </figure>	
@@ -313,13 +313,13 @@ czovL3NlcnZlci5leGFtcGxlLmNvbSIsImF1ZCI6InM4VjN3bThJWE1XNlRib2F6WF
 pYIiwic3ViIjoiZzExN1lCdENaTzNtQUtQUUtQOG8iLCJ1c2VyX2lkIjoiKzMzNjEy
 MzQ1Njc4IiwidXNlcl9pZF90eXBlIjoibXNpc2RuIiwicXVlc3Rpb25fZGlzcGxheW
 VkIjoiRG8geW91IGFsbG93IC4uLj8iLCJzdGF0ZW1lbnQiOiJZZXMiLCJzdGF0ZW1l
-bnRfZGF0ZSI6MTMxMTI4Mjk3NSwidXNlZF9hY3IiOiIyIiwidXNlZF9hbXIiOiJDTE
-lDS19PSyJ9.vj5DOJAZPE3-t0GmBMvaoKE8QB1VQYz94-nXbP5bUkwE9BYwixbU0sF
-xhmabRbEZgrEmhJp1LFNw6OMPDlJsUHPgnqo_NbrxcmRYxpz07dKMLcOk8SbGcyL3e
-RPG-wiT0PCbxOFw9qjrjFJHCTFdkGfTnuyf0cOia9oEInTN49dPt_WkL1JHgs9SkjA
-UUlY9zcQc9KMjwjcXGN2Z6ypNHu0jZXdplm3CIaxc7vSa0eHZrimCg4PSwAhuFoe7S
-bquLcVU56Bl4PvBBv6jGBtHW7O2Mo-ZhdoLeHqBOPWe707Wd0spbV1aekNdw8LB_ID
--TsOsWTQn7S8NfsFkk1dZXw
+bnRfZGF0ZSI6MTMxMTI4Mjk3NSwidXNlZF9hY3IiOiIyIiwidXNlZF9hbXIiOlsiQ0
+xJQ0tfT0siXX0.sWROq3FS6exVQ4r01Gev2R00e-PD5KrWvzvh7S_DitfzSfWIcKwg
+fhX9w_QXQxlWjQoOpvLxdYqiUfWgNWdiFeZBnYez9g1KiZnltOZIYTBy1HfochP7ed
+EcMqXNLYP5CwdyIVXk-IxaF1ALDbjuIpfohFjg-x0YTyH4DHFTG9K1jV2ZLGroX3Lx
+PO7lyjROzv5pCFDurI6yEi0aFx-hmR6iqVJJ--TM90hNAYHOwnbYwy4iyDrPqI6z9M
+kcnxKorHbbRKczck4fEtl0uYkj3cjE4MFrn2x0zWrn9rrztGqLjh2NEvi29TNDxTMP
+SVgCwVOUd1bkN_SXguh5W9rp1g
 ]]></artwork>
 </figure>
 
@@ -630,7 +630,7 @@ Content-Length: xxx
 	"question_to_display":"Do you allow ...?",
 	"statements_to_display":["Yes","No"],
 	"wished_acr":"3",
-	"wished_amr":"PIN_OK"
+	"wished_amr":["PIN_OK"]
 }    
 </artwork>
 </figure>
@@ -826,13 +826,13 @@ Content-Length: xxx
 	QUtQUUtQOG8iLCJ1c2VyX2lkIjoiKzMzNjEyMzQ1Njc4IiwidXNlcl9pZF90eXB
 	lIjoibXNpc2RuIiwicXVlc3Rpb25fZGlzcGxheWVkIjoiRG8geW91IGFsbG93IC
 	4uLj8iLCJzdGF0ZW1lbnQiOiJZZXMiLCJzdGF0ZW1lbnRfZGF0ZSI6MTMxMTI4M
-	jk3NSwidXNlZF9hY3IiOiIyIiwidXNlZF9hbXIiOiJDTElDS19PSyJ9.vj5DOJA
-	ZPE3-t0GmBMvaoKE8QB1VQYz94-nXbP5bUkwE9BYwixbU0sFxhmabRbEZgrEmhJ
-	p1LFNw6OMPDlJsUHPgnqo_NbrxcmRYxpz07dKMLcOk8SbGcyL3eRPG-wiT0PCbx
-	OFw9qjrjFJHCTFdkGfTnuyf0cOia9oEInTN49dPt_WkL1JHgs9SkjAUUlY9zcQc
-	9KMjwjcXGN2Z6ypNHu0jZXdplm3CIaxc7vSa0eHZrimCg4PSwAhuFoe7SbquLcV
-	U56Bl4PvBBv6jGBtHW7O2Mo-ZhdoLeHqBOPWe707Wd0spbV1aekNdw8LB_ID-Ts
-	OsWTQn7S8NfsFkk1dZXw"
+	jk3NSwidXNlZF9hY3IiOiIyIiwidXNlZF9hbXIiOlsiQ0xJQ0tfT0siXX0.sWRO
+	q3FS6exVQ4r01Gev2R00e-PD5KrWvzvh7S_DitfzSfWIcKwgfhX9w_QXQxlWjQo
+	OpvLxdYqiUfWgNWdiFeZBnYez9g1KiZnltOZIYTBy1HfochP7edEcMqXNLYP5Cw
+	dyIVXk-IxaF1ALDbjuIpfohFjg-x0YTyH4DHFTG9K1jV2ZLGroX3LxPO7lyjROz
+	v5pCFDurI6yEi0aFx-hmR6iqVJJ--TM90hNAYHOwnbYwy4iyDrPqI6z9MkcnxKo
+	rHbbRKczck4fEtl0uYkj3cjE4MFrn2x0zWrn9rrztGqLjh2NEvi29TNDxTMPSVg
+	CwVOUd1bkN_SXguh5W9rp1g"
 }
 </artwork>
 </figure>
@@ -954,13 +954,13 @@ Content-Length: xxx
 	QUtQUUtQOG8iLCJ1c2VyX2lkIjoiKzMzNjEyMzQ1Njc4IiwidXNlcl9pZF90eXB
 	lIjoibXNpc2RuIiwicXVlc3Rpb25fZGlzcGxheWVkIjoiRG8geW91IGFsbG93IC
 	4uLj8iLCJzdGF0ZW1lbnQiOiJZZXMiLCJzdGF0ZW1lbnRfZGF0ZSI6MTMxMTI4M
-	jk3NSwidXNlZF9hY3IiOiIyIiwidXNlZF9hbXIiOiJDTElDS19PSyJ9.vj5DOJA
-	ZPE3-t0GmBMvaoKE8QB1VQYz94-nXbP5bUkwE9BYwixbU0sFxhmabRbEZgrEmhJ
-	p1LFNw6OMPDlJsUHPgnqo_NbrxcmRYxpz07dKMLcOk8SbGcyL3eRPG-wiT0PCbx
-	OFw9qjrjFJHCTFdkGfTnuyf0cOia9oEInTN49dPt_WkL1JHgs9SkjAUUlY9zcQc
-	9KMjwjcXGN2Z6ypNHu0jZXdplm3CIaxc7vSa0eHZrimCg4PSwAhuFoe7SbquLcV
-	U56Bl4PvBBv6jGBtHW7O2Mo-ZhdoLeHqBOPWe707Wd0spbV1aekNdw8LB_ID-Ts
-	OsWTQn7S8NfsFkk1dZXw"
+	jk3NSwidXNlZF9hY3IiOiIyIiwidXNlZF9hbXIiOlsiQ0xJQ0tfT0siXX0.sWRO
+	q3FS6exVQ4r01Gev2R00e-PD5KrWvzvh7S_DitfzSfWIcKwgfhX9w_QXQxlWjQo
+	OpvLxdYqiUfWgNWdiFeZBnYez9g1KiZnltOZIYTBy1HfochP7edEcMqXNLYP5Cw
+	dyIVXk-IxaF1ALDbjuIpfohFjg-x0YTyH4DHFTG9K1jV2ZLGroX3LxPO7lyjROz
+	v5pCFDurI6yEi0aFx-hmR6iqVJJ--TM90hNAYHOwnbYwy4iyDrPqI6z9MkcnxKo
+	rHbbRKczck4fEtl0uYkj3cjE4MFrn2x0zWrn9rrztGqLjh2NEvi29TNDxTMPSVg
+	CwVOUd1bkN_SXguh5W9rp1g"
 }
 </artwork>
 </figure>
@@ -1147,7 +1147,7 @@ The following is a non-normative example.
 			</t>
 			<!---->
 			<t hangText="no_suitable_method">
-			There is no Questioning Method suitable with the User Questioning Request.
+			There is no Questioning Method suitable with the User Questioning Request. The OP can use this error code when it does not implement mecanisms suitable for the wished AMR or ACR.
 			</t>
 			<!---->
 			<t hangText="timeout">
@@ -1159,7 +1159,8 @@ The following is a non-normative example.
 			</t>
 			<!---->
 			<t hangText="unreachable_user">
-			The Questioned User mentioned in User Questioning Request (either in the Access Token or in the <spanx style="verb">user_id</spanx> attribute) is unreachable.
+			The Questioned User mentioned in User Questioning Request (either in the Access Token or in the <spanx style="verb">user_id</spanx> attribute) is unreachable. 
+			The OP can use this error when it does not have a reachability identifier (e.g. MSISDN) for the Question User or when the reachability identifier is not operational (e.g. unsubscribed MSISDN).
 			</t>
 			<!---->
 			<t hangText="user_refused_to_answer">
@@ -1187,14 +1188,13 @@ The following is a non-normative example.
 		</t>
 		<t>
 		There is no specific attribute to describe how the question was displayed and how the statement was saved. 
-		However, the OP is responsible to display the question as it is. If the question has be modified, the displayed question MUST be returned to the Client as it was displayed, in the <spanx style="verb">displayed_question</spanx> attribute of the User Statement Token. 
+		However, the OP is responsible to display the question as it is. If the question has been modified, the displayed question MUST be returned to the Client as it was displayed, in the <spanx style="verb">displayed_question</spanx> attribute of the User Statement Token. 
 		In the same logic, the Questioned User's statement MUST be returned to the Client as it was displayed, in the <spanx style="verb">statement</spanx> attribute of the User Statement Token. 
 		</t>
 		<t>
-		The fact that a User Questing Request and an Authentication Request (as defined in <xref target='OpenID.Core'/>) are handled using the same <spanx style="verb">AMR</spanx> does not mean that the same mechanism instance is used. 
-		It only means that the authentication method is the same. 
-		For instance, if the <spanx style="verb">AMR</spanx> value is <spanx style="verb">SMS_URL</spanx> is used, the URL contained in the SMS can refer to two different components. 
-		It can also refer to a unique component able to handle both User Questioning Requests and Authentication Requests.
+		The fact that a User Questing Request and an Authentication Request (as defined in <xref target='OpenID.Core'/>) are handled using the same <spanx style="verb">AMR</spanx> means that the user authentication is enforced using the same authentication method. 
+		However, as a Questioning Method uses an authentication method in combinaison with questioning mechanisms, having the same <spanx style="verb">AMR</spanx> does not mean that the OP has to use the same component to handle User Questioning Requests and Authentication Requests.
+		For instance, if the <spanx style="verb">AMR</spanx> value is <spanx style="verb">SMS_URL</spanx>, the user is authenticated thanks to his mobile phone (using a SMS) but the URL contained in the SMS can refer to two different components. 
 		</t>
 		<t>
 		If an OP can not display a question or the statements, it MUST return an error. 
