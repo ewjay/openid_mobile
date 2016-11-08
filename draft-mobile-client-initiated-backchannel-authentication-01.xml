@@ -154,27 +154,46 @@
             REQUIRED. OpenID Connect implements authentication as an extension to the OAuth 2.0 by including the 
             openid scope value in the Authorization Request.
           </t>
+          <t hangText="client_req_id">
+            REQUIRED. It is a unique id provided by the RP that will be used by the Identity Provider as a beared 
+            token to authenticate the callback request to send the tokens to the RP.
+          </t>
           <t hangText="client_notification_endpoint">            
             OPTIONAL. Callback URI to which the response will be sent. This URI MUST exactly match one of the "Client initiated
-            Backchannel Authentication" callback URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described in Section 6.2.1 of <xref target="RFC3986" /> (Simple String Comparison). When using this flow, the Callback URI SHOULD 
-            use the https scheme.            
+            Backchannel Authentication" callback URI values for the Client pre-registered at the OpenID Provider, with the matching 
+            performed as described in Section 6.2.1 of <xref target="RFC3986" /> (Simple String Comparison). When using this flow, 
+            the Callback URI SHOULD use the https scheme.            
           </t>
           <t>
-            NOTE: If the "client_notification_endpoint" is not present the RP MUST poll the authorization server repeatedly 
-            as defined in <xref target="successful_authentication_response" format="title"/> until 
-            the end-user completes the approval process.
+            At the time of registering in Mobile Connect, the RP must provide the information about whether receiving the token 
+            response through a callback to the "client_notification_endpoint" or through a polling mechanism where the RP MUST polls 
+            the authorization server repeatedly as defined in <xref target="successful_authentication_request_acknowdlegment">
+            Successful Authentication Response</xref> until the end-user completes the approval process.
           </t>
           <t hangText="acr_values">
             REQUIRED. As defined in MODRNA Authentication profile. 
           </t>
 
           <t hangText="login_hint_token">
-            REQUIRED. As defined in MODRNA Authentication profile.
-          </t> 
-          <t hangText="binding_message">
             OPTIONAL. As defined in MODRNA Authentication profile.
+          </t> 
+
+          <t hangText="id_token_hint">
+            OPTIONAL. As defined in Section 3.1.2.1 on <xref target="OpenID.Core"/>.
+          </t> 
+          <t hangText="login_hint">
+            OPTIONAL. As defined in Section 3.1.2.1 on <xref target="OpenID.Core"/>.
+          </t> 
+          <t hangText="context">
+            REQUIRED. This parameter provides a context in the Mobile Connect request that clearly identifies the action/transaction 
+            that the user is being asked to authorise.
           </t>
         </list>
+      </t>
+      <t>
+        As the Client initiated Backchannel Authentication flow does not have an interaction with the end-user through a consumption device, 
+        it is REQUIRED that the RP provides one (and only one) of the hints specified above in the authentication request, that is "login_hint_token", 
+        "id_token_hint" or "login_hint".
       </t>
       <figure>
         <preamble>The following is a non-normative example from an authentication request (with line wraps within values for display purposes only):
@@ -186,6 +205,7 @@
             Content-Type: application/json
             {
              "scope": "openid",
+             "client_req_id": "8d67dc78-7faa-4d41-aabd-67707b374255",
              "client_notification_endpoint": "https://client.example.com/cb",
              "acr_values": "mod-mf",
              "login_hint_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
@@ -219,6 +239,17 @@
           <t>
             The Authorization Server MUST validate all the OAuth 2.0 parameters according to the MODRNA specification.
           </t>
+
+          <t>
+            In the event of a request contains more than one of this hints specified in <xref target="auth_request">Authentication Request</xref>, 
+            the Identity provider MUST return an "invalid_request" error response as per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
+          </t>
+          <t>
+            If the authentication request contains a "client_notification_endpoint" when it has not been provided at the registering time or viceversa, 
+            it is contained when it has not been provided, the Identity Provider MUST return an "invalid_request" error response, per Section 3.1.2.6 
+            on <xref target="OpenID.Core"/>.
+          </t>
+
           <t>
             If the "client_notification_endpoint" parameter is present, it MUST exactly match one of the callback 
             URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described 
@@ -241,7 +272,7 @@
        </t>       
     </section>
 
-    <section anchor="successful_authentication_response" title="Successful Authentication Response">
+    <section anchor="successful_authentication_request_acknowdlegment" title="Successful Authentication Request Acknowdlegment">
       <t>
         If the Authentication Validation Request is OK, the Authorization Server will return an HTTP 200 OK response to the RP
         to indicate that the authentication request has been accepted and it is going to be processed. The body of this response 
@@ -250,8 +281,8 @@
       <t>
         <list style="hanging">
           <t hangText="auth_req_id">
-            REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP. The <spanx style="verb">auth_req_id</spanx> will be sent too in the <xref target="token_response" format="title" /> to allow the RP to correlate the authentication request and the received tokens
-            (id_token and access_token).
+            REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP. 
+            The <spanx style="verb">auth_req_id</spanx> will be sent too in the token through the "client_notification_endpoint" to allow the RP to correlate the authentication request and the received tokens.            
            </t>
           <t hangText="expires in">
             REQUIRED. Expiration time of the Authentication in seconds since the auth_request was received.
@@ -284,14 +315,13 @@
       </figure>      
     </section>
 
-    <section anchor="auth_response_validation" title="Authentication Response Validation">
+    <section anchor="auth_request_acknowdlegment_validation" title="Authentication Request Acknowdlegment Validation">
       <t>
-        If the client (RP) receives an HTTP 200 OK, it MUST validate that all the required parameters are received. The RP should keep the
-        authentication request identifier <spanx style="verb">auth_req_id</spanx> and the expiration time in order to match it with token
-        response.
+        If the client (RP) receives an HTTP 200 OK, it MUST validate that all the required parameters are received. The RP should keep the authentication request identifier 
+        <spanx style="verb">auth_req_id</spanx> and the expiration time in order to match it with token response.
       </t>
       <t>
-        The client will have to keep the expiration time as well to be able to discard the authentication response.
+        The client will have to keep the expiration time as well to be able to discard the authentication request acknowdlegment.
       </t>
     </section>
 
@@ -359,7 +389,6 @@
               Pragma: no-cache
 
               {
-               "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1"
                "access_token": "SlAV32hkKG",
                "token_type": "Bearer",
                "refresh_token": "8xLOxBtZp8",
@@ -403,20 +432,22 @@
         When the authentication request includes a "client_notification_endpoint", the Authorization Server will send the token response making a "POST HTTP Request" to the RP's client_notification_endpoint. If the user is well authenticated, the Authorization Server returns a successful response that includes an ID Token and an Access Token. If the request failed client authentication or is invalid, the authorization server returns an error response as described in <xref target="issuing_token_error" format="title"/>.
       </t>
       <t>
-        All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received in the request as defined in <xref target="successful_authentication_response" format="title"/>. The response uses the application/json media type.
+        All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received in the request as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref>. The response uses the application/json media type.
       </t>
       <figure>
         <preamble>The following is a non-normative example of a token response sending as a HTTP POST request to the callback uri 
           specified in the "client_notification_endpoint" parameter by the RP (with line wraps within values for display purposes only).
+          The request is authenticated through a bearer token that is the value of the "client_req_id" provided by the RP in the Authentication Request.
         </preamble>
         <artwork>
           <![CDATA[
               POST /cb HTTP/1.1
               Host: client.example.com
+              Authorization: Bearer 8d67dc78-7faa-4d41-aabd-67707b374255
               Content-Type: application/json
-
-              {
-               "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1"
+              { 
+               "grant_type:"urn:openid:params:modrna:grant-type:backchannel_token_response",
+               "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1",
                "access_token": "SlAV32hkKG",
                "token_type": "Bearer",
                "refresh_token": "8xLOxBtZp8",
