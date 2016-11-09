@@ -505,7 +505,7 @@
         </front>
       </reference>
 
-      <reference anchor="OpenID.Core">
+      <reference anchor="OpenID.Core" target="https://openid.net/specs/openid-connect-core-1_0.txt">
         <front>
           <title>OpenID Connect Core 1.0</title>
 
