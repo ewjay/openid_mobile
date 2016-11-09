@@ -167,15 +167,15 @@
           <t>
             At the time of registering in Mobile Connect, the RP must provide the information about whether receiving the token 
             response through a callback to the "client_notification_endpoint" or through a polling mechanism where the RP MUST polls 
-            the authorization server repeatedly as defined in <xref target="successful_authentication_request_acknowdlegment">
-            Successful Authentication Response</xref> until the end-user completes the approval process.
+            the authorization server repeatedly as defined in <xref target="successful_authentication_request_acknowdlegment" format="title"/>
+            until the end-user completes the approval process.
           </t>
           <t hangText="acr_values">
-            REQUIRED. As defined in MODRNA Authentication profile. 
+            REQUIRED. As defined in <xref target="MODRNA.Authentication" format="title"/>. 
           </t>
 
           <t hangText="login_hint_token">
-            OPTIONAL. As defined in MODRNA Authentication profile.
+            OPTIONAL. As defined in <xref target="MODRNA.Authentication" format="title"/>.
           </t> 
 
           <t hangText="id_token_hint">
@@ -486,6 +486,25 @@
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
       
+      <reference anchor="MODRNA.Authentication" target="https://bitbucket.org/openid/mobile/raw/default/draft-mobile-authentication-01.txt">
+        <front>
+          <title>OpenID Connect MODRNA Authentication Profile 1.0</title>
+          <author fullname="Joerg Connotte" initials="J." surname="Connotte">
+            <organization abbrev="">Deutsche Telekom AG</organization>
+            <address>
+              <email>j.connotte@telekom.de</email>
+            </address>
+          </author>
+          <author fullname="John Bradley" initials="J." surname="Bradley">
+            <organization abbrev="">Ping Identity</organization>
+            <address>
+              <email>jbradley@pingidentity.com</email>
+            </address>
+         </author>
+         <date day="07" month="Sep" year="2016" />
+        </front>
+      </reference>
+
       <reference anchor="OpenID.Core">
         <front>
           <title>OpenID Connect Core 1.0</title>
