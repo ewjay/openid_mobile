@@ -3,12 +3,13 @@
 href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY rfc2119 SYSTEM 
-"http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+"https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 ]>
 
-<rfc category="info" docName="draft-account-porting-02alpha" ipr="trust200902">
+<rfc category="info" docName="draft-account-porting-03alpha" ipr="trust200902">
   <?rfc toc="yes" ?>
   <?rfc private="Draft" ?>
+  <?rfc compact="yes" ?>
 
 <front>
 
@@ -29,7 +30,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
   <address><email>argggh@telenordigital.com</email></address>
 </author>
 
-<date year="2016" month="October" day="7"/>
+<date year="2016" month="October" day="10"/>
 
 <workgroup>OpenID MODRNA Working Group</workgroup>
   
@@ -72,17 +73,8 @@ New OPs in a single session to establish the link between the user's accounts
 at each. Subsequently, RPs can interact with both OPs to confirm that link, 
 without needing the user to repeat the dual logins.</t>
 
-<t>Portability is achieved by defining three processes: 1) how the New OP 
-obtains details about the user from the Old OP; 2) how the New OP indicates the 
-previous relationship with the Old OP in an id_token issued to an RP; and 3) 
-how the RP can confirm a port is legitimate by interacting with the Old OP. The 
-first process occurs when a user ports between two OPs. The other two processes 
-occur for each RP the first time the user logs into that RP after porting. The 
-processes maintain the privacy benefit offered by the use of pairwise Subject 
-Ids. It is possible for an OP to implemented the processes without maintaining 
-details of the RPs each user has visited.</t>
-
-<t>OpenID Connect account porting is motivated by the GSMA Mobile Connect 
+<t>OpenID Connect account porting is motivated by (but not limited to)
+the GSMA Mobile Connect 
 scheme, in which mobile network operators collectively offer federated identity 
 services <xref target="MobileConnect"/>. Most jurisdictions allow users to port 
 their mobile phone number between network operators, and a reasonable 
@@ -94,7 +86,8 @@ using the same phone number to communicate with the user. In contrast, RPs are
 aware when an OpenID Connect account is ported as they interact with a New 
 OP.</t>
 
-<t>Section 2 defines metadata that indicates an OP supports porting, which can 
+<t>Section 1.2 gives an overview of the message flows during porting.
+Section 2 defines metadata that indicates an OP supports porting, which can 
 be obtained via <xref target="OpenID.Discovery"/>. Section 3 specifies an API 
 offered by an Old OP that a New OP uses to obtain porting-related details about 
 a user. This API is protected by an OAuth 2.0 exchange to ensure the user 
@@ -102,16 +95,6 @@ consents to releasing the details to the New OP. Section 4 specifies how a New
 OP can identify the Old OP in an id_token presented to an RP. Section 5 
 describes how an RP can confirm the porting information with the Old OP. Annex 
 A provides a example of a complete porting flow.</t>
-
-
-<t>[[MODEL: consider a section describing the model for the porting process: 
-user, Old OP, new OP, any number of sector_ids, any number of client_ids per 
-sector_id; sector_id vs client_id vs redirect_uri; user can auth to Old and New 
-during porting, but doesn't have to afterwards; might need something special 
-like port code to auth to Old OP, but that is out-of-scope; RP doesn't need to 
-auth to Old OP after port; porting info needs to be provided at least once per 
-RP client_id (suggest more), not just once per sector_id; OP iss value and 
-associated discovery doc as point of trust]]</t>
 
 
 <section anchor="rnc"
@@ -129,6 +112,87 @@ taken literally in protocol messages.</t>
 document uses the terms "Old OP" and "New OP" to indicate OpenID Providers that 
 support users porting out and porting in respectively. An OP can support both 
 roles (and hopefully most will).</t>
+
+</section>
+
+
+<section anchor="flow" title="Porting flow">
+
+<t>Porting involves a user, their Old OP and New OP, plus any number of RPs.
+A sample porting flow is described below.</t>
+
+<t>The first stage for a specific porting event is for the New OP to get
+confirmation from the Old OP that the user wants to port.
+The New OP does so by calling the Old OP's Porting data API on the user's
+behalf, which first requires orchestrating an approval interaction between the
+user and the Old OP using OAuth 2.0 <xref target="RFC6749"/>.</t>
+
+<t><list style="numbers" counter="flowstep">
+<t>User browsers to the New OP, logs in, and indicates that they want to
+port from a particular Old OP.</t>
+<t>New OP initiates an OAuth 2.0 flow by redirecting the user's browser
+to the Old OP's authorization endpoint.
+<list style="letters">
+  <t>User authenticates to the Old OP, and confirms they want
+  to port to the New OP.</t>
+  <t>Old OP redirects the user's browser back to the New OP.</t>
+  <t>New OP completes the OAuth 2.0 flow by getting an access token from
+  the Old OP's token endpoint.</t>
+</list></t>
+<t>New OP calls the Old OP's Porting data API with the access token;
+receiving a "port_token".</t>
+</list></t>
+
+<t>The second stage of the porting process occurs multiple times: once for
+each RP. It occurs the first time the user visits a given RP after porting.
+That is, the first time the user logs in to a given RP via the New OP.
+A normal OpenID Connect flow occurs, but the New OP includes extra details
+in the resulting "id_token" to indicate that the user previously used a
+particular Old OP.</t>
+
+<t>When an RP does not recognize the New OP's Subject Id for the user,
+the RP can see whether it knows this user under an id from a previous OP.
+The RP does not blindly trust the New OP to identify the account that
+was ported. Instead, the RP gets confirmation from the Old OP that the user
+really did port to the New OP. It is only in that confirmation that the
+Old OP identifies the ported account, enabling the RP to link the user's
+ids from both OPs.</t>
+
+<t><list style="numbers" counter="flowstep">
+<t>User browsers to the RP, and choses to login via the New OP.</t>
+<t>RP initiates an OpenID Connect login by redirecting the user's browser
+to the New OP's authorization endpoint.
+<list style="letters">
+  <t>User authenticates to the New OP, and consents to being identified
+  to the RP.</t>
+  <t>New OP redirects the user's browser back to the RP.</t>
+  <t>RP completes the OpenID Connect flow by getting an id_token from
+  the New OP's token endpoint.</t>
+</list></t>
+<t>New OP included an "aka" member in the id_token listing the user's Old OP,
+along with an version of the user's "port_token" (obtained in the first
+stage) encrypted for the Old OP.</t>
+<t>RP prepares to make API calls to the Old OP,
+by calling the Old OP's token endpoint (with an OAuth 2.0 client credential
+grant) to get an access token.</t>
+<t>RP calls the Old OP's Porting check API with the access token,
+passing along the encrypted "port_token";
+receiving the Old OP's Subject Id for the user in response.</t>
+<t>RP automatically accepts the two Subject Ids from Old and New OPs as
+identifiers for the same account at the RP.</t>
+</list></t>
+
+<t>A user could have ported to the Old OP from an even Older OP.
+That can be indicated by the Old OP including an "aka" member in it's
+Porting check API response (step 5 above). An RP can automatically
+process that port in the same way that an "aka" value from the New OP is
+handled.</t>
+
+<t>The porting flow maintains the privacy benefit offered by the use of
+pairwise Subject Ids, but still works if an OP uses public Subject Ids.</t>
+
+<t>It is possible for an OP to implement the porting flow without maintaining
+details of the RPs each user has visited.</t>
 
 </section>
 
@@ -159,7 +223,7 @@ the metadata for an Old OP that supports users porting out:</t>
   by a New OP to encrypt a "port_token" as described in section 4.1.</t>
 </list></t>
 
-<t>Below is a sample metadata request and respone.</t>
+<t>Below is a sample metadata request and response.</t>
 
 <figure><artwork>
 GET /.well-known/openid-configuration HTTP/1.1
@@ -292,7 +356,7 @@ value; and linking that account to the New OP's "sub" value.</t>
 assigned a separate "sub" value for each collection of related RPs identified
 by a "sector_id"), any porting information revealed to RPs also needs to be
 at least pairwise so as not to undermine that privacy. This is achieved by
-using encrypted versions of a "port_token". Encryption is performed by
+using encrypted versions of the "port_token". Encryption is performed by
 the New OP, and decryption by the Old OP.</t>
 
 <t>A separate encryption MUST be used whenever a different "sub" value is
@@ -311,7 +375,7 @@ time. It is RECOMMENDED that "enc_port_token" values not be cached, or only be
 cached for a short time (eg minutes), so they can have short lifetimes,
 hence avoiding requirements for revocation.</t>
 
-<t>Encryption does not offer a privacy benefit if the New OP uses public
+<t>Encryption offers less privacy benefit when the New OP uses public
 Subject Ids. However, encryption is still used in such cases to avoid
 introducing additional options to the porting mechanism.</t>
 
@@ -688,11 +752,11 @@ target='https://openid.net/specs/openid-connect-core-1_0.html'>
 <author initials='N.' surname='Sakimura' fullname='N. Sakimua'>
 <organization/></author>
 <author initials='J.' surname='Bradley' fullname='J. Bradley'>
-<organization ></author>
+<organization/></author>
 <author initials='M.' surname='Jones' fullname='M. Jones'>
 <organization/></author>
 <author initials='B.' surname='de Medeiros' fullname='B. de Medeiros'>
-<organization /></author>
+<organization/></author>
 <author initials='C.' surname='Mortimore' fullname='C. Mortimore'>
 <organization/></author>
 <author initials='E.' surname='Jay' fullname='E. Jay'>
