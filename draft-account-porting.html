@@ -376,6 +376,7 @@
   <link href="#rfc.toc" rel="Contents"/>
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Requirements Notation, Conventions, and Terminology"/>
+<link href="#rfc.section.1.2" rel="Chapter" title="1.2 Porting flow"/>
 <link href="#rfc.section.2" rel="Chapter" title="2 Discovery"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Porting data API"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 Indicating a previous identity: &quot;aka&quot; member"/>
@@ -404,8 +405,8 @@
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Manger, J., Lodderstedt, T., and A. Gleditsch" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-account-porting-02alpha" />
-  <meta name="dct.issued" scheme="ISO8601" content="2016-10-7" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-account-porting-03" />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-10-10" />
   <meta name="dct.abstract" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
   <meta name="description" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
 
@@ -442,7 +443,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">October 7, 2016</td>
+  <td class="right">October 10, 2016</td>
 </tr>
 
     	
@@ -450,7 +451,7 @@
   </table>
 
   <p class="title">OpenID Connect Account Porting<br />
-  <span class="filename">draft-account-porting-02alpha</span></p>
+  <span class="filename">draft-account-porting-03</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
@@ -468,6 +469,7 @@
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
 <ul><li>1.1.   <a href="#rfc.section.1.1">Requirements Notation, Conventions, and Terminology</a></li>
+<li>1.2.   <a href="#rfc.section.1.2">Porting flow</a></li>
 </ul><li>2.   <a href="#rfc.section.2">Discovery</a></li>
 <li>3.   <a href="#rfc.section.3">Porting data API</a></li>
 <li>4.   <a href="#rfc.section.4">Indicating a previous identity: "aka" member</a></li>
@@ -495,27 +497,50 @@
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#intro" id="intro">Introduction</a></h1>
-<p id="rfc.section.1.p.1">OpenID Connect is a federated identity protocol that allows a user to leverage his or her authentication to an OpenID Connect Provider (OP) to login to Relying Parties (RPs). An RP can (and often will) accept logins via many OPs. The primary identifier for a user at an RP is the combination of a Subject Id ("sub" value) and OP identifier ("iss" value). The "sub" value is only defined to be unambiguous within the context of an "iss" value <a href="#OpenID.Core">[OpenID.Core]</a> &#167;5.7. "Claim Stability and Uniqueness". This design deliberately isolates each OP's user population so one OP cannot adversely affect the security of another OP. One consequence, however, is that a user porting from one OP to another appears to an RP as two unrelated users.</p>
+<p id="rfc.section.1.p.1">OpenID Connect is a federated identity protocol that allows a user to leverage his or her authentication to an OpenID Connect Provider (OP) to login to Relying Parties (RPs). An RP can (and often will) accept logins via many OPs. The primary identifier for a user at an RP is the combination of a Subject Id ("sub" value) and OP identifier ("iss" value). The "sub" value is only defined to be unambiguous within the context of an "iss" value <a href="#OpenID.Core">[OpenID.Core]</a> &#167;5.7. "Claim Stability and Uniqueness".  This design deliberately isolates each OP's user population so one OP cannot adversely affect the security of another OP. One consequence, however, is that a user porting from one OP to another appears to an RP as two unrelated users.</p>
 <p id="rfc.section.1.p.2">This specification extends OpenID Connect to enable an RP to recognize when a user logging in via a New OP is the same user who has previously logged in via an Old OP. That is, it enables porting between OPs to be handled automatically by RPs. The central idea is that the user logs into both Old and New OPs in a single session to establish the link between the user's accounts at each. Subsequently, RPs can interact with both OPs to confirm that link, without needing the user to repeat the dual logins.</p>
-<p id="rfc.section.1.p.3">Portability is achieved by defining three processes: 1) how the New OP obtains details about the user from the Old OP; 2) how the New OP indicates the previous relationship with the Old OP in an id_token issued to an RP; and 3) how the RP can confirm a port is legitimate by interacting with the Old OP. The first process occurs when a user ports between two OPs. The other two processes occur for each RP the first time the user logs into that RP after porting. The processes maintain the privacy benefit offered by the use of pairwise Subject Ids. It is possible for an OP to implemented the processes without maintaining details of the RPs each user has visited.</p>
-<p id="rfc.section.1.p.4">OpenID Connect account porting is motivated by the GSMA Mobile Connect scheme, in which mobile network operators collectively offer federated identity services <a href="#MobileConnect">[MobileConnect]</a>. Most jurisdictions allow users to port their mobile phone number between network operators, and a reasonable expectation of those users will be that their Mobile Connect account (provided by those same operators) can also be ported at the same time. There is a significant difference between phone number and account porting, however. Other parties are generally unaware when number porting occurs; they simply keep using the same phone number to communicate with the user. In contrast, RPs are aware when an OpenID Connect account is ported as they interact with a New OP.</p>
-<p id="rfc.section.1.p.5">Section 2 defines metadata that indicates an OP supports porting, which can be obtained via <a href="#OpenID.Discovery">[OpenID.Discovery]</a>. Section 3 specifies an API offered by an Old OP that a New OP uses to obtain porting-related details about a user. This API is protected by an OAuth 2.0 exchange to ensure the user consents to releasing the details to the New OP. Section 4 specifies how a New OP can identify the Old OP in an id_token presented to an RP. Section 5 describes how an RP can confirm the porting information with the Old OP. Annex A provides a example of a complete porting flow.</p>
-<p id="rfc.section.1.p.6">[[MODEL: consider a section describing the model for the porting process: user, Old OP, new OP, any number of sector_ids, any number of client_ids per sector_id; sector_id vs client_id vs redirect_uri; user can auth to Old and New during porting, but doesn't have to afterwards; might need something special like port code to auth to Old OP, but that is out-of-scope; RP doesn't need to auth to Old OP after port; porting info needs to be provided at least once per RP client_id (suggest more), not just once per sector_id; OP iss value and associated discovery doc as point of trust]]</p>
+<p id="rfc.section.1.p.3">OpenID Connect account porting is motivated by (but not limited to) the GSMA Mobile Connect scheme, in which mobile network operators collectively offer federated identity services <a href="#MobileConnect">[MobileConnect]</a>. Most jurisdictions allow users to port their mobile phone number between network operators, and a reasonable expectation of those users will be that their Mobile Connect account (provided by those same operators) can also be ported at the same time. There is a significant difference between phone number and account porting, however. Other parties are generally unaware when number porting occurs; they simply keep using the same phone number to communicate with the user. In contrast, RPs are aware when an OpenID Connect account is ported as they interact with a New OP.</p>
+<p id="rfc.section.1.p.4">Section 1.2 gives an overview of the message flows during porting.  Section 2 defines metadata that indicates an OP supports porting, which can be obtained via <a href="#OpenID.Discovery">[OpenID.Discovery]</a>. Section 3 specifies an API offered by an Old OP that a New OP uses to obtain porting-related details about a user. This API is protected by an OAuth 2.0 exchange to ensure the user consents to releasing the details to the New OP. Section 4 specifies how a New OP can identify the Old OP in an id_token presented to an RP. Section 5 describes how an RP can confirm the porting information with the Old OP. Annex A provides a example of a complete porting flow.</p>
 <h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> <a href="#rnc" id="rnc">Requirements Notation, Conventions, and Terminology</a></h1>
 <p id="rfc.section.1.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
 <p id="rfc.section.1.1.p.2">Throughout this document, values are quoted to indicate that they are to be taken literally in protocol messages.</p>
 <p id="rfc.section.1.1.p.3">Terms such as "OpenID Provider" (OP), "Relying Party" (RP), "Subject Id" (sub), and "Sector Id" are defined in <a href="#OpenID.Core">[OpenID.Core]</a>. This document uses the terms "Old OP" and "New OP" to indicate OpenID Providers that support users porting out and porting in respectively. An OP can support both roles (and hopefully most will).</p>
+<h1 id="rfc.section.1.2"><a href="#rfc.section.1.2">1.2.</a> <a href="#flow" id="flow">Porting flow</a></h1>
+<p id="rfc.section.1.2.p.1">Porting involves a user, their Old OP and New OP, plus any number of RPs.  A sample porting flow is described below.</p>
+<p id="rfc.section.1.2.p.2">The first stage for a specific porting event is for the New OP to get confirmation from the Old OP that the user wants to port.  The New OP does so by calling the Old OP's Porting data API on the user's behalf, which first requires orchestrating an approval interaction between the user and the Old OP using OAuth 2.0 <a href="#RFC6749">[RFC6749]</a>.</p>
+<p/>
+
+<ol>
+  <li>User browsers to the New OP, logs in, and indicates that they want to port from a particular Old OP.</li>
+  <li>New OP initiates an OAuth 2.0 flow by redirecting the user's browser to the Old OP's authorization endpoint.  <ol style="list-style-type: upper-alpha"><li>User authenticates to the Old OP, and confirms they want to port to the New OP.</li><li>Old OP redirects the user's browser back to the New OP.</li><li>New OP completes the OAuth 2.0 flow by getting an access token from the Old OP's token endpoint.</li></ol></li>
+  <li>New OP calls the Old OP's Porting data API with the access token; receiving a "port_token".</li>
+</ol>
+<p id="rfc.section.1.2.p.4">The second stage of the porting process occurs multiple times: once for each RP. It occurs the first time the user visits a given RP after porting.  That is, the first time the user logs in to a given RP via the New OP.  A normal OpenID Connect flow occurs, but the New OP includes extra details in the resulting "id_token" to indicate that the user previously used a particular Old OP.</p>
+<p id="rfc.section.1.2.p.5">When an RP does not recognize the New OP's Subject Id for the user, the RP can see whether it knows this user under an id from a previous OP.  The RP does not blindly trust the New OP to identify the account that was ported. Instead, the RP gets confirmation from the Old OP that the user really did port to the New OP. It is only in that confirmation that the Old OP identifies the ported account, enabling the RP to link the user's ids from both OPs.</p>
+<p/>
+
+<ol>
+  <li>User browsers to the RP, and choses to login via the New OP.</li>
+  <li>RP initiates an OpenID Connect login by redirecting the user's browser to the New OP's authorization endpoint.  <ol style="list-style-type: upper-alpha"><li>User authenticates to the New OP, and consents to being identified to the RP.</li><li>New OP redirects the user's browser back to the RP.</li><li>RP completes the OpenID Connect flow by getting an id_token from the New OP's token endpoint.</li></ol></li>
+  <li>New OP included an "aka" member in the id_token listing the user's Old OP, along with an version of the user's "port_token" (obtained in the first stage) encrypted for the Old OP.</li>
+  <li>RP prepares to make API calls to the Old OP, by calling the Old OP's token endpoint (with an OAuth 2.0 client credential grant) to get an access token.</li>
+  <li>RP calls the Old OP's Porting check API with the access token, passing along the encrypted "port_token"; receiving the Old OP's Subject Id for the user in response.</li>
+  <li>RP automatically accepts the two Subject Ids from Old and New OPs as identifiers for the same account at the RP.</li>
+</ol>
+<p id="rfc.section.1.2.p.7">A user could have ported to the Old OP from an even Older OP, which can be indicated by the Old OP including an "aka" member in it's Porting check API response (step 5 above). An RP can automatically process that port in the same way that an "aka" value from the New OP is handled.</p>
+<p id="rfc.section.1.2.p.8">The porting flow maintains the privacy benefit offered by the use of pairwise Subject Ids, but still works if an OP uses public Subject Ids.</p>
+<p id="rfc.section.1.2.p.9">It is possible for an OP to implement the porting flow without maintaining details of the RPs each user has visited.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#discovery" id="discovery">Discovery</a></h1>
 <p id="rfc.section.2.p.1">OpenID Discovery offers details about the features supported by an OP <a href="#OpenID.Discovery">[OpenID.Discovery]</a>. The following members MUST be included in the metadata for an Old OP that supports users porting out:</p>
 <p/>
 
 <dl>
   <dt>"port_data_endpoint"</dt>
-  <dd style="margin-left: 8">Base URL for the Porting data API described in section 3 that a New OP can use to obtain details about an account that is being ported. The URL MUST use the "https" scheme.</dd>
+  <dd style="margin-left: 8">Base URL for the Porting data API described in section 3 that a New OP can use to obtain details about an account that is being ported.  The URL MUST use the "https" scheme.</dd>
   <dt>"port_check_endpoint"</dt>
-  <dd style="margin-left: 8">Base URL for the Porting check API described in section 5 that an RP can use to confirm that an account has been ported to a specific New OP. The URL MUST use the "https" scheme.</dd>
+  <dd style="margin-left: 8">Base URL for the Porting check API described in section 5 that an RP can use to confirm that an account has been ported to a specific New OP.  The URL MUST use the "https" scheme.</dd>
   <dt>"port_enc_algs_supported"</dt>
-  <dd style="margin-left: 8">Array of string algorithm names <a href="#RFC7518">[RFC7518]</a> identifying the content encryption algorithms that the OP supports for decrypting data received at the "port_check_endpoint".</dd>
+  <dd style="margin-left: 8">Array of string algorithm names <a href="#IANA.JOSE">[IANA.JOSE]</a> identifying content encryption algorithms supported by the OP that can be used by a New OP to encrypt a "port_token" as described in section 4.1.</dd>
 </dl>
 <p id="rfc.section.2.p.3">Below is a sample metadata request and respone.</p>
 <pre>
@@ -538,7 +563,7 @@ Content-Type: application/json
 </pre>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#port_data" id="port_data">Porting data API</a></h1>
 <p id="rfc.section.3.p.1">The Porting data API (offered by an Old OP and consumed by a New OP) provides a token to represent a porting event. The New OP passes the token (after encrypting it <a href="#enc">section 3.1</a> <cite title="NONE">[enc]</cite>) to each RP when the user subsequently logs into that RP <a href="#aka">section 4</a> <cite title="NONE">[aka]</cite>. The RP, in turn, passes the token to the Porting check API <a href="#port_check">section 5</a> <cite title="NONE">[port_check]</cite> to confirm the port with the Old OP.</p>
-<p id="rfc.section.3.p.2">Access to porting data requires the consent of the user to whom it relates. The Old OP MUST support the OAuth 2.0 authorization code flow for accessing the API <a href="#RFC6749">[RFC6749]</a>. The Old OP MUST support Bearer access tokens <a href="#RFC6750">[RFC6750]</a>. The New OP MUST include the scope "port_data" when requesting access.</p>
+<p id="rfc.section.3.p.2">Access to porting data requires the consent of the user to whom it relates.  The Old OP MUST support the OAuth 2.0 authorization code flow for accessing the API <a href="#RFC6749">[RFC6749]</a>. The Old OP MUST support Bearer access tokens <a href="#RFC6750">[RFC6750]</a>. The New OP MUST include the scope "port_data" when requesting access.</p>
 <p id="rfc.section.3.p.3">The API provides a single read-only resource per user. It can be read with a "GET" request. The path "/me" appended to the base URL (from the "port_data_endpoint" member in the Old OP discovery metadata) indicates the resource for the user associated with the access token used to make the request.</p>
 <p id="rfc.section.3.p.4">The response is a JSON object with a "port_token" member that has a string value. The Old OP needs to be able to identify the user and New OP involved in the porting from the port token. The Old OP MUST choose port token values to have sufficient entropy that they cannot be guessed by other parties, including by New OPs and RPs that have seen other port tokens. All "port_token" values from the Old OP for a given New OP MUST be the same length so the length itself (which is typically preserved by encryption) does not allow correlation across RPs. Consequently, a port token cannot simply be the concatenation of ids for the user and New OP. It could be a combination of the user and New OP ids signed by the Old OP. It could also be a random number used as a reference to porting details recorded by the Old OP.</p>
 <p id="rfc.section.3.p.5">Any unrecognized members in the response MUST be ignored (such as "extra_stuff" in the example below).</p>
@@ -575,11 +600,11 @@ Content-Type: application/json
   }
 }</pre>
 <h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#enc" id="enc">Encrypting "port_token"</a></h1>
-<p id="rfc.section.4.1.p.1">When pairwise Subject Ids are used for enhanced privacy (ie a user is assigned a separate "sub" value for each collection of related RPs identified by a "sector_id"), any porting information revealed to RPs also needs to be at least pairwise so as not to undermine that privacy. This is achieved by using encrypted versions of a "port_token". Encryption is performed by the New OP, and decryption by the Old OP.</p>
+<p id="rfc.section.4.1.p.1">When pairwise Subject Ids are used for enhanced privacy (ie a user is assigned a separate "sub" value for each collection of related RPs identified by a "sector_id"), any porting information revealed to RPs also needs to be at least pairwise so as not to undermine that privacy. This is achieved by using encrypted versions of the "port_token". Encryption is performed by the New OP, and decryption by the Old OP.</p>
 <p id="rfc.section.4.1.p.2">A separate encryption MUST be used whenever a different "sub" value is involved. The encryptions MUST involve nonces so each ciphertext is different.  The nonces themselves MUST NOT allow extra correlations, which effectively means multiple encryptions of a given "port_token" for multiple RPs MUST NOT be pre-calculated during the porting process if the nonces include a counter or time-based component. Instead, it is safe to perform the encryption for an RP when the user subsequently logs in to that RP.</p>
 <p id="rfc.section.4.1.p.3">A New OP can reuse an "enc_port_token" for logins to multiple RPs that share the same "sector_id", but can also calculate a separate "enc_port_token" for each. Similarly, an "enc_port_token" can be reused for multiple logins to the same RP, or separate "enc_port_token" values can be calculated each time. It is RECOMMENDED that "enc_port_token" values not be cached, or only be cached for a short time (eg minutes), so they can have short lifetimes, hence avoiding requirements for revocation.</p>
-<p id="rfc.section.4.1.p.4">Encryption does not offer a privacy benefit if the New OP uses public Subject Ids. However, encryption is still used in such cases to avoid introducing additional options to the porting mechanism.</p>
-<p id="rfc.section.4.1.p.5">A "port_token" value is encrypted to create an "enc_port_token" value.  The encryption follows the JSON Web Encryption <a href="#RFC7516">[RFC7516]</a> process, creating a JWE compact serialization. Direct encryption with a shared symmetric key is used ("alg":"dir"), with a key derived from the "client_secret" value that the New OP uses to authenticate to the Old OP. Deriving the key follows section 10.2 "Encryption" of <a href="#OpenID.Core">[OpenID.Core]</a>: using the left-most bits of the SHA2 hash of "client_secret". The key id ("kid") is set to the "client_id" value. The content encryption algorithm is chosen from the "port_enc_algs_supported" list published in the Old OP's discovery metadata. The plaintext is the "port_token" value.</p>
+<p id="rfc.section.4.1.p.4">Encryption offers less privacy benefit when the New OP uses public Subject Ids. However, encryption is still used in such cases to avoid introducing additional options to the porting mechanism.</p>
+<p id="rfc.section.4.1.p.5">A "port_token" value is encrypted to create an "enc_port_token" value.  The encryption follows the JSON Web Encryption <a href="#RFC7516">[RFC7516]</a> process, creating a JWE compact serialization. Direct encryption with a shared symmetric key is used ("alg":"dir"), with a key derived from the "client_secret" value that the New OP uses to authenticate to the Old OP.  Deriving the key follows section 10.2 "Encryption" of <a href="#OpenID.Core">[OpenID.Core]</a>: using the left-most bits of the SHA2 hash of "client_secret". The key id ("kid") is set to the "client_id" value. The content encryption algorithm is chosen from the "port_enc_algs_supported" list published in the Old OP's discovery metadata. The plaintext is the "port_token" value.</p>
 <p id="rfc.section.4.1.p.6">The JWE header MUST include a type parameter ("typ") with the value "oidc-porting" to explicitly indicate the semantics of the message.  The JWE header SHOULD include a "sector_id" parameter, holding the host component (ie a fully-qualified domain name) of the RP's "sector_identifier_uri" or "redirect_uri" <a href="#OpenID.Core">[OpenID.Core]</a> &#167; 8.1. "Pairwise Identifier Algorithm".  The only exception to this is when the New OP uses public Subject Ids and does not know the "sector_id", in which case this parameter is omitted from the JWE header.</p>
 <p id="rfc.section.4.1.p.7">Below is a sample JWE, starting with the New OP details:</p>
 <pre>
@@ -849,7 +874,7 @@ Content-Type: application/json
   </tbody>
 </table>
 <h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#example" id="example">Example flow</a></h1>
-<p id="rfc.section.A.p.1">This example involves a user (Alice), an RP, and 3 OPs (OP1, OP2, and OP3). Alice originally federated to the RP via OP1; ported to OP2; then (shortly afterwards) ported to OP3. When Alice logs in to RP via OP3 for the first time she is not recognized directly from OP3's id_token. But by following the "aka" trail, the RP automatically establishes the link to an id from OP1 that the RP recognizes as Alice.</p>
+<p id="rfc.section.A.p.1">This example involves a user (Alice), an RP, and 3 OPs (OP1, OP2, and OP3).  Alice originally federated to the RP via OP1; ported to OP2; then (shortly afterwards) ported to OP3. When Alice logs in to RP via OP3 for the first time she is not recognized directly from OP3's id_token. But by following the "aka" trail, the RP automatically establishes the link to an id from OP1 that the RP recognizes as Alice.</p>
 <p id="rfc.section.A.p.2">Many details are elided. Dotted arrows represent HTTP redirects.</p>
 <pre>
 <img src="draft-account-porting.eg.png"/>
