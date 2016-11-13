@@ -87,19 +87,19 @@ note right: OP3,sub3D unknown; try aka
 group Automatically verify port
 
 OP2 <-> RP: OAuth 2.0 client cred flow, scope=port_check
-OP2 <- RP: GET /port_check?xxx2E,OP3,rp.ex
+OP2 <- RP: GET /port_check?xxx2E,OP3
 note left
   xxx2E decrypts to prt2E & is valid,
-  matches OP3 & rp.ex
+  matches OP3 & RP
 end note
 OP2 -> RP: sub2B,aka:{OP1,xxx1C}
 note right: OP2,sub2B unknown; try aka
 
 OP1 <-> RP: OAuth 2.0 client cred flow, scope=port_check
-OP1 <- RP: GET /port_check?xxx1C,OP2,rp.ex
+OP1 <- RP: GET /port_check?xxx1C,OP2
 note left
   xxx1C decrypts to prt1C & is valid,
-  matches OP2 & rp.ex
+  matches OP2 & RP
 end note
 OP1 -> RP: sub1A
 note right
