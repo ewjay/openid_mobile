@@ -245,10 +245,12 @@
             <t>
               The Authorization Server MUST validate all the OAuth 2.0 parameters according to the MODRNA specification.
             </t>
-
             <t>
               In the event of a request contains more than one of this hints specified in <xref target="auth_request">Authentication Request</xref>, 
               the Identity provider MUST return an "invalid_request" error response as per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
+            </t>
+            <t>
+              The Authorization server MUST validate that the hint provided (login_hint, login_token_hint or id_token_hint) exist and are not expired, otherwise it should return an error to notify thaht the hint provided has not been found.
             </t>
             <t>
               If the authentication request contains a "client_notification_endpoint" when it has not been provided at the registering time or viceversa, 
@@ -418,6 +420,60 @@
         </figure>
       </section>    
 
+      <section anchor="token_notification" title="Token Notification">
+        <section anchor="issuing_successful_token" title="Successful Token Notification">
+          <t>
+            When the client is registered for client notifications (through "client_notification_endpoint"), the Authorization Server will send the token response making a "POST HTTP Request" to the RP's client_notification_endpoint. If the user is well authenticated, the Authorization Server returns a successful response that includes an ID Token and an Access Token and a Refresh Token. If the request failed client authentication or is invalid, the authorization server sends an error_message as described in <xref target="token_error_response" format="title"/>.
+          </t>
+          <t>
+            All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received in the request as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref>. The response uses the application/json media type.
+          </t>
+          <figure>
+            <preamble>The following is a non-normative example of a token response sending as a HTTP POST request to the callback uri 
+              specified in the "client_notification_endpoint" parameter by the RP (with line wraps within values for display purposes only).
+              The request is authenticated through a bearer token that is the value of the "client_req_id" provided by the RP in the Authentication Request.
+            </preamble>
+            <artwork>
+              <![CDATA[
+                  POST /cb HTTP/1.1
+                  Host: client.example.com
+                  Authorization: Bearer 8d67dc78-7faa-4d41-aabd-67707b374255
+                  Content-Type: application/json
+                  { 
+                   "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1",
+                   "access_token": "SlAV32hkKG",
+                   "token_type": "Bearer",
+                   "refresh_token": "8xLOxBtZp8",
+                   "expires_in": 3600,
+                   "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
+                     yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
+                     NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
+                     fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
+                     AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
+                     Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
+                     NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
+                     QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
+                     K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
+                     XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
+                  }              
+              ]]>
+            </artwork>
+          </figure>
+        </section>
+        <section anchor="client_notification_endpoint" title="Client Notification Endpoint">
+          <t>
+            The Client Notification Endpoint is set by the RP during the registration phase. This endpoint is intended to receive
+            the result of the authentication (id_token, access_token and refresh token) and it requires the request to be authenticated 
+            using a "bearer token" created by the RP and sent to the OP in the Authentication request as the value of the parameter "client_req_id".
+          </t>
+          <t>
+            Communication with the Client Notification Authentication Endpoint MUST utilize TLS. See Section 16.17 <xref target="OpenID.Core"/> 
+            for more information on using TLS.
+          </t>
+
+        </section>
+      </section>
+
       <section anchor="token_error_response" title="Token Error Response">
         <t>
            If the Token Request is invalid or unauthorized, the Authorization Server constructs the error response according to the section 3.1.3.4 Token Error Response of <xref target="OpenID.Core"/>.
@@ -435,47 +491,6 @@
         </t>          
       </section>
 
-
-      <section anchor="issuing_successful_token" title="Successful Token Notification">
-        <t>
-          When the client is registered for client notifications (through "client_notification_endpoint"), the Authorization Server will send the token response making a "POST HTTP Request" to the RP's client_notification_endpoint. If the user is well authenticated, the Authorization Server returns a successful response that includes an ID Token and an Access Token and a Refresh Token. If the request failed client authentication or is invalid, the authorization server sends an error_message as described in <xref target="token_error_response" format="title"/>.
-        </t>
-        <t>
-          All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received in the request as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref>. The response uses the application/json media type.
-        </t>
-        <figure>
-          <preamble>The following is a non-normative example of a token response sending as a HTTP POST request to the callback uri 
-            specified in the "client_notification_endpoint" parameter by the RP (with line wraps within values for display purposes only).
-            The request is authenticated through a bearer token that is the value of the "client_req_id" provided by the RP in the Authentication Request.
-          </preamble>
-          <artwork>
-            <![CDATA[
-                POST /cb HTTP/1.1
-                Host: client.example.com
-                Authorization: Bearer 8d67dc78-7faa-4d41-aabd-67707b374255
-                Content-Type: application/json
-                { 
-                 "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1",
-                 "access_token": "SlAV32hkKG",
-                 "token_type": "Bearer",
-                 "refresh_token": "8xLOxBtZp8",
-                 "expires_in": 3600,
-                 "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
-                   yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
-                   NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
-                   fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
-                   AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
-                   Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
-                   NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
-                   QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
-                   K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
-                   XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
-                }              
-            ]]>
-          </artwork>
-        </figure>
-      </section>
-
       <section anchor="auth_error_response" title="Authentication Error Response">
         <t>
           TBD
@@ -487,8 +502,8 @@
       <t>
         The login hint token SHOULD be digitally signed by the issuer.
         This ensures authenticity of the data and reduces the threat of an injection attack.
-        The signature allows the OP to authenicate and authorize the sender of the hint and
-            prevent collecting of phone numbers by rogue clients.
+        The signature allows the OP to authenicate and authorize the sender of the hint and 
+        prevent collecting of phone numbers by rogue clients.
       </t>
     </section>
 
