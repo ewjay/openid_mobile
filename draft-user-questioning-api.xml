@@ -14,7 +14,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-user-questioning-api-05" ipr='none'>
+<rfc category="std" docName="draft-user-questioning-api-06" ipr='none'>
 <?rfc toc="yes" ?>
 <?rfc tocdepth="5" ?>
 <?rfc symrefs="yes" ?>
@@ -43,12 +43,12 @@
 	</address>
 	</author>
 	
-    <date day='4' month='November' year='2016'/>
+    <date day='15' month='November' year='2016'/>
 	
     <workgroup>OpenID MODRNA Working Group</workgroup>
 	
 	<abstract>
-	<t>This specification defines a specific endpoint used by a Client (i.e. Service Provider)
+	<t>This specification defines a specific API used by a Client (i.e. Service Provider)
 	in order to question an End-User and get his Statement (i.e. his answer).</t>
 	</abstract>
 	
@@ -56,11 +56,10 @@
 <middle>
   
 	<section anchor='Introduction' title='Introduction'>
-	<t>This specification defines a specific endpoint used by a Client (i.e. Service Provider)
+	<t>This specification defines a specific API used by a Client (i.e. Service Provider)
 	in order to question an End-User and get his Statement (i.e. his answer).</t>
-	<t>This endpoint is specified as an OAuth 2.0-protected Resource Server accessible with an Access Token.</t>
-	<t>The way the Access Token has been obtained by the Client is out of scope of this specification.</t>
-	<t>The Client can use the endpoint defined in this specification whether the End-User is currently using the Client or not.</t>
+	<t>This API is specified as an OAuth 2.0-protected Resource Server accessible with an Access Token.</t>
+	<t>The Client can use the API defined in this specification whether the End-User is currently using the Client or not.</t>
 	<t>The User Questioning API is an asynchronous API. There are 2 main ways to get the End-User's Statement: the first one requires some polling of the API and the second requires the Client to expose a callback endpoint.</t>
 
 		<section anchor='rnc' title='Requirements Notation and Conventions'>
@@ -91,24 +90,35 @@
 		This specification also defines the following terms: 
 		<list style='hanging'>
 		<t hangText='Questioned User'>
-		<spanx style='strong'></spanx> End-User receiving the question and requested to give his statement. 
+		<spanx style='strong'></spanx> End-User receiving the question and requested to make a statement. 
 		</t>
 		</list>
 		</t>
 		</section>
 
-	</section>
-
 	  
-    <section title='Overview'>
-	<t>The User Questioning protocol, in abstract, follows the following steps.</t>
-	<t>
-	<list style="numbers">
-	<t>The Client sends a User Questioning Request to the OpenID Provider (OP).</t>
-	<t>The OP interacts with the Questioned User and obtains his Statement.</t>
-	<t>The OP responds to the Client with a User Questioning Response.</t>
-	</list>
-	</t>
+		<section title='Overview'>
+		
+		<t>
+		The User Questioning API enables a Client to address a question to a end-user and to get its digitaly signed response, called User Statement Token. 
+		The Client addresses the question thanks to a <spanx style="verb">User Questioning Request</spanx> sent on the <spanx style="verb">User Questioning Request Endpoint</spanx>. 
+		The <spanx style="verb">User Statement Token</spanx> is contained in a <spanx style="verb">User Questioning Response</spanx>. 
+		</t>
+		<t>
+		In order to retrieve the <spanx style="verb">User Questioning Response</spanx>, two flows are offered to the Client: a Pulled-By-Client flow and a Pushed-To-Client flow. 
+		In the Pulled-By-Client flow, the Client regularly calls the <spanx style="verb">User Questioning Polling Endpoint</spanx>. 
+		In the Pushed-To-Client flow, the Client is notified on the <spanx style="verb">Client Notification Endpoint</spanx>.
+		</t>
+		
+		
+		<t>The User Questioning protocol, in abstract, follows the following steps.</t>
+		<t>
+		<list style="numbers">
+		<t>The Client sends a User Questioning Request to the OpenID Provider (OP).</t>
+		<t>The OP interacts with the Questioned User and obtains his Statement.</t>
+		<t>The OP responds to the Client with a User Questioning Response.</t>
+		</list>
+		</t>
 <figure>
 <preamble>
 These steps are illustrated in the following diagram:
@@ -130,6 +140,85 @@ These steps are illustrated in the following diagram:
 +--------+                                               +--------+
 </artwork>
 </figure>
+
+		</section>
+	
+		<section title='User Questioning flows'>
+		
+			<t>This document specifies two User Questioning flows:
+			<list style='hanging' hangIndent='6'>
+			<t hangText='Pulled-By-Client flow:'>
+			In this flow, after the User Questioning Request, the Client must call the OP in order to get the User Questioning Response. Refer to <xref target='Pulled-By-Client-Flow'/> for more details.
+			</t>
+			<t hangText='Pushed-To-Client  flow:'>
+			In this flow, after the User Questioning Request, the OP calls the Client to deliver the User Questioning Response. Refer to <xref target='Pushed-To-Client-Flow'/> for more details.
+			</t>
+			</list>
+			</t>
+			<t>
+			At registration, a Client is configured with the flow it will use. Refer to <xref target='client_registration'/> for more details.
+			</t>
+			
+			<section anchor='Pulled-By-Client-Flow' title='Pulled-By-Client Flow'>
+			<t>
+			In this flow, the Client will poll the OP to get the User Questioning Response.
+			</t>
+		
+<figure>
+<artwork>
++--------+                                               +--------+
+|        |---(1a) User Questioning Request--------------&gt;|        |
+|        |                                               |        |
+|        |&lt;--(1b) Question Created-----------------------|        |
+|        |                                               |        |
+|        |  +--------+                                   |        |
+| Client |  |  End-  |&lt;--(2a) User interactions to get--&gt;|   OP   |
+|        |  |  User  |  the Questioned User's Statement  |        |
+|        |  +--------+                                   |        |
+|        |                                               |        |
+|        |--(3a) Get User Questioning Response----------&gt;|        |
+|        |                                               |        |
+|        |&lt;---(3b) User Questioning Response-------------|        |
++--------+                                               +--------+
+</artwork>
+</figure>
+			
+			<t>
+			About the "(2a) User interactions to get the Questioned User's Statement" step, note that the way the OP obtains the Questioned User's Statement is out of the scope of this specification.
+			</t>
+			</section>
+
+			
+			<section  anchor='Pushed-To-Client-Flow' title='Pushed-To-Client Flow'>
+			<t>
+			In this flow, the OP will send the User Questioning Response to the client_notification_endpoint registered by the Client.
+			</t> 
+
+<figure>
+<artwork>
++--------+                                               +--------+
+|        |---(1a) User Questioning Request--------------&gt;|        |
+|        |                                               |        |
+|        |&lt;--(1b) Question Created-----------------------|        |
+|        |                                               |        |
+|        |  +--------+                                   |        |
+| Client |  |  End-  |&lt;--(2a) User interactions to get--&gt;|   OP   |
+|        |  |  User  |  the Questioned User's Statement  |        |
+|        |  +--------+                                   |        |
+|        |                                               |        |
+|        |&lt;---(3a) User Questioning Response-------------|        |
+|        |                                               |        |
+|        |---(3b) Acknowledgement-----------------------&gt;|        |
++--------+                                               +--------+
+</artwork>
+</figure>
+
+			<t>
+			About the "(2a) User interactions to get the Questioned User's Statement" step, note that the way the OP obtains the Questioned User's Statement is out of the scope of this specification.
+			</t>
+			</section>
+		</section>
+
 
 		<section title='Example of use cases involving the User Questioning API'>
 		<t>The following use cases are non-normative examples to illustrate the usage of the User Questioning API by a Client.</t>
@@ -171,11 +260,8 @@ These steps are illustrated in the following diagram:
 	
 	</section>
 
-	
 
-	  
 	<section anchor='user-statement-token' title='User Statement Token'>
-		
 		
 	<t>
 	The User Statement Token is a security token that contains Claims about the statement made by the Questioned User.
@@ -195,26 +281,31 @@ These steps are illustrated in the following diagram:
 	<!---->
 	<t hangText="iss">
 	MANDATORY. 
-	Issuer Identifier for the Issuer of the response. 
+	Issuer Identifier for the Issuer of the response. The issuer is the OP.
 	<spanx style="verb">iss</spanx> is defined in chapter 2 of <xref target='OpenID.Core'/>. 
-	The issuer is the OP. 
+	The <spanx style="verb">iss</spanx> value is a case sensitive URL using the <spanx style="verb">https</spanx> scheme that contains scheme, host, and optionally, port number and path components and no query or fragment components. 
 	</t>
 	<!---->
 	<t hangText="sub">
 	MANDATORY. 
 	Subject Identifier. 
+	A locally unique and never reassigned identifier within the Issuer for the End-User, which is intended to be consumed by the Client.
 	<spanx style="verb">sub</spanx> is defined in chapter 2 of <xref target='OpenID.Core'/>. 
+	The <spanx style="verb">sub</spanx> value MUST NOT exceed 255 ASCII characters in length. The <spanx style="verb">sub</spanx> value is a case sensitive string. 
 	</t>
 	<!---->
 	<t hangText="aud">
 	MANDATORY. 
 	Audience(s) that this User Statement Token is intended for. 
 	<spanx style="verb">aud</spanx> is defined in chapter 2 of <xref target='OpenID.Core'/>.
+	The <spanx style="verb">aud</spanx> value is an array of case sensitive strings.
 	</t>
 	<!---->
 	<t hangText="user_id">
-	OPTIONAL. The <spanx style="verb">user_id</spanx> is present in the User Statement Token only if the <spanx style="verb">user_id</spanx> and <spanx style="verb">user_id_type</spanx> were present in the User Questioning Request.
-	The <spanx style="verb">user_id</spanx> is a unique identifier allowing to identify the Questioned User (e.g. Mobile phone, sub, ...). When present, this is the identifier actually used to reach the Questioned User.
+	OPTIONAL. 
+	The <spanx style="verb">user_id</spanx> is a unique identifier provided in the User Questioning Request and allowing to identify the Questioned User (e.g. Mobile phone, sub, ...). 
+	The <spanx style="verb">user_id</spanx> is present in the User Statement Token only if the <spanx style="verb">user_id</spanx> and <spanx style="verb">user_id_type</spanx> were present in the User Questioning Request. 
+	When present, this is the identifier actually used to reach the Questioned User. 
 	The <spanx style="verb">user_id</spanx> value is a case sensitive string. 
 	</t>
 	<!---->
@@ -227,7 +318,7 @@ These steps are illustrated in the following diagram:
 	<t hangText="question_displayed">
 	MANDATORY. 
 	The <spanx style="verb">question_displayed</spanx> is the question displayed to the Questioned User.
-	If the <spanx style="verb">question_to_display</spanx> has not been displayed as is, the <spanx style="verb">question_displayed</spanx> MUST be the exact message displayed to Questioned User.
+	If the <spanx style="verb">question_to_display</spanx> (described in <xref target='user_questioning_request'/>) has not been displayed as is, the <spanx style="verb">question_displayed</spanx> MUST be the exact message displayed to Questioned User.
 	The <spanx style="verb">question_displayed</spanx> value is a case sensitive string. 
 	</t>
 	<!---->
@@ -245,14 +336,14 @@ These steps are illustrated in the following diagram:
 	<t hangText="used_amr">
 	MANDATORY. Authentication Method References. 
 	These are the authentication methods used by the OP to authenticate the Questioned User before he made his statement. 
-	<spanx style="verb">Authentication Method References</spanx> are defined in chapter 2 of <xref target='OpenID.Core'/>, where they are named <spanx style="verb">amr</spanx>. 
+	Authentication Method References are defined in chapter 2 of <xref target='OpenID.Core'/>, where they are named <spanx style="verb">amr</spanx>. 
 	The <spanx style="verb">used_amr</spanx> value is an array of case sensitive strings.
 	</t>
 	<!---->
 	<t hangText="used_acr">
 	MANDATORY. Authentication Context Class Reference. 
 	Authentication Context Class Reference value that identifies the Authentication Context Class used by the OP to authenticate the Questioned User before he made his statement. 
-	<spanx style="verb">Authentication Context Class Reference</spanx> is defined in chapter 2 of <xref target='OpenID.Core'/>, where it is named <spanx style="verb">acr</spanx>. 
+	Authentication Context Class Reference is defined in chapter 2 of <xref target='OpenID.Core'/>, where it is named <spanx style="verb">acr</spanx>. 
 	The <spanx style="verb">used_acr</spanx> value is a case sensitive string.
 	</t>
 	<!---->
@@ -261,7 +352,7 @@ These steps are illustrated in the following diagram:
 	
 	<t>
 	User Statement Tokens MUST be signed by the OP using a digital signature as defined in <xref target="JWS">JWS</xref> providing authentication, integrity and non-repudiation. 
-	The signature MUST be a digital signature. Message Authentication Codes (MACs) are FORBIDDEN. 
+	Message Authentication Codes (MACs) are FORBIDDEN as they do not provide non-repudiation. 
 	User Statement Tokens CAN optionally be both signed and then encrypted using <xref target="JWS">JWS</xref> and <xref target="JWE">JWE</xref> respectively, thereby providing 
 	authentication, integrity, non-repudiation, and confidentiality, per <xref target="SigningOrder"/>. 
 	If the User Statement Token is encrypted, it MUST be signed then encrypted, with the result being a Nested JWT, as defined in <xref target="JWT"/>. 
@@ -288,7 +379,7 @@ The following is a non-normative example of the set of Claims (the JWT Claims Se
 {
     "question_id":"984dcc7d3d4d4b0f9f8022e344f9",
     "iss":"https://server.example.com",
-    "aud":"s8V3wm8IXMW6TboazXZX",
+    "aud":["s8V3wm8IXMW6TboazXZX"],
     "sub":"g117YBtCZO3mAKPQKP8o",
     "user_id":"+33612345678",
     "user_id_type":"msisdn",
@@ -309,17 +400,17 @@ results in this Object value (with line wraps within values for display purposes
 <artwork><![CDATA[
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImsyYmRjIn0.eyJxdWVzdG
 lvbl9pZCI6Ijk4NGRjYzdkM2Q0ZDRiMGY5ZjgwMjJlMzQ0ZjkiLCJpc3MiOiJodHRw
-czovL3NlcnZlci5leGFtcGxlLmNvbSIsImF1ZCI6InM4VjN3bThJWE1XNlRib2F6WF
-pYIiwic3ViIjoiZzExN1lCdENaTzNtQUtQUUtQOG8iLCJ1c2VyX2lkIjoiKzMzNjEy
-MzQ1Njc4IiwidXNlcl9pZF90eXBlIjoibXNpc2RuIiwicXVlc3Rpb25fZGlzcGxheW
-VkIjoiRG8geW91IGFsbG93IC4uLj8iLCJzdGF0ZW1lbnQiOiJZZXMiLCJzdGF0ZW1l
-bnRfZGF0ZSI6MTMxMTI4Mjk3NSwidXNlZF9hY3IiOiIyIiwidXNlZF9hbXIiOlsiQ0
-xJQ0tfT0siXX0.sWROq3FS6exVQ4r01Gev2R00e-PD5KrWvzvh7S_DitfzSfWIcKwg
-fhX9w_QXQxlWjQoOpvLxdYqiUfWgNWdiFeZBnYez9g1KiZnltOZIYTBy1HfochP7ed
-EcMqXNLYP5CwdyIVXk-IxaF1ALDbjuIpfohFjg-x0YTyH4DHFTG9K1jV2ZLGroX3Lx
-PO7lyjROzv5pCFDurI6yEi0aFx-hmR6iqVJJ--TM90hNAYHOwnbYwy4iyDrPqI6z9M
-kcnxKorHbbRKczck4fEtl0uYkj3cjE4MFrn2x0zWrn9rrztGqLjh2NEvi29TNDxTMP
-SVgCwVOUd1bkN_SXguh5W9rp1g
+czovL3NlcnZlci5leGFtcGxlLmNvbSIsImF1ZCI6WyJzOFYzd204SVhNVzZUYm9hel
+haWCJdLCJzdWIiOiJnMTE3WUJ0Q1pPM21BS1BRS1A4byIsInVzZXJfaWQiOiIrMzM2
+MTIzNDU2NzgiLCJ1c2VyX2lkX3R5cGUiOiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbG
+F5ZWQiOiJEbyB5b3UgYWxsb3cgLi4uPyIsInN0YXRlbWVudCI6IlllcyIsInN0YXRl
+bWVudF9kYXRlIjoxMzExMjgyOTc1LCJ1c2VkX2FjciI6IjIiLCJ1c2VkX2FtciI6Wy
+JDTElDS19PSyJdfQ.GX6qWvi9RtTmJ1ixqwuwjhF12FQe3SZk3V68zdw4vXLf008Ot
+uA-uXKZVkviyVLX33L9_-Dv6vsWbOydhXBnbiQm7u1pr3gDw-eRMJu_pK0w_O5cUV6
+R2k_lvL_6cgQucfYTzHcebN3XQbP2qj-DGKOi9Af5afwKLLy_2f5WaIMMO24aSUJkF
+9CU88ELEJfNMnhtyUX1YchNXr_-w7yqZ8m6fCSJ9_ETKwe4qnuR3GMp46IyhIBIyjO
+ZMKeq083j6y4hEXx6qh8VMYgOm5xKZIg9d12YqQVi7xbAmrGDLMrv1UYUz-EeRTUzJ
+UoBCyHaLMCPeTSRdoBRCPr2wUJZ_Q
 ]]></artwork>
 </figure>
 
@@ -371,164 +462,78 @@ W53am_UZZ3tZbFTIh557JICWKHlWj5uzeJXaw",
 	</figure>
 	-->
 
-    </section>
-	
-    <section anchor="managing_user_id" title='Managing user_id'>
-
+		<section anchor="UserStatementTokenValidation" title="User Statement Token Validation">
 		<t>
-		The <spanx style="verb">user_id</spanx> is an identifier used to identify the Questioned User and to retrieve a reachability mean. 
-		</t>		
-		<t>
-		The <spanx style="verb">user_id</spanx> is determined from the User Questioning Request, either from the <spanx style="verb">user_id</spanx> attribute or from the Access Token. 
-		If the <spanx style="verb">user_id</spanx> is present in both the User Questioning Request and the Access Token, an error is raised. 
-		If the <spanx style="verb">user_id</spanx> is absent of both the User Questioning Request and the Access Token, an error is also raised.
+		In order to validate the User Statement Token, the Client MUST verify the signature, using <xref target='SigEnc'/>.
 		</t>
 		<t>
-		If the <spanx style="verb">user_id</spanx> is a reachability identifier, it SHOULD be used by reachability mean. 
-		Otherwise, the OP must use the <spanx style="verb">user_id</spanx> to determine a suitable reachability identifier.
-		</t>
-		
-		<t><spanx style="verb">user_id_type</spanx> member can take the following values:</t>
-		<t>
-		<list style="hanging">
-		<!---->
-		<t hangText="msisdn">	
-		If the <spanx style="verb">user_id_type</spanx> value is <spanx style="verb">msisdn</spanx>, 
-		the <spanx style="verb">user_id</spanx> value is the mobile phone number corresponding to the Questioned User. 
-		<xref target="E.164">E.164</xref> 
-		is RECOMMENDED as the format of this Claim, 
-		for example, <spanx style="verb">+1 (425) 555-1212</spanx> 
-		or <spanx style="verb">+5626872400</spanx>.
-		</t>
-		<!---->
-		<t hangText="email">
-		If the <spanx style="verb">user_id_type</spanx> value is <spanx style="verb">email</spanx>, 
-		the <spanx style="verb">user_id</spanx> value is the email adress corresponding to the Questioned User. 
-		Its value MUST conform to the <xref target="RFC5322">RFC 5322</xref> addr-spec syntax.
-		</t>
-		<!---->
-		<t hangText="sub">
-		If the <spanx style="verb">user_id_type</spanx> value is <spanx style="verb">sub</spanx>, 
-		the <spanx style="verb">user_id</spanx> value is the <spanx style="verb">sub</spanx> corresponding to the Questioned User for the requesting <spanx style="verb">client_id</spanx>. 
-		</t>
-		<!---->
-		</list>
+		Then, the Client MUST verify the <spanx style="verb">used_amr</spanx>, <spanx style="verb">used_acr</spanx> and <spanx style="verb">statement_date</spanx>. 
+		The Client is responsible to use the <spanx style="verb">statement_date</spanx> to prevent replay. 
+		The Client is responsible to check that the <spanx style="verb">used_amr</spanx> and <spanx style="verb">used_acr</spanx> fit with its security policy. 
 		</t>
 		<t>
-		Other <spanx style="verb">user_id_type</spanx> can be specified for specific use cases.
-		</t>
-
-    </section>
-
-	
-    <section anchor="client_registration" title='Client registration'>
-
-		<t>
-		In order to use the User Questioning API, the Client MUST have the right to access the User Questioning API. 
-		The right for a Client to access the User Questioning API is the right to use the User Questioning API's scope. This scope value is <spanx style="verb">question</spanx>. 
+		Then, the Client MUST verify the <spanx style="verb">displayed_question</spanx> value and the <spanx style="verb">statement</spanx> value, 
+		regarding the <spanx style="verb">question_to_display</spanx> value and the <spanx style="verb">statements_to_display</spanx> value sent in the User Questioning Request. 
 		</t>
 		<t>
-		If the the Client wants to be notified of the User Question Response (cf. <xref target='Pushed-To-Client-Flow'/>), it MUST register its client_notification_endpoint. 
-		The client_notification_endpoint is a callback URL on the Client. 
-		If the client does not use the client notification, it MUST obtain the result by using the user questioning polling endpoint. 
-		Both mechanisms are mutual exclusive, i.e. a particular client_id can only be used with one of these mechanisms. 
-		</t>
-	
-    </section>
-
-	
-    <section title='User Questioning flows'>
-	
-	  	<t>This document specifies two User Questioning flows:
-		<list style='hanging' hangIndent='6'>
-		<t hangText='Pulled-By-Client flow:'>
-		In this flow, after the User Questioning Request, the Client must call the OP in order to get the User Questioning Response. Refer to <xref target='Pulled-By-Client-Flow'/> for more details.
-		</t>
-		<t hangText='Pushed-To-Client  flow:'>
-		In this flow, after the User Questioning Request, the OP calls the Client to deliver the User Questioning Response. Refer to <xref target='Pushed-To-Client-Flow'/> for more details.
-		</t>
-		</list>
-		</t>
-		<t>
-		The flow a Client will use is configured at registration. Refer to <xref target='client_registration'/> for more details.
-		</t>
-		
-		<section anchor='Pulled-By-Client-Flow' title='Pulled-By-Client Flow'>
-		<t>
-		In this flow, the Client will poll the OP to get the User Statement Token.
-		</t>
-	
-<figure>
-<artwork>
-+--------+                                               +--------+
-|        |---(1a) User Questioning Request--------------&gt;|        |
-|        |                                               |        |
-|        |&lt;--(1b) Question Created-----------------------|        |
-|        |                                               |        |
-|        |  +--------+                                   |        |
-| Client |  |  End-  |&lt;--(2a) User interactions to get--&gt;|   OP   |
-|        |  |  User  |  the Questioned User's Statement  |        |
-|        |  +--------+                                   |        |
-|        |                                               |        |
-|        |--(3a) Get User Questioning Response----------&gt;|        |
-|        |                                               |        |
-|        |&lt;---(3b) User Questioning Response-------------|        |
-+--------+                                               +--------+
-</artwork>
-</figure>
-		
-		<t>
-		About the "(2a) User interactions to get the Questioned User's Statement" step, note that the way the OP obtains the Questioned User's Statement is out of the scope of this specification.
+		The Client is responsible of its decision to consider the Questioned User's <spanx style="verb">statement</spanx> regarding the <spanx style="verb">displayed_question</spanx>. 
+		The Client is also responsible of any decision it would take based on this <spanx style="verb">statement</spanx>.
 		</t>
 		</section>
-
-		
-		<section  anchor='Pushed-To-Client-Flow' title='Pushed-To-Client Flow'>
-		<t>
-		In this flow, the OP will send the User Statement Token to the client_notification_endpoint registered by the Client.
-		</t> 
-
-<figure>
-<artwork>
-+--------+                                               +--------+
-|        |---(1a) User Questioning Request--------------&gt;|        |
-|        |                                               |        |
-|        |&lt;--(1b) Question Created-----------------------|        |
-|        |                                               |        |
-|        |  +--------+                                   |        |
-| Client |  |  End-  |&lt;--(2a) User interactions to get--&gt;|   OP   |
-|        |  |  User  |  the Questioned User's Statement  |        |
-|        |  +--------+                                   |        |
-|        |                                               |        |
-|        |&lt;---(3a) User Questioning Response-------------|        |
-|        |                                               |        |
-|        |---(3b) Acknowledgement-----------------------&gt;|        |
-+--------+                                               +--------+
-</artwork>
-</figure>
-
-		<t>
-		About the "(2a) User interactions to get the Questioned User's Statement" step, note that the way the OP obtains the Questioned User's Statement is out of the scope of this specification.
-		</t>
-		</section>
-	</section>
 	
+    </section>
+		
+    <section title='OP Discovery and Client registration'>
+
+		<section anchor="discovery" title='OP Discovery'>
+
+			<t>
+			The OpenID Connect User Questioning API can be discovered within the OpenID Provider Metadata thanks to <xref target='OpenID.Discovery'/>. 
+			The scope <spanx style="verb">question</spanx> MUST be present in the <spanx style="verb">scopes_supported</spanx> array. 
+			The URL of User Questioning Request Endpoint MUST be configured as the value of <spanx style="verb">user_questioning_request_endpoint</spanx>.
+			The URL of User Questioning Polling Endpoint MUST be configured as the value of <spanx style="verb">user_questioning_polling_endpoint</spanx>.
+			</t>
+		
+		</section>
+	
+	    <section anchor="client_registration" title='Client registration'>
+
+			<t>
+			In order to use the User Questioning API, the Client MUST have the right to access the User Questioning API. 
+			The right for a Client to access the User Questioning API is the right to use the User Questioning API's scope. This scope value is <spanx style="verb">question</spanx>. 
+			</t>
+			<t>
+			If the Client wants to be notified of the User Questioning Response (cf. <xref target='Pushed-To-Client-Flow'/>), it MUST register its client_notification_endpoint. 
+			The client_notification_endpoint is a callback URL on the Client. 
+			If the client does not use the client notification, it MUST obtain the result by using the user questioning polling endpoint. 
+			Both mechanisms are mutual exclusive, i.e. a particular client_id can only be used with one of these mechanisms. 
+			</t>
+		
+		</section>
+		
+    </section>
+
 	
     <section anchor="endpoints" title='Endpoints'>
 	
 	    <section title='User Questioning Request Endpoint'>
-
+			<t>
+			In order to send a question to a Questioned User, the Client MUST send a User Questioning Request to the User Questioning Request Endpoint. 
+			</t>
+			
 			<t>
 			Communication with the User Questioning Request Endpoint MUST utilize TLS. 
 			See Section 16.17 in <xref target='OpenID.Core'/> for more information on using TLS.
 			</t>
 		
-		    <section title='User Questioning Request'>
+		    <section anchor="user_questioning_request" title='User Questioning Request'>
 			<t>
 			The Client sends the User Questioning Request using an HTTP POST Request.
 			</t>
 			<t>
-			The Client MUST have a valid Access Token for the scope <spanx style="verb">question</spanx>.
+			The Client MUST have a valid OAuth 2.0 Access Token for the scope <spanx style="verb">question</spanx>. 
+			The Access Token MAY refer to the Questioned User, as explained in <xref target='processing_user_id'/>.
+			The way the Access Token has been obtained by the Client is out of scope of this specification.
 			</t>
 			
 			<t>
@@ -537,7 +542,7 @@ W53am_UZZ3tZbFTIh557JICWKHlWj5uzeJXaw",
 			<!---->
 			<t hangText="Authorization">
 			MANDATORY. 
-			The <spanx style="verb">Authorization</spanx> value is an Access Token obtained from an OAuth Authorization request and used as a <xref target='RFC6750'/> Bearer Token. 
+			The <spanx style="verb">Authorization</spanx> value contains an Access Token obtained from an OAuth 2.0 Authorization request and used as a <xref target='RFC6750'/> Bearer Token. 
 			The <spanx style="verb">Authorization</spanx> value is a case sensitive string. 
 			</t>
 			<!---->		
@@ -553,8 +558,8 @@ W53am_UZZ3tZbFTIh557JICWKHlWj5uzeJXaw",
 			<!---->
 			<t hangText="client_notification_token">
 			MANDATORY if the Client uses the Pushed-To-Client Flow described in <xref target='Pushed-To-Client-Flow'></xref>. FORBIDDEN otherwise.
-			The <spanx style="verb">client_notification_token</spanx> is an opaque token issued by the Client. 
-			The <spanx style="verb">client_notification_token</spanx> is Bearer Token used by the Client to authorize the OP when the OP sends the User Questioning Response to the Client Notification Endpoint.
+			The <spanx style="verb">client_notification_token</spanx> is an opaque token issued by the Client. The Client SHOULD use a random value with a level of entropy high enough to cover its security requirements. 
+			The <spanx style="verb">client_notification_token</spanx> is a Bearer Token used by the Client to authorize the OP when the OP sends the User Questioning Response to the Client Notification Endpoint.
 			The <spanx style="verb">client_notification_token</spanx> value is a case sensitive string.
 			</t>
 			<!---->
@@ -567,7 +572,7 @@ W53am_UZZ3tZbFTIh557JICWKHlWj5uzeJXaw",
 			<t hangText="user_id_type">
 			FORBIDDEN if the Access Token is tied with an End-User, MANDATORY if the Access Token is not tied with an End-User. 
 			The <spanx style="verb">user_id_type</spanx> indicates the type of the End-User's identifier used for User Questioning.
-			The <spanx style="verb">user_id_type</spanx> value is a case sensitive string amongst the values defined in <xref target='managing_user_id'></xref>.
+			The <spanx style="verb">user_id_type</spanx> value is a case sensitive string amongst the values defined in <xref target='processing_user_id'></xref>.
 			</t>
 			<!---->
 			<t hangText="question_to_display">
@@ -581,20 +586,21 @@ W53am_UZZ3tZbFTIh557JICWKHlWj5uzeJXaw",
 			MANDATORY. 
 			The <spanx style="verb">statements_to_display</spanx> is the list of possible statements to be displayed to the Questioned User. 
 			The <spanx style="verb">statements_to_display</spanx> SHALL be displayed with no modification to Questioned User. 
+			If some modifications occur, it MUST be due to restrictions imposed by the Questioning Method. 
 			The <spanx style="verb">statements_to_display</spanx> value is a JSON array of case sensitive strings.
 			</t>
 			<!---->
 			<t hangText="wished_amr">
 			OPTIONAL. Authentication Method Reference. 
 			The <spanx style="verb">wished_amr</spanx> is the authentication methods to be used by the OP to authenticate the Questioned User before he made his statement.  
-			<spanx style="verb">Authentication Method References</spanx> are defined in chapter 2 of <xref target='OpenID.Core'/>, where they are named <spanx style="verb">amr</spanx>. 
+			Authentication Method References are defined in chapter 2 of <xref target='OpenID.Core'/>, where they are named <spanx style="verb">amr</spanx>. 
 			The <spanx style="verb">wished_amr</spanx> value is an array of case sensitive strings.
 			</t>
 			<!---->	
 			<t hangText="wished_acr">
 			MANDATORY. Authentication Context Class Reference. 
 			The <spanx style="verb">wished_acr</spanx> is Authentication Context Class Reference value that identifies the Authentication Context Class to be used by the OP to authenticate the Questioned User before he made his statement.
-			<spanx style="verb">Authentication Context Class Reference</spanx> is defined in chapter 2 of <xref target='OpenID.Core'/>, where it is named <spanx style="verb">acr</spanx>. 
+			Authentication Context Class Reference is defined in chapter 2 of <xref target='OpenID.Core'/>, where it is named <spanx style="verb">acr</spanx>. 
 			The <spanx style="verb">wished_acr</spanx> value is a case sensitive string.
 			</t>
 			<!---->		
@@ -617,7 +623,7 @@ The following is a non-normative example of the JSON structure.
 </preamble>
 <artwork>
 POST /questions HTTP/1.1
-Host: server.client.com
+Host: server.example.com
 Accept: application/json
 Authorization: Bearer SlAV32hkKG 
 Content-Type: application/json
@@ -638,7 +644,78 @@ Content-Length: xxx
 			</section>
 			
 			
+			<section title='Proccessing the User Questioning Resquest'>
 			
+				<section title='Processing the Authorization'>
+				
+					<t>
+					The <spanx style="verb">Authorization</spanx> value contains an Access Token. 
+					The <spanx style="verb">client_id</spanx> associated with the Access Token MUST be associated with the question. It will be used for the <spanx style="verb">aud</spanx> attribute of the User Statement Token. 
+					</t>
+				
+				</section>
+
+				<section anchor="processing_user_id" title='Processing user_id'>
+
+					<t>
+					The <spanx style="verb">user_id</spanx> is an identifier used to identify the Questioned User and to retrieve a reachability mean. 
+					</t>		
+					<t>
+					The <spanx style="verb">user_id</spanx> is determined from the User Questioning Request, either from the <spanx style="verb">user_id</spanx> attribute or from the Access Token. 
+					If the <spanx style="verb">user_id</spanx> is present in both the User Questioning Request and the Access Token, an error is raised. 
+					If the <spanx style="verb">user_id</spanx> is absent of both the User Questioning Request and the Access Token, an error is also raised.
+					</t>
+					<t>
+					If the <spanx style="verb">user_id</spanx> is a reachability identifier (e.g. MSISDN, email address, ...), it SHOULD be used as reachability mean. 
+					Otherwise, the OP must use the <spanx style="verb">user_id</spanx> to determine a suitable reachability identifier, i.e. an identifier enabling a direct communication with the Questioned User.
+					</t>
+					
+					<t><spanx style="verb">user_id_type</spanx> member can take the following values:</t>
+					<t>
+					<list style="hanging">
+					<!---->
+					<t hangText="msisdn">	
+					If the <spanx style="verb">user_id_type</spanx> value is <spanx style="verb">msisdn</spanx>, 
+					the <spanx style="verb">user_id</spanx> value is the mobile phone number corresponding to the Questioned User. 
+					<xref target="E.164">E.164</xref> 
+					is RECOMMENDED as the format of this Claim, 
+					for example, <spanx style="verb">+1 (425) 555-1212</spanx> 
+					or <spanx style="verb">+5626872400</spanx>.
+					</t>
+					<!---->
+					<t hangText="email">
+					If the <spanx style="verb">user_id_type</spanx> value is <spanx style="verb">email</spanx>, 
+					the <spanx style="verb">user_id</spanx> value is the email adress corresponding to the Questioned User. 
+					Its value MUST conform to the <xref target="RFC5322">RFC 5322</xref> addr-spec syntax.
+					</t>
+					<!---->
+					<t hangText="sub">
+					If the <spanx style="verb">user_id_type</spanx> value is <spanx style="verb">sub</spanx>, 
+					the <spanx style="verb">user_id</spanx> value is the <spanx style="verb">sub</spanx> corresponding to the Questioned User for the requesting <spanx style="verb">client_id</spanx>. 
+					</t>
+					<!---->
+					</list>
+					</t>
+					<t>
+					Other <spanx style="verb">user_id_type</spanx> can be specified for specific use cases.
+					</t>
+
+				</section>
+				
+				<section anchor="processing_wished_amr" title='Processing wished_amr'>
+				
+					<t>
+					In the User Questioning Request, the <spanx style="verb">wished_amr</spanx> value is a list of authentication methods. 
+					The OP SHOULD choose some of these authentication methods in order to achieve the <spanx style="verb">wished_acr</spanx>. 
+					The OP CAN also decide to either use other authentication methods or achieve another Authentication Context Class Reference as the one specified in <spanx style="verb">wished_acr</spanx>.
+					The used authentication methods MUST be stated in <spanx style="verb">used_amr</spanx> and the achieved Authentication Context Class Reference MUST be stated in <spanx style="verb">used_acr</spanx> of the User Statement Token.
+					</t>
+				
+				</section>
+
+
+			</section>
+
 			<section title='Successful Response'>
 			<t>
 			A successful response to the User Questioning Request is a HTTP 200 OK response.
@@ -649,8 +726,7 @@ Content-Length: xxx
 			<!---->
 			<t hangText="Location">	
 			OPTIONAL. 
-			The <spanx style="verb">Location</spanx> value is a unique polling URL for the Question. 
-			The <spanx style="verb">Location</spanx> value is a URL on the User Questioning Polling Endpoint.
+			The <spanx style="verb">Location</spanx> value is a unique polling URL for the Question on the User Questioning Polling Endpoint.
 			When the Client is configured to use the Pushed-to-Client flow, this URL MUST be ignored by the Client. 
 			When the Client is configured to use the Pull-by-Client flow, if present, this URL MUST be used by the Client. 
 			If absent, the Client MUST use the <spanx style="verb">question_id</spanx> contained in the header <spanx style="verb">Question_id</spanx> and use it as a parameter to the <spanx style="verb">user_questioning_polling_endpoint</spanx> retrieved using <xref target="OpenID.Discovery"></xref>.
@@ -685,6 +761,7 @@ Question_id: 984dcc7d3d4d4b0f9f8022e344f9
 			<list style="symbols">
 			<t>invalid_request</t>
 			<t>no_suitable_method</t>
+			<t>unauthorized</t>
 			<t>unknown_user</t>
 			<t>unreachable_user</t>
 			</list>
@@ -723,23 +800,24 @@ Content-Length: xxx
 			See Section 16.17 in <xref target='OpenID.Core'/> for more information on using TLS.
 			</t>
 			<t>			
-			A Client configured with a <spanx style="verb">client_notification_endpoint</spanx> MUST NOT sent a request to the User Questioning Polling Endpoint.
+			A Client configured with a <spanx style="verb">client_notification_endpoint</spanx> MUST NOT send a request to the User Questioning Polling Endpoint.
 			</t>
 			
 		    <section title='Polling Request'>
 			
-			<t>The Client get the User Questioning Response using HTTP GET.</t>
+			<t>The Client gets the User Questioning Response using HTTP GET.</t>
 			<t>
 			The HTTP GET request MUST contain the following headers:
 			<list style="hanging">
 			<!---->
 			<t hangText="Authorization">
 			MANDATORY. 
-			The <spanx style="verb">Authorization</spanx> value is an Access Token obtained from an OAuth Authorization request and used as a <xref target='RFC6750'/> Bearer Token. 
+			The <spanx style="verb">Authorization</spanx> value contains an Access Token obtained from an OAuth 2.0 Authorization request and used as a <xref target='RFC6750'/> Bearer Token. 
 			The <spanx style="verb">Authorization</spanx> value is a case sensitive string. 
 			</t>
 			<!---->
 			<t hangText="Client_timeout">
+			OPTIONAL. 
 			The <spanx style="verb">Client_timeout</spanx> indicates how much time, in seconds, the Client will wait for a HTTP response. 
 			The <spanx style="verb">Client_timeout</spanx> value is a number.
 			</t>
@@ -761,6 +839,19 @@ Client_timeout: 10
 </figure>
 			</section>
 			
+			<section title='Proccessing the Polling Resquest'>
+			
+				<section anchor="processing_authorization" title='Processing the Authorization'>
+				
+					<t>
+					The <spanx style="verb">Authorization</spanx> value contains an Access Token. 
+					The <spanx style="verb">client_id</spanx> associated with the Access Token MUST be equal to the <spanx style="verb">client_id</spanx> associated with the question. 
+					</t>
+				
+				</section>
+
+			</section>
+
 			
 			<section title='Pending Response'>
 			<t>
@@ -777,21 +868,16 @@ HTTP/1.1 304 Not Modified
 			</section>
 
 			
-			<section title='Successful Response with User Questioning Response'>
+			<section title='Successful Polling Response'>
 			<t>The Client receives the successful User Questioning Response in a HTTP 200 OK response.</t>
-			<t>The successful User Questioning Response is a JSON object, with the following attributes.</t>
+			<t>The successful User Questioning Response is a JSON object, with the following attribute.</t>
 			<t>
 			<list style="hanging">
 			<!---->
-			<t hangText="question_id">
-			MANDATORY.
-			The <spanx style="verb">question_id</spanx> is a unique identifier of the Question.
-			The <spanx style="verb">question_id</spanx> value is a case sensitive string.
-			</t>
-			<!---->
 			<t hangText="user_statement_token">
 			MANDATORY.
-			The <spanx style="verb">user_statement_token</spanx> is a User Statement Token as described in <xref target='user-statement-token'/>
+			The <spanx style="verb">user_statement_token</spanx> is a User Statement Token as defined in <xref target='user-statement-token'/>. 
+			The User Statement Token MUST be validated, as described in <xref target='UserStatementTokenValidation'/>.
 			</t>
 			<!---->	
 			</list>
@@ -818,24 +904,24 @@ Content-Type: application/json
 Content-Length: xxx
 
 {
-    "question_id":"984dcc7d3d4d4b0f9f8022e344f9",
     "user_statement_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImt
 	pZCI6ImsyYmRjIn0.eyJxdWVzdGlvbl9pZCI6Ijk4NGRjYzdkM2Q0ZDRiMGY5Zj
 	gwMjJlMzQ0ZjkiLCJpc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsI
-	mF1ZCI6InM4VjN3bThJWE1XNlRib2F6WFpYIiwic3ViIjoiZzExN1lCdENaTzNt
-	QUtQUUtQOG8iLCJ1c2VyX2lkIjoiKzMzNjEyMzQ1Njc4IiwidXNlcl9pZF90eXB
-	lIjoibXNpc2RuIiwicXVlc3Rpb25fZGlzcGxheWVkIjoiRG8geW91IGFsbG93IC
-	4uLj8iLCJzdGF0ZW1lbnQiOiJZZXMiLCJzdGF0ZW1lbnRfZGF0ZSI6MTMxMTI4M
-	jk3NSwidXNlZF9hY3IiOiIyIiwidXNlZF9hbXIiOlsiQ0xJQ0tfT0siXX0.sWRO
-	q3FS6exVQ4r01Gev2R00e-PD5KrWvzvh7S_DitfzSfWIcKwgfhX9w_QXQxlWjQo
-	OpvLxdYqiUfWgNWdiFeZBnYez9g1KiZnltOZIYTBy1HfochP7edEcMqXNLYP5Cw
-	dyIVXk-IxaF1ALDbjuIpfohFjg-x0YTyH4DHFTG9K1jV2ZLGroX3LxPO7lyjROz
-	v5pCFDurI6yEi0aFx-hmR6iqVJJ--TM90hNAYHOwnbYwy4iyDrPqI6z9MkcnxKo
-	rHbbRKczck4fEtl0uYkj3cjE4MFrn2x0zWrn9rrztGqLjh2NEvi29TNDxTMPSVg
-	CwVOUd1bkN_SXguh5W9rp1g"
+	mF1ZCI6WyJzOFYzd204SVhNVzZUYm9helhaWCJdLCJzdWIiOiJnMTE3WUJ0Q1pP
+	M21BS1BRS1A4byIsInVzZXJfaWQiOiIrMzM2MTIzNDU2NzgiLCJ1c2VyX2lkX3R
+	5cGUiOiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbGF5ZWQiOiJEbyB5b3UgYWxsb3
+	cgLi4uPyIsInN0YXRlbWVudCI6IlllcyIsInN0YXRlbWVudF9kYXRlIjoxMzExM
+	jgyOTc1LCJ1c2VkX2FjciI6IjIiLCJ1c2VkX2FtciI6WyJDTElDS19PSyJdfQ.G
+	X6qWvi9RtTmJ1ixqwuwjhF12FQe3SZk3V68zdw4vXLf008OtuA-uXKZVkviyVLX
+	33L9_-Dv6vsWbOydhXBnbiQm7u1pr3gDw-eRMJu_pK0w_O5cUV6R2k_lvL_6cgQ
+	ucfYTzHcebN3XQbP2qj-DGKOi9Af5afwKLLy_2f5WaIMMO24aSUJkF9CU88ELEJ
+	fNMnhtyUX1YchNXr_-w7yqZ8m6fCSJ9_ETKwe4qnuR3GMp46IyhIBIyjOZMKeq0
+	83j6y4hEXx6qh8VMYgOm5xKZIg9d12YqQVi7xbAmrGDLMrv1UYUz-EeRTUzJUoB
+	CyHaLMCPeTSRdoBRCPr2wUJZ_Q"
 }
 </artwork>
 </figure>
+
 			</section>
 
 			
@@ -851,12 +937,13 @@ Content-Length: xxx
 			<t>invalid_question_id</t>
 			<t>invalid_request</t>
 			<t>timeout</t>
+			<t>unauthorized</t>
 			<t>user_refused_to_answer</t>
 			</list>
 			</t>	
 <figure>
 <preamble>
-The following is a non-normative example of error in a HTTP 400 Bad Request. This example can occur in the Pulled-By-Client flow (cf. <xref target='Pulled-By-Client-Flow'/>) and Pushed-To-Client flow (cf. <xref target='Pushed-To-Client-Flow'/>).
+The following is a non-normative example of error in a HTTP 400 Bad Request.
 </preamble>
 <artwork>
 HTTP/1.1 400 Bad Request
@@ -878,7 +965,7 @@ Content-Length: xxx
 
 	    <section title='Client Notification Endpoint'>
 		<t>
-		The OP sends the User Questioning Response to the Client using HTTP POST.
+		If the Client registered a client_notification_endpoint, the OP MUST send the User Questioning Response to the Client, using a HTTP POST on the Client Notification Endpoint.
 		The User Questioning Response is a JSON object.
 		The User Questioning Response contains a <spanx style="verb">status</spanx> attribute that indicates if the User Questioning Response is successful or not.
 		</t>
@@ -897,7 +984,7 @@ Content-Length: xxx
 			<!---->
 			<t hangText="Authorization">
 			MANDATORY. 
-			The <spanx style="verb">Authorization</spanx> value is the <spanx style="verb">client_notification_token</spanx> specified in the User Questioning Request and used as a <xref target='RFC6750'/> Bearer Token. 
+			The <spanx style="verb">Authorization</spanx> value contains the <spanx style="verb">client_notification_token</spanx> specified in the User Questioning Request and used as a <xref target='RFC6750'/> Bearer Token. 
 			The <spanx style="verb">Authorization</spanx> value is a case sensitive string. 
 			</t>
 			<!---->		
@@ -925,7 +1012,8 @@ Content-Length: xxx
 			<!---->	
 			<t hangText="user_statement_token">
 			MANDATORY.
-			The <spanx style="verb">user_statement_token</spanx> is a User Statement Token as described in <xref target='user-statement-token'/>.
+			The <spanx style="verb">user_statement_token</spanx> is a User Statement Token as defined in <xref target='user-statement-token'/>. 
+			The User Statement Token MUST be validated, as described in <xref target='UserStatementTokenValidation'/>.
 			</t>
 			<!---->	
 			</list>
@@ -950,21 +1038,21 @@ Content-Length: xxx
     "user_statement_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImt
 	pZCI6ImsyYmRjIn0.eyJxdWVzdGlvbl9pZCI6Ijk4NGRjYzdkM2Q0ZDRiMGY5Zj
 	gwMjJlMzQ0ZjkiLCJpc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsI
-	mF1ZCI6InM4VjN3bThJWE1XNlRib2F6WFpYIiwic3ViIjoiZzExN1lCdENaTzNt
-	QUtQUUtQOG8iLCJ1c2VyX2lkIjoiKzMzNjEyMzQ1Njc4IiwidXNlcl9pZF90eXB
-	lIjoibXNpc2RuIiwicXVlc3Rpb25fZGlzcGxheWVkIjoiRG8geW91IGFsbG93IC
-	4uLj8iLCJzdGF0ZW1lbnQiOiJZZXMiLCJzdGF0ZW1lbnRfZGF0ZSI6MTMxMTI4M
-	jk3NSwidXNlZF9hY3IiOiIyIiwidXNlZF9hbXIiOlsiQ0xJQ0tfT0siXX0.sWRO
-	q3FS6exVQ4r01Gev2R00e-PD5KrWvzvh7S_DitfzSfWIcKwgfhX9w_QXQxlWjQo
-	OpvLxdYqiUfWgNWdiFeZBnYez9g1KiZnltOZIYTBy1HfochP7edEcMqXNLYP5Cw
-	dyIVXk-IxaF1ALDbjuIpfohFjg-x0YTyH4DHFTG9K1jV2ZLGroX3LxPO7lyjROz
-	v5pCFDurI6yEi0aFx-hmR6iqVJJ--TM90hNAYHOwnbYwy4iyDrPqI6z9MkcnxKo
-	rHbbRKczck4fEtl0uYkj3cjE4MFrn2x0zWrn9rrztGqLjh2NEvi29TNDxTMPSVg
-	CwVOUd1bkN_SXguh5W9rp1g"
+	mF1ZCI6WyJzOFYzd204SVhNVzZUYm9helhaWCJdLCJzdWIiOiJnMTE3WUJ0Q1pP
+	M21BS1BRS1A4byIsInVzZXJfaWQiOiIrMzM2MTIzNDU2NzgiLCJ1c2VyX2lkX3R
+	5cGUiOiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbGF5ZWQiOiJEbyB5b3UgYWxsb3
+	cgLi4uPyIsInN0YXRlbWVudCI6IlllcyIsInN0YXRlbWVudF9kYXRlIjoxMzExM
+	jgyOTc1LCJ1c2VkX2FjciI6IjIiLCJ1c2VkX2FtciI6WyJDTElDS19PSyJdfQ.G
+	X6qWvi9RtTmJ1ixqwuwjhF12FQe3SZk3V68zdw4vXLf008OtuA-uXKZVkviyVLX
+	33L9_-Dv6vsWbOydhXBnbiQm7u1pr3gDw-eRMJu_pK0w_O5cUV6R2k_lvL_6cgQ
+	ucfYTzHcebN3XQbP2qj-DGKOi9Af5afwKLLy_2f5WaIMMO24aSUJkF9CU88ELEJ
+	fNMnhtyUX1YchNXr_-w7yqZ8m6fCSJ9_ETKwe4qnuR3GMp46IyhIBIyjOZMKeq0
+	83j6y4hEXx6qh8VMYgOm5xKZIg9d12YqQVi7xbAmrGDLMrv1UYUz-EeRTUzJUoB
+	CyHaLMCPeTSRdoBRCPr2wUJZ_Q"
 }
 </artwork>
 </figure>
-			
+
 			</section>
 
 			<section title='Error Response'>
@@ -1007,6 +1095,7 @@ Content-Length: xxx
 			<!---->	
 			<t hangText="error_info">
 			MANDATORY.
+			Information about the error. 
 			An erroneous User Questioning Response contains a <spanx style="verb">error_info</spanx> JSON structure as defined in <xref target='errors'/>.
 			</t>
 			<!---->	
@@ -1045,6 +1134,30 @@ Content-Length: xxx
 </figure>
 			</section>
 
+			<section title='Proccessing the Response'>
+			
+				<section title='Processing the Authorization'>
+				
+					<t>
+					The <spanx style="verb">Authorization</spanx> value contains a Client Notification Token. 
+					The <spanx style="verb">question_id</spanx> associated with the Client Notification Token MUST match with the <spanx style="verb">question_id</spanx> received from the User Questioning Request Endpoint.
+					</t>
+				
+				</section>
+				
+				<section title='Processing the User Statement Token'>
+				
+					<t>
+					The signature of the User Statement Token MUST be valid, as defined in <xref target='UserStatementTokenValidation'/>.
+					</t>
+				
+					<t>
+					The <spanx style="verb">aud</spanx> attributes contained in the User Statement Token MUST match with the <spanx style="verb">client_id</spanx> of the Client.
+					</t>
+				
+				</section>				
+				
+			</section>
 
 			<section title='Acknowledgement'>
 			<t>
@@ -1073,7 +1186,7 @@ HTTP/1.1 200 OK
 	<list style="hanging">
 	<!---->
 	<t hangText="error_code">
-	REQUIRED. 
+	MANDATORY. 
 		Code representing the error. 
 		See <xref target='error_codes'/> for possible values.
 	</t>
@@ -1153,18 +1266,22 @@ The following is a non-normative example.
 			<t hangText="timeout">
 			The Questioned User did not answer in the allowed period of time.
 			</t>
+			<!---->
+			<t hangText="unauthorized">
+			The Client is not authorized to use the User Questioning API or did not send a valid Access Token.
+			</t>
 			<!---->	
 			<t hangText="unknown_user">
 			The Questioned User mentioned in the <spanx style="verb">user_id</spanx> attribute of the User Questioning Request is unknown.
 			</t>
 			<!---->
 			<t hangText="unreachable_user">
-			The Questioned User mentioned in User Questioning Request (either in the Access Token or in the <spanx style="verb">user_id</spanx> attribute) is unreachable. 
+			The Questioned User mentioned in the User Questioning Request (either in the Access Token or in the <spanx style="verb">user_id</spanx> attribute) is unreachable. 
 			The OP can use this error when it does not have a reachability identifier (e.g. MSISDN) for the Question User or when the reachability identifier is not operational (e.g. unsubscribed MSISDN).
 			</t>
 			<!---->
 			<t hangText="user_refused_to_answer">
-			The Questioned User refused to give a statement to the question.
+			The Questioned User refused to make a statement to the question.
 			</t>
 			<!---->	
 			</list>
@@ -1181,7 +1298,7 @@ The following is a non-normative example.
 		<section anchor="implementation_of_questioning_methods" title="Implementation of questioning methods">
 		<t>
 		In order to interact with the Questioned User, the OP has to implement at least one questioning method. 
-		A questioning method has three purposes: authenticating the Questioned User, displaying the question and saving the Question User's statement.
+		A questioning method has three purposes: authenticating the Questioned User, displaying the question and collecting the Question User's statement.
 		</t>
 		<t>
 		The authentication method and the associated level of assurance are refered by the <spanx style="verb">AMR</spanx> and <spanx style="verb">ACR</spanx> attributes. 
@@ -1192,9 +1309,9 @@ The following is a non-normative example.
 		In the same logic, the Questioned User's statement MUST be returned to the Client as it was displayed, in the <spanx style="verb">statement</spanx> attribute of the User Statement Token. 
 		</t>
 		<t>
-		The fact that a User Questing Request and an Authentication Request (as defined in <xref target='OpenID.Core'/>) are handled using the same <spanx style="verb">AMR</spanx> means that the user authentication is enforced using the same authentication method. 
+		The fact that a User Questioning Request and an Authentication Request (as defined in <xref target='OpenID.Core'/>) are handled using the same <spanx style="verb">AMR</spanx> means that the user authentication is enforced using the same authentication method. 
 		However, as a Questioning Method uses an authentication method in combinaison with questioning mechanisms, having the same <spanx style="verb">AMR</spanx> does not mean that the OP has to use the same component to handle User Questioning Requests and Authentication Requests.
-		For instance, if the <spanx style="verb">AMR</spanx> value is <spanx style="verb">SMS_URL</spanx>, the user is authenticated thanks to his mobile phone (using a SMS) but the URL contained in the SMS can refer to two different components. 
+		For instance, if the <spanx style="verb">AMR</spanx> value is <spanx style="verb">SMS_URL</spanx>, the user is authenticated thanks to his mobile phone (using a SMS) but the URL contained in the SMS can refer to two different components, one component for the Authentication Request and another for the User Questioning Request . 
 		</t>
 		<t>
 		If an OP can not display a question or the statements, it MUST return an error. 
@@ -1208,44 +1325,18 @@ The following is a non-normative example.
 
 	
     <section anchor='security_considerations' title='Security Considerations'>
-	
-		<section anchor="using_wished_amr" title="Using wished_amr">
-		<t>
-		In the User Questioning Request, the <spanx style="verb">wished_amr</spanx> value is a list of authentication methods. 
-		The OP SHOULD choose some of these authentication methods in order to achieve the <spanx style="verb">wished_acr</spanx>. 
-		The OP CAN also decide to either use other authentication methods or achieve another Authentication Context Class Reference as the one specified in <spanx style="verb">wished_acr</spanx>.
-		The used authentication methods MUST be stated in <spanx style="verb">used_amr</spanx> and the achieved Authentication Context Class Reference MUST be stated in <spanx style="verb">used_acr</spanx> of the USer Statement Token.
-		</t>
-		</section>
-	
-		<section anchor="UserStatementTokenValidation" title="User Statement Token Validation">
-		<t>
-		In order to validate the User Statement Token, the Client MUST verify the signature, using <xref target='SigEnc'/>.
-		</t>
-		<t>
-		Then, the Client MUST verify the <spanx style="verb">used_amr</spanx>, <spanx style="verb">used_acr</spanx> and <spanx style="verb">statement_date</spanx>. 
-		The Client is responsible to use the <spanx style="verb">statement_date</spanx> to prevent replay. 
-		The Client is responsible to use the <spanx style="verb">used_amr</spanx> and <spanx style="verb">used_acr</spanx> match with its security policy. 
-		</t>
-		<t>
-		Then, the Client MUST verify the <spanx style="verb">displayed_question</spanx> value and the <spanx style="verb">statement</spanx> value, 
-		regarding the <spanx style="verb">question_to_display</spanx> value and the <spanx style="verb">possible_statements</spanx> value sent in the User Questioning Request. 
-		The Client is responsible of its decision to accept the <spanx style="verb">statement</spanx> and the <spanx style="verb">displayed_question</spanx>. 
-		The Client is also responsible of any decision based on the <spanx style="verb">statement</spanx> value and the <spanx style="verb">displayed_question</spanx> value. 
-		</t>
-		</section>
-	
+		
 		<section anchor="NonRepudation" title="Non Repudation">
 		<t>
 		Non-repudiation is an important feature of User Statement Token. To enable this feature, the asymetric signatures are the only allowed signatures for User Statement Tokens. 
 		This way, the Client can store the User Statement Token and use it as a proof of the statement made by Questioned User. 
-		This proof engages the signer's responsibility, i.e the OP's reponsibility.
+		This proof engages the signer's responsibility, i.e the OP's reponsibility. 
 		</t>
 		</section>
 	
 	    <section anchor='SigEnc' title='Signatures and Encryption'>
 		<t>
-		Signatures and Encryption should respect the requirements defined in chapter 10 of <xref target='OpenID.Core'/> with one restriction: symetric signatures are FORBIDDEN. 
+		Signatures and Encryption should respect the requirements defined in chapter 10 of <xref target='OpenID.Core'/> with one restriction: symetric signatures are FORBIDDEN.
 		</t>
 		</section>
 	
@@ -1270,19 +1361,7 @@ The following is a non-normative example.
 	
 	
     </section>
-	
-    <section anchor="discovery" title='Discovery Considerations'>
-
-		<t>
-		The OpenID Connect User Questioning API can be discovered within the OpenID Provider Metadata thanks to <xref target='OpenID.Discovery'/>. 
-		The scope <spanx style="verb">question</spanx> MUST be present in the <spanx style="verb">scopes_supported</spanx> array. 
-		The URL of User Questioning Request Endpoint MUST be configured as the value of <spanx style="verb">uq_request_endpoint</spanx>.
-		The URL of User Questioning Polling Endpoint MUST be configured as the value of <spanx style="verb">uq_polling_endpoint</spanx>.
-		</t>
-	
-    </section>
-	
-	
+		
     <section anchor='IANA' title='IANA Considerations'>
 	<t>This document makes no requests of IANA.</t>
     </section>
