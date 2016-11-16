@@ -143,11 +143,11 @@
           MODRNA Client initiated Backchannel Authentication defines an authentication request that is requested directly from 
           the client to the Authorization Server without going through the user's browser. The client MUST send an authentication 
           request to the Authorization Server by building an "HTTP POST" request that will take to the Authorization Server all the 
-          information needed to authenticate the user without asking her for their identifier.      
+          information needed to authenticate the user without asking them for their identifier.      
         </t>
         <t>
           The client MUST authenticate to the Backchannel Authentication Endpoint using the authentication method registered for its 
-          client_id, as described in Section 9 on  <xref target="OpenID.Core"/>.
+          client_id, as described in Section 9 of  <xref target="OpenID.Core"/>.
         </t>
         <t>
           Authentication Requests are made using the MODRNA profile. Only the following parameters are taking in consideration in the Client initiated Backchannel Authentication flow. The rest of the request parameters defined in <xref target="RFC6749">OAuth 2.0</xref> 
@@ -172,7 +172,7 @@
             </t>
             <t>
               At the time of registering in Mobile Connect, the RP must provide the information about whether receiving the token 
-              response through a callback to the "client_notification_endpoint" or through a polling mechanism where the RP MUST polls 
+              response through a callback to the "client_notification_endpoint" or through a polling mechanism where the RP MUST poll 
               the authorization server repeatedly as defined in <xref target="successful_authentication_request_acknowdlegment" format="title"/>
               until the end-user completes the approval process.
             </t>
@@ -185,10 +185,10 @@
             </t> 
 
             <t hangText="id_token_hint">
-              OPTIONAL. As defined in Section 3.1.2.1 on <xref target="OpenID.Core"/>.
+              OPTIONAL. As defined in Section 3.1.2.1 of <xref target="OpenID.Core"/>.
             </t> 
             <t hangText="login_hint">
-              OPTIONAL. As defined in Section 3.1.2.1 on <xref target="OpenID.Core"/>.
+              OPTIONAL. As defined in Section 3.1.2.1 of <xref target="OpenID.Core"/>.
             </t> 
             <t hangText="context">
               REQUIRED. This parameter provides a context in the Mobile Connect request that clearly identifies the action/transaction 
@@ -250,7 +250,7 @@
               the Identity provider MUST return an "invalid_request" error response as per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
             </t>
             <t>
-              The Authorization server MUST validate that the hint provided (login_hint, login_token_hint or id_token_hint) exist and are not expired, otherwise it should return an error to notify thaht the hint provided has not been found.
+              The Authorization server MUST validate that the hint provided (login_hint, login_token_hint or id_token_hint) exist and are not expired, otherwise it should return an error to notify that the hint provided has not been found.
             </t>
             <t>
               If the authentication request contains a "client_notification_endpoint" when it has not been provided at the registering time or viceversa, 
@@ -280,7 +280,7 @@
          </t>       
       </section>
 
-      <section anchor="successful_authentication_request_acknowdlegment" title="Successful Authentication Request Acknowdlegment">
+      <section anchor="successful_authentication_request_acknowdlegment" title="Successful Authentication Request Acknowledgement">
         <t>
           If the Authentication Validation Request is OK, the Authorization Server will return an HTTP 200 OK response to the RP
           to indicate that the authentication request has been accepted and it is going to be processed. The body of this response 
