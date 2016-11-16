@@ -116,10 +116,15 @@
     <section anchor="overview" title="Overview">
       <t>
         This specification defines a new authentication flow based on <xref target="OpenID.Core"/>.
-        It introduces a new endpoint used to initiate authentication transactions using a backchannel requests. 
+      </t>
+      <t>
+        It introduces a new endpoint used to initiate user authentication using a backchannel request. 
         This new endpoint utilizes existing Authentication Requests and defines new parameters as appropriate. 
         For example, it re-uses the scope parameter but it omits nonce, state and redirect_uri, which are need to 
         perform and secure authentication transactions on the front channel.
+      </t>
+      <t>
+        If the Client expects to be notified about the authentication result asynchronously then it has to specify a Client Notification Endpoint during its registration at the Authorization Server.
       </t>
     </section>
 
