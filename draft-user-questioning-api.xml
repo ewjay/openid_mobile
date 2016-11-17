@@ -100,7 +100,7 @@
 		<section title='Overview'>
 		
 		<t>
-		The User Questioning API enables a Client to address a question to a end-user and to get its digitaly signed response, called User Statement Token. 
+		The User Questioning API enables a Client to address a question to an end-user and to get its digitally signed response, called User Statement Token. 
 		The Client addresses the question thanks to a <spanx style="verb">User Questioning Request</spanx> sent on the <spanx style="verb">User Questioning Request Endpoint</spanx>. 
 		The <spanx style="verb">User Statement Token</spanx> is contained in a <spanx style="verb">User Questioning Response</spanx>. 
 		</t>
@@ -241,7 +241,7 @@ These steps are illustrated in the following diagram:
 		</section>
 		
 		<section title='When to use the User Questioning API'>
-		<t>The User Questioning API should be used when the following contraints must be fulfilled:</t>
+		<t>The User Questioning API should be used when the following constraints must be fulfilled:</t>
 		<t>
 		<list style="numbers">
 		<t>The Client needs to have a real-time interaction with an End-User that may not be currently using the Client.
@@ -644,7 +644,7 @@ Content-Length: xxx
 			</section>
 			
 			
-			<section title='Proccessing the User Questioning Resquest'>
+			<section title='Processing the User Questioning Request'>
 			
 				<section title='Processing the Authorization'>
 				
@@ -685,7 +685,7 @@ Content-Length: xxx
 					<!---->
 					<t hangText="email">
 					If the <spanx style="verb">user_id_type</spanx> value is <spanx style="verb">email</spanx>, 
-					the <spanx style="verb">user_id</spanx> value is the email adress corresponding to the Questioned User. 
+					the <spanx style="verb">user_id</spanx> value is the email address corresponding to the Questioned User. 
 					Its value MUST conform to the <xref target="RFC5322">RFC 5322</xref> addr-spec syntax.
 					</t>
 					<!---->
@@ -708,7 +708,7 @@ Content-Length: xxx
 					In the User Questioning Request, the <spanx style="verb">wished_amr</spanx> value is a list of authentication methods. 
 					The OP SHOULD choose some of these authentication methods in order to achieve the <spanx style="verb">wished_acr</spanx>. 
 					The OP CAN also decide to either use other authentication methods or achieve another Authentication Context Class Reference as the one specified in <spanx style="verb">wished_acr</spanx>.
-					The used authentication methods MUST be stated in <spanx style="verb">used_amr</spanx> and the achieved Authentication Context Class Reference MUST be stated in <spanx style="verb">used_acr</spanx> of the User Statement Token.
+					The authentication methods used MUST be stated in <spanx style="verb">used_amr</spanx> and the achieved Authentication Context Class Reference MUST be stated in <spanx style="verb">used_acr</spanx> of the User Statement Token.
 					</t>
 				
 				</section>
@@ -1096,7 +1096,7 @@ Content-Length: xxx
 			<t hangText="error_info">
 			MANDATORY.
 			Information about the error. 
-			An erroneous User Questioning Response contains a <spanx style="verb">error_info</spanx> JSON structure as defined in <xref target='errors'/>.
+			An erroneous User Questioning Response contains an <spanx style="verb">error_info</spanx> JSON structure as defined in <xref target='errors'/>.
 			</t>
 			<!---->	
 			</list>
@@ -1260,7 +1260,7 @@ The following is a non-normative example.
 			</t>
 			<!---->
 			<t hangText="no_suitable_method">
-			There is no Questioning Method suitable with the User Questioning Request. The OP can use this error code when it does not implement mecanisms suitable for the wished AMR or ACR.
+			There is no Questioning Method suitable with the User Questioning Request. The OP can use this error code when it does not implement mechanisms suitable for the wished AMR or ACR.
 			</t>
 			<!---->
 			<t hangText="timeout">
@@ -1301,7 +1301,7 @@ The following is a non-normative example.
 		A questioning method has three purposes: authenticating the Questioned User, displaying the question and collecting the Question User's statement.
 		</t>
 		<t>
-		The authentication method and the associated level of assurance are refered by the <spanx style="verb">AMR</spanx> and <spanx style="verb">ACR</spanx> attributes. 
+		The authentication method and the associated level of assurance are referred by the <spanx style="verb">AMR</spanx> and <spanx style="verb">ACR</spanx> attributes. 
 		</t>
 		<t>
 		There is no specific attribute to describe how the question was displayed and how the statement was saved. 
@@ -1310,11 +1310,11 @@ The following is a non-normative example.
 		</t>
 		<t>
 		The fact that a User Questioning Request and an Authentication Request (as defined in <xref target='OpenID.Core'/>) are handled using the same <spanx style="verb">AMR</spanx> means that the user authentication is enforced using the same authentication method. 
-		However, as a Questioning Method uses an authentication method in combinaison with questioning mechanisms, having the same <spanx style="verb">AMR</spanx> does not mean that the OP has to use the same component to handle User Questioning Requests and Authentication Requests.
+		However, as a Questioning Method uses an authentication method in combination with questioning mechanisms, having the same <spanx style="verb">AMR</spanx> does not mean that the OP has to use the same component to handle User Questioning Requests and Authentication Requests.
 		For instance, if the <spanx style="verb">AMR</spanx> value is <spanx style="verb">SMS_URL</spanx>, the user is authenticated thanks to his mobile phone (using a SMS) but the URL contained in the SMS can refer to two different components, one component for the Authentication Request and another for the User Questioning Request . 
 		</t>
 		<t>
-		If an OP can not display a question or the statements, it MUST return an error. 
+		If an OP cannot display a question or the statements, it MUST return an error. 
 		To prevent these errors, it can inform the Clients of its limitation and limit the possible questions or statements. 
 		For instance, if the mechanism used for User Questioning can only display a question of limited size with only two predefined statements, 
 		the Client SHOULD send a User Questioning Request with a <spanx style="verb">question_to_display</spanx> limited in size and the two predefined statements as <spanx style="verb">statements_to_display</spanx> values. 
@@ -1326,17 +1326,17 @@ The following is a non-normative example.
 	
     <section anchor='security_considerations' title='Security Considerations'>
 		
-		<section anchor="NonRepudation" title="Non Repudation">
+		<section anchor="NonRepudation" title="Non Repudiation">
 		<t>
-		Non-repudiation is an important feature of User Statement Token. To enable this feature, the asymetric signatures are the only allowed signatures for User Statement Tokens. 
+		Non-repudiation is an important feature of User Statement Token. To enable this feature, the asymmetric signatures are the only allowed signatures for User Statement Tokens. 
 		This way, the Client can store the User Statement Token and use it as a proof of the statement made by Questioned User. 
-		This proof engages the signer's responsibility, i.e the OP's reponsibility. 
+		This proof engages the signer's responsibility, i.e. the OP's responsibility. 
 		</t>
 		</section>
 	
 	    <section anchor='SigEnc' title='Signatures and Encryption'>
 		<t>
-		Signatures and Encryption should respect the requirements defined in chapter 10 of <xref target='OpenID.Core'/> with one restriction: symetric signatures are FORBIDDEN.
+		Signatures and Encryption should respect the requirements defined in chapter 10 of <xref target='OpenID.Core'/> with one restriction: symmetric signatures are FORBIDDEN.
 		</t>
 		</section>
 	
