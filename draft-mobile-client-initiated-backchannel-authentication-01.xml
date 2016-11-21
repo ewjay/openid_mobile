@@ -123,9 +123,52 @@
         For example, it re-uses the scope parameter but it omits nonce, state and redirect_uri, which are need to 
         perform and secure authentication transactions on the front channel.
       </t>
+<figure>
+<preamble>
+CIBA polling is illustrated in the following diagram:
+</preamble>
+<artwork>
++--------+                                               +--------+
+|        |                                               |        |
+|        |&lt;---(1) CIBA Request--------------------------&gt;|        |
+|        |                                               |        |
+|        |  +--------+                                   |        |
+|        |  |        |                                   |        |
+| Client |  |  End-  |&lt;--(2) User interactions ---------&gt;|   OP   |
+|        |  |  User  |                                   |        |
+|        |  |        |                                   |        |
+|        |  +--------+                                   |        |
+|        |                                               |        |
+|        |----(3a) CIBA Polling Request-----------------&gt;|        |
+|        |&lt;---(3b) CIBA Polling Response-----------------|        |
+|        |                                               |        |
++--------+                                               +--------+
+</artwork>
+</figure>
       <t>
         If the Client expects to be notified about the authentication result asynchronously then it has to specify a Client Notification Endpoint during its registration at the Authorization Server.
       </t>
+<figure>
+<preamble>
+CIBA notification is illustrated in the following diagram:
+</preamble>
+<artwork>
++--------+                                               +--------+
+|        |                                               |        |
+|        |&lt;---(1) CIBA Request--------------------------&gt;|        |
+|        |                                               |        |
+|        |  +--------+                                   |        |
+|        |  |        |                                   |        |
+| Client |  |  End-  |&lt;--(2) User interactions ---------&gt;|   OP   |
+|        |  |  User  |                                   |        |
+|        |  |        |                                   |        |
+|        |  +--------+                                   |        |
+|        |                                               |        |
+|        |&lt;---(3) CIBA Notification Callback ------------|        |
+|        |                                               |        |
++--------+                                               +--------+
+</artwork>
+</figure>
     </section>
 
     <section anchor="auth_backchannel_endpoint" title="Backchannel Authentication Endpoint">
