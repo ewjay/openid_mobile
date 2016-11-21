@@ -65,7 +65,7 @@
         from a consumption device.
       </t>
       <t>
-        <spanx style="strong">Remark:</spanx> As there is no any consumption device through which the end-user is interacting with the Relay Party, 
+        <spanx style="strong">Remark:</spanx> As there is no any consumption device through which the end-user is interacting with the Relying Party, 
         this flow will not cause any user credentials to go through the RP. So it should be highlighted that traditional username/password 
         authentication could not be used because and only out-band mechanisms will work in conjunction with this flow.
       </t>
