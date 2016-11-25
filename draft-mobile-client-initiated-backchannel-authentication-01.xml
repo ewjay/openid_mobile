@@ -174,7 +174,7 @@ CIBA notification is illustrated in the following diagram:
     <section anchor="auth_backchannel_endpoint" title="Backchannel Authentication Endpoint">
       <t>
         The Backchannel Authentication Endpoint performs Authentication of the End-User. This is done by sending an HTTP
-        POST message directly from the Relying Party to the Authorization Server's Backchannel Authentication Endpoint, using 
+        POST message directly from the Relying Party to the OpenID Provider's Backchannel Authentication Endpoint, using 
         request parameters defined by OAuth 2.0 and additional parameters and parameter values defined by OpenID Connect. 
       </t>
       <t>
@@ -185,12 +185,12 @@ CIBA notification is illustrated in the following diagram:
       <section anchor="auth_request" title="Authentication Request">
         <t>
           An Authentication Request is an <xref target="RFC6749">OAuth 2.0</xref> Authorization Request that requests that 
-          the End-User be authenticated by the Authorization Server.
+          the End-User be authenticated by the OpenID Provider.
         </t>
         <t>
           MODRNA Client initiated Backchannel Authentication defines an authentication request that is requested directly from 
-          the client to the Authorization Server without going through the user's browser. The client MUST send an authentication 
-          request to the Authorization Server by building an "HTTP POST" request that will take to the Authorization Server all the 
+          the client to the OpenID Provider without going through the user's browser. The client MUST send an authentication 
+          request to the OpenID Provider by building an "HTTP POST" request that will take to the OpenID Provider all the 
           information needed to authenticate the user without asking them for their identifier.      
         </t>
         <t>
@@ -199,7 +199,7 @@ CIBA notification is illustrated in the following diagram:
         </t>
         <t>
           Authentication Requests are made using the MODRNA profile. Only the following parameters are taking in consideration in the Client initiated Backchannel Authentication flow. The rest of the request parameters defined in <xref target="RFC6749">OAuth 2.0</xref> 
-          MUST be ignored by the Authorization Server.
+          MUST be ignored by the OpenID Provider.
         </t>
 
         <t>
@@ -221,7 +221,7 @@ CIBA notification is illustrated in the following diagram:
             <t>
               At the time of registering in Mobile Connect, the RP must provide the information about whether receiving the token 
               response through a callback to the "client_notification_endpoint" or through a polling mechanism where the RP MUST poll 
-              the authorization server repeatedly as defined in <xref target="successful_authentication_request_acknowdlegment" format="title"/>
+              the OpenID Provider repeatedly as defined in <xref target="successful_authentication_request_acknowdlegment" format="title"/>
               until the end-user completes the approval process.
             </t>
             <t hangText="acr_values">
@@ -282,7 +282,7 @@ CIBA notification is illustrated in the following diagram:
 
       <section anchor="auth_request_validation" title="Authentication Request Validation">
         <t>
-          The Authorization Server MUST validate the request received as follows:
+          The OpenID Provider MUST validate the request received as follows:
         </t>
         <t>
           <list style="numbers">
@@ -292,14 +292,14 @@ CIBA notification is illustrated in the following diagram:
               e.g.: by validating the Client Credentials as described in Section 9 on <xref target="OpenID.Core"/>.
             </t>
             <t>
-              The Authorization Server MUST validate all the OAuth 2.0 parameters according to the MODRNA specification.
+              The OpenID Provider MUST validate all the OAuth 2.0 parameters according to the MODRNA specification.
             </t>
             <t>
               In the event of a request contains more than one of this hints specified in <xref target="auth_request">Authentication Request</xref>, 
               the Identity provider MUST return an "invalid_request" error response as per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
             </t>
             <t>
-              The Authorization server MUST validate that the hint provided (login_hint, login_token_hint or id_token_hint) and is not expired, otherwise it should return an error to notify that the hint provided has not been found.
+              The OpenID Provider MUST validate that the hint provided (login_hint, login_token_hint or id_token_hint) and is not expired, otherwise it should return an error to notify that the hint provided has not been found.
             </t>
             <t>
               If the authentication request contains a "client_notification_endpoint" when it has not been provided at the registering time or viceversa, 
@@ -316,13 +316,13 @@ CIBA notification is illustrated in the following diagram:
               for the redirect_uri in the Authorization Code flow.
             </t>
             <t>
-              The Authorization Server MUST verify that all the REQUIRED parameters are present and their usage conforms to this 
+              The OpenID Provider MUST verify that all the REQUIRED parameters are present and their usage conforms to this 
               specification.
             </t>
           </list>
         </t>
         <t>
-            As specified in OAuth 2.0 <xref target="RFC6749" />, Authorization Servers SHOULD ignore unrecognized request parameters.
+            As specified in OAuth 2.0 <xref target="RFC6749" />, OpenID Providers SHOULD ignore unrecognized request parameters.
         </t>          
         <t>
             If the OpenID Provider encounters any error, it MUST return an error response, per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
