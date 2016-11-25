@@ -60,14 +60,14 @@
       </t>
       <t>
         The MODRNA Client initiated Backchannel Authentication Flow specifies a new authentication flow,
-        by means of which the RP's that know the user identifier they want to authenticate (e-mail, telefon number),
+        by means of which the RP's that know the user identifier they want to authenticate (e-mail, phone number),
         will be able to initiate an interaction flow to authenticate their users without having end-user interaction
-        from a consumption device.
+        from the consumption device.
       </t>
       <t>
-        <spanx style="strong">Remark:</spanx> As there is no any consumption device through which the end-user is interacting with the Relying Party, 
+        <spanx style="strong">Remark:</spanx> As there is no consumption device through which the end-user is interacting with the Relying Party, 
         this flow will not cause any user credentials to go through the RP. So it should be highlighted that traditional username/password 
-        authentication could not be used because and only out-band mechanisms will work in conjunction with this flow.
+        authentication could not be used because only out-band mechanisms will work in conjunction with this flow.
       </t>
     </abstract>
   </front>
@@ -120,7 +120,7 @@
       <t>
         It introduces a new endpoint used to initiate user authentication using a backchannel request. 
         This new endpoint utilizes existing Authentication Requests and defines new parameters as appropriate. 
-        For example, it re-uses the scope parameter but it omits nonce, state and redirect_uri, which are need to 
+        For example, it re-uses the scope parameter but it omits nonce, state and redirect_uri, which are needed to 
         perform and secure authentication transactions on the front channel.
       </t>
 <figure>
@@ -256,6 +256,7 @@ CIBA notification is illustrated in the following diagram:
             <![CDATA[
               POST /bc-authorize HTTP/1.1
               Host: server.example.com
+              Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
               Content-Type: application/json
               {
                "scope": "openid",
@@ -298,7 +299,7 @@ CIBA notification is illustrated in the following diagram:
               the Identity provider MUST return an "invalid_request" error response as per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
             </t>
             <t>
-              The Authorization server MUST validate that the hint provided (login_hint, login_token_hint or id_token_hint) exist and are not expired, otherwise it should return an error to notify that the hint provided has not been found.
+              The Authorization server MUST validate that the hint provided (login_hint, login_token_hint or id_token_hint) and is not expired, otherwise it should return an error to notify that the hint provided has not been found.
             </t>
             <t>
               If the authentication request contains a "client_notification_endpoint" when it has not been provided at the registering time or viceversa, 
@@ -330,7 +331,7 @@ CIBA notification is illustrated in the following diagram:
 
       <section anchor="successful_authentication_request_acknowdlegment" title="Successful Authentication Request Acknowledgement">
         <t>
-          If the Authentication Validation Request is OK, the Authorization Server will return an HTTP 200 OK response to the RP
+          If the Authentication Validation Request is validated as per Section <xref target="auth_request_validation" format="title"/>, the Authorization Server will return an HTTP 200 OK response to the RP
           to indicate that the authentication request has been accepted and it is going to be processed. The body of this response 
           will contain:
         </t>
@@ -371,13 +372,13 @@ CIBA notification is illustrated in the following diagram:
         </figure>      
       </section>
 
-      <section anchor="auth_request_acknowdlegment_validation" title="Authentication Request Acknowdlegment Validation">
+      <section anchor="auth_request_acknowdlegment_validation" title="Authentication Request Acknowledgment Validation">
         <t>
           If the client (RP) receives an HTTP 200 OK, it MUST validate that all the required parameters are received. The RP should keep the authentication request identifier 
           <spanx style="verb">auth_req_id</spanx> and the expiration time in order to match it with token response.
         </t>
         <t>
-          The client will have to keep the expiration time as well to be able to discard the authentication request acknowdlegment.
+          The client will have to keep the expiration time as well to be able to discard the authentication request acknowledgment.
         </t>
       </section>
 
@@ -392,7 +393,7 @@ CIBA notification is illustrated in the following diagram:
       </t>
     </section>
 
-    <section anchor="getting_transaction_result" title="Getting The Transaction Result">
+    <section anchor="getting_transaction_result" title="Getting the Transaction Result">
       <section anchor="token_request" title="Token Request Using Polling Mechanism">
         <t>
           When the authentication request doesn't include the "client_notification_endpoint" parameter or there are not any callback URI registered for this notification endpoint for this RP in the Identity Provider, the client must poll the token endpoint until the end-user grants or denies the request.
