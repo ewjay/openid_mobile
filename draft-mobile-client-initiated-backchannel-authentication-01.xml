@@ -144,8 +144,8 @@ CIBA polling is illustrated in the following diagram:
 |        |                                               |        |
 |        |  +--------+                                   |        |
 |        |  |        |                                   |        |
-| Client |  |  End-  |&lt;--(2) User interactions ---------&gt;|   OP   |
-|        |  |  User  |                                   |        |
+| Client |  |  AD    |&lt;--(2) User interactions ---------&gt;|   OP   |
+|        |  |        |                                   |        |
 |        |  |        |                                   |        |
 |        |  +--------+                                   |        |
 |        |                                               |        |
@@ -169,8 +169,8 @@ CIBA notification is illustrated in the following diagram:
 |        |                                               |        |
 |        |  +--------+                                   |        |
 |        |  |        |                                   |        |
-| Client |  |  End-  |&lt;--(2) User interactions ---------&gt;|   OP   |
-|        |  |  User  |                                   |        |
+| Client |  |  AD    |&lt;--(2) User interactions ---------&gt;|   OP   |
+|        |  |        |                                   |        |
 |        |  |        |                                   |        |
 |        |  +--------+                                   |        |
 |        |                                               |        |
@@ -235,12 +235,6 @@ CIBA notification is illustrated in the following diagram:
               REQUIRED. It is a unique id provided by the RP that will be used by the Identity Provider as a beared 
               token to authenticate the callback request to send the tokens to the RP.
             </t>
-            <t hangText="client_notification_endpoint">            
-              OPTIONAL. Callback URI to which the response will be sent. This URI MUST exactly match one of the "Client initiated
-              Backchannel Authentication" callback URI values for the Client pre-registered at the OpenID Provider, with the matching 
-              performed as described in Section 6.2.1 of <xref target="RFC3986" /> (Simple String Comparison). When using this flow, 
-              the Callback URI SHOULD use the https scheme. This paramter will be MANDATORY if the RP has been registered to receive callbacks.        
-            </t>
             <t>
               At the time of registering in Mobile Connect, the RP must provide the information about whether receiving the token 
               response through a callback to the "client_notification_endpoint" or through a polling mechanism where the RP MUST poll 
@@ -284,7 +278,6 @@ CIBA notification is illustrated in the following diagram:
               {
                "scope": "openid",
                "client_req_id": "8d67dc78-7faa-4d41-aabd-67707b374255",
-               "client_notification_endpoint": "https://client.example.com/cb",
                "acr_values": "mod-mf",
                "login_hint_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
                   OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
@@ -322,21 +315,7 @@ CIBA notification is illustrated in the following diagram:
               the Identity provider MUST return an "invalid_request" error response as per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
             </t>
             <t>
-              The OpenID Provider MUST validate that the hint provided (login_hint, login_token_hint or id_token_hint) and is not expired, otherwise it should return an error to notify that the hint provided has not been found.
-            </t>
-            <t>
-              If the authentication request contains a "client_notification_endpoint" when it has not been provided at the registering time or viceversa, 
-              it is contained when it has not been provided, the Identity Provider MUST return an "invalid_request" error response, per Section 3.1.2.6 
-              on <xref target="OpenID.Core"/>.
-            </t>
-
-            <t>
-              If the "client_notification_endpoint" parameter is present, it MUST exactly match one of the callback 
-              URI values for the Client pre-registered at the OpenID Provider, with the matching performed as described 
-              in Section 6.2.1 of <xref target="RFC3986" /> (Simple String Comparison).
-              <vspace />
-              NOTE: the callback URI values registered for the "client_notification_endpoint" are different than those registered
-              for the redirect_uri in the Authorization Code flow.
+              The OpenID Provider MUST validate the hint provided (login_hint, login_token_hint or id_token_hint) and is not expired, otherwise it should return an error to notify that the hint provided has not been found.
             </t>
             <t>
               The OpenID Provider MUST verify that all the REQUIRED parameters are present and their usage conforms to this 
