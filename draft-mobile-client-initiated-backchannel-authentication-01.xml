@@ -123,6 +123,16 @@
         For example, it re-uses the scope parameter but it omits nonce, state and redirect_uri, which are needed to 
         perform and secure authentication transactions on the front channel.
       </t>
+
+
+   <section title='Polling versus Notification'>
+
+      <t>
+        This specification allows the RP to get the authentication in two ways: polling and notification.
+        The decision is taken at registration time. If the RP wants to be notified it has to specifiy its <xref target="client_notification_endpoint" format="title"/> at registration time.
+        Otherwise the authentication response is retrieved by the RP by polling the OP's token endpoint using a new grant type. 
+      </t>
+
 <figure>
 <preamble>
 CIBA polling is illustrated in the following diagram:
@@ -146,7 +156,7 @@ CIBA polling is illustrated in the following diagram:
 </artwork>
 </figure>
       <t>
-        If the Client expects to be notified about the authentication result asynchronously then it has to specify a Client Notification Endpoint during its registration at the OpenID Provider.
+        If the Client expects to be notified about the authentication result asynchronously then it has to specify a <xref target="client_notification_endpoint" format="title"/> during its registration at the OpenID Provider.
       </t>
 <figure>
 <preamble>
@@ -169,6 +179,19 @@ CIBA notification is illustrated in the following diagram:
 +--------+                                               +--------+
 </artwork>
 </figure>
+    </section>
+
+   <section title='Examples of Use Cases'>
+		<t>The following use cases are non-normative examples to illustrate the usage this specification.</t>
+		<t>
+		<list style="numbers">
+		<t>A call center agent wants to authenticate a caller.
+		</t>
+		<t>A bank wants to authenticate a customer.
+		</t>
+		</list>
+		</t>
+		</section>
     </section>
 
     <section anchor="auth_backchannel_endpoint" title="Backchannel Authentication Endpoint">
