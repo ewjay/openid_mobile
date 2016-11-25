@@ -182,7 +182,7 @@ CIBA notification is illustrated in the following diagram:
     </section>
 
    <section title='Examples of Use Cases'>
-		<t>The following use cases are non-normative examples to illustrate the usage this specification.</t>
+		<t>The following use cases are non-normative examples to illustrate the usage of this specification.</t>
 		<t>
 		<list style="numbers">
 		<t>A call center agent wants to authenticate a caller.
