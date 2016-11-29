@@ -230,7 +230,7 @@ CIBA notification is illustrated in the following diagram:
               openid scope value in the Authorization Request.
             </t>
             <t hangText="client_req_id">
-              REQUIRED. It is a unique id provided by the RP that will be used by the OpenID Provider as a beared 
+              REQUIRED. It is a unique id provided by the RP that will be used by the OpenID Provider as a bearer 
               token to authenticate the callback request to send the tokens to the RP.
             </t>
             <t>
@@ -310,7 +310,7 @@ CIBA notification is illustrated in the following diagram:
             </t>
             <t>
               In the event of a request contains more than one of this hints specified in <xref target="auth_request">Authentication Request</xref>, 
-              the Identity provider MUST return an "invalid_request" error response as per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
+              the OpenID Provider MUST return an "invalid_request" error response as per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
             </t>
             <t>
               The OpenID Provider MUST validate the hint provided (login_hint, login_token_hint or id_token_hint) and is not expired, otherwise it should return an error to notify that the hint provided has not been found.
