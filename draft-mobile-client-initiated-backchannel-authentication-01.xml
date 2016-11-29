@@ -219,7 +219,7 @@ CIBA notification is illustrated in the following diagram:
           client_id, as described in Section 9 of  <xref target="OpenID.Core"/>.
         </t>
         <t>
-          Authentication Requests are made using the MODRNA profile. Only the following parameters are taking in consideration in the Client initiated Backchannel Authentication flow. The rest of the request parameters defined in <xref target="RFC6749">OAuth 2.0</xref> 
+          Authentication Requests are made using the MODRNA profile. Only the following parameters are taken into consideration in the Client initiated Backchannel Authentication flow. The rest of the request parameters defined in <xref target="RFC6749">OAuth 2.0</xref> 
           MUST be ignored by the OpenID Provider.
         </t>
 
@@ -230,11 +230,12 @@ CIBA notification is illustrated in the following diagram:
               openid scope value in the Authorization Request.
             </t>
             <t hangText="client_req_id">
-              REQUIRED. It is a unique id provided by the RP that will be used by the Identity Provider as a beared 
+              REQUIRED. It is a unique id provided by the RP that will be used by the OpenID Provider as a beared 
               token to authenticate the callback request to send the tokens to the RP.
             </t>
             <t>
-              At the time of registering in Mobile Connect, the RP must provide the information about whether receiving the token 
+              At the time of registering the Client at the OpenID Provider, 
+              the RP must provide the information about whether receiving the token 
               response through a callback to the "client_notification_endpoint" or through a polling mechanism where the RP MUST poll 
               the OpenID Provider repeatedly as defined in <xref target="successful_authentication_request_acknowdlegment" format="title"/>
               until the end-user completes the approval process.
