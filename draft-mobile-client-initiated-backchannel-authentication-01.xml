@@ -146,7 +146,6 @@ CIBA polling is illustrated in the following diagram:
 |        |  |        |                                   |        |
 | Client |  |  AD    |&lt;--(2) User interactions ---------&gt;|   OP   |
 |        |  |        |                                   |        |
-|        |  |        |                                   |        |
 |        |  +--------+                                   |        |
 |        |                                               |        |
 |        |----(3a) CIBA Polling Request-----------------&gt;|        |
@@ -170,7 +169,6 @@ CIBA notification is illustrated in the following diagram:
 |        |  +--------+                                   |        |
 |        |  |        |                                   |        |
 | Client |  |  AD    |&lt;--(2) User interactions ---------&gt;|   OP   |
-|        |  |        |                                   |        |
 |        |  |        |                                   |        |
 |        |  +--------+                                   |        |
 |        |                                               |        |
@@ -255,9 +253,8 @@ CIBA notification is illustrated in the following diagram:
             <t hangText="login_hint">
               OPTIONAL. As defined in Section 3.1.2.1 of <xref target="OpenID.Core"/>.
             </t> 
-            <t hangText="context">
-              REQUIRED. This parameter provides a context in the Mobile Connect request that clearly identifies the action/transaction 
-              that the user is being asked to authorise.
+            <t hangText="binding_message">
+              OPTIONAL. As defined in MODRNA Authentication profile.
             </t>
           </list>
         </t>
