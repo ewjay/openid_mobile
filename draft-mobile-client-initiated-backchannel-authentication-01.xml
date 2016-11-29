@@ -557,8 +557,12 @@ CIBA notification is illustrated in the following diagram:
 
     <section anchor="privacy_considerations" title="Privacy Considerations">
       <t>
+        Using MODRNA Client initiated Backchannel Authentication it is possible for the RP 
+        to authenticate a user without knowing e.g. the MSISDN of the user.
+        Users might be reluctant to provide their MSISDN to RPs because they fear
+        misuse through automated calls or theirs number being leaked.
         The login hint token is encrypted in order to protect the user's MSISDN from 
-        being revealed to the client unintentionally.
+        being revealed to the RP unintentionally.
       </t>
     </section>
 
