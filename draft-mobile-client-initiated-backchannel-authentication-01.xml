@@ -128,7 +128,7 @@
    <section title='Polling versus Notification'>
 
       <t>
-        This specification allows the RP to get the authentication in two ways: polling and notification.
+        This specification allows the RP to get the authentication result in two ways: polling and notification.
         The decision is taken at registration time. If the RP wants to be notified it has to specifiy its <xref target="client_notification_endpoint" format="title"/> at registration time.
         Otherwise the authentication response is retrieved by the RP by polling the OP's token endpoint using a new grant type. 
       </t>
