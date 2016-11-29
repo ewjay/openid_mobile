@@ -435,7 +435,9 @@ CIBA notification is illustrated in the following diagram:
 
       <section anchor="token_response" title="Successful Token Polling">
         <t>
-          If the "client_notification_endpoint" is not present the OpenID Provider will return the token as an HTTP response to the RP's poll request. If the user is well authenticated, the OpenID Provider will returns a succesful response that includes an ID Token and an Access Token. Otherwise it responses with an error as defined in <xref target="token_error_response" format="title"/>.
+          If the "client_notification_endpoint" is not present the OpenID Provider will return the token as an HTTP response to the RP's poll request. 
+          If the user is well authenticated, the OpenID Provider will return a succesful response that includes an ID Token and an Access Token. 
+          Otherwise it responses with an error as defined in <xref target="token_error_response" format="title"/>.
         </t>      
         <figure>
           <preamble>The following is a non-normative example of a token response sending as an HTTP 200 OK Response to the RP's poll request
