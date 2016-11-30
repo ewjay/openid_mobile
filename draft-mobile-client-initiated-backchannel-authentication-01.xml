@@ -128,7 +128,12 @@
 
       <t>
         This specification allows the RP to get the authentication result in two ways: polling and notification.
-        The decision is taken at registration time. If the RP wants to be notified it has to specifiy its <xref target="client_notification_endpoint" format="title"/> at registration time.
+      </t>
+      <t>
+        If the Client expects to be notified about the authentication result asynchronously then it has to specify 
+        a <xref target="client_notification_endpoint" format="title"/> during its registration at the OpenID Provider.
+      </t>
+      <t>
         Otherwise the authentication response is retrieved by the RP by polling the OP's token endpoint using a new grant type. 
       </t>
 
@@ -153,9 +158,7 @@ CIBA polling is illustrated in the following diagram:
 +--------+                                               +--------+
 </artwork>
 </figure>
-      <t>
-        If the Client expects to be notified about the authentication result asynchronously then it has to specify a <xref target="client_notification_endpoint" format="title"/> during its registration at the OpenID Provider.
-      </t>
+
 <figure>
 <preamble>
 CIBA notification is illustrated in the following diagram:
