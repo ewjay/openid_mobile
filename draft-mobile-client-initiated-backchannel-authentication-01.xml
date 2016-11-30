@@ -187,7 +187,7 @@ CIBA notification is illustrated in the following diagram:
 		<list style="numbers">
 		<t>A call center agent wants to authenticate a caller.
 		</t>
-		<t>A bank wants to authenticate a customer.
+		<t>A bank teller wants to authenticate a customer in a bank branch” — so it is using CIBA for auth in a face-to-face scenario.
 		</t>
 		</list>
 		</t>
