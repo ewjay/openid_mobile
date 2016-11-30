@@ -14,7 +14,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-user-questioning-api-07" ipr='none'>
+<rfc category="std" docName="draft-user-questioning-api-08" ipr='none'>
 <?rfc toc="yes" ?>
 <?rfc tocdepth="5" ?>
 <?rfc symrefs="yes" ?>
@@ -43,7 +43,7 @@
 	</address>
 	</author>
 	
-    <date day='22' month='November' year='2016'/>
+    <date day='28' month='November' year='2016'/>
 	
     <workgroup>OpenID MODRNA Working Group</workgroup>
 	
@@ -632,13 +632,13 @@ Content-Type: application/json
 Content-Length: xxx
 
 {
-	"client_notification_token":"vO4n2DAeRrcWE0VAlo4I",
-	"user_id":"+33612345678",
-	"user_id_type":"msisdn",
-	"question_to_display":"Do you allow ...?",
-	"statements_to_display":["Yes","No"],
-	"wished_acr":"3",
-	"wished_amr":["PIN_OK"]
+    "client_notification_token":"vO4n2DAeRrcWE0VAlo4I",
+    "user_id":"+33612345678",
+    "user_id_type":"msisdn",
+    "question_to_display":"Do you allow ...?",
+    "statements_to_display":["Yes","No"],
+    "wished_acr":"3",
+    "wished_amr":["PIN_OK"]
 }    
 </artwork>
 </figure>
@@ -763,9 +763,9 @@ Content-Type: application/json
 Content-Length: xxx
 
 {
-	"location": "https://server.example.com/questions_polling/984dcc7d3d4d4b0f9f80
-		22e344f9",
-	"question_id": "984dcc7d3d4d4b0f9f8022e344f9"
+    "location": "https://server.example.com/questions_polling/984dcc7d3d4d4b0f9f80
+        22e344f9",
+    "question_id": "984dcc7d3d4d4b0f9f8022e344f9"
 }
 </artwork>
 </figure>
@@ -774,8 +774,8 @@ Content-Length: xxx
 			
 			<section title='Error Response'>
 			<t>The Client receives the error in a HTTP 400 Bad Request.</t>
-			<t>The response body contains an <spanx style="verb">error_info</spanx> JSON structure as defined in <xref target='errors'/>.</t>
-			<t>The <spanx style="verb">error_info</spanx> JSON structure can contain the following error codes, defined in <xref target='error_codes'/>:
+			<t>The HTTP body contains the error object, a JSON structure defined in <xref target='errors'/>. 
+			The error object contains one of the following error codes, defined in <xref target='errors'/>:
 			<list style="symbols">
 			<t>invalid_request</t>
 			<t>no_suitable_method</t>
@@ -794,10 +794,10 @@ Content-Type: application/json
 Content-Length: xxx
 
 {
-	"error_code":"invalid_request",
-	"error_description":"user_id MUST NOT be used 
-		if the Access Token is tied with an End-User",
-	"error_uri":"https://server.example.com/errors/invalid_request"
+    "error":"invalid_request",
+    "error_description":"user_id MUST NOT be used 
+        if the Access Token is tied with an End-User",
+    "error_uri":"https://server.example.com/errors/invalid_request"
 }
 </artwork>
 </figure>
@@ -923,19 +923,19 @@ Content-Length: xxx
 
 {
     "user_statement_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImt
-	pZCI6ImsyYmRjIn0.eyJxdWVzdGlvbl9pZCI6Ijk4NGRjYzdkM2Q0ZDRiMGY5Zj
-	gwMjJlMzQ0ZjkiLCJpc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsI
-	mF1ZCI6WyJzOFYzd204SVhNVzZUYm9helhaWCJdLCJzdWIiOiJnMTE3WUJ0Q1pP
-	M21BS1BRS1A4byIsInVzZXJfaWQiOiIrMzM2MTIzNDU2NzgiLCJ1c2VyX2lkX3R
-	5cGUiOiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbGF5ZWQiOiJEbyB5b3UgYWxsb3
-	cgLi4uPyIsInN0YXRlbWVudCI6IlllcyIsInN0YXRlbWVudF9kYXRlIjoxMzExM
-	jgyOTc1LCJ1c2VkX2FjciI6IjIiLCJ1c2VkX2FtciI6WyJDTElDS19PSyJdfQ.G
-	X6qWvi9RtTmJ1ixqwuwjhF12FQe3SZk3V68zdw4vXLf008OtuA-uXKZVkviyVLX
-	33L9_-Dv6vsWbOydhXBnbiQm7u1pr3gDw-eRMJu_pK0w_O5cUV6R2k_lvL_6cgQ
-	ucfYTzHcebN3XQbP2qj-DGKOi9Af5afwKLLy_2f5WaIMMO24aSUJkF9CU88ELEJ
-	fNMnhtyUX1YchNXr_-w7yqZ8m6fCSJ9_ETKwe4qnuR3GMp46IyhIBIyjOZMKeq0
-	83j6y4hEXx6qh8VMYgOm5xKZIg9d12YqQVi7xbAmrGDLMrv1UYUz-EeRTUzJUoB
-	CyHaLMCPeTSRdoBRCPr2wUJZ_Q"
+    pZCI6ImsyYmRjIn0.eyJxdWVzdGlvbl9pZCI6Ijk4NGRjYzdkM2Q0ZDRiMGY5Zj
+    gwMjJlMzQ0ZjkiLCJpc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsI
+    mF1ZCI6WyJzOFYzd204SVhNVzZUYm9helhaWCJdLCJzdWIiOiJnMTE3WUJ0Q1pP
+    M21BS1BRS1A4byIsInVzZXJfaWQiOiIrMzM2MTIzNDU2NzgiLCJ1c2VyX2lkX3R
+    5cGUiOiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbGF5ZWQiOiJEbyB5b3UgYWxsb3
+    cgLi4uPyIsInN0YXRlbWVudCI6IlllcyIsInN0YXRlbWVudF9kYXRlIjoxMzExM
+    jgyOTc1LCJ1c2VkX2FjciI6IjIiLCJ1c2VkX2FtciI6WyJDTElDS19PSyJdfQ.G
+    X6qWvi9RtTmJ1ixqwuwjhF12FQe3SZk3V68zdw4vXLf008OtuA-uXKZVkviyVLX
+    33L9_-Dv6vsWbOydhXBnbiQm7u1pr3gDw-eRMJu_pK0w_O5cUV6R2k_lvL_6cgQ
+    ucfYTzHcebN3XQbP2qj-DGKOi9Af5afwKLLy_2f5WaIMMO24aSUJkF9CU88ELEJ
+    fNMnhtyUX1YchNXr_-w7yqZ8m6fCSJ9_ETKwe4qnuR3GMp46IyhIBIyjOZMKeq0
+    83j6y4hEXx6qh8VMYgOm5xKZIg9d12YqQVi7xbAmrGDLMrv1UYUz-EeRTUzJUoB
+    CyHaLMCPeTSRdoBRCPr2wUJZ_Q"
 }
 </artwork>
 </figure>
@@ -945,8 +945,8 @@ Content-Length: xxx
 			
 			<section title='Error Response'>
 			<t>The Client receives the error in a HTTP 400 Bad Request.</t>
-			<t>The response body contains an <spanx style="verb">error_info</spanx> JSON structure as defined in <xref target='errors'/>.</t>
-			<t>The <spanx style="verb">error_info</spanx> JSON structure can contain the following error codes, defined in <xref target='error_codes'/>:
+			<t>The HTTP body contains the error object, a JSON structure defined in <xref target='errors'/>. 
+			The error object contains one of the following error codes, defined in <xref target='errors'/>:
 			<list style="symbols">
 			<t>duplicate_requests</t>
 			<t>forbidden</t>
@@ -969,9 +969,9 @@ Content-Type: application/json
 Content-Length: xxx
 
 {
-	"error_code":"duplicate_requests",
-	"error_description":"A newer request was sent for this question_id",
-	"error_uri":"https://server.example.com/errors/invalid_request"
+    "error":"duplicate_requests",
+    "error_description":"A newer request was sent for this question_id",
+    "error_uri":"https://server.example.com/errors/invalid_request"
 }
 </artwork>
 </figure>
@@ -1040,19 +1040,19 @@ Content-Length: xxx
 
 {
     "user_statement_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImt
-	pZCI6ImsyYmRjIn0.eyJxdWVzdGlvbl9pZCI6Ijk4NGRjYzdkM2Q0ZDRiMGY5Zj
-	gwMjJlMzQ0ZjkiLCJpc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsI
-	mF1ZCI6WyJzOFYzd204SVhNVzZUYm9helhaWCJdLCJzdWIiOiJnMTE3WUJ0Q1pP
-	M21BS1BRS1A4byIsInVzZXJfaWQiOiIrMzM2MTIzNDU2NzgiLCJ1c2VyX2lkX3R
-	5cGUiOiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbGF5ZWQiOiJEbyB5b3UgYWxsb3
-	cgLi4uPyIsInN0YXRlbWVudCI6IlllcyIsInN0YXRlbWVudF9kYXRlIjoxMzExM
-	jgyOTc1LCJ1c2VkX2FjciI6IjIiLCJ1c2VkX2FtciI6WyJDTElDS19PSyJdfQ.G
-	X6qWvi9RtTmJ1ixqwuwjhF12FQe3SZk3V68zdw4vXLf008OtuA-uXKZVkviyVLX
-	33L9_-Dv6vsWbOydhXBnbiQm7u1pr3gDw-eRMJu_pK0w_O5cUV6R2k_lvL_6cgQ
-	ucfYTzHcebN3XQbP2qj-DGKOi9Af5afwKLLy_2f5WaIMMO24aSUJkF9CU88ELEJ
-	fNMnhtyUX1YchNXr_-w7yqZ8m6fCSJ9_ETKwe4qnuR3GMp46IyhIBIyjOZMKeq0
-	83j6y4hEXx6qh8VMYgOm5xKZIg9d12YqQVi7xbAmrGDLMrv1UYUz-EeRTUzJUoB
-	CyHaLMCPeTSRdoBRCPr2wUJZ_Q"
+    pZCI6ImsyYmRjIn0.eyJxdWVzdGlvbl9pZCI6Ijk4NGRjYzdkM2Q0ZDRiMGY5Zj
+    gwMjJlMzQ0ZjkiLCJpc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsI
+    mF1ZCI6WyJzOFYzd204SVhNVzZUYm9helhaWCJdLCJzdWIiOiJnMTE3WUJ0Q1pP
+    M21BS1BRS1A4byIsInVzZXJfaWQiOiIrMzM2MTIzNDU2NzgiLCJ1c2VyX2lkX3R
+    5cGUiOiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbGF5ZWQiOiJEbyB5b3UgYWxsb3
+    cgLi4uPyIsInN0YXRlbWVudCI6IlllcyIsInN0YXRlbWVudF9kYXRlIjoxMzExM
+    jgyOTc1LCJ1c2VkX2FjciI6IjIiLCJ1c2VkX2FtciI6WyJDTElDS19PSyJdfQ.G
+    X6qWvi9RtTmJ1ixqwuwjhF12FQe3SZk3V68zdw4vXLf008OtuA-uXKZVkviyVLX
+    33L9_-Dv6vsWbOydhXBnbiQm7u1pr3gDw-eRMJu_pK0w_O5cUV6R2k_lvL_6cgQ
+    ucfYTzHcebN3XQbP2qj-DGKOi9Af5afwKLLy_2f5WaIMMO24aSUJkF9CU88ELEJ
+    fNMnhtyUX1YchNXr_-w7yqZ8m6fCSJ9_ETKwe4qnuR3GMp46IyhIBIyjOZMKeq0
+    83j6y4hEXx6qh8VMYgOm5xKZIg9d12YqQVi7xbAmrGDLMrv1UYUz-EeRTUzJUoB
+    CyHaLMCPeTSRdoBRCPr2wUJZ_Q"
 }
 </artwork>
 </figure>
@@ -1078,11 +1078,15 @@ Content-Length: xxx
 			</list>
 			</t>
 			
-			<t>
-			An erroneous User Questioning Response is a JSON object, with the following attributes.
+			<t>The HTTP body contains the error object, a JSON structure defined in <xref target='errors'/>. 
+			The error object contains one of the following error codes, defined in <xref target='errors'/>:
+			<list style="symbols">
+			<t>timeout</t>
+			<t>user_refused_to_answer</t>
+			</list>
 			</t>
 			
-			<t>
+			<t>In addition, the error object contains the following attribute:
 			<list style="hanging">
 			<!---->
 			<t hangText="question_id">
@@ -1091,19 +1095,6 @@ Content-Length: xxx
 			The <spanx style="verb">question_id</spanx> value is a case sensitive string.
 			</t>
 			<!---->	
-			<t hangText="error_info">
-			MANDATORY.
-			Information about the error. 
-			An erroneous User Questioning Response contains an <spanx style="verb">error_info</spanx> JSON structure as defined in <xref target='errors'/>.
-			</t>
-			<!---->	
-			</list>
-			</t>
-
-			<t>The <spanx style="verb">error_info</spanx> JSON structure can contain the following error codes, defined in <xref target='error_codes'/>:
-			<list style="symbols">
-			<t>timeout</t>
-			<t>user_refused_to_answer</t>
 			</list>
 			</t>
 			
@@ -1120,12 +1111,9 @@ Content-Length: xxx
 
 {
     "question_id":"984dcc7d3d4d4b0f9f8022e344f9",
-    "error_info":
-    {
-        "error_code":"unknown_user",
-        "error_description":"The user is unknown",
-        "error_uri":"https://server.example.com/errors/unknown_user"
-    }
+    "error":"unknown_user",
+    "error_description":"The user is unknown",
+    "error_uri":"https://server.example.com/errors/unknown_user"
 }
 </artwork>
 </figure>
@@ -1177,15 +1165,71 @@ HTTP/1.1 200 OK
 	
 
 
-	<section anchor='errors' title='Errors'>
-	<t><spanx style="verb">error_info</spanx> is a JSON object which contains the following properties:</t>
+	<section anchor='errors' title='Error Object'>
+	
+	<t>As defined in section 5.2 of <xref target='RFC6749'>OAuth 2.0</xref>, an error object is a JSON structure which contains the following properties:</t>
 	<t>
 	<list style="hanging">
 	<!---->
-	<t hangText="error_code">
+	<t hangText="error">
 	MANDATORY. 
-		Code representing the error. 
-		See <xref target='error_codes'/> for possible values.
+		A single ASCII error code from the following: 
+		<list style="hanging">
+		<!---->
+		<t hangText="duplicate_requests">
+		The Client sent simultaneous requests to the User Questioning Polling Endpoint for the same <spanx style="verb">question_id</spanx>. This error is responded to oldest requests. The last request is processed normally.
+		</t>
+		<!---->
+		<t hangText="forbidden">
+		The Client sent a request to the User Questioning Polling Endpoint whereas it is configured with a <spanx style="verb">client_notification_endpoint</spanx>.
+		</t>
+		<!---->
+		<t hangText="high_rate_client">
+		The Client sent requests at a too high rate, amongst all <spanx style="verb">question_id</spanx>. Information about the allowed and recommended rates can be included in the <spanx style="verb">error_description</spanx>.
+		</t>
+		<!---->
+		<t hangText="high_rate_question">
+		The Client sent requests at a too high rate for a given <spanx style="verb">question_id</spanx>. Information about the allowed and recommended rates can be included in the <spanx style="verb">error_description</spanx>.
+		</t>
+		<!---->
+		<t hangText="invalid_question_id">
+		The Client sent a request to the User Questioning Polling Endpoint for a <spanx style="verb">question_id</spanx> that does not exist or is not valid for the requesting Client.
+		</t>
+		<!---->
+		<t hangText="invalid_request">
+		The User Questioning Request is not valid. The request is missing a required parameter, 
+		includes an unsupported parameter value (other than grant type), 
+		repeats a parameter, includes multiple credentials, 
+		utilizes more than one mechanism for authenticating the client, 
+		or is otherwise malformed.
+		</t>
+		<!---->
+		<t hangText="no_suitable_method">
+		There is no Questioning Method suitable with the User Questioning Request. The OP can use this error code when it does not implement mechanisms suitable for the wished AMR or ACR.
+		</t>
+		<!---->
+		<t hangText="timeout">
+		The Questioned User did not answer in the allowed period of time.
+		</t>
+		<!---->
+		<t hangText="unauthorized">
+		The Client is not authorized to use the User Questioning API or did not send a valid Access Token.
+		</t>
+		<!---->	
+		<t hangText="unknown_user">
+		The Questioned User mentioned in the <spanx style="verb">user_id</spanx> attribute of the User Questioning Request is unknown.
+		</t>
+		<!---->
+		<t hangText="unreachable_user">
+		The Questioned User mentioned in the User Questioning Request (either in the Access Token or in the <spanx style="verb">user_id</spanx> attribute) is unreachable. 
+		The OP can use this error when it does not have a reachability identifier (e.g. MSISDN) for the Question User or when the reachability identifier is not operational (e.g. unsubscribed MSISDN).
+		</t>
+		<!---->
+		<t hangText="user_refused_to_answer">
+		The Questioned User refused to make a statement to the question.
+		</t>
+		<!---->	
+		</list>
 	</t>
 	<!---->
 	<t hangText="error_description">
@@ -1215,84 +1259,21 @@ The following is a non-normative example.
 </preamble>
 <artwork>
 {
-	"error_code":"unknown_user",
-	"error_description":"The user is unknown",
-	"error_uri":"https://server.example.com/errors/unknown_user"
+    "error":"unknown_user",
+    "error_description":"The user is unknown",
+    "error_uri":"https://server.example.com/errors/unknown_user"
 }
 </artwork>
 </figure>
 
-		<section anchor='error_codes' title='Error Codes'>
-
-			<t>The <spanx style="verb">error_info</spanx> JSON structure can contain the following error codes:</t>
-			<t>
-			<list style="hanging">
-			<!---->
-			<t hangText="duplicate_requests">
-			The Client sent simultaneous requests to the User Questioning Polling Endpoint for the same <spanx style="verb">question_id</spanx>. This error is responded to oldest requests. The last request is processed normally.
-			</t>
-			<!---->
-			<t hangText="forbidden">
-			The Client sent a request to the User Questioning Polling Endpoint whereas it is configured with a <spanx style="verb">client_notification_endpoint</spanx>.
-			</t>
-			<!---->
-			<t hangText="high_rate_client">
-			The Client sent requests at a too high rate, amongst all <spanx style="verb">question_id</spanx>. Information about the allowed and recommended rates can be included in the <spanx style="verb">error_description</spanx>.
-			</t>
-			<!---->
-			<t hangText="high_rate_question">
-			The Client sent requests at a too high rate for a given <spanx style="verb">question_id</spanx>. Information about the allowed and recommended rates can be included in the <spanx style="verb">error_description</spanx>.
-			</t>
-			<!---->
-			<t hangText="invalid_question_id">
-			The Client sent a request to the User Questioning Polling Endpoint for a <spanx style="verb">question_id</spanx> that does not exist or is not valid for the requesting Client.
-			</t>
-			<!---->
-			<t hangText="invalid_request">
-			The User Questioning Request is not valid. The request is missing a required parameter, 
-			includes an unsupported parameter value (other than grant type), 
-            repeats a parameter, includes multiple credentials, 
-            utilizes more than one mechanism for authenticating the client, 
-			or is otherwise malformed.
-			</t>
-			<!---->
-			<t hangText="no_suitable_method">
-			There is no Questioning Method suitable with the User Questioning Request. The OP can use this error code when it does not implement mechanisms suitable for the wished AMR or ACR.
-			</t>
-			<!---->
-			<t hangText="timeout">
-			The Questioned User did not answer in the allowed period of time.
-			</t>
-			<!---->
-			<t hangText="unauthorized">
-			The Client is not authorized to use the User Questioning API or did not send a valid Access Token.
-			</t>
-			<!---->	
-			<t hangText="unknown_user">
-			The Questioned User mentioned in the <spanx style="verb">user_id</spanx> attribute of the User Questioning Request is unknown.
-			</t>
-			<!---->
-			<t hangText="unreachable_user">
-			The Questioned User mentioned in the User Questioning Request (either in the Access Token or in the <spanx style="verb">user_id</spanx> attribute) is unreachable. 
-			The OP can use this error when it does not have a reachability identifier (e.g. MSISDN) for the Question User or when the reachability identifier is not operational (e.g. unsubscribed MSISDN).
-			</t>
-			<!---->
-			<t hangText="user_refused_to_answer">
-			The Questioned User refused to make a statement to the question.
-			</t>
-			<!---->	
-			</list>
-			</t>
-		
-		</section>
-
+	<t>The error object SHOULD be conveyed as a HTTP body, either in a HTTP POST request or in a HTTP 400 response.</t>
 
 	</section>
 
 	
     <section anchor='implementation_considerations' title='Implementation Considerations'>
 	
-		<section anchor="implementation_of_questioning_methods" title="Implementation of questioning methods">
+		<section anchor="implementation_of_questioning_methods" title="Implementation of Questioning Methods">
 		<t>
 		In order to interact with the Questioned User, the OP has to implement at least one questioning method. 
 		A questioning method has three purposes: authenticating the Questioned User, displaying the question and collecting the Question User's statement.
@@ -1572,7 +1553,40 @@ The following is a non-normative example.
 
 	<section anchor='History' title='Document History'>
 	<t>[[ To be removed from the final specification ]]</t>
-	<t>-01 <list style='symbols'><t>Initial draft</t><t>Added OIDF Standard Notice </t></list></t>
+	<t>-01 <list style='symbols'>
+		<t>Initial draft</t>
+		<t>Added OIDF Standard Notice </t>
+	</list></t>
+	<t>-02 <list style='symbols'>
+		<t>Second draft</t>
+	</list></t>	
+	<t>-03 <list style='symbols'>
+		<t>The <spanx style="verb">Terminated-By-Client</spanx> flow is removed.</t>
+	</list></t>	
+	<t>-04 <list style='symbols'>
+		<t>On the User Questioning Request endpoint, <spanx style="verb">wished_qcr</spanx> is renamed <spanx style="verb">wished_acr</spanx></t>
+		<t>On the User Questioning Request endpoint, <spanx style="verb">wished_qmr</spanx> is renamed <spanx style="verb">wished_amr</spanx></t>
+		<t>In the User Statement Token, <spanx style="verb">used_qcr</spanx> is renamed <spanx style="verb">used_acr</spanx></t>
+		<t>In the User Statement Token, <spanx style="verb">used_qmr</spanx> is renamed <spanx style="verb">used_amr</spanx></t>
+	</list></t>	
+	<t>-05 <list style='symbols'>
+		<t>In the User Statement Token, <spanx style="verb">used_amr</spanx> is an array</t>
+	</list></t>	
+	<t>-06 <list style='symbols'>
+		<t>In the User Statement Token, <spanx style="verb">aud</spanx> is an array</t>
+		<t>On the User Questioning Polling endpoint, in the successful response, the <spanx style="verb">question_id</spanx> attribute is removed</t>
+		<t><spanx style="verb">unauthorized</spanx> is a new value for <spanx style="verb">error_code</spanx></t>
+	</list></t>	
+	<t>-07 <list style='symbols'>
+		<t>On the User Questioning Request endpoint, the response returns <spanx style="verb">question_id</spanx> and <spanx style="verb">location</spanx> in a JSON object</t>
+		<t>On the Client Notification endpoint, the <spanx style="verb">status</spanx> attribute is removed</t>
+		<t>On the Client Notification endpoint, the <spanx style="verb">question_id</spanx> attribute is used only in error cases</t>
+	</list></t>
+	<t>-08 <list style='symbols'>
+		<t>In errors, <spanx style="verb">error_code</spanx> attribute is renamed <spanx style="verb">error</spanx>, as in <xref target='RFC6749'>OAuth 2.0</xref></t>
+		<t>Suppression of the <spanx style="verb">error_info</spanx> structure</t>
+	</list></t>
+
 	</section>
 
 </back>
