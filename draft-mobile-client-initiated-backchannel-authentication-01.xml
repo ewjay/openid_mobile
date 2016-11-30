@@ -187,7 +187,7 @@ CIBA notification is illustrated in the following diagram:
 		<list style="numbers">
 		<t>A call center agent wants to authenticate a caller.
 		</t>
-		<t>A bank teller wants to authenticate a customer in a bank branch” — so it is using CIBA for auth in a face-to-face scenario.
+		<t>A bank teller wants to authenticate a customer in a bank branch - so it is using CIBA for auth in a face-to-face scenario.
 		</t>
 		</list>
 		</t>
@@ -229,7 +229,7 @@ CIBA notification is illustrated in the following diagram:
           <list style="hanging">
             <t hangText="scope">
               REQUIRED. OpenID Connect implements authentication as an extension to the OAuth 2.0 by including the 
-              openid scope value in the Authorization Request.
+              "openid" scope value in the Authorization Request.
             </t>
             <t hangText="client_req_id">
               REQUIRED. It is a unique id provided by the RP that will be used by the OpenID Provider as a bearer 
@@ -275,6 +275,7 @@ CIBA notification is illustrated in the following diagram:
               Host: server.example.com
               Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
               Content-Type: application/json
+              
               {
                "scope": "openid",
                "client_req_id": "8d67dc78-7faa-4d41-aabd-67707b374255",
@@ -315,7 +316,11 @@ CIBA notification is illustrated in the following diagram:
               the OpenID Provider MUST return an "invalid_request" error response as per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
             </t>
             <t>
-              The OpenID Provider MUST validate the hint provided (login_hint, login_token_hint or id_token_hint) and is not expired, otherwise it should return an error to notify that the hint provided has not been found.
+              The OpenID Provider MUST validate the hint provided (login_hint, login_token_hint or id_token_hint).
+              <vspace />
+              e.g.: If a signature is provided it MUST be checked. If a validity date is provided it MUST be checked.
+              <vspace />
+              If the hint is not valid or if the OP is not able to determine the user then an error should be returned to the RP.
             </t>
             <t>
               The OpenID Provider MUST verify that all the REQUIRED parameters are present and their usage conforms to this 
