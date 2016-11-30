@@ -42,11 +42,22 @@
     </author>
 
 
-    <date day="18" month="Aug" year="2016"/>
+    <date day="30" month="November" year="2016"/>
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
     <abstract>    
+      <t>
+        OpenID Connect MODRNA Client initiated Backchannel Authentication Flow 1.0 is an authentication 
+        flow of the <xref target="OpenID.Core">OpenID Connect Core 1.0</xref> specification intended to 
+        allow RP's who already know the identifier of an end-user to initiate an authentication flow to request 
+        user authentication.
+      </t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="Introduction" title="Introduction">
       <t>
         OpenID Connect allows Relying Parties (RP) to authenticate their users for clients of all types, including 
         browser-based JavaScript and native mobile apps, to launch sign-in flows and receive verifiable 
@@ -68,18 +79,6 @@
         <spanx style="strong">Remark:</spanx> As there is no consumption device through which the end-user is interacting with the Relying Party, 
         this flow will not cause any user credentials to go through the RP. So it should be highlighted that traditional username/password 
         authentication could not be used because only out-band mechanisms will work in conjunction with this flow.
-      </t>
-    </abstract>
-  </front>
-
-  <middle>
-    <section anchor="Introduction" title="Introduction">
-      <t>
-        OpenID Connect MODRNA Client initiated Backchannel Authentication Flow 1.0 is an authentication 
-        flow of the <xref target="OpenID.Core">OpenID Connect Core 1.0</xref> specification intended to 
-        allow RP's who already know the identifier of an end-user to initiate an authentication flow to request 
-        user authentication. Moreover it defines Mandatory to Implement features to ensure 
-        interoperability of clients.
       </t>
       <section anchor="rnc" title="Requirements Notation and Conventions">
         <t>
