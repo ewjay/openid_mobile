@@ -562,12 +562,13 @@ CIBA notification is illustrated in the following diagram:
         The signature allows the OP to authenicate and authorize the sender of the hint and 
         prevent collecting of phone numbers by rogue clients.
       </t>
+      <t>
       The OP SHOULD ensure that the "client_notification_endpoint" configured at registration time
       is in the administrativ authority of the RP.
       Otherwise the OP would post authentication results to the wrong RP.
-      <vspace/>
-      How this check in done is outside the scope of this specification.
+      </t>
       <t>
+        How this check in done is outside the scope of this specification.
       </t>
     </section>
 
