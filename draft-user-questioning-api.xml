@@ -14,7 +14,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-user-questioning-api-08" ipr='none'>
+<rfc category="std" docName="draft-user-questioning-api-09" ipr='none'>
 <?rfc toc="yes" ?>
 <?rfc tocdepth="5" ?>
 <?rfc symrefs="yes" ?>
@@ -43,7 +43,7 @@
 	</address>
 	</author>
 	
-    <date day='28' month='November' year='2016'/>
+    <date day='1st' month='December' year='2016'/>
 	
     <workgroup>OpenID MODRNA Working Group</workgroup>
 	
@@ -487,13 +487,31 @@ W53am_UZZ3tZbFTIh557JICWKHlWj5uzeJXaw",
 
 		<section anchor="discovery" title='OP Discovery'>
 
-			<t>
-			The OpenID Connect User Questioning API can be discovered within the OpenID Provider Metadata thanks to <xref target='OpenID.Discovery'/>. 
-			The scope <spanx style="verb">question</spanx> MUST be present in the <spanx style="verb">scopes_supported</spanx> array. 
-			The URL of User Questioning Request Endpoint MUST be configured as the value of <spanx style="verb">user_questioning_request_endpoint</spanx>. 
-			The URL of User Questioning Polling Endpoint MUST be configured as the value of <spanx style="verb">user_questioning_polling_endpoint</spanx>. 
-			The array of supported authentication methods (i.e. <spanx style="verb">AMR</spanx>) MUST be configured as the value of <spanx style="verb">amr_list</spanx>. 
+			<t>	The OpenID Connect User Questioning API can be discovered within the OpenID Provider Metadata thanks to <xref target='OpenID.Discovery'/>. 
+
+			<list style="hanging">
+			<!---->
+			<t hangText="scopes_supported">
+			The scope <spanx style="verb">question</spanx> MUST be present in the <spanx style="verb">scopes_supported</spanx> array.
+			</t>
+			<!---->
+			<t hangText="user_questioning_request_endpoint">
+			The URL of User Questioning Request Endpoint MUST be configured as the value of <spanx style="verb">user_questioning_request_endpoint</spanx>.
+			</t>
+			<!---->
+			<t hangText="user_questioning_polling_endpoint">
+			The URL of User Questioning Polling Endpoint MUST be configured as the value of <spanx style="verb">user_questioning_polling_endpoint</spanx>.
+			</t>
+			<!---->
+			<t hangText="amr_list">
+			The array of supported authentication methods (i.e. <spanx style="verb">AMR</spanx>) MUST be configured as the value of <spanx style="verb">amr_list</spanx>.
+			</t>
+			<!---->
+			<t hangText="acr_list">
 			The array of supported levels of assurance (i.e. <spanx style="verb">ACR</spanx>) MUST be configured as the value of <spanx style="verb">acr_list</spanx>.
+			</t>
+			<!---->
+			</list>
 			</t>
 		
 		</section>
@@ -505,10 +523,10 @@ W53am_UZZ3tZbFTIh557JICWKHlWj5uzeJXaw",
 			The right for a Client to access the User Questioning API is the right to use the User Questioning API's scope. This scope value is <spanx style="verb">question</spanx>. 
 			</t>
 			<t>
-			If the Client wants to be notified of the User Questioning Response (cf. <xref target='Pushed-To-Client-Flow'/>), it MUST register its client_notification_endpoint. 
-			The client_notification_endpoint is a callback URL on the Client. 
+			If the Client wants to be notified of the User Questioning Response (cf. <xref target='Pushed-To-Client-Flow'/>), it MUST register its <spanx style="verb">client_notification_endpoint</spanx>. 
+			The <spanx style="verb">client_notification_endpoint</spanx> is a callback URL on the Client. 
 			If the client does not use the client notification, it MUST obtain the result by using the user questioning polling endpoint. 
-			Both mechanisms are mutual exclusive, i.e. a particular client_id can only be used with one of these mechanisms. 
+			Both mechanisms are mutual exclusive, i.e. a particular <spanx style="verb">client_id</spanx> can only be used with one of these mechanisms. 
 			</t>
 		
 		</section>
@@ -723,22 +741,14 @@ Content-Length: xxx
 			<section title='Successful Response'>
 			<t>
 			A successful response to the User Questioning Request is a HTTP 200 OK response. 
-			The response body contains JSON structure, with the following attributes.</t>
+			The response body contains JSON structure, with the following attribute.</t>
 			<t>
 			<list style="hanging">
 			<!---->
-			<t hangText="Location">	
-			OPTIONAL. 
-			The <spanx style="verb">Location</spanx> value is a unique polling URL for the Question on the User Questioning Polling Endpoint.
-			When the Client is configured to use the Pushed-to-Client flow, this URL MUST be ignored by the Client. 
-			When the Client is configured to use the Pull-by-Client flow, if present, this URL MUST be used by the Client. 
-			If absent, the Client MUST use the <spanx style="verb">question_id</spanx> contained in the header <spanx style="verb">Question_id</spanx> and use it as a parameter to the <spanx style="verb">user_questioning_polling_endpoint</spanx> retrieved using <xref target="OpenID.Discovery"></xref>.
-			</t>
-			<!---->
-			<t hangText="Question_id">
+			<t hangText="question_id">
 			MANDATORY. 
-			The <spanx style="verb">Question_id</spanx> contains the <spanx style="verb">question_id</spanx> value.  
-			The <spanx style="verb">Question_id</spanx> value is a case sensitive string.
+			The <spanx style="verb">question_id</spanx> attribute contains the <spanx style="verb">question_id</spanx> value.  
+			The <spanx style="verb">question_id</spanx> value is a case sensitive string.
 			</t>
 			<!---->		
 			</list>
@@ -763,8 +773,6 @@ Content-Type: application/json
 Content-Length: xxx
 
 {
-    "location": "https://server.example.com/questions_polling/984dcc7d3d4d4b0f9f80
-        22e344f9",
     "question_id": "984dcc7d3d4d4b0f9f8022e344f9"
 }
 </artwork>
@@ -823,7 +831,21 @@ Content-Length: xxx
 			
 		    <section title='Polling Request'>
 			
-			<t>The Client gets the User Questioning Response using HTTP GET.</t>
+			<t>The Client gets the User Questioning Response using HTTP GET on the <spanx style="verb">polling_uri</spanx>.</t>
+			<t>The <spanx style="verb">polling_uri</spanx> is the combination of the <spanx style="verb">user_questioning_polling_endpoint</spanx> and the <spanx style="verb">question_id</spanx> as a query string parameter.</t>
+			<t>
+			The <spanx style="verb">polling_uri</spanx> MUST contain the following query string parameter:
+			<list style="hanging">
+			<!---->
+			<t hangText="question_id">
+			MANDATORY. 
+			The <spanx style="verb">question_id</spanx> value contains the <spanx style="verb">question_id</spanx> received from the User Questioning Request endpoint. 
+			The <spanx style="verb">question_id</spanx> value is a case sensitive string. 
+			</t>
+			<!---->		
+			</list>
+			</t>			
+			
 			<t>
 			The HTTP GET request MUST contain the following headers:
 			<list style="hanging">
@@ -848,7 +870,7 @@ Content-Length: xxx
 The following is a non-normative example.
 </preamble>
 <artwork>
-GET /questions_polling/984dcc7d3d4d4b0f9f8022e344f9 HTTP/1.1
+GET /questions_polling?question_id=984dcc7d3d4d4b0f9f8022e344f9 HTTP/1.1
 Host: server.example.com
 Accept: application/json
 Authorization: Bearer SlAV32hkKG 
@@ -1586,7 +1608,10 @@ The following is a non-normative example.
 		<t>In errors, <spanx style="verb">error_code</spanx> attribute is renamed <spanx style="verb">error</spanx>, as in <xref target='RFC6749'>OAuth 2.0</xref></t>
 		<t>Suppression of the <spanx style="verb">error_info</spanx> structure</t>
 	</list></t>
-
+	<t>-09 <list style='symbols'>
+		<t>The URL used for polling is no longer constructed by the OP. The Client builds the <spanx style="verb">polling_uri</spanx> using the <spanx style="verb">user_questioning_polling_endpoint</spanx> and the <spanx style="verb">question_id</spanx></t>
+	</list></t>
+	
 	</section>
 
 </back>
