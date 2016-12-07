@@ -14,7 +14,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-user-questioning-api-09" ipr='none'>
+<rfc category="std" docName="draft-user-questioning-api-10" ipr='none'>
 <?rfc toc="yes" ?>
 <?rfc tocdepth="5" ?>
 <?rfc symrefs="yes" ?>
@@ -43,13 +43,15 @@
 	</address>
 	</author>
 	
-    <date day='1st' month='December' year='2016'/>
+    <date day='7' month='December' year='2016'/>
 	
     <workgroup>OpenID MODRNA Working Group</workgroup>
 	
 	<abstract>
-	<t>This specification defines a specific API used by a Client (i.e. Service Provider)
-	in order to question an End-User and get his Statement (i.e. his answer).</t>
+	<t>
+	This specification defines an API offered by an OpenID Provider (OP) that can be used by an application to send a question to a user of the OP. 
+	The user does not need to be interacting with the application when the question is asked. 
+	The user's answer is returned asynchronously, digitally-signed by the OP.</t>
 	</abstract>
 	
 </front>
@@ -57,7 +59,7 @@
   
 	<section anchor='Introduction' title='Introduction'>
 	<t>This specification defines a specific API used by a Client (i.e. Service Provider)
-	in order to question an End-User and get his Statement (i.e. his answer).</t>
+	in order to question an End-User and get his Statement (i.e. his answer). The question is a short interrogative sentence (e.g. "Which product do you want to order ?") and the statement (e.g. "the blue one") is selected amongst proposed statements (e.g. "none", "the blue one", "the red one") that are also short texts.</t>
 	<t>This API is specified as an OAuth 2.0-protected Resource Server accessible with an Access Token.</t>
 	<t>The Client can use the API defined in this specification whether the End-User is currently using the Client or not.</t>
 	<t>The User Questioning API is an asynchronous API. There are 2 main ways to get the End-User's Statement: the first one requires some polling of the API and the second requires the Client to expose a callback endpoint.</t>
@@ -100,7 +102,7 @@
 		<section title='Overview'>
 		
 		<t>
-		The User Questioning API enables a Client to address a question to an end-user and to get its digitally signed response, called User Statement Token. 
+		The User Questioning API enables a Client to address a question to an end-user and to get his response, called User Statement Token, digitally-signed by the OP. 
 		The Client addresses the question thanks to a <spanx style="verb">User Questioning Request</spanx> sent on the <spanx style="verb">User Questioning Request Endpoint</spanx>. 
 		The <spanx style="verb">User Statement Token</spanx> is contained in a <spanx style="verb">User Questioning Response</spanx>. 
 		</t>
@@ -140,7 +142,9 @@ These steps are illustrated in the following diagram:
 +--------+                                               +--------+
 </artwork>
 </figure>
-
+		<t>
+		About the "(2) User interactions to get the Questioned User's Statement" step, note that the way the OP obtains the Questioned User's Statement is out of the scope of this specification.
+		</t>
 		</section>
 	
 		<section title='User Questioning flows'>
@@ -183,9 +187,6 @@ These steps are illustrated in the following diagram:
 </artwork>
 </figure>
 			
-			<t>
-			About the "(2a) User interactions to get the Questioned User's Statement" step, note that the way the OP obtains the Questioned User's Statement is out of the scope of this specification.
-			</t>
 			</section>
 
 			
@@ -213,9 +214,6 @@ These steps are illustrated in the following diagram:
 </artwork>
 </figure>
 
-			<t>
-			About the "(2a) User interactions to get the Questioned User's Statement" step, note that the way the OP obtains the Questioned User's Statement is out of the scope of this specification.
-			</t>
 			</section>
 		</section>
 
@@ -322,9 +320,15 @@ These steps are illustrated in the following diagram:
 	The <spanx style="verb">question_displayed</spanx> value is a case sensitive string. 
 	</t>
 	<!---->
+	<t hangText="displayed_statements">
+	MANDATORY. List of possible statements displayed to the Questioned User. 
+	The <spanx style="verb">displayed_statements</spanx> MUST be the list of the exact statements displayed to the Questioned User.
+	The <spanx style="verb">displayed_statements</spanx> value is a JSON array of case sensitive strings.
+	</t>
+	<!---->
 	<t hangText="statement">
 	MANDATORY. Statement made by the User Questioning.
-	The <spanx style="verb">statement</spanx> SHALL be the exact statement made by the Questioned User.
+	The <spanx style="verb">statement</spanx> MUST be the exact statement made by the Questioned User.
 	The <spanx style="verb">statement</spanx> value is a case sensitive string.
 	</t>
 	<!---->
@@ -383,8 +387,9 @@ The following is a non-normative example of the set of Claims (the JWT Claims Se
     "sub":"g117YBtCZO3mAKPQKP8o",
     "user_id":"+33612345678",
     "user_id_type":"msisdn",
-    "question_displayed":"Do you allow ...?",
-    "statement":"Yes",
+    "question_displayed":"Which is ...?",
+    "displayed_statements":["blue","red","yellow"],
+    "statement":"red",
     "statement_date":1311282975,
     "used_acr":"2",
     "used_amr":["CLICK_OK"]
@@ -403,14 +408,15 @@ lvbl9pZCI6Ijk4NGRjYzdkM2Q0ZDRiMGY5ZjgwMjJlMzQ0ZjkiLCJpc3MiOiJodHRw
 czovL3NlcnZlci5leGFtcGxlLmNvbSIsImF1ZCI6WyJzOFYzd204SVhNVzZUYm9hel
 haWCJdLCJzdWIiOiJnMTE3WUJ0Q1pPM21BS1BRS1A4byIsInVzZXJfaWQiOiIrMzM2
 MTIzNDU2NzgiLCJ1c2VyX2lkX3R5cGUiOiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbG
-F5ZWQiOiJEbyB5b3UgYWxsb3cgLi4uPyIsInN0YXRlbWVudCI6IlllcyIsInN0YXRl
-bWVudF9kYXRlIjoxMzExMjgyOTc1LCJ1c2VkX2FjciI6IjIiLCJ1c2VkX2FtciI6Wy
-JDTElDS19PSyJdfQ.GX6qWvi9RtTmJ1ixqwuwjhF12FQe3SZk3V68zdw4vXLf008Ot
-uA-uXKZVkviyVLX33L9_-Dv6vsWbOydhXBnbiQm7u1pr3gDw-eRMJu_pK0w_O5cUV6
-R2k_lvL_6cgQucfYTzHcebN3XQbP2qj-DGKOi9Af5afwKLLy_2f5WaIMMO24aSUJkF
-9CU88ELEJfNMnhtyUX1YchNXr_-w7yqZ8m6fCSJ9_ETKwe4qnuR3GMp46IyhIBIyjO
-ZMKeq083j6y4hEXx6qh8VMYgOm5xKZIg9d12YqQVi7xbAmrGDLMrv1UYUz-EeRTUzJ
-UoBCyHaLMCPeTSRdoBRCPr2wUJZ_Q
+F5ZWQiOiJXaGljaCBpcyAuLi4_IiwiZGlzcGxheWVkX3N0YXRlbWVudHMiOlsiYmx1
+ZSIsInJlZCIsInllbGxvdyJdLCJzdGF0ZW1lbnQiOiJyZWQiLCJzdGF0ZW1lbnRfZG
+F0ZSI6MTMxMTI4Mjk3NSwidXNlZF9hY3IiOiIyIiwidXNlZF9hbXIiOlsiQ0xJQ0tf
+T0siXX0.bbDeU13rouABOOGrvIdQ4BN6GZtHvf1_oZEtGMrMoF9y2l66Dnyv_LL0ei
+p2eCT56N7nH8iACNoJawCG_O2nYfUfJTU8t-tu-MNLe9p69PtUQkxShFzvWXPQfri_
+OXQSs1zdtZ5NNVUX0ulPLm7QOniNFvY4sHwAkci4V1Czj72FGsxcUsUS6KUJRY7B2z
+nP5ykl7m75iCp0Ydx72NshWCWzQxDfXPdQpuJoB96OXDuuukYIrOY1yZOqkUGE6AqP
+cmMUJEWmT7OCHNi0Acsr0jU-fwxoAfYxQ641pW203PfVHXVRd06Ly0xHT3b50FM1jn
+JM4tq98j78zu1cxVc2ww
 ]]></artwork>
 </figure>
 
@@ -598,15 +604,14 @@ W53am_UZZ3tZbFTIh557JICWKHlWj5uzeJXaw",
 			<t hangText="question_to_display">
 			MANDATORY. 
 			The <spanx style="verb">question_to_display</spanx> is the question to be displayed to the Questioned User. 
-			The <spanx style="verb">question_to_display</spanx> SHALL be displayed with no modification to Questioned User. If some modifications occur, it MUST be due to restrictions imposed by the Questioning Method.  
+			The <spanx style="verb">question_to_display</spanx> SHOULD NOT be modified when displayed to Questioned User, the only exception being restrictions imposed by the Questioning Method.  
 			The <spanx style="verb">question_to_display</spanx> value is a case sensitive string.
 			</t>
 			<!---->
 			<t hangText="statements_to_display">
 			MANDATORY. 
 			The <spanx style="verb">statements_to_display</spanx> is the list of possible statements to be displayed to the Questioned User. 
-			The <spanx style="verb">statements_to_display</spanx> SHALL be displayed with no modification to Questioned User. 
-			If some modifications occur, it MUST be due to restrictions imposed by the Questioning Method. 
+			The <spanx style="verb">statements_to_display</spanx> SHOULD NOT be modified when displayed to Questioned User, the only exception being restrictions imposed by the Questioning Method.
 			The <spanx style="verb">statements_to_display</spanx> value is a JSON array of case sensitive strings.
 			</t>
 			<!---->
@@ -944,20 +949,21 @@ Content-Type: application/json
 Content-Length: xxx
 
 {
-    "user_statement_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImt
-    pZCI6ImsyYmRjIn0.eyJxdWVzdGlvbl9pZCI6Ijk4NGRjYzdkM2Q0ZDRiMGY5Zj
-    gwMjJlMzQ0ZjkiLCJpc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsI
-    mF1ZCI6WyJzOFYzd204SVhNVzZUYm9helhaWCJdLCJzdWIiOiJnMTE3WUJ0Q1pP
-    M21BS1BRS1A4byIsInVzZXJfaWQiOiIrMzM2MTIzNDU2NzgiLCJ1c2VyX2lkX3R
-    5cGUiOiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbGF5ZWQiOiJEbyB5b3UgYWxsb3
-    cgLi4uPyIsInN0YXRlbWVudCI6IlllcyIsInN0YXRlbWVudF9kYXRlIjoxMzExM
-    jgyOTc1LCJ1c2VkX2FjciI6IjIiLCJ1c2VkX2FtciI6WyJDTElDS19PSyJdfQ.G
-    X6qWvi9RtTmJ1ixqwuwjhF12FQe3SZk3V68zdw4vXLf008OtuA-uXKZVkviyVLX
-    33L9_-Dv6vsWbOydhXBnbiQm7u1pr3gDw-eRMJu_pK0w_O5cUV6R2k_lvL_6cgQ
-    ucfYTzHcebN3XQbP2qj-DGKOi9Af5afwKLLy_2f5WaIMMO24aSUJkF9CU88ELEJ
-    fNMnhtyUX1YchNXr_-w7yqZ8m6fCSJ9_ETKwe4qnuR3GMp46IyhIBIyjOZMKeq0
-    83j6y4hEXx6qh8VMYgOm5xKZIg9d12YqQVi7xbAmrGDLMrv1UYUz-EeRTUzJUoB
-    CyHaLMCPeTSRdoBRCPr2wUJZ_Q"
+    "user_statement_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtp
+    ZCI6ImsyYmRjIn0.eyJxdWVzdGlvbl9pZCI6Ijk4NGRjYzdkM2Q0ZDRiMGY5Zjgw
+    MjJlMzQ0ZjkiLCJpc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsImF1
+    ZCI6WyJzOFYzd204SVhNVzZUYm9helhaWCJdLCJzdWIiOiJnMTE3WUJ0Q1pPM21B
+    S1BRS1A4byIsInVzZXJfaWQiOiIrMzM2MTIzNDU2NzgiLCJ1c2VyX2lkX3R5cGUi
+    OiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbGF5ZWQiOiJXaGljaCBpcyAuLi4_Iiwi
+    ZGlzcGxheWVkX3N0YXRlbWVudHMiOlsiYmx1ZSIsInJlZCIsInllbGxvdyJdLCJz
+    dGF0ZW1lbnQiOiJyZWQiLCJzdGF0ZW1lbnRfZGF0ZSI6MTMxMTI4Mjk3NSwidXNl
+    ZF9hY3IiOiIyIiwidXNlZF9hbXIiOlsiQ0xJQ0tfT0siXX0.bbDeU13rouABOOGr
+    vIdQ4BN6GZtHvf1_oZEtGMrMoF9y2l66Dnyv_LL0eip2eCT56N7nH8iACNoJawCG
+    _O2nYfUfJTU8t-tu-MNLe9p69PtUQkxShFzvWXPQfri_OXQSs1zdtZ5NNVUX0ulP
+    Lm7QOniNFvY4sHwAkci4V1Czj72FGsxcUsUS6KUJRY7B2znP5ykl7m75iCp0Ydx7
+    2NshWCWzQxDfXPdQpuJoB96OXDuuukYIrOY1yZOqkUGE6AqPcmMUJEWmT7OCHNi0
+    Acsr0jU-fwxoAfYxQ641pW203PfVHXVRd06Ly0xHT3b50FM1jnJM4tq98j78zu1c
+    xVc2ww"
 }
 </artwork>
 </figure>
@@ -1066,15 +1072,16 @@ Content-Length: xxx
     gwMjJlMzQ0ZjkiLCJpc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsI
     mF1ZCI6WyJzOFYzd204SVhNVzZUYm9helhaWCJdLCJzdWIiOiJnMTE3WUJ0Q1pP
     M21BS1BRS1A4byIsInVzZXJfaWQiOiIrMzM2MTIzNDU2NzgiLCJ1c2VyX2lkX3R
-    5cGUiOiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbGF5ZWQiOiJEbyB5b3UgYWxsb3
-    cgLi4uPyIsInN0YXRlbWVudCI6IlllcyIsInN0YXRlbWVudF9kYXRlIjoxMzExM
-    jgyOTc1LCJ1c2VkX2FjciI6IjIiLCJ1c2VkX2FtciI6WyJDTElDS19PSyJdfQ.G
-    X6qWvi9RtTmJ1ixqwuwjhF12FQe3SZk3V68zdw4vXLf008OtuA-uXKZVkviyVLX
-    33L9_-Dv6vsWbOydhXBnbiQm7u1pr3gDw-eRMJu_pK0w_O5cUV6R2k_lvL_6cgQ
-    ucfYTzHcebN3XQbP2qj-DGKOi9Af5afwKLLy_2f5WaIMMO24aSUJkF9CU88ELEJ
-    fNMnhtyUX1YchNXr_-w7yqZ8m6fCSJ9_ETKwe4qnuR3GMp46IyhIBIyjOZMKeq0
-    83j6y4hEXx6qh8VMYgOm5xKZIg9d12YqQVi7xbAmrGDLMrv1UYUz-EeRTUzJUoB
-    CyHaLMCPeTSRdoBRCPr2wUJZ_Q"
+    5cGUiOiJtc2lzZG4iLCJxdWVzdGlvbl9kaXNwbGF5ZWQiOiJXaGljaCBpcyAuLi
+    4_IiwiZGlzcGxheWVkX3N0YXRlbWVudHMiOlsiYmx1ZSIsInJlZCIsInllbGxvd
+    yJdLCJzdGF0ZW1lbnQiOiJyZWQiLCJzdGF0ZW1lbnRfZGF0ZSI6MTMxMTI4Mjk3
+    NSwidXNlZF9hY3IiOiIyIiwidXNlZF9hbXIiOlsiQ0xJQ0tfT0siXX0.bbDeU13
+    rouABOOGrvIdQ4BN6GZtHvf1_oZEtGMrMoF9y2l66Dnyv_LL0eip2eCT56N7nH8
+    iACNoJawCG_O2nYfUfJTU8t-tu-MNLe9p69PtUQkxShFzvWXPQfri_OXQSs1zdt
+    Z5NNVUX0ulPLm7QOniNFvY4sHwAkci4V1Czj72FGsxcUsUS6KUJRY7B2znP5ykl
+    7m75iCp0Ydx72NshWCWzQxDfXPdQpuJoB96OXDuuukYIrOY1yZOqkUGE6AqPcmM
+    UJEWmT7OCHNi0Acsr0jU-fwxoAfYxQ641pW203PfVHXVRd06Ly0xHT3b50FM1jn
+    JM4tq98j78zu1cxVc2ww"
 }
 </artwork>
 </figure>
