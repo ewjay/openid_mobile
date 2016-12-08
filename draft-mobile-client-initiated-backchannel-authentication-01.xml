@@ -357,7 +357,7 @@ CIBA notification is illustrated in the following diagram:
             <t hangText="auth_req_id">
               REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP. 
               The <spanx style="verb">auth_req_id</spanx> will be included too in the token notification when Notification mode is used to allow the RP correlate the authentication request and the received tokens. 
-              It will not be sent wheh using Polling Mode.
+              It will not be included in the token response when using Polling Mode.
              </t>
             <t hangText="expires in">
               REQUIRED. Expiration time of the "auth_req_id" in seconds since the auth_request was received. When using the Polling mode, the auth_req_id will be considered overdue and 
