@@ -244,13 +244,12 @@ CIBA notification is illustrated in the following diagram:
             </t>
             <t hangText="client_req_id">
               REQUIRED. It is a unique id provided by the RP that will be used by the OpenID Provider as a bearer 
-              token to authenticate the callback request to send the tokens to the RP.
+              token to authenticate the callback request to send the tokens to the RP (Notification Mode).
             </t>
             <t>
-              At the time of registering the Client at the OpenID Provider, 
-              the RP must provide the information about whether receiving the token 
-              response through a callback to the "client_notification_endpoint" or through a polling mechanism where the RP MUST poll 
-              the OpenID Provider repeatedly as defined in <xref target="successful_authentication_request_acknowdlegment" format="title"/>
+              At the time of registering the Client at the OpenID Provider, the RP must provide the information about whether receiving the token 
+              response through a callback to the "client_notification_endpoint" (Notification mode) or through a polling mechanism (Polling mode) 
+              where the RP MUST poll the OpenID Provider repeatedly as defined in <xref target="successful_authentication_request_acknowdlegment" format="title"/>
               until the end-user completes the approval process.
             </t>
             <t hangText="acr_values">
@@ -357,13 +356,15 @@ CIBA notification is illustrated in the following diagram:
           <list style="hanging">
             <t hangText="auth_req_id">
               REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP. 
-              The <spanx style="verb">auth_req_id</spanx> will be sent too in the token through the "client_notification_endpoint" to allow the RP to correlate the authentication request and the received tokens.            
+              The <spanx style="verb">auth_req_id</spanx> will be included too in the token notification when Notification mode is used to allow the RP correlate the authentication request and the received tokens. 
+              It will not be sent wheh using Polling Mode.
              </t>
             <t hangText="expires in">
-              REQUIRED. Expiration time of the Authentication in seconds since the auth_request was received.
+              REQUIRED. Expiration time of the "Authentication" in seconds since the auth_request was received.
              </t>
             <t hangText="interval">
-              OPTIONAL. The minimum amount of time in seconds that the client SHOULD wait between polling requests to the token endpoint. This parameter will only be present in case of the authentication request doesn't take the "client_notification_endpoint" parameter or there are not any callback URI registered as "client_notification_endpoint" for the RP.
+              OPTIONAL. The minimum amount of time in seconds that the client SHOULD wait between polling requests to the token endpoint. 
+              This parameter will only be present in case of there is not any callback URI registered as "client_notification_endpoint", that is in case the RP is using the Polling mode. 
              </t>
           </list>
         </t>
@@ -392,7 +393,7 @@ CIBA notification is illustrated in the following diagram:
       <section anchor="auth_request_acknowdlegment_validation" title="Authentication Request Acknowledgment Validation">
         <t>
           If the client (RP) receives an HTTP 200 OK, it MUST validate that all the required parameters are received. The RP should keep the authentication request identifier 
-          <spanx style="verb">auth_req_id</spanx> and the expiration time in order to match it with token response.
+          <spanx style="verb">auth_req_id</spanx> in order to match it with token response.
         </t>
         <t>
           The client will have to keep the expiration time as well to be able to discard the authentication request acknowledgment.
@@ -413,14 +414,15 @@ CIBA notification is illustrated in the following diagram:
     <section anchor="getting_transaction_result" title="Getting the Transaction Result">
       <section anchor="token_request" title="Token Request Using Polling Mechanism">
         <t>
-          When the authentication request doesn't include the "client_notification_endpoint" parameter or there are not any callback URI registered for this notification endpoint for this RP in the Identity Provider, the client must poll the token endpoint until the end-user grants or denies the request.
+          When the Service Provider didn't register any callback URI for the "client_notification_endpoint" in the Identity Provider, the Polling mode to get the token is set. 
+          The RP must poll the token endpoint untile the end-user grants or denies the request.
         </t>
         <t>
           The client polls at reasonable interval which MUST NOT exceed the minimum interval provided by the OpenID Provider via the "interval" parameter (if provided).
         </t>
         <t>
-          The client makes a "POST" request to the token endpoint by sending the following parameters using the "application/x-www-form-urlencoded"
-          format with a character encoding of UTF-8 in the HTTP request entity-body:
+          The client makes a "POST" request to the token endpoint by sending the following parameters using the "application/x-www-form-urlencoded" format with a character encoding of UTF-8 
+          in the HTTP request entity-body:
         </t>
         <t>
           <list style="hanging">
@@ -428,7 +430,7 @@ CIBA notification is illustrated in the following diagram:
               REQUIRED.  Value MUST be set to "urn:openid:params:modrna:grant-type:backchannel_request".
              </t>
             <t hangText="auth_req_id">
-              REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP. The <spanx style="verb">auth_req_id</spanx> will be sent too in the <xref target="token_response" format="title" /> to allow the RP to correlate the authentication request and the received tokens (id_token and access_token).
+              REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP.
              </t>
           </list>
         </t>    
@@ -450,11 +452,10 @@ CIBA notification is illustrated in the following diagram:
         </figure>
       </section>
 
-      <section anchor="token_response" title="Successful Token Polling">
+      <section anchor="token_response" title="Successful Token Polling Response">
         <t>
-          If the "client_notification_endpoint" is not present the OpenID Provider will return the token as an HTTP response to the RP's poll request. 
-          If the user is well authenticated, the OpenID Provider will return a succesful response that includes an ID Token and an Access Token. 
-          Otherwise it responses with an error as defined in <xref target="token_error_response" format="title"/>.
+          The OpenID Provider will return the token as an HTTP response to the RP's poll request. If the user is well authenticated, the OpenID Provider 
+          will return a succesful response that includes an ID Token and an Access Token. Otherwise it responses with an error as defined in <xref target="token_error_response" format="title"/>.
         </t>      
         <figure>
           <preamble>The following is a non-normative example of a token response sending as an HTTP 200 OK Response to the RP's poll request
@@ -490,10 +491,15 @@ CIBA notification is illustrated in the following diagram:
       <section anchor="token_notification" title="Token Notification">
         <section anchor="issuing_successful_token" title="Successful Token Notification">
           <t>
-            When the client is registered for client notifications (through "client_notification_endpoint"), the OpenID Provider will send the token response making a "POST HTTP Request" to the RP's client_notification_endpoint. If the user is well authenticated, the OpenID Provider returns a successful response that includes an ID Token and an Access Token and a Refresh Token. If the request failed client authentication or is invalid, the OpenID Provider sends an error_message as described in <xref target="token_error_response" format="title"/>.
+            When the client is registered for client notifications (Notification mode), the OpenID Provider will send the token response making a "POST HTTP Request"  
+            to the RP's client_notification_endpoint. If the user is well authenticated, the OpenID Provider returns a successful response that includes an ID Token 
+            and an Access Token and a Refresh Token. If the request failed client authentication or is invalid, the OpenID Provider sends an error_message as described 
+            in <xref target="token_error_response" format="title"/>.
           </t>
           <t>
-            All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received in the request as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref>. The response uses the application/json media type.
+            All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received 
+            in the request as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref>. The response uses the 
+            application/json media type.
           </t>
           <figure>
             <preamble>The following is a non-normative example of a token response sending as a HTTP POST request to the callback uri 
@@ -550,10 +556,10 @@ CIBA notification is illustrated in the following diagram:
         <t>
           <list style="hanging">
             <t hangText="authorization_pending">
-              The authorization request is still pending as the end-user hasn't yet been authenticated.
+              The authorization request is still pending as the end-user hasn't yet been authenticated. It only applies when using Polling mode.
             </t>
             <t hangText="slow_down">
-              The client is polling too quickly and should back off at a reasonable rate.
+              The client is polling too quickly and should back off at a reasonable rate. It onlye applies when using Polling mode.
             </t>
           </list>
         </t>          
