@@ -49,9 +49,10 @@
     <abstract>    
       <t>
         OpenID Connect MODRNA Client initiated Backchannel Authentication Flow 1.0 is an authentication 
-        flow of the <xref target="OpenID.Core">OpenID Connect Core 1.0</xref> specification intended to 
-        allow RP's who already know the identifier of an end-user to initiate an authentication flow to request 
-        user authentication.
+        flow like <xref target="OpenID.Core">OpenID Connect Core 1.0</xref>. Unlike OpenID Connect there is a
+        direct Relying Party to OpenID Provider communication without redirects through the user's browser.
+        This specification allows an Relying Party that knows the user's identitfier to obtain tokens from the
+        OpenID Provider. The user consent is given at the user's Authentication Device mediated by the OpenID Provider.
       </t>
     </abstract>
   </front>
@@ -73,10 +74,20 @@
         The MODRNA Client initiated Backchannel Authentication Flow specifies a new authentication flow,
         by means of which the RP's that know the user identifier they want to authenticate (e-mail, phone number),
         will be able to initiate an interaction flow to authenticate their users without having end-user interaction
-        from the consumption device.
+        from the consumption device. The flow is a direct communication from the RP to the OpenID Provider without redirect through the
+        user's browser (consumption device).
       </t>
       <t>
-        <spanx style="strong">Remark:</spanx> As there is no consumption device through which the end-user is interacting with the Relying Party, 
+        This specification does not change the semantic of the OpenID Connect Authentication flow. 
+        It introduces a new endpoint to which the authentication request is posted.
+        It indroduces a new asynchronous method for authentication result delivery.
+        It does no introduce new scope values nor does it change the semantic of standard OpenID Connect parameters.
+        Some OpenID Connect parameters which are required in a redirect based protocol are meaningless in this server-to-server
+        communication.
+        A few new parameters are introduced e.g. those required for the asynchronous authentication result delivery.
+      </t>
+      <t>
+        <spanx style="strong">Remark:</spanx> As the user has no consumption device through which the user is interacting with the Relying Party, 
         this flow will not cause any user credentials to go through the RP. So it should be highlighted that traditional username/password 
         authentication could not be used because only out-band mechanisms will work in conjunction with this flow.
       </t>
