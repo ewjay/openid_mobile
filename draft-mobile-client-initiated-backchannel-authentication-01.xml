@@ -360,7 +360,8 @@ CIBA notification is illustrated in the following diagram:
               It will not be sent wheh using Polling Mode.
              </t>
             <t hangText="expires in">
-              REQUIRED. Expiration time of the "Authentication" in seconds since the auth_request was received.
+              REQUIRED. Expiration time of the "auth_req_id" in seconds since the auth_request was received. When using the Polling mode, the auth_req_id will be considered overdue and 
+              the OpenID Provider will return an error to indicate it, see <xref target="token_error_response" format="title"/>.
              </t>
             <t hangText="interval">
               OPTIONAL. The minimum amount of time in seconds that the client SHOULD wait between polling requests to the token endpoint. 
@@ -555,11 +556,17 @@ CIBA notification is illustrated in the following diagram:
         </t>
         <t>
           <list style="hanging">
+            <t hangText="unknown_auth_req_id">
+              The OP doesn't know the auth_req_id that the RP is asking for.
+            </t>
             <t hangText="authorization_pending">
               The authorization request is still pending as the end-user hasn't yet been authenticated. It only applies when using Polling mode.
             </t>
             <t hangText="slow_down">
-              The client is polling too quickly and should back off at a reasonable rate. It onlye applies when using Polling mode.
+              The client is polling too quickly and should back off at a reasonable rate. It only applies when using Polling mode.
+            </t>
+            <t hangText="expired_token">
+              The auth_req_id has expired. The client will need to make a new Authentication Request.
             </t>
           </list>
         </t>          
@@ -567,8 +574,28 @@ CIBA notification is illustrated in the following diagram:
 
       <section anchor="auth_error_response" title="Authentication Error Response">
         <t>
-          TBD
+          An Authentication Error Response is an OAuth 2.0 Authorization Error Response message returned from the OP's Authorization Endpoint 
+          in response to the Authorization Request message sent by the RP.
         </t>
+        <t>  
+          If the End-User denies the request or the End-User authentication fails, the OP (Authorization Server) informs the RP (Client) by using 
+          the Error Response parameters defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>(HTTP errors unrelated to RFC 6749 
+          are returned to the User Agent using the appropriate HTTP status code.)
+        </t>
+        <t>
+          In addition to the error codes defined in Section 4.1.2.1 of OAuth 2.0, this specification also defines the following error codes:
+        </t>
+        <t>
+          <list style="hanging">
+            <t hangText="unknown_user_id">
+              The OpenID Provider is not able to figure out which user has to be authenticated by means of the hint provided in the request (login_hint_token, 
+              id_token_hint or login_hint).
+            </t>
+            <t hangText="expired_token">
+              The login_hint_token or the id_token_hint provided in the authentication request is expired, so no valid.
+            </t>
+          </list>
+        </t>          
       </section>
     </section>
 
