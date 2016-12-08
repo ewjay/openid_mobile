@@ -242,7 +242,7 @@ CIBA notification is illustrated in the following diagram:
               REQUIRED. OpenID Connect implements authentication as an extension to the OAuth 2.0 by including the 
               "openid" scope value in the Authorization Request.
             </t>
-            <t hangText="client_req_id">
+            <t hangText="client_notification_token">
               REQUIRED. It is a unique id provided by the RP that will be used by the OpenID Provider as a bearer 
               token to authenticate the callback request to send the tokens to the RP (Notification Mode).
             </t>
@@ -288,7 +288,7 @@ CIBA notification is illustrated in the following diagram:
               
               {
                "scope": "openid",
-               "client_req_id": "8d67dc78-7faa-4d41-aabd-67707b374255",
+               "client_notification_token": "8d67dc78-7faa-4d41-aabd-67707b374255",
                "acr_values": "mod-mf",
                "login_hint_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
                   OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
@@ -505,7 +505,7 @@ CIBA notification is illustrated in the following diagram:
           <figure>
             <preamble>The following is a non-normative example of a token response sending as a HTTP POST request to the callback uri 
               specified in the "client_notification_endpoint" parameter by the RP (with line wraps within values for display purposes only).
-              The request is authenticated through a bearer token that is the value of the "client_req_id" provided by the RP in the Authentication Request.
+              The request is authenticated through a bearer token that is the value of the "client_notification_token" provided by the RP in the Authentication Request.
             </preamble>
             <artwork>
               <![CDATA[
@@ -539,7 +539,7 @@ CIBA notification is illustrated in the following diagram:
           <t>
             The Client Notification Endpoint is set by the RP during the registration phase. This endpoint is intended to receive
             the result of the authentication (id_token, access_token and refresh token) and it requires the request to be authenticated 
-            using a "bearer token" created by the RP and sent to the OP in the Authentication request as the value of the parameter "client_req_id".
+            using a "bearer token" created by the RP and sent to the OP in the Authentication request as the value of the parameter "client_notification_token".
           </t>
           <t>
             Communication with the Client Notification Authentication Endpoint MUST utilize TLS. See Section 16.17 <xref target="OpenID.Core"/> 
