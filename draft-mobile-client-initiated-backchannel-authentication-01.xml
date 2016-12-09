@@ -42,7 +42,7 @@
     </author>
 
 
-    <date day="8" month="December" year="2016"/>
+    <date day="9" month="December" year="2016"/>
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -243,7 +243,7 @@ CIBA notification is illustrated in the following diagram:
               "openid" scope value in the Authorization Request.
             </t>
             <t hangText="client_notification_token">
-              REQUIRED. It is a unique id provided by the RP that will be used by the OpenID Provider as a bearer 
+              REQUIRED if the RP is registered to be notified. It is a unique id provided by the RP that will be used by the OpenID Provider as a bearer 
               token to authenticate the callback request to send the tokens to the RP (Notification Mode).
             </t>
             <t>
