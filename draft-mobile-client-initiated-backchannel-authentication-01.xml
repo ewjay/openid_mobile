@@ -11,7 +11,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-mobile-client-initiated-backchannel-authentication-01" ipr="none">
+<rfc category="std" docName="draft-mobile-client-initiated-backchannel-authentication-02" ipr="none">
 
   <?rfc toc="yes" ?>
   <?rfc tocdepth="5" ?>
@@ -787,16 +787,42 @@
         this specification.
       </t>
     </section>
-
-    <section anchor="History" title="Document History">
+    <section anchor='History' title='Document History'>
       <t>[[ To be removed from the final specification ]]</t>
-
-      <t>-01 <list style="symbols">
+      <t>-01 
+        <list style='symbols'>
           <t>Initial draft</t>
-          <t>Added OIDF Standard Notice </t>
-          </list>
+        </list>
       </t>
-        
+      <t>-02 
+        <list style='symbols'>
+          <t>Second draft</t>
+          <t>Authentication Request Section: Improving the definition of “client_req_id”</t>
+          <t>Successful Authentication Request Acknowledgement:
+              a.  auth_req_id: to explain that it won’t be present in token when using Polling mode
+              b.  interval: fixing a misleading description
+          </t>
+          <t>Token Request Using Polling Mechanism: 
+              a.  Fixing a misleading description about the inclusion of “client_notification_endpoint” in the authentication request. 
+                  It doesn’t make sense since Notification or Polling mode is defined at the registration time and “client_notification_endpoint” 
+                  is not sent in the authentication request anymore.
+              b.  auth_requ_id: fixing misleading description.
+          </t>
+          <t>Changing Successful Token Polling to Successful Token Polling Response</t>
+          <t>Improving descriptions in Successful Token Polling Response and Successful Token Notification</t>
+          <t>expires_in parameter from Successful Authentication Request Acknowledgement refers to the auth_req_id that will be considered overdue 
+             to make new polling requests after that time.
+          </t>
+          <t>New unknown_auth_req_id and expired_token erros in Token Error Response</t>
+          <t>Authentication Error Response section is defined and incorporates two new errors: “unknown_user_id” when OP can’t figure out the user to 
+             be authenticated by means of the hint and “expired_token” to indicate that the login_hint_token or id_token_hint provided is expired.
+          </t>
+          <t>Changing “client_req_id” to “client_notification_token”</t>
+          <t>New overview section</t>
+        </list>
+      </t>	    
+    </section>
+
     </section>
   </back>
 </rfc>
