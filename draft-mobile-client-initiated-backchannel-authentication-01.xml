@@ -407,7 +407,24 @@ CIBA notification is illustrated in the following diagram:
 
     <section anchor="auth_server_obtains_consent" title="OpenID Provider Obtains End-user Consent/Authorization">
       <t>
-        Once the End-User is authenticated, the OpenID Provider MUST obtain an authorization decision before releasing information to the Relying Party. When using the Client initiated Backchannel Authentication flow, there is not any interactive dialogue between the OpenID Provider and the end-user through the consumption device, so the consent establishing only can take place via the authentication device or by establishing consent via conditions for processing the request or other means (for example, via previous administrative consent). Sections 2 and 5.3 of <xref target="OpenID.Core"/> describe information release mechanisms.
+        After the OP has validated the Authentication Request and the OP identifies the user's Authentication Device.
+        The OP chooses a channel to best contact the AD and fullfil the RP's requirements regarding acr_values.
+      </t>
+      <t>
+        Once the End-User is authenticated, the OpenID Provider MUST obtain an authorization decision before 
+        releasing information to the Relying Party. As in OAuth2 and as in OpenID Connect the OP informs the user
+        about the current Authentication Request e.g.: Which Relying Party is requesting which information and which
+        access.
+      </t>
+      <t>
+        When using the Client initiated Backchannel Authentication flow, 
+        there is not any interactive dialogue between the OpenID Provider and the end-user through the user's consumption device. 
+        There might be an agent of the RP involved who transfers the binding_message to the user.
+      </t>
+      <t>
+        The consent establishing only can take place via the authentication device or by establishing consent 
+        via conditions for processing the request or other means (for example, via previous administrative consent). 
+        Sections 2 and 5.3 of <xref target="OpenID.Core"/> describe information release mechanisms.
       </t>
       <t>
         NOTE: the current version of the Client initiated Backchannel Authentication Flow spec. does not specify any mechanism to use the authentication device to obtain the end-user consent.
