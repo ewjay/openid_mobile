@@ -458,16 +458,15 @@ CIBA notification is illustrated in the following diagram:
           <preamble>The following is a non-normative example of a token request (with line wraps within values for display purposes only).
           </preamble>
           <artwork>
-            <![CDATA[
-                POST /token HTTP/1.1
-                Host: server.example.com
-                Content-Type: application/x-www-form-urlencoded
-                Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
-                {
-                  grant_type="urn:openid:params:modrna:grant-type:backchannel_request"
-                  &auth_req_id=1c266114-a1be-4252-8ad1-04986c5b9ac1
-                }
-            ]]>
+        <![CDATA[
+            POST /token HTTP/1.1
+            Host: server.example.com
+            Content-Type: application/x-www-form-urlencoded
+            Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+                
+            grant_type="urn:openid:params:modrna:grant-type:backchannel_request"
+              &auth_req_id=1c266114-a1be-4252-8ad1-04986c5b9ac1
+        ]]>
           </artwork>
         </figure>
       </section>
