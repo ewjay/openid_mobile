@@ -144,13 +144,11 @@
           <list style="hanging">
             <t hangText="Notification mode">
               When using Notification mode, the OP will sent a request with the tokens to a callback uri previously 
-              registered by the Client. If Polling mode has been set, the Client will poll the token endpoint to get 
-              a response with the tokens.
+              registered by the Client.
             </t>
             <t hangText="Polling mode">
               If Polling mode has been set, the Client will poll the token endpoint to get a response with the tokens. 
-              Clients MUST having into account the interval attribute they receive in the authentication response that 
-              establish the pace with they have to make the polling requests to avoid the OP's server flooding. 
+              Clients MUST take the "interval" attribute into account that they received in the authentication response.
             </t>
           </list>
         </t>
