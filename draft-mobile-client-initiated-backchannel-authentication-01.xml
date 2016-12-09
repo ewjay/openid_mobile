@@ -33,11 +33,17 @@
       </address>
     </author>
 
-
     <author fullname="Florian Walter" initials="F." surname="Walter">
       <organization abbrev="">Deutsche Telekom AG</organization>
       <address>
         <email>F.Walter@telekom.de</email>
+      </address>
+    </author>
+
+    <author fullname="Axel Nennker" initials="A." surname="Nennker">
+      <organization abbrev="">Deutsche Telekom AG</organization>
+      <address>
+        <email>axel.nennker@telekom.de</email>
       </address>
     </author>
 
