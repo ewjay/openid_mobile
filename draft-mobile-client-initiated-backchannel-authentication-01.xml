@@ -125,15 +125,37 @@
     </section>
     <section anchor="overview" title="Overview">
       <t>
-        This specification defines a new authentication flow based on <xref target="OpenID.Core"/>.
+        The Client Initiated Backchannel Flow enables a Client to initiate the authentication of an end-user 
+        by means of out-band mechanisms.                 
       </t>
       <t>
-        It introduces a new endpoint used to initiate user authentication using a backchannel request. 
-        This new endpoint utilizes existing Authentication Requests and defines new parameters as appropriate. 
-        For example, it re-uses the scope parameter but it omits nonce, state and redirect_uri, which are needed to 
-        perform and secure authentication transactions on the front channel.
+      <list style="numbers">
+		    <t>
+          The Client shall make an "HTTP POST" request to a new endpoint called bc-authorize to ask for the end-user 
+          authentication. 
+		    </t>
+		    <t>
+          The OP will respond inmediatly with a unique identifier that identifies that authentication while it tries 
+          to authenticate the user in the background. 
+		    </t>
+		    <t>
+          The Client will receive the id_token, access_token and refresh_token by means of either Polling 
+          or Notification mechanisms, this choice MUST be established by the Client at the registration time.
+          <list style="hanging">
+            <t hangText="Notification mode">
+              When using Notification mode, the OP will sent a request with the tokens to a callback uri previously 
+              registered by the Client. If Polling mode has been set, the Client will poll the token endpoint to get 
+              a response with the tokens.
+            </t>
+            <t hangText="Polling mode">
+              If Polling mode has been set, the Client will poll the token endpoint to get a response with the tokens. 
+              Clients MUST having into account the interval attribute they receive in the authentication response that 
+              establish the pace with they have to make the polling requests to avoid the OP's server flooding. 
+            </t>
+          </list>
+        </t>
+		  </list>
       </t>
-
 
    <section title='Polling versus Notification'>
 
@@ -148,61 +170,61 @@
         Otherwise the authentication response is retrieved by the RP by polling the OP's token endpoint using a new grant type. 
       </t>
 
-<figure>
-<preamble>
-CIBA polling is illustrated in the following diagram:
-</preamble>
-<artwork>
-+--------+                                               +--------+
-|        |                                               |        |
-|        |&lt;---(1) CIBA Request--------------------------&gt;|        |
-|        |                                               |        |
-|        |  +--------+                                   |        |
-|        |  |        |                                   |        |
-| Client |  |  AD    |&lt;--(2) User interactions ---------&gt;|   OP   |
-|        |  |        |                                   |        |
-|        |  +--------+                                   |        |
-|        |                                               |        |
-|        |----(3a) CIBA Polling Request-----------------&gt;|        |
-|        |&lt;---(3b) CIBA Polling Response-----------------|        |
-|        |                                               |        |
-+--------+                                               +--------+
-</artwork>
-</figure>
+      <figure>
+        <preamble>
+        CIBA polling is illustrated in the following diagram:
+        </preamble>
+        <artwork>
+        +--------+                                               +--------+
+        |        |                                               |        |
+        |        |&lt;---(1) CIBA Request--------------------------&gt;|        |
+        |        |                                               |        |
+        |        |  +--------+                                   |        |
+        |        |  |        |                                   |        |
+        | Client |  |  AD    |&lt;--(2) User interactions ---------&gt;|   OP   |
+        |        |  |        |                                   |        |
+        |        |  +--------+                                   |        |
+        |        |                                               |        |
+        |        |----(3a) CIBA Polling Request-----------------&gt;|        |
+        |        |&lt;---(3b) CIBA Polling Response-----------------|        |
+        |        |                                               |        |
+        +--------+                                               +--------+
+        </artwork>
+      </figure>
 
-<figure>
-<preamble>
-CIBA notification is illustrated in the following diagram:
-</preamble>
-<artwork>
-+--------+                                               +--------+
-|        |                                               |        |
-|        |&lt;---(1) CIBA Request--------------------------&gt;|        |
-|        |                                               |        |
-|        |  +--------+                                   |        |
-|        |  |        |                                   |        |
-| Client |  |  AD    |&lt;--(2) User interactions ---------&gt;|   OP   |
-|        |  |        |                                   |        |
-|        |  +--------+                                   |        |
-|        |                                               |        |
-|        |&lt;---(3) CIBA Notification Callback ------------|        |
-|        |                                               |        |
-+--------+                                               +--------+
-</artwork>
-</figure>
+      <figure>
+        <preamble>
+        CIBA notification is illustrated in the following diagram:
+        </preamble>
+        <artwork>
+        +--------+                                               +--------+
+        |        |                                               |        |
+        |        |&lt;---(1) CIBA Request--------------------------&gt;|        |
+        |        |                                               |        |
+        |        |  +--------+                                   |        |
+        |        |  |        |                                   |        |
+        | Client |  |  AD    |&lt;--(2) User interactions ---------&gt;|   OP   |
+        |        |  |        |                                   |        |
+        |        |  +--------+                                   |        |
+        |        |                                               |        |
+        |        |&lt;---(3) CIBA Notification Callback ------------|        |
+        |        |                                               |        |
+        +--------+                                               +--------+
+        </artwork>
+      </figure>
     </section>
 
-   <section title='Examples of Use Cases'>
-		<t>The following use cases are non-normative examples to illustrate the usage of this specification.</t>
-		<t>
-		<list style="numbers">
-		<t>A call center agent wants to authenticate a caller.
-		</t>
-		<t>A bank teller wants to authenticate a customer in a bank branch - so it is using CIBA for auth in a face-to-face scenario.
-		</t>
-		</list>
-		</t>
-		</section>
+    <section title='Examples of Use Cases'>
+        <t>The following use cases are non-normative examples to illustrate the usage of this specification.</t>
+        <t>
+        <list style="numbers">
+        <t>A call center agent wants to authenticate a caller.
+        </t>
+        <t>A bank teller wants to authenticate a customer in a bank branch - so it is using CIBA for auth in a face-to-face scenario.
+        </t>
+        </list>
+        </t>
+    </section>
     </section>
 
     <section anchor="auth_backchannel_endpoint" title="Backchannel Authentication Endpoint">
