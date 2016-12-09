@@ -218,8 +218,10 @@ CIBA notification is illustrated in the following diagram:
 
       <section anchor="auth_request" title="Authentication Request">
         <t>
-          An Authentication Request is an <xref target="RFC6749">OAuth 2.0</xref> Authorization Request that requests that 
-          the End-User be authenticated by the OpenID Provider.
+          An Authentication Request uses most of the parameters of an <xref target="RFC6749">OAuth 2.0</xref> 
+          Authorization Request. The parameters used are not changed in their meaning and no new values for those
+          parameters are introduced. Some of an OAuth 2.0 Authorization Request parameters make no sense in a server to server
+          communication and are therefore not part of a CIBA Authentication Request.
         </t>
         <t>
           MODRNA Client initiated Backchannel Authentication defines an authentication request that is requested directly from 
