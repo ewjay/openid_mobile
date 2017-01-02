@@ -371,7 +371,7 @@
             As specified in OAuth 2.0 <xref target="RFC6749" />, OpenID Providers SHOULD ignore unrecognized request parameters.
         </t>          
         <t>
-            If the OpenID Provider encounters any error, it MUST return an error response, per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
+            If the OpenID Provider encounters any error, it MUST return an error response, per Section 3.1.2.6 of <xref target="OpenID.Core"/>.
          </t>       
       </section>
 
