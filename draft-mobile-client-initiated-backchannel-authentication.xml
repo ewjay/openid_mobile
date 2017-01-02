@@ -471,7 +471,7 @@
         <t>
           <list style="hanging">
             <t hangText="grant_type">
-              REQUIRED.  Value MUST be set to "urn:openid:params:modrna:grant-type:backchannel_request".
+              REQUIRED.  Value MUST be set to "urn:openid:params:modrna:grant&nbhy;type:backchannel_request".
              </t>
             <t hangText="auth_req_id">
               REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP.
