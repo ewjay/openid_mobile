@@ -600,7 +600,7 @@
         <t>
           <list style="hanging">
             <t hangText="unknown_auth_req_id">
-              The OP doesn't know the auth_req_id that the RP is asking for.
+              The OP doesn't know the auth_req_id that the RP is asking for. It only applies when using Polling mode.
             </t>
             <t hangText="authorization_pending">
               The authorization request is still pending as the end-user hasn't yet been authenticated. It only applies when using Polling mode.
@@ -635,7 +635,7 @@
               id_token_hint or login_hint).
             </t>
             <t hangText="expired_token">
-              The login_hint_token or the id_token_hint provided in the authentication request is expired, so no valid.
+              The login_hint_token or the id_token_hint provided in the authentication request is expired, so not valid.
             </t>
           </list>
         </t>          
