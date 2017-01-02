@@ -347,18 +347,19 @@
               e.g.: by validating the Client Credentials as described in Section 9 on <xref target="OpenID.Core"/>.
             </t>
             <t>
-              The OpenID Provider MUST validate all the OAuth 2.0 parameters according to the MODRNA specification.
+              The OpenID Provider MUST validate all the OAuth 2.0 parameters according to <xref target="MODRNA.Authentication" format="title"/>.
             </t>
             <t>
               In the event of a request contains more than one of this hints specified in <xref target="auth_request">Authentication Request</xref>, 
-              the OpenID Provider MUST return an "invalid_request" error response as per Section 3.1.2.6 on <xref target="OpenID.Core"/>.
+              the OpenID Provider MUST return an "invalid_request" error response as per Section 3.1.2.6 of <xref target="OpenID.Core"/>.
             </t>
             <t>
               The OpenID Provider MUST validate the hint provided (login_hint, login_token_hint or id_token_hint).
               <vspace />
               e.g.: If a signature is provided it MUST be checked. If a validity date is provided it MUST be checked.
               <vspace />
-              If the hint is not valid or if the OP is not able to determine the user then an error should be returned to the RP.
+              If the hint is not valid or if the OP is not able to determine the user then 
+              an error should be returned to the RP as per section <xref target="auth_error_response" format="title"/>.
             </t>
             <t>
               The OpenID Provider MUST verify that all the REQUIRED parameters are present and their usage conforms to this 
