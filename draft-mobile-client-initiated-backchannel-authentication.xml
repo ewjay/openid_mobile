@@ -260,7 +260,7 @@
           client_id, as described in Section 9 of  <xref target="OpenID.Core"/>.
         </t>
         <t>
-          Authentication Requests are made using the MODRNA profile. Only the following parameters are taken into consideration in the Client initiated Backchannel Authentication flow. The rest of the request parameters defined in <xref target="RFC6749">OAuth 2.0</xref> 
+          Authentication Requests are made using <xref target="MODRNA.Authentication" format="title"/>. Only the following parameters are taken into consideration in the Client initiated Backchannel Authentication flow. The rest of the request parameters defined in <xref target="RFC6749">OAuth 2.0</xref> 
           MUST be ignored by the OpenID Provider.
         </t>
 
