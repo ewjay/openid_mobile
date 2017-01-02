@@ -377,7 +377,7 @@
 
       <section anchor="successful_authentication_request_acknowdlegment" title="Successful Authentication Request Acknowledgement">
         <t>
-          If the Authentication Validation Request is validated as per Section <xref target="auth_request_validation" format="title"/>, the OpenID Provider will return an HTTP 200 OK response to the RP
+          If the <xref target="auth_request" format="title"/> is validated as per Section <xref target="auth_request_validation" format="title"/>, the OpenID Provider will return an HTTP 200 OK response to the RP
           to indicate that the authentication request has been accepted and it is going to be processed. The body of this response 
           will contain:
         </t>
@@ -398,9 +398,6 @@
              </t>
           </list>
         </t>
-        <t>
-          If the Authentication Validation Request is NOK, the OpenID Provider MUST return an error response, per Section 3.1.2.6.
-        </t>      
         <figure>
           <preamble>The following is a non-normative example from an authentication response
           </preamble>
