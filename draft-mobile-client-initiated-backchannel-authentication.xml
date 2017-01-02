@@ -458,14 +458,14 @@
     <section anchor="getting_transaction_result" title="Getting the Transaction Result">
       <section anchor="token_request" title="Token Request Using Polling Mechanism">
         <t>
-          When the Service Provider didn't register any callback URI for the "client_notification_endpoint" in the Identity Provider, the Polling mode to get the token is set. 
-          The RP must poll the token endpoint untile the end-user grants or denies the request.
+          If the Client didn't register any callback URI for the "client_notification_endpoint" with the OpenID Provider, the Polling mode to get the token is set. 
+          The Client must poll the token endpoint until the end-user grants or denies the request.
         </t>
         <t>
-          The client polls at reasonable interval which MUST NOT exceed the minimum interval provided by the OpenID Provider via the "interval" parameter (if provided).
+          The Client polls at reasonable interval which MUST NOT exceed the minimum interval provided by the OpenID Provider via the "interval" parameter (if provided).
         </t>
         <t>
-          The client makes a "POST" request to the token endpoint by sending the following parameters using the "application/x-www-form-urlencoded" format with a character encoding of UTF-8 
+          The Client makes a "POST" request to the token endpoint by sending the following parameters using the "application/x-www-form-urlencoded" format with a character encoding of UTF-8 
           in the HTTP request entity-body:
         </t>
         <t>
@@ -535,7 +535,7 @@
       <section anchor="token_notification" title="Token Notification">
         <section anchor="issuing_successful_token" title="Successful Token Notification">
           <t>
-            When the client is registered for client notifications (Notification mode), the OpenID Provider will send the token response making a "POST HTTP Request"  
+            If the Client is registered for Client notifications (Notification mode), the OpenID Provider will send the token response making a "POST HTTP Request"  
             to the RP's client_notification_endpoint. If the user is well authenticated, the OpenID Provider returns a successful response that includes an ID Token 
             and an Access Token and a Refresh Token. If the request failed client authentication or is invalid, the OpenID Provider sends an error_message as described 
             in <xref target="token_error_response" format="title"/>.
