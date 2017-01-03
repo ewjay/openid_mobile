@@ -666,7 +666,7 @@
       <t>
         Using MODRNA Client initiated Backchannel Authentication it is possible for the Client 
         to authenticate a user without knowing e.g. the MSISDN of the user.
-        Users might be reluctant to provide their MSISDN to RPs because they fear
+        Users might be reluctant to provide their MSISDN to Clients because they fear
         misuse through automated calls or theirs number being leaked.
         The login hint token is encrypted in order to protect the user's MSISDN from 
         being revealed to the Client unintentionally.
