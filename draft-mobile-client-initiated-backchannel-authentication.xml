@@ -380,7 +380,8 @@
 
       <section anchor="successful_authentication_request_acknowdlegment" title="Successful Authentication Request Acknowledgement">
         <t>
-          If the <xref target="auth_request" format="title"/> is validated as per Section <xref target="auth_request_validation" format="title"/>, the OpenID Provider will return an HTTP 200 OK response to the RP
+          If the <xref target="auth_request" format="title"/> is validated as per Section <xref target="auth_request_validation" format="title"/>, 
+          the OpenID Provider will return an HTTP 200 OK response to the Client
           to indicate that the authentication request has been accepted and it is going to be processed. The body of this response 
           will contain:
         </t>
@@ -422,7 +423,7 @@
 
       <section anchor="auth_request_acknowdlegment_validation" title="Authentication Request Acknowledgment Validation">
         <t>
-          If the Client (RP) receives an HTTP 200 OK, it MUST validate that all the required parameters are received. The Client should keep the authentication request identifier 
+          If the Client receives an HTTP 200 OK, it MUST validate that all the required parameters are received. The Client should keep the authentication request identifier 
           <spanx style="verb">auth_req_id</spanx> in order to match it with token response.
         </t>
         <t>
@@ -501,7 +502,7 @@
 
       <section anchor="token_response" title="Successful Token Polling Response">
         <t>
-          The OpenID Provider will return the token as an HTTP response to the RP's poll request. If the user is well authenticated, the OpenID Provider 
+          The OpenID Provider will return the token as an HTTP response to the Client's poll request. If the user is well authenticated, the OpenID Provider 
           will return a succesful response that includes an ID Token and an Access Token. Otherwise it responses with an error as defined in <xref target="token_error_response" format="title"/>.
         </t>      
         <figure>
