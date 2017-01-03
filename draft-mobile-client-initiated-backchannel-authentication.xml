@@ -388,7 +388,7 @@
         <t>
           <list style="hanging">
             <t hangText="auth_req_id">
-              REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP. 
+              REQUIRED. It is a unique id to identify the authentication request (transaction) made by the Client. 
               The <spanx style="verb">auth_req_id</spanx> will be included too in the token notification when Notification mode is used to allow the Client correlate the authentication request and the received tokens. 
               It will not be included in the token response when using Polling Mode.
              </t>
@@ -436,7 +436,7 @@
     <section anchor="auth_server_obtains_consent" title="OpenID Provider Obtains End-user Consent/Authorization">
       <t>
         After the OP has validated the Authentication Request and the OP identifies the user's Authentication Device.
-        The OP chooses a channel to best contact the AD and fullfil the RP's requirements regarding acr_values.
+        The OP chooses a channel to best contact the AD and fullfil the Client's requirements regarding acr_values.
       </t>
       <t>
         Once the End-User is authenticated, the OpenID Provider MUST obtain an authorization decision before 
@@ -478,7 +478,7 @@
               REQUIRED.  Value MUST be set to "urn:openid:params:modrna:grant&nbhy;type:backchannel_request".
              </t>
             <t hangText="auth_req_id">
-              REQUIRED. It is a unique id to identify the authentication request (transaction) made by the RP.
+              REQUIRED. It is a unique id to identify the authentication request (transaction) made by the Client.
              </t>
           </list>
         </t>    
@@ -506,7 +506,7 @@
           will return a succesful response that includes an ID Token and an Access Token. Otherwise it responses with an error as defined in <xref target="token_error_response" format="title"/>.
         </t>      
         <figure>
-          <preamble>The following is a non-normative example of a token response sending as an HTTP 200 OK Response to the RP's poll request
+          <preamble>The following is a non-normative example of a token response sending as an HTTP 200 OK Response to the Client's poll request
            (with line wraps within values for display purposes only).
           </preamble>
           <artwork>
@@ -540,7 +540,7 @@
         <section anchor="issuing_successful_token" title="Successful Token Notification">
           <t>
             If the Client is registered for Client notifications (Notification mode), the OpenID Provider will send the token response making a "POST HTTP Request"  
-            to the RP's client_notification_endpoint. If the user is well authenticated, the OpenID Provider returns a successful response that includes an ID Token 
+            to the Client's client_notification_endpoint. If the user is well authenticated, the OpenID Provider returns a successful response that includes an ID Token 
             and an Access Token and a Refresh Token. If the request failed Client authentication or is invalid, the OpenID Provider sends an error_message as described 
             in <xref target="token_error_response" format="title"/>.
           </t>
@@ -622,12 +622,11 @@
       <section anchor="auth_error_response" title="Authentication Error Response">
         <t>
           An Authentication Error Response is an OAuth 2.0 Authorization Error Response message returned from the OP's Authorization Endpoint 
-          in response to the Authorization Request message sent by the RP.
+          in response to the Authorization Request message sent by the Client.
         </t>
         <t>  
           If the End-User denies the request or the End-User authentication fails, the OP (Authorization Server) informs the Client by using 
-          the Error Response parameters defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>(HTTP errors unrelated to RFC 6749 
-          are returned to the User Agent using the appropriate HTTP status code.)
+          the Error Response parameters defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>.
         </t>
         <t>
           In addition to the error codes defined in Section 4.1.2.1 of OAuth 2.0, this specification also defines the following error codes:
@@ -655,8 +654,8 @@
       </t>
       <t>
       The OP SHOULD ensure that the "client_notification_endpoint" configured at registration time
-      is in the administrativ authority of the RP.
-      Otherwise the OP would post authentication results to the wrong RP.
+      is in the administrativ authority of the Client.
+      Otherwise the OP would post authentication results to the wrong Client.
       </t>
       <t>
         How this check in done is outside the scope of this specification.
