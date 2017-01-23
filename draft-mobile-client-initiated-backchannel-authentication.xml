@@ -402,7 +402,7 @@
              </t>
           </list>
         </t>
-        <figure>
+        <figure> 
           <preamble>The following is a non-normative example from an authentication response
           </preamble>
           <artwork>
@@ -625,23 +625,91 @@
           in response to the Authorization Request message sent by the Client.
         </t>
         <t>  
-          If the End-User denies the request or the End-User authentication fails, the OP (Authorization Server) informs the Client by using 
-          the Error Response parameters defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>.
+          If the End-User denies the request or the End-User authentication fails, the OP (Authorization Server) informs the Client by using
+          the follow Error Responses, many of them are defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>, however they cannot
+          be sent using a redirection as OAuth 2.0 does because there isn't any User Agent through which send the error to the Client.
         </t>
         <t>
-          In addition to the error codes defined in Section 4.1.2.1 of OAuth 2.0, this specification also defines the following error codes:
-        </t>
-        <t>
+          Errors will be sent directly to the client as HTTP Error Responses, whose body will contain a json with two parameters
           <list style="hanging">
-            <t hangText="unknown_user_id">
-              The OpenID Provider is not able to figure out which user has to be authenticated by means of the hint provided in the request (login_hint_token, 
-              id_token_hint or login_hint).
+              <t hangText="error_description">
+                OPTIONAL.  Human-readable ASCII [USASCII] text providing additional information, used to assist the client developer in understanding the error that occurred.
+                Values for the "error_description" parameter MUST NOT include characters outside the set %x20-21 / %x23-5B / %x5D-7E
+              </t>
+              <t hangText="error">
+                REQUIRED. A single ASCII error code from one of the present in the list below.
+              </t>
+          </list>
+        </t>
+        <t>
+          List of authentication error codes associated to a HTTP Errors.
+        </t>
+        <t>
+          <list style="hanging">        
+            <t hangText="HTTP 400 Bad Request">
+                <list style="hanging">        
+                    <t hangText="invalid_request">
+                      The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.
+                    </t>
+                    <t hangText="invalid_scope">
+                      The requested scope is invalid, unknown, or malformed.
+                    </t>
+                    <t hangText="expired_token">
+                      The login_hint_token or the id_token_hint provided in the authentication request is expired, so not valid.
+                    </t>
+                </list>
             </t>
-            <t hangText="expired_token">
-              The login_hint_token or the id_token_hint provided in the authentication request is expired, so not valid.
+            <t hangText="HTTP 403 Forbidden">
+                <list style="hanging">        
+                    <t hangText="unauthorized_client">
+                      The client is not authorized to request an authentication using this method.
+                    </t>
+                    <t hangText="access_denied">
+                      The resource owner or authorization server denied the request.
+                    </t>
+                </list>
+            </t>
+            <t hangText="HTTP 404 Not Found">
+                <list style="hanging">        
+                    <t hangText="unknown_user_id">
+                      The OpenID Provider is not able to figure out which user has to be authenticated by means of the hint provided in the request (login_hint_token, 
+                      id_token_hint or login_hint).
+                    </t>
+                </list>
+            </t>
+            <t hangText="HTTP 500 Internal Server Error">
+                <list style="hanging">        
+                    <t hangText="server_error">
+                      The authorization server encountered an unexpected condition that prevented it from fulfilling the request. (This error code is needed because a 
+                      500 Internal Server Error HTTP status code cannot be returned to the client via an HTTP redirect.
+                    </t>
+                </list>
+            </t>
+            <t hangText="HTTP 503 Service Unavailable">
+                <list style="hanging">        
+                    <t hangText="temporarily_unavailable">
+                      The authorization server is currently unable to handle the request due to a temporary overloading or maintenance of the server.  (This error code is 
+                      needed because a 503 Service Unavailable HTTP status code cannot be returned to the client via an HTTP redirect.)
+                    </t>
+                </list>
             </t>
           </list>
-        </t>          
+        </t>         
+        <figure> 
+          <preamble>The following is a non-normative example from an authentication error response:
+          </preamble>
+          <artwork>
+            <![CDATA[
+              HTTP/1.1 403 Forbidden 
+              Content-Type: application/json
+              {
+                "error": "unauthorized_client",
+                "error_description": "The client 'client.example.org' is not allowed to use Client Backchannel Authentication."
+              }
+            ]]>
+          </artwork>
+        </figure>      
+ 
       </section>
     </section>
 
