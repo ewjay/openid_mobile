@@ -677,22 +677,6 @@
                     </t>
                 </list>
             </t>
-            <t hangText="HTTP 500 Internal Server Error">
-                <list style="hanging">        
-                    <t hangText="server_error">
-                      The authorization server encountered an unexpected condition that prevented it from fulfilling the request. (This error code is needed because a 
-                      500 Internal Server Error HTTP status code cannot be returned to the client via an HTTP redirect.
-                    </t>
-                </list>
-            </t>
-            <t hangText="HTTP 503 Service Unavailable">
-                <list style="hanging">        
-                    <t hangText="temporarily_unavailable">
-                      The authorization server is currently unable to handle the request due to a temporary overloading or maintenance of the server.  (This error code is 
-                      needed because a 503 Service Unavailable HTTP status code cannot be returned to the client via an HTTP redirect.)
-                    </t>
-                </list>
-            </t>
           </list>
         </t>         
         <figure> 
