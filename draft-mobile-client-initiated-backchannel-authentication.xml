@@ -50,7 +50,7 @@
     </author>
 
 
-    <date day="24" month="January" year="2017"/>
+    <date day="1" month="February" year="2017"/>
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -300,7 +300,7 @@
               OPTIONAL. As defined in Section 3.1.2.1 of <xref target="OpenID.Core"/>.
             </t> 
             <t hangText="binding_message">
-              OPTIONAL. As defined in MODRNA Authentication profile.
+              OPTIONAL. As defined in <xref target="MODRNA.Authentication" format="title"/>.
             </t>
           </list>
         </t>
