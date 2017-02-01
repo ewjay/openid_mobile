@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <?xml-stylesheet type='text/xsl' href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
+  <!ENTITY OpenID.Core PUBLIC '' 'https://openid.net/specs/reference.OpenID.core.xml'>
+]>
 <!--
   NOTE:  This XML file is input used to produce the authoritative copy of an
   OpenID Foundation specification.  The authoritative copy is the HTML output.
@@ -750,40 +752,8 @@
         </front>
       </reference>
 
-      <reference anchor="OpenID.Core" target="https://openid.net/specs/openid-connect-core-1_0.txt">
-        <front>
-          <title>OpenID Connect Core 1.0</title>
-
-          <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
-            <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
-          </author>
-
-          <author fullname="John Bradley" initials="J." surname="Bradley">
-            <organization abbrev="Ping Identity">Ping Identity</organization>
-          </author>
-
-          <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
-            <organization abbrev="Microsoft">Microsoft</organization>
-          </author>
-
-          <author fullname="Breno de Medeiros" initials="B." surname="de Medeiros">
-            <organization abbrev="Google">Google</organization>
-          </author>
-
-          <author fullname="Chuck Mortimore" initials="C." surname="Mortimore">
-            <organization abbrev="Salesforce">Salesforce</organization>
-          </author>
-
-          <author fullname="Edmund Jay" initials="E." surname="Jay">
-            <organization abbrev="Illumila">Illumila</organization>
-          </author>
-
-          <date day="19" month="December" year="2013"/>
-        </front>
-
-        <format target="http://openid.net/specs/openid-connect-core-1_0.html" type="HTML" />
-      </reference>
-
+      &OpenID.Core;
+      
       <?rfc include="reference.I-D.draft-jones-oauth-amr-values-05.xml"?>
 
     </references>
