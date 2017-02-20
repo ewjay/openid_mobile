@@ -50,7 +50,7 @@
     </author>
 
 
-    <date day="1" month="February" year="2017"/>
+    <date day="20" month="February" year="2017"/>
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -227,7 +227,9 @@
         <t>The following use cases are non-normative examples to illustrate the usage of this specification.</t>
         <t>
         <list style="numbers">
-        <t>A call center agent wants to authenticate a caller.
+        <t>A call center agent wants to authenticate a caller. 
+        Using additional scopes like e.g. "profile" or "phone" the call center agent would get access to claims
+        about the user like "phone_number" and "phone_number_verified".
         </t>
         <t>A bank teller wants to authenticate a customer in a bank branch - so it is using CIBA for auth in a face-to-face scenario.
         </t>
