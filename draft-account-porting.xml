@@ -6,7 +6,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 ]>
 
-<rfc category="info" docName="draft-account-porting-04" ipr="trust200902">
+<rfc category="info" docName="draft-account-porting-05" ipr="trust200902">
   <?rfc toc="yes" ?>
   <?rfc private="Draft" ?>
   <?rfc compact="yes" ?>
@@ -30,7 +30,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
   <address><email>argggh@telenordigital.com</email></address>
 </author>
 
-<date year="2017" month="February" day="14"/>
+<date year="2017" month="February" day="24"/>
 
 <workgroup>OpenID MODRNA Working Group</workgroup>
 
@@ -90,9 +90,9 @@ OP.</t>
 <xref target="discovery"/> defines metadata that indicates an OP supports
 porting, which can be obtained via <xref target="OpenID.Discovery"/>.
 <xref target="port_data"/> specifies an API offered by an Old OP
-that a New OP uses to obtain porting-related details about a user.
+that a New OP calls when a user ports to collect a token representing the port.
 This API is protected by an OAuth 2.0 exchange to ensure the user
-consents to releasing the details to the New OP.
+consents to the porting process.
 <xref target="aka"/> specifies how a New OP can identify the Old OP
 in an id_token presented to an RP. <xref target="port_check"/>
 describes how an RP can confirm the porting information with the Old OP.
@@ -219,14 +219,19 @@ the metadata for an Old OP that supports users porting out:</t>
   that an RP can use to confirm that an account has been ported to a specific
   New OP. The URL MUST use the "https" scheme.</t>
 
-  <t hangText='"port_enc_algs_supported"'>
-  Array of string algorithm names <xref target="IANA.JOSE"/> identifying
-  content encryption algorithms supported by the OP that can be used
-  by a New OP to encrypt a "port_token" as described in
-  <xref target="enc"/>.</t>
+  <t hangText='"port_enc_values_supported"'>
+  Array of string algorithm names <xref target="IANA.JOSE"/>
+  identifying content encryption algorithms supported by the OP
+  that can be used by a New OP to encrypt a "port_token".</t>
+
 </list></t>
 
-<t>Below is a sample metadata request and response.</t>
+<t>The metadata MUST also include a "jwks_uri" member pointing to the OP's
+JSON Web Key Set. And that set MUST include at least one encryption
+public key, indicated with a "use":"enc" member <xref target="RFC7517"/>,
+that can be used to encrypt a port_token.</t>
+
+<t>Below are sample metadata requests and responses.</t>
 
 <figure><artwork>
 GET /.well-known/openid-configuration HTTP/1.1
@@ -238,13 +243,36 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-                   "issuer": "https://oldop.example.net/",
-   "authorization_endpoint": "https://oldop.example.net/connect/authorize",
-           "token_endpoint": "https://oldop.example.net/connect/token",
-       "port_data_endpoint": "https://oldop.example.net/connect/port_data",
-      "port_check_endpoint": "https://oldop.example.net/connect/port_check",
-  "port_enc_algs_supported": [ "A256GCM", "A256CBC-HS512" ],
+                     "issuer": "https://oldop.example.net/",
+     "authorization_endpoint": "https://oldop.example.net/connect/authorize",
+             "token_endpoint": "https://oldop.example.net/connect/token",
+         "port_data_endpoint": "https://oldop.example.net/connect/port_data",
+        "port_check_endpoint": "https://oldop.example.net/connect/port_check",
+                   "jwks_uri": "https://oldop.example.net/keys.jwks",
+  "port_enc_values_supported": [ "A256GCM", "A256CBC-HS512" ],
   &#x2026;
+}
+</artwork></figure>
+
+<figure><artwork>
+GET /keys.jwks HTTP/1.1
+Host: oldop.example.net
+</artwork></figure>
+
+<figure><artwork>
+HTTP/1.1 200 OK
+Content-Type: application/jwk-set+json
+
+{"keys":
+  [
+    {"kty":"RSA",
+       "n": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2a &#x2026; DKgw",
+       "e":"AQAB",
+     "use":"enc",
+     "alg":"RSA-OAEP-256",
+     "kid":"2011-04-29"},
+    &#x2026;
+  ]
 }
 </artwork></figure>
 
@@ -324,7 +352,7 @@ other than the known porting destination.</t>
 an "enc_port_token" value, which is passed to an RP, then back to the
 Old OP.</t>
 
-<t>When pairwise Subject Ids are used for enhanced privacy (ie a user is
+<t>When pairwise Subject Ids are used for enhanced privacy (that is, a user is
 assigned a separate "sub" value for each collection of related RPs identified
 by a "sector_id"), any porting information revealed to RPs also needs to be
 at least pairwise so as not to undermine that privacy. This is achieved by
@@ -347,48 +375,58 @@ hence avoiding requirements for revocation.</t>
 Subject Ids. However, encryption is still used in such cases to avoid
 introducing additional options to the porting mechanism.</t>
 
-<t>A "port_token" value is encrypted to create an "enc_port_token" value.
-The encryption follows the JSON Web Encryption <xref target="RFC7516"/>
-process, creating a JWE compact serialization. Direct encryption with a shared
-symmetric key is used ("alg":"dir"), with a key derived from the
-"client_secret" value that the New OP uses to authenticate to the Old OP.
-Deriving the key follows section 10.2 "Encryption" of
-<xref target="OpenID.Core"/>: using the left-most bits of the SHA2 hash of
-"client_secret". The key id ("kid") is set to the "client_id" value. The
-content encryption algorithm is chosen from the "port_enc_algs_supported" list
-published in the Old OP's discovery metadata. The plaintext is the "port_token"
-value.</t>
+<t>A "port_token" value is encrypted with the Old OP's public encryption key
+to create an "enc_port_token" value. The New OP obtains the public key by
+following the "jwks_uri" member in the Old OP's metadata, then selecting a key
+with a "use":"enc" member and a supported key type ("kty") and
+encryption algorithm ("alg"). The Old OP can change keys, which the
+New OP MUST cope with by periodically re-checking the metadata.
+Cache-control details delivered with the metadata indicate how often the
+New OP ought to re-check (with an expectation that keys will not change
+more often than daily) <xref target="RFC7234"/>.</t>
+
+<t>The encryption follows the JSON Web Encryption (JWE)
+process, creating a JWE compact serialization <xref target="RFC7516"/>.
+The selected public key provides the key id ("kid") and algorithm ("alg").
+The content encryption algorithm ("enc") is chosen from the
+"port_enc_values_supported" list published in the Old OP's discovery metadata.
+The plaintext is the "port_token" value.</t>
 
 <t>The JWE header MUST include a type parameter ("typ") with the value
 "openid-connect-porting" to explicitly indicate the semantics of the message.
 The JWE header MUST include a "sector_id" parameter, holding the host
-component (ie a fully-qualified domain name) of the RP's
+component (that is, a fully-qualified domain name) of the RP's
 "sector_identifier_uri" or "redirect_uri"
 <xref target="OpenID.Core"/> &#xA7; 8.1. "Pairwise Identifier Algorithm".</t>
 
-<t>Below is a sample JWE, starting with the New OP details:</t>
+<t>The New OP MUST support "RSA-OAEP-256" for key encryption and
+MUST support "A256GCM" for content encryption <xref target="RFC7518"/>.</t>
 
-<figure><artwork>
-    client_id: s6BhdRkqt3
-client_secret: vNQ4Pe8F9p67dgXMc4c_NxSABb9y15vOkxRmyxCey7U
-</artwork></figure>
+<t>Below is a sample JWE, using keys and tokens from previous sections
+(with line-breaks just for display purposes only):</t>
 
 <t>JWE protected header:</t>
 
 <figure><artwork>{
         "typ": "openid-connect-porting",
-        "alg": "dir",
+        "alg": "RSA-OAEP-256",
         "enc": "A256GCM",
-        "kid": "s6BhdRkqt3",
+        "kid": "2011-04-29",
   "sector_id": "rp.example.org"
 }</artwork></figure>
 
-<t>Content encryption key (CEK), calculated as SHA-256(client_secret);
-and random 96-bit nonce (iv); shown in hex and base64url respectively:</t>
+<t>Randomly choose a 256-bit AES content encryption key (CEK)
+and 96-bit GCM nonce (iv); shown in hex and base64url respectively:</t>
 
 <figure><artwork>
           cek: b7b80342942f94b4d873fd4a0e0470fa2b94afe02f94162c34cefdcd1d4b3f58
            iv: 48V1_ALb6US04U3b
+</artwork></figure>
+
+<t>Encrypt the CEK with the Old OP's RSA public encryption key:</t>
+
+<figure><artwork>
+encrypted_key: &#x2026;
 </artwork></figure>
 
 <t>The payload is the "port_token" value from the previous section. The
@@ -409,13 +447,10 @@ protected header.</t>
            tag: &#x2026;
 </artwork></figure>
 
-<t>[[TO BE COMPLETED: calculate real ciphertext/tag values]]</t>
-
-<t>Putting it all together (note the 2nd field of the JWE is empty as there is
-no encrypted key when using direct encryption):</t>
+<t>Putting it all together:</t>
 
 <figure><artwork>
-"enc_port_token": "eyJ0eX&#x2026;9yZyJ9..48V1_ALb6US04U3b.ciphertext.tag"
+"enc_port_token": "eyJ0eX&#x2026;9yZyJ9.&#x2026;.48V1_ALb6US04U3b.ciphertext.tag"
 </artwork></figure>
 
 </section>
@@ -493,23 +528,20 @@ response status code MUST be returned (eg 400 Bad request).</t>
 <t>The Old OP makes the following checks:</t>
 <t><list style="symbols">
 
-  <t>MUST verify the authenticated encryption of the "enc_port_token" JWE,
-  which MUST include verifying that it is actually authenticated (ie that "alg"
-  is an acceptable AEAD algorithm, and certainly not "none").</t>
+  <t>MUST decrypt the "enc_port_token",
+  which MUST include verifying that it uses acceptable algorithms
+  (for instance, "alg" and "enc" values are not "none").</t>
 
   <t>MUST verify that the JWE "typ" member is present with the value
   "openid-connect-porting", to avoid misinterpretting the meaning of the
   JWE.</t>
 
-  <t>MUST verify that the "iss" query parameter is consistent with the key used
-  to verify the JWE. This confirms that the RP and Old OP have the same
-  understanding of who the New OP is.</t>
-
   <t>MUST verify that the "port_token" (the plaintext from the JWE) was issued
   by the Old OP.</t>
 
-  <t>MUST verify that the New OP identified from the "port_token" is consistent
-  with the key used to verify the JWE.</t>
+  <t>MUST verify that the "iss" query parameter matches the New OP to whom
+  the port_token was given. This confirms that the RP and Old OP have the same
+  understanding of who the New OP is.</t>
 
   <t>SHOULD verify that the "sector_id" from the JWE header
   matches the sector_id for the RP or matches the domain name portion of the
@@ -559,9 +591,9 @@ line is wrapped over 4 lines just for display purposes.] The RP would lookup
 find the existing account that has ported to the New OP.</t>
 
 <figure><artwork>
-GET /connect/port_check?
-  iss=https://newop.example.net/&amp;
-  enc_port_token=eyJ0eX&#x2026;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag
+GET /connect/port_check
+  ?iss=https://newop.example.net/
+  &amp;enc_port_token=eyJ0eX&#x2026;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag
    HTTP/1.1
 Host: oldop.example.net
 Authorization: Bearer JOpIXW60qfjKQOlQ8trLBTSzwDl8zGgujLxBVTvWMG8
@@ -878,7 +910,10 @@ target='https://www.iana.org/assignments/jwt/'>
 </front>
 </reference>
 
+  <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7234"?>
   <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7516"?>
+  <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7517"?>
+  <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7518"?>
   <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6749"?>
   <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6750"?>
   <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119"?>
@@ -963,6 +998,13 @@ cover technology that may be required to practice this specification.</t>
 <section anchor="history" title="Document history">
 
 <t>[[ To be removed from the final specification ]]</t>
+
+<t>-05</t>
+
+<t><list style="symbols">
+  <t>Public key encryption of the port_token</t>
+  <t>Mandate RSA-OAEP-256 and AES256GCM</t>
+</list></t>
 
 <t>-04</t>
 
