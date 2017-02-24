@@ -19,7 +19,7 @@ OP1 <- OP2: register for porting
 OP2 <- OP3: register for porting
 
 note over OP2, OP3
-  Includes discovery to learn port_data_endpoint
+  Includes discovery to learn port_data_endpoint, and public encryption key
 end note
 
 OP1 <- RP: register for sign-in
