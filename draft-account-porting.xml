@@ -6,7 +6,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 ]>
 
-<rfc category="info" docName="draft-account-porting-05" ipr="trust200902">
+<rfc category="info" docName="draft-account-porting-06alpha" ipr="trust200902">
   <?rfc toc="yes" ?>
   <?rfc private="Draft" ?>
   <?rfc compact="yes" ?>
@@ -30,7 +30,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
   <address><email>argggh@telenordigital.com</email></address>
 </author>
 
-<date year="2017" month="February" day="24"/>
+<date year="2017" month="March" day="1"/>
 
 <workgroup>OpenID MODRNA Working Group</workgroup>
 
@@ -761,7 +761,25 @@ respective functions are thoroughly tested with every change.</t>
 
 <section anchor="privacy" title="Privacy Considerations">
 
-<t>TBD</t>
+<t>A user's OP can see which RPs the user logs in to, and when.
+That is the nature of the OpenID Connect federated login protocol.
+By porting, a user moves that visibility from the Old OP to the New OP.</t>
+
+<t>After porting, the Old OP can still see when the user next logs in to
+each RP, as each RP will contact the Old OP at that time to confirm the port.
+This is true even for an RP that the user never accessed via the Old OP,
+as the RP does not know that this is the case before trying to confirm the port
+with the Old OP. Subsequent logins to an RP will not be visible to the
+Old OP.</t>
+
+<t>The New OP learn nothing about a user's activity before the port.
+For instance, an RP accessed via the Old OP but not accessed after porting
+will not be revealed to the New OP.</t>
+
+<t>RPs see which Old OP a user has used, which is necessary for continuity
+of access after porting. Even an RP that a user never accessed before the
+port learns about the user's Old OP.
+An RP that is not accessed after porting does not learn of the port.</t>
 
 </section>
 
