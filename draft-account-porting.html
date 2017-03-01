@@ -406,8 +406,8 @@
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Manger, J., Lodderstedt, T., and A. Gleditsch" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-account-porting-05" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-2-24" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-account-porting-06alpha" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-3-1" />
   <meta name="dct.abstract" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
   <meta name="description" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
 
@@ -444,7 +444,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">February 24, 2017</td>
+  <td class="right">March 1, 2017</td>
 </tr>
 
     	
@@ -452,7 +452,7 @@
   </table>
 
   <p class="title">OpenID Connect Account Porting<br />
-  <span class="filename">draft-account-porting-05</span></p>
+  <span class="filename">draft-account-porting-06alpha</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
@@ -794,7 +794,10 @@ Content-Type: application/problem+json
 <h1 id="rfc.section.8.6"><a href="#rfc.section.8.6">8.6.</a> Further Considerations</h1>
 <p id="rfc.section.8.6.p.1">Note: the new OP could also accidentally assign the account migration data to the wrong user account in its database. Care must be taken that the respective functions are thoroughly tested with every change.</p>
 <h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#privacy" id="privacy">Privacy Considerations</a></h1>
-<p id="rfc.section.9.p.1">TBD</p>
+<p id="rfc.section.9.p.1">A user's OP can see which RPs the user logs in to, and when.  That is the nature of the OpenID Connect federated login protocol.  By porting, a user moves that visibility from the Old OP to the New OP.</p>
+<p id="rfc.section.9.p.2">After porting, the Old OP can still see when the user next logs in to each RP, as each RP will contact the Old OP at that time to confirm the port.  This is true even for an RP that the user never accessed via the Old OP, as the RP does not know that this is the case before trying to confirm the port with the Old OP. Subsequent logins to an RP will not be visible to the Old OP.</p>
+<p id="rfc.section.9.p.3">The New OP learn nothing about a user's activity before the port.  For instance, an RP accessed via the Old OP but not accessed after porting will not be revealed to the New OP.</p>
+<p id="rfc.section.9.p.4">RPs see which Old OP a user has used, which is necessary for continuity of access after porting. Even an RP that a user never accessed before the port learns about the user's Old OP.  An RP that is not accessed after porting does not learn of the port.</p>
 <h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#iana" id="iana">IANA Considerations</a></h1>
 <p id="rfc.section.10.p.1">This document registers the "aka" claim in the IANA "JSON Web Token Claims" registry <a href="#IANA.JWT_Claims">[IANA.JWT_Claims]</a>.</p>
 <p/>
