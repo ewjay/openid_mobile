@@ -623,33 +623,45 @@ Content-Type: application/json
         "typ": "openid-connect-porting",
         "alg": "RSA-OAEP-256",
         "enc": "A256GCM",
-        "kid": "2011-04-29",
+        "kid": "oldop43",
   "sector_id": "rp.example.org"
 }</pre>
-<p id="rfc.section.4.p.12">Randomly choose a 256-bit AES content encryption key (CEK) and 96-bit GCM nonce (iv); shown in hex and base64url respectively:</p>
+<p id="rfc.section.4.p.12">Randomly choose a 256-bit AES content encryption key (CEK) and 96-bit GCM nonce (iv); shown in base64url:</p>
 <pre>
-          cek: b7b80342942f94b4d873fd4a0e0470fa2b94afe02f94162c34cefdcd1d4b3f58
+          cek: t7gDQpQvlLTYc_1KDgRw-iuUr-AvlBYsNM79zR1LP1g
            iv: 48V1_ALb6US04U3b
 </pre>
 <p id="rfc.section.4.p.13">Encrypt the CEK with the Old OP's RSA public encryption key:</p>
 <pre>
-encrypted_key: &#8230;
+encrypted_key:
+  GqwEk3osLFgnGmh6UJsuNUI134QVYKmhtXqfdszQBl70o8-pQLK5eZbun0vFmWhd
+  h7VDEUzX3Lxce6CzV80wEH57T-6LlJOjsCTOWmc_I8HUbPfGW4JjxBYv9Woab3Sv
+  apSDRne7qJ-ykN_MRYAUVASF5kRGBKLBU6ip3XIagHy0k6M0QnpMhwHdp82AKZl9
+  mSc2qwaB7Bhm3zjsPXCklyUUI5ojfEv9jFxYz6IzlMC3a5zObEGHRCIo2Xt21-GQ
+  KMBG3fiTd-59GXUupg_aZXECqWcyhSxxMzYMDl8cgrrJXdNMxcuPIywlnR4-JqKz
+  9dWVMQNmTdnJ8IqLMjqAwg
 </pre>
 <p id="rfc.section.4.p.14">The payload is the "port_token" value from the previous section. The additional authenticated data (AAD) is the base64url-encoding of the JWE protected header.</p>
 <pre>
     plaintext: 3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI
-          aad: eyJ0eXAiOiJvcGVuaWQtY29ubmVjdC1wb3J0aW5nIiwiYWxn
-               IjoiZGlyIiwiZW5jIjoiQTI1NkdDTSIsImtpZCI6InM2Qmhk
-               UmtxdDMiLCJzZWN0b3JfaWQiOiJycC5leGFtcGxlLm9yZyJ9
+          aad: 
+  eyJ0eXAiOiJvcGVuaWQtY29ubmVjdC1wb3J0aW5nIiwiYWxnIjoiUlNBLU9BRVAt
+  MjU2IiwiZW5jIjoiQTI1NkdDTSIsImtpZCI6Im9sZG9wNDMiLCJzZWN0b3JfaWQi
+  OiJycC5leGFtcGxlLm9yZyJ9
 </pre>
 <p id="rfc.section.4.p.15">Applying AES-GCM encryption gives ciphertext and an authentication tag:</p>
 <pre>
-    ciphertext: &#8230;
-           tag: &#8230;
+    ciphertext:
+  IPvR7VRL9tjxZrWMul3v94G4xiyEadCi-nubi0Xg74WIiN4BNbhO58JuuA
+           tag: 5JijJVt4bRz7q2C950WH7w
 </pre>
-<p id="rfc.section.4.p.16">Putting it all together:</p>
+<p id="rfc.section.4.p.16">Putting it all together (with eliding and line breaks only for display):</p>
 <pre>
-"enc_port_token": "eyJ0eX&#8230;9yZyJ9.&#8230;.48V1_ALb6US04U3b.ciphertext.tag"
+"enc_port_token": "eyJ0eX &#8230; 9yZyJ9
+                   .GqwEk3 &#8230; MjqAwg
+                   .48V1_ALb6US04U3b
+                   .IPvR7V &#8230; 58JuuA
+                   .5JijJVt4bRz7q2C950WH7w"
 </pre>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#aka" id="aka">Indicating a previous identity: "aka" member</a></h1>
 <p id="rfc.section.5.p.1">This document defines the "aka" (also known as) member that indicates that the given user has (or had) another identifier from an Old OP.  An "aka" member can be included in an id_token (issued as part of an OpenID Connect login), or in a Porting check API response [<a href="#port_check">Section 6</a>].</p>
@@ -666,7 +678,7 @@ encrypted_key: &#8230;
   "at_hash": "mrxuWF8TvnILKqFpZgEYCQ",
   "aka": {
     "iss": "https://oldop.example.net/",
-    "enc_port_token": "eyJ0eX&#8230;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag"
+    "enc_port_token": "eyJ0eX &#8230; 50WH7w"
   }
 }</pre>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#port_check" id="port_check">Porting check API</a></h1>
@@ -702,7 +714,7 @@ encrypted_key: &#8230;
 <pre>
 GET /connect/port_check
   ?iss=https://newop.example.net/
-  &amp;enc_port_token=eyJ0eX&#8230;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag
+  &amp;enc_port_token=eyJ0eX &#8230; 50WH7w
    HTTP/1.1
 Host: oldop.example.net
 Authorization: Bearer JOpIXW60qfjKQOlQ8trLBTSzwDl8zGgujLxBVTvWMG8
@@ -962,20 +974,26 @@ Content-Type: application/problem+json
 <p id="rfc.section.C.p.3">The technology described in this specification was made available from contributions from various sources, including members of the OpenID Foundation and others. Although the OpenID Foundation has taken steps to help ensure that the technology is available for distribution, it takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this specification or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any independent effort to identify any such rights. The OpenID Foundation and the contributors to this specification make no (and hereby expressly disclaim any) warranties (express, implied, or otherwise), including implied warranties of merchantability, non-infringement, fitness for a particular purpose, or title, related to this specification, and the entire risk as to implementing this specification is assumed by the implementer. The OpenID Intellectual Property Rights policy requires contributors to offer a patent promise not to assert certain patent claims against other contributors and against implementers. The OpenID Foundation invites any interested party to bring to its attention any copyrights, patents, patent applications, or other proprietary rights that may cover technology that may be required to practice this specification.</p>
 <h1 id="rfc.appendix.D"><a href="#rfc.appendix.D">Appendix D.</a> <a href="#history" id="history">Document history</a></h1>
 <p id="rfc.section.D.p.1">[[ To be removed from the final specification ]]</p>
-<p id="rfc.section.D.p.2">-05</p>
+<p id="rfc.section.D.p.2">-06</p>
+<p/>
+
+<ul>
+  <li>Privacy considerations</li>
+</ul>
+<p id="rfc.section.D.p.4">-05</p>
 <p/>
 
 <ul>
   <li>Public key encryption of the port_token</li>
   <li>Mandate RSA-OAEP-256 and AES256GCM</li>
 </ul>
-<p id="rfc.section.D.p.4">-04</p>
+<p id="rfc.section.D.p.6">-04</p>
 <p/>
 
 <ul>
   <li>Clarify and reorganize</li>
 </ul>
-<p id="rfc.section.D.p.6">-03</p>
+<p id="rfc.section.D.p.8">-03</p>
 <p/>
 
 <ul>
@@ -984,14 +1002,14 @@ Content-Type: application/problem+json
   <li>user_ported error code</li>
   <li>"oidc_porting" renamed to "openid-connect-porting"</li>
 </ul>
-<p id="rfc.section.D.p.8">-02</p>
+<p id="rfc.section.D.p.10">-02</p>
 <p/>
 
 <ul>
   <li>Remove unencrypted port tokens</li>
   <li>Authenticate RPs to Old OP</li>
 </ul>
-<p id="rfc.section.D.p.10">-01</p>
+<p id="rfc.section.D.p.12">-01</p>
 <p/>
 
 <ul>
@@ -999,7 +1017,7 @@ Content-Type: application/problem+json
   <li>Encrypted port_token from New OP to RP</li>
   <li>Torsten and Arne as additional authors</li>
 </ul>
-<p id="rfc.section.D.p.12">-00</p>
+<p id="rfc.section.D.p.14">-00</p>
 <p/>
 
 <ul>
