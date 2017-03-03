@@ -6,7 +6,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 ]>
 
-<rfc category="info" docName="draft-account-porting-06alpha" ipr="trust200902">
+<rfc category="info" docName="draft-account-porting-06" ipr="trust200902">
   <?rfc toc="yes" ?>
   <?rfc private="Draft" ?>
   <?rfc compact="yes" ?>
@@ -30,7 +30,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
   <address><email>argggh@telenordigital.com</email></address>
 </author>
 
-<date year="2017" month="March" day="1"/>
+<date year="2017" month="March" day="3"/>
 
 <workgroup>OpenID MODRNA Working Group</workgroup>
 
@@ -411,22 +411,28 @@ MUST support "A256GCM" for content encryption <xref target="RFC7518"/>.</t>
         "typ": "openid-connect-porting",
         "alg": "RSA-OAEP-256",
         "enc": "A256GCM",
-        "kid": "2011-04-29",
+        "kid": "oldop43",
   "sector_id": "rp.example.org"
 }</artwork></figure>
 
 <t>Randomly choose a 256-bit AES content encryption key (CEK)
-and 96-bit GCM nonce (iv); shown in hex and base64url respectively:</t>
+and 96-bit GCM nonce (iv); shown in base64url:</t>
 
 <figure><artwork>
-          cek: b7b80342942f94b4d873fd4a0e0470fa2b94afe02f94162c34cefdcd1d4b3f58
+          cek: t7gDQpQvlLTYc_1KDgRw-iuUr-AvlBYsNM79zR1LP1g
            iv: 48V1_ALb6US04U3b
 </artwork></figure>
 
 <t>Encrypt the CEK with the Old OP's RSA public encryption key:</t>
 
 <figure><artwork>
-encrypted_key: &#x2026;
+encrypted_key:
+  GqwEk3osLFgnGmh6UJsuNUI134QVYKmhtXqfdszQBl70o8-pQLK5eZbun0vFmWhd
+  h7VDEUzX3Lxce6CzV80wEH57T-6LlJOjsCTOWmc_I8HUbPfGW4JjxBYv9Woab3Sv
+  apSDRne7qJ-ykN_MRYAUVASF5kRGBKLBU6ip3XIagHy0k6M0QnpMhwHdp82AKZl9
+  mSc2qwaB7Bhm3zjsPXCklyUUI5ojfEv9jFxYz6IzlMC3a5zObEGHRCIo2Xt21-GQ
+  KMBG3fiTd-59GXUupg_aZXECqWcyhSxxMzYMDl8cgrrJXdNMxcuPIywlnR4-JqKz
+  9dWVMQNmTdnJ8IqLMjqAwg
 </artwork></figure>
 
 <t>The payload is the "port_token" value from the previous section. The
@@ -435,22 +441,28 @@ protected header.</t>
 
 <figure><artwork>
     plaintext: 3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI
-          aad: eyJ0eXAiOiJvcGVuaWQtY29ubmVjdC1wb3J0aW5nIiwiYWxn
-               IjoiZGlyIiwiZW5jIjoiQTI1NkdDTSIsImtpZCI6InM2Qmhk
-               UmtxdDMiLCJzZWN0b3JfaWQiOiJycC5leGFtcGxlLm9yZyJ9
+          aad: 
+  eyJ0eXAiOiJvcGVuaWQtY29ubmVjdC1wb3J0aW5nIiwiYWxnIjoiUlNBLU9BRVAt
+  MjU2IiwiZW5jIjoiQTI1NkdDTSIsImtpZCI6Im9sZG9wNDMiLCJzZWN0b3JfaWQi
+  OiJycC5leGFtcGxlLm9yZyJ9
 </artwork></figure>
 
 <t>Applying AES-GCM encryption gives ciphertext and an authentication tag:</t>
 
 <figure><artwork>
-    ciphertext: &#x2026;
-           tag: &#x2026;
+    ciphertext:
+  IPvR7VRL9tjxZrWMul3v94G4xiyEadCi-nubi0Xg74WIiN4BNbhO58JuuA
+           tag: 5JijJVt4bRz7q2C950WH7w
 </artwork></figure>
 
-<t>Putting it all together:</t>
+<t>Putting it all together (with eliding and line breaks only for display):</t>
 
 <figure><artwork>
-"enc_port_token": "eyJ0eX&#x2026;9yZyJ9.&#x2026;.48V1_ALb6US04U3b.ciphertext.tag"
+"enc_port_token": "eyJ0eX &#x2026; 9yZyJ9
+                   .GqwEk3 &#x2026; MjqAwg
+                   .48V1_ALb6US04U3b
+                   .IPvR7V &#x2026; 58JuuA
+                   .5JijJVt4bRz7q2C950WH7w"
 </artwork></figure>
 
 </section>
@@ -494,7 +506,7 @@ value; and linking that account to the New OP's "sub" value.</t>
   "at_hash": "mrxuWF8TvnILKqFpZgEYCQ",
   "aka": {
     "iss": "https://oldop.example.net/",
-    "enc_port_token": "eyJ0eX&#x2026;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag"
+    "enc_port_token": "eyJ0eX &#x2026; 50WH7w"
   }
 }</artwork></figure>
 
@@ -593,7 +605,7 @@ find the existing account that has ported to the New OP.</t>
 <figure><artwork>
 GET /connect/port_check
   ?iss=https://newop.example.net/
-  &amp;enc_port_token=eyJ0eX&#x2026;3JnIn0..48V1_ALb6US04U3b.ciphertext.tag
+  &amp;enc_port_token=eyJ0eX &#x2026; 50WH7w
    HTTP/1.1
 Host: oldop.example.net
 Authorization: Bearer JOpIXW60qfjKQOlQ8trLBTSzwDl8zGgujLxBVTvWMG8
@@ -1016,6 +1028,13 @@ cover technology that may be required to practice this specification.</t>
 <section anchor="history" title="Document history">
 
 <t>[[ To be removed from the final specification ]]</t>
+
+<t>-06</t>
+
+<t><list style="symbols">
+  <t>Privacy considerations</t>
+  <t>Example values</t>
+</list></t>
 
 <t>-05</t>
 
