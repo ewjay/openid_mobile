@@ -584,7 +584,7 @@ The Biometric may be captured as part of the consent flow.
 		type="HTML" />
       </reference>
 
-	  <?rfc include="reference.I-D.draft-ietf-oauth-amr-values-01.xml"?>
+	  <?rfc include="reference.I-D.draft-ietf-oauth-amr-values-06.xml"?>
 	  
 
       <reference anchor="OpenID.Discovery" target="http://openid.net/specs/openid-connect-discovery-1_0.html">
