@@ -6,7 +6,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 ]>
 
-<rfc category="info" docName="draft-account-porting-07alpha" ipr="trust200902">
+<rfc category="info" docName="draft-account-porting-07" ipr="trust200902">
   <?rfc toc="yes" ?>
   <?rfc private="Draft" ?>
   <?rfc compact="yes" ?>
