@@ -513,7 +513,7 @@
 <p/>
 
 <ol>
-  <li>The user browsers to the New OP, logs in, and indicates that they want to port from a particular Old OP.</li>
+  <li>The user browses to the New OP, logs in, and indicates that they want to port from a particular Old OP.</li>
   <li>New OP initiates an OAuth 2.0 flow by redirecting the user's browser to the Old OP's authorization endpoint.  <ol style="list-style-type: upper-alpha"><li>The user authenticates to the Old OP, and confirms they want to port to the New OP.</li><li>Old OP redirects the user's browser back to the New OP.</li><li>New OP completes the OAuth 2.0 flow by getting an access token from the Old OP's token endpoint.</li></ol></li>
   <li>New OP calls the Old OP's Porting data API with the access token; receiving a "port_token".</li>
 </ol>
@@ -522,9 +522,9 @@
 <p/>
 
 <ol>
-  <li>The user browsers to the RP, and choses to login via the New OP.</li>
+  <li>The user browses to the RP, and choses to login via the New OP.</li>
   <li>RP initiates an OpenID Connect login by redirecting the user's browser to the New OP's authorization endpoint.  <ol style="list-style-type: upper-alpha"><li>The user authenticates to the New OP, and consents to being identified to the RP.</li><li>New OP redirects the user's browser back to the RP.</li><li>RP completes the OpenID Connect flow by getting an id_token from the New OP's token endpoint.</li></ol></li>
-  <li>New OP included an "aka" member in the id_token listing the user's Old OP, along with an encrypted version of the user's "port_token" obtained in the first stage. Note: the "port_token" is encrypted for the Old OP.</li>
+  <li>New OP included an "aka" member in the id_token listing the user's Old OP, along with an encrypted version of the user's "port_token" obtained in the first stage. Note: the audience for the encryption applied to the "port_token" is the Old OP, not the RP.</li>
   <li>RP prepares to make API calls to the Old OP, by calling the Old OP's token endpoint (with an OAuth 2.0 client credential grant) to get an access token.</li>
   <li>RP calls the Old OP's Porting check API with the access token, passing along the encrypted "port_token"; receiving the Old OP's Subject Id for the user in response.</li>
   <li>RP automatically accepts the two Subject Ids from Old and New OPs as identifiers for the same account at the RP.</li>
@@ -667,7 +667,7 @@ encrypted_key:
 <p id="rfc.section.5.p.1">This document defines the "aka" (also known as) member that indicates that the given user has (or had) another identifier from an Old OP.  An "aka" member can be included in an id_token (issued as part of an OpenID Connect login), or in a Porting check API response [<a href="#port_check">Section 6</a>].</p>
 <p id="rfc.section.5.p.2">An "aka" value is a JSON object with "enc_port_token" and "iss" members, both with string values. "iss" identifies the Old OP.  "enc_port_token" can be used at the Old OP's Porting check API [<a href="#port_check">Section 6</a>] to confirm the port and obtain the Old OP's "sub" value for the user.</p>
 <p id="rfc.section.5.p.3">An "enc_port_token" value is opaque to an RP who receives it: they simply copy it from the "aka" member to an API parameter.  The OP sending an "enc_port_token" MUST construct its value by encrypting a port token as per <a href="#enc">Section 4</a>.</p>
-<p id="rfc.section.5.p.4">On receiving an id_token, a RP uses "iss" &amp; "sub" to lookup the user's account in the RP's systems. If no such account is found, but the id_token contains an "aka" member, then the RP MUST process the "aka" value to determine if the RP knows the user via federation from an Old OP. Processing involves: calling the Porting check API for the Old OP with the given "enc_port_token"; looking for an existing account at the RP that matches the Old OP's "sub" value; and linking that account to the New OP's "sub" value.</p>
+<p id="rfc.section.5.p.4">On receiving an id_token, an RP uses "iss" &amp; "sub" to lookup the user's account in the RP's systems. If no such account is found, but the id_token contains an "aka" member, then the RP MUST process the "aka" value to determine if the RP knows the user via federation from an Old OP. Processing involves: calling the Porting check API for the Old OP with the given "enc_port_token"; looking for an existing account at the RP that matches the Old OP's "sub" value; and linking that account to the New OP's "sub" value.</p>
 <p id="rfc.section.5.p.5">Below is a sample payload of an id_token.</p>
 <pre>{
   "iss": "https://newop.example.net/",
