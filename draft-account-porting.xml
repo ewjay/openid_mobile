@@ -6,7 +6,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 ]>
 
-<rfc category="info" docName="draft-account-porting-06" ipr="trust200902">
+<rfc category="info" docName="draft-account-porting-07alpha" ipr="trust200902">
   <?rfc toc="yes" ?>
   <?rfc private="Draft" ?>
   <?rfc compact="yes" ?>
@@ -21,8 +21,8 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 </author>
 
 <author fullname="Torsten Lodderstedt" initials="T." surname="Lodderstedt">
-  <organization>Deutsche Telekom AG</organization>
-  <address><email>t.lodderstedt@telekom.de</email></address>
+  <organization>YES Europe AG</organization>
+  <address><email>torsten@yes.de</email></address>
 </author>
 
 <author fullname="Arne Georg Gleditsch" initials="A.G." surname="Gleditsch">
@@ -30,7 +30,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
   <address><email>argggh@telenordigital.com</email></address>
 </author>
 
-<date year="2017" month="March" day="3"/>
+<date year="2017" month="March" day="6"/>
 
 <workgroup>OpenID MODRNA Working Group</workgroup>
 
@@ -1028,6 +1028,12 @@ cover technology that may be required to practice this specification.</t>
 <section anchor="history" title="Document history">
 
 <t>[[ To be removed from the final specification ]]</t>
+
+<t>-07</t>
+
+<t><list style="symbols">
+  <t>Change co-author affilliation</t>
+</list></t>
 
 <t>-06</t>
 
