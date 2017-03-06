@@ -130,7 +130,7 @@ behalf, which first requires orchestrating an approval interaction between the
 user and the Old OP using OAuth 2.0 <xref target="RFC6749"/>.</t>
 
 <t><list style="numbers" counter="flowstep">
-<t>The user browsers to the New OP, logs in, and indicates that they want to
+<t>The user browses to the New OP, logs in, and indicates that they want to
 port from a particular Old OP.</t>
 <t>New OP initiates an OAuth 2.0 flow by redirecting the user's browser
 to the Old OP's authorization endpoint.
@@ -161,7 +161,7 @@ Old OP identifies the ported account, enabling the RP to link the user's
 ids from both OPs.</t>
 
 <t><list style="numbers" counter="flowstep">
-<t>The user browsers to the RP, and choses to login via the New OP.</t>
+<t>The user browses to the RP, and choses to login via the New OP.</t>
 <t>RP initiates an OpenID Connect login by redirecting the user's browser
 to the New OP's authorization endpoint.
 <list style="letters">
@@ -172,8 +172,9 @@ to the New OP's authorization endpoint.
   the New OP's token endpoint.</t>
 </list></t>
 <t>New OP included an "aka" member in the id_token listing the user's Old OP,
-along with an encrypted version of the user's "port_token" obtained in the first
-stage. Note: the "port_token" is encrypted for the Old OP.</t>
+along with an encrypted version of the user's "port_token" obtained in the
+first stage. Note: the audience for the encryption applied to the "port_token"
+is the Old OP, not the RP.</t>
 <t>RP prepares to make API calls to the Old OP,
 by calling the Old OP's token endpoint (with an OAuth 2.0 client credential
 grant) to get an access token.</t>
@@ -487,7 +488,7 @@ they simply copy it from the "aka" member to an API parameter.
 The OP sending an "enc_port_token" MUST construct its value by
 encrypting a port token as per <xref target="enc"/>.</t>
 
-<t>On receiving an id_token, a RP uses "iss" &amp; "sub" to lookup the user's
+<t>On receiving an id_token, an RP uses "iss" &amp; "sub" to lookup the user's
 account in the RP's systems. If no such account is found, but the id_token
 contains an "aka" member, then the RP MUST process the "aka" value to determine
 if the RP knows the user via federation from an Old OP. Processing involves:
