@@ -44,7 +44,7 @@
 
 
 
-    <date day="07" month="Sep" year="2016" />
+    <date day="06" month="Mar" year="2017" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -687,7 +687,7 @@ The Biometric may be captured as part of the consent flow.
 
 
     <section anchor="Notices" title="Notices">
-      <t>Copyright (c) 2015 The OpenID Foundation.</t>
+      <t>Copyright (c) 2017 The OpenID Foundation.</t>
       <t>
 	The OpenID Foundation (OIDF) grants to any Contributor, developer, 
 	implementer, or other interested party a non-exclusive, royalty free, 
@@ -731,6 +731,11 @@ The Biometric may be captured as part of the consent flow.
 
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+
+	  <t>-06 <list style="symbols">
+	  	<t>update reference to amr spec</t>
+	  	<t>Make Date current for implementers draft</t>
+	  	</list></t>
 
       <t>-01 <list style="symbols">
           <t>Initial draft</t>
