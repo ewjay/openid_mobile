@@ -10,7 +10,7 @@
 
 
             OpenID Connect MODRNA Authentication Profile 1.0
-                     draft-mobile-authentication-01
+                openid-connect-modrna-authentication-1_0
 
 Abstract
 
@@ -478,13 +478,13 @@ Connotte & Bradley      Expires September 7, 2017               [Page 8]
               (work in progress), February 2017.
 
    [OpenID.Core]
-              Sakimura, N., Bradley, J., Jones, M., de Medeiros, B.,
-              Mortimore, C., and E. Jay, "OpenID Connect Core 1.0",
-              December 2013.
+              Sakimura, N., Bradley, J., Jones, M., de Medeiros, B., and
+              C. Mortimore, "OpenID Connect Core 1.0", November 2014,
+              <http://openid.net/specs/openid-connect-core-1_0.html>.
 
    [OpenID.Discovery]
               Sakimura, N., Bradley, J., Jones, M., and E. Jay, "OpenID
-              Connect Discovery 1.0", August 2015,
+              Connect Discovery 1.0", November 2014,
               <http://openid.net/specs/
               openid-connect-discovery-1_0.html>.
 
