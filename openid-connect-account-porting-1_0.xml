@@ -6,7 +6,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 ]>
 
-<rfc category="info" docName="draft-account-porting-07" ipr="trust200902">
+<rfc category="info" docName="openid-connect-account-porting-1_0" ipr="trust200902">
   <?rfc toc="yes" ?>
   <?rfc private="Draft" ?>
   <?rfc compact="yes" ?>
@@ -872,41 +872,57 @@ the encryption of a port token.</t>
 
 <references title="Normative References">
 
-<reference  anchor='OpenID.Core'
-target='https://openid.net/specs/openid-connect-core-1_0.html'>
-<front>
-<title>OpenID Connect Core 1.0</title>
-<author initials='N.' surname='Sakimura' fullname='N. Sakimua'>
-<organization/></author>
-<author initials='J.' surname='Bradley' fullname='J. Bradley'>
-<organization/></author>
-<author initials='M.' surname='Jones' fullname='M. Jones'>
-<organization/></author>
-<author initials='B.' surname='de Medeiros' fullname='B. de Medeiros'>
-<organization/></author>
-<author initials='C.' surname='Mortimore' fullname='C. Mortimore'>
-<organization/></author>
-<author initials='E.' surname='Jay' fullname='E. Jay'>
-<organization/></author>
-<date year='2013' month='December' />
-</front>
-</reference>
+      <reference anchor="OpenID.Core" target="http://openid.net/specs/openid-connect-core-1_0.html">
+        <front>
+          <title>OpenID Connect Core 1.0</title>
 
-<reference  anchor='OpenID.Discovery'
-target='https://openid.net/specs/openid-connect-discovery-1_0.html'>
-<front>
-<title>OpenID Connect Discovery 1.0</title>
-<author initials='N.' surname='Sakimura' fullname='N. Sakimua'>
-<organization/></author>
-<author initials='J.' surname='Bradley' fullname='J. Bradley'>
-<organization/></author>
-<author initials='M.' surname='Jones' fullname='M. Jones'>
-<organization/></author>
-<author initials='E.' surname='Jay' fullname='E. Jay'>
-<organization/></author>
-<date year='2015' month='August' />
-</front>
-</reference>
+          <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+            <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+          </author>
+
+          <author fullname="John Bradley" initials="J." surname="Bradley">
+            <organization abbrev="Ping Identity">Ping Identity</organization>
+          </author>
+
+          <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+            <organization abbrev="Microsoft">Microsoft</organization>
+          </author>
+
+          <author fullname="Breno de Medeiros" initials="B." surname="de Medeiros">
+            <organization abbrev="Google">Google</organization>
+          </author>
+
+	  <author fullname="Chuck Mortimore" initials="C." surname="Mortimore">
+	    <organization abbrev="Salesforce">Salesforce</organization>
+	  </author>
+
+          <date day="8" month="November" year="2014"/>
+        </front>
+      </reference>
+
+      <reference anchor="OpenID.Discovery" target="http://openid.net/specs/openid-connect-discovery-1_0.html">
+        <front>
+          <title>OpenID Connect Discovery 1.0</title>
+
+          <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
+            <organization abbrev="NRI">Nomura Research Institute, Ltd.</organization>
+          </author>
+
+          <author fullname="John Bradley" initials="J." surname="Bradley">
+            <organization abbrev="Ping Identity">Ping Identity</organization>
+          </author>
+
+          <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
+            <organization abbrev="Microsoft">Microsoft</organization>
+          </author>
+
+          <author fullname="Edmund Jay" initials="E." surname="Jay">
+            <organization abbrev="Illumila">Illumila</organization>
+          </author>
+
+          <date day="8" month="November" year="2014"/>
+        </front>
+      </reference>
 
 <reference  anchor='IANA.JWT_Claims'
 target='https://www.iana.org/assignments/jwt/'>
@@ -975,8 +991,8 @@ recognizes as Alice.</t>
 
 <t>Many details are elided. Dotted arrows represent HTTP redirects.</t>
 
-<figure><artwork src="draft-account-porting.eg.png">
-{{{img src="draft-account-porting.eg.png"/}}}
+<figure><artwork src="openid-connect-account-porting-1_0.eg.png">
+{{{img src="openid-connect-account-porting-1_0.eg.png"/}}}
 </artwork></figure>
 
 </section>
@@ -992,7 +1008,7 @@ this specification: J&#246;rg Connotte; John Bradley; Axel Nennker.</t>
 
 <section anchor="notices" title="Notices">
 
-<t>Copyright (c) 2016 The OpenID Foundation.</t>
+<t>Copyright (c) 2017 The OpenID Foundation.</t>
 
 <t>The OpenID Foundation (OIDF) grants to any Contributor, developer,
 implementer, or other interested party a non-exclusive, royalty free, worldwide
