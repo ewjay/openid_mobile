@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                            Sep 07, 2016
+                                                          March 06, 2017
 
 
             OpenID Connect MODRNA Authentication Profile 1.0
@@ -53,9 +53,9 @@ Table of Contents
 
 
 
-Connotte & Bradley       Expires March 11, 2017                 [Page 1]
+Connotte & Bradley      Expires September 7, 2017               [Page 1]
 
-                 OIDC MODRNA Authentication Profile 1.0         Sep 2016
+                 OIDC MODRNA Authentication Profile 1.0       March 2017
 
 
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  10
@@ -109,9 +109,9 @@ Connotte & Bradley       Expires March 11, 2017                 [Page 1]
 
 
 
-Connotte & Bradley       Expires March 11, 2017                 [Page 2]
+Connotte & Bradley      Expires September 7, 2017               [Page 2]
 
-                 OIDC MODRNA Authentication Profile 1.0         Sep 2016
+                 OIDC MODRNA Authentication Profile 1.0       March 2017
 
 
 2.  Overview
@@ -165,9 +165,9 @@ Connotte & Bradley       Expires March 11, 2017                 [Page 2]
 
 
 
-Connotte & Bradley       Expires March 11, 2017                 [Page 3]
+Connotte & Bradley      Expires September 7, 2017               [Page 3]
 
-                 OIDC MODRNA Authentication Profile 1.0         Sep 2016
+                 OIDC MODRNA Authentication Profile 1.0       March 2017
 
 
    The initial set of "acr" values contain no requirements for the IdP
@@ -221,9 +221,9 @@ Connotte & Bradley       Expires March 11, 2017                 [Page 3]
 
 
 
-Connotte & Bradley       Expires March 11, 2017                 [Page 4]
+Connotte & Bradley      Expires September 7, 2017               [Page 4]
 
-                 OIDC MODRNA Authentication Profile 1.0         Sep 2016
+                 OIDC MODRNA Authentication Profile 1.0       March 2017
 
 
    The OP MUST support receiving "acr_values" as a space separated list
@@ -277,9 +277,9 @@ Connotte & Bradley       Expires March 11, 2017                 [Page 4]
 
 
 
-Connotte & Bradley       Expires March 11, 2017                 [Page 5]
+Connotte & Bradley      Expires September 7, 2017               [Page 5]
 
-                 OIDC MODRNA Authentication Profile 1.0         Sep 2016
+                 OIDC MODRNA Authentication Profile 1.0       March 2017
 
 
 5.1.  AMR Value Examples
@@ -333,9 +333,9 @@ Connotte & Bradley       Expires March 11, 2017                 [Page 5]
 
 
 
-Connotte & Bradley       Expires March 11, 2017                 [Page 6]
+Connotte & Bradley      Expires September 7, 2017               [Page 6]
 
-                 OIDC MODRNA Authentication Profile 1.0         Sep 2016
+                 OIDC MODRNA Authentication Profile 1.0       March 2017
 
 
    The "login_hint_token" produced by the MODRNA discovery service
@@ -389,9 +389,9 @@ Connotte & Bradley       Expires March 11, 2017                 [Page 6]
 
 
 
-Connotte & Bradley       Expires March 11, 2017                 [Page 7]
+Connotte & Bradley      Expires September 7, 2017               [Page 7]
 
-                 OIDC MODRNA Authentication Profile 1.0         Sep 2016
+                 OIDC MODRNA Authentication Profile 1.0       March 2017
 
 
    It is best practice to sign then encrypt tokens, as signatures over
@@ -445,9 +445,9 @@ Connotte & Bradley       Expires March 11, 2017                 [Page 7]
 
 
 
-Connotte & Bradley       Expires March 11, 2017                 [Page 8]
+Connotte & Bradley      Expires September 7, 2017               [Page 8]
 
-                 OIDC MODRNA Authentication Profile 1.0         Sep 2016
+                 OIDC MODRNA Authentication Profile 1.0       March 2017
 
 
    The "binding_message" value being displayed on the consumption and
@@ -501,9 +501,9 @@ Connotte & Bradley       Expires March 11, 2017                 [Page 8]
 
 
 
-Connotte & Bradley       Expires March 11, 2017                 [Page 9]
+Connotte & Bradley      Expires September 7, 2017               [Page 9]
 
-                 OIDC MODRNA Authentication Profile 1.0         Sep 2016
+                 OIDC MODRNA Authentication Profile 1.0       March 2017
 
 
    [RFC7517]  Jones, M., "JSON Web Key (JWK)", RFC 7517,
@@ -557,9 +557,9 @@ Appendix A.  Acknowledgements
 
 
 
-Connotte & Bradley       Expires March 11, 2017                [Page 10]
+Connotte & Bradley      Expires September 7, 2017              [Page 10]
 
-                 OIDC MODRNA Authentication Profile 1.0         Sep 2016
+                 OIDC MODRNA Authentication Profile 1.0       March 2017
 
 
       Gonzalo Fernandez Rodriguez
@@ -567,7 +567,7 @@ Connotte & Bradley       Expires March 11, 2017                [Page 10]
 
 Appendix B.  Notices
 
-   Copyright (c) 2015 The OpenID Foundation.
+   Copyright (c) 2017 The OpenID Foundation.
 
    The OpenID Foundation (OIDF) grants to any Contributor, developer,
    implementer, or other interested party a non-exclusive, royalty free,
@@ -606,17 +606,23 @@ Appendix C.  Document History
 
    [[ To be removed from the final specification ]]
 
+   -06
+
+   o  update reference to amr spec
+
+
+
+
+Connotte & Bradley      Expires September 7, 2017              [Page 11]
+
+                 OIDC MODRNA Authentication Profile 1.0       March 2017
+
+
+   o  Make Date current for implementers draft
+
    -01
 
    o  Initial draft
-
-
-
-
-Connotte & Bradley       Expires March 11, 2017                [Page 11]
-
-                 OIDC MODRNA Authentication Profile 1.0         Sep 2016
-
 
    o  Added OIDF Standard Notice
 
@@ -663,10 +669,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-Connotte & Bradley       Expires March 11, 2017                [Page 12]
+Connotte & Bradley      Expires September 7, 2017              [Page 12]
