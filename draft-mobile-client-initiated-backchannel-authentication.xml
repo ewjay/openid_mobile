@@ -50,7 +50,7 @@
     </author>
 
 
-    <date day="20" month="February" year="2017"/>
+    <date day="7" month="March" year="2017"/>
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -278,8 +278,8 @@
               "openid" scope value in the Authorization Request.
             </t>
             <t hangText="client_notification_token">
-              REQUIRED if the Client is registered to be notified. It is a unique id provided by the Client that will be used by the OpenID Provider as a bearer 
-              token to authenticate the callback request to send the tokens to the Client (Notification Mode).
+              REQUIRED if the Client is registered to be notified. 
+              It is a bearer token provided by the Client that will be used by the OpenID Provider to authenticate the callback request to send the tokens to the Client (Notification Mode).
             </t>
             <t>
               At the time of registering the Client at the OpenID Provider, the Client must provide the information about whether receiving the token 
