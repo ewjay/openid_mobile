@@ -408,7 +408,7 @@
 
   <meta name="dct.creator" content="Manger, J., Lodderstedt, T., and A. Gleditsch" />
   <meta name="dct.identifier" content="urn:ietf:id:openid-connect-account-porting-1_0-08alpha" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-3-11" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-3-14" />
   <meta name="dct.abstract" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
   <meta name="description" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
 
@@ -445,7 +445,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">March 11, 2017</td>
+  <td class="right">March 14, 2017</td>
 </tr>
 
     	
@@ -506,7 +506,7 @@
 <p id="rfc.section.1.p.3">OpenID Connect account porting is motivated by (but not limited to) the GSMA Mobile Connect scheme, in which mobile network operators collectively offer federated identity services <a href="#MobileConnect">[MobileConnect]</a>. Most jurisdictions allow users to port their mobile phone number between network operators, and a reasonable expectation of those users will be that their Mobile Connect account (provided by those same operators) can also be ported at the same time. There is a significant difference between phone number and account porting, however. Other parties are generally unaware when number porting occurs; they simply keep using the same phone number to communicate with the user. In contrast, RPs are aware when an OpenID Connect account is ported as they interact with a New OP.</p>
 <p><a href="#flow">Section 1.2</a> gives an overview of the message flows during porting.  <a href="#discovery">Section 2</a> defines metadata that indicates an OP supports porting, which can be obtained via <a href="#OpenID.Discovery">[OpenID.Discovery]</a>.  <a href="#port_data">Section 3</a> specifies an API offered by an Old OP that a New OP calls when a user ports to collect a token representing the port.  This API is protected by an OAuth 2.0 exchange to ensure the user consents to the porting process.  <a href="#aka">Section 5</a> specifies how a New OP can identify the Old OP in an id_token presented to an RP. <a href="#port_check">Section 6</a> describes how an RP can confirm the porting information with the Old OP.  <a href="#example">Appendix A</a> provides a example of a complete porting flow.</p>
 <h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> <a href="#rnc" id="rnc">Requirements Notation, Conventions, and Terminology</a></h1>
-<p id="rfc.section.1.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
+<p id="rfc.section.1.1.p.1">The key words "MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.</p>
 <p id="rfc.section.1.1.p.2">Throughout this document, values are quoted to indicate that they are to be taken literally in protocol messages.</p>
 <p id="rfc.section.1.1.p.3">Some long sample values are partially elided for display, marked with "&#8230;". See <a href="#enc_eg">Appendix B</a> for the full values.  Some long sample values are wrapped over multiple lines for display, marked with "&#8618; ".</p>
 <p id="rfc.section.1.1.p.4">Sample binary values (such as a 256-bit AES key) are displayed base64url-encoded.</p>
@@ -559,13 +559,13 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "issuer"                : "https://oldop.example.net/"
- ,"authorization_endpoint": "https://oldop.example.net/connect/authorize"
- ,"token_endpoint"        : "https://oldop.example.net/connect/token"
- ,"port_data_endpoint"    : "https://oldop.example.net/connect/port_data"
- ,"port_check_endpoint"   : "https://oldop.example.net/connect/port_check"
- ,"jwks_uri"              : "https://oldop.example.net/keys.jwks"
- ,"port_enc_values_supported": [ "A256GCM", "A256CBC-HS512" ]
+   "issuer"                : "https://oldop.example.net/"
+  ,"authorization_endpoint": "https://oldop.example.net/connect/authorize"
+  ,"token_endpoint"        : "https://oldop.example.net/connect/token"
+  ,"port_data_endpoint"    : "https://oldop.example.net/connect/port_data"
+  ,"port_check_endpoint"   : "https://oldop.example.net/connect/port_check"
+  ,"jwks_uri"              : "https://oldop.example.net/keys.jwks"
+  ,"port_enc_values_supported": [ "A256GCM", "A256CBC-HS512" ]
 }
 </pre>
 <pre>
@@ -577,7 +577,7 @@ HTTP/1.1 200 OK
 Content-Type: application/jwk-set+json
 
 {
-  "keys":[
+   "keys":[
     {
       "kty": "RSA"
      ,"use": "enc"
@@ -606,8 +606,8 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "port_token": "7x:3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI"
- ,"extra_stuff": 34
+   "port_token": "7x:3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI"
+  ,"extra_stuff": 34
 }
 </pre>
 <p id="rfc.section.3.p.7">Only OPs explicitly trusted by the Old OP SHOULD be allowed to use the API (eg to use the "port_data" scope) as it is security and privacy sensitive.  In some situations an Old OP will know via other processes when and to whom a user is  porting (eg when it is combined with porting a phone number).  In such circumstances, the Old OP SHOULD reject requests about a user not known to be in the process of porting, and SHOULD reject requests from any OP other than the known porting destination.</p>
@@ -623,13 +623,15 @@ Content-Type: application/json
 <p id="rfc.section.4.p.9">The New OP MUST support "RSA-OAEP-256" for key encryption and MUST support "A256GCM" for content encryption <a href="#RFC7518">[RFC7518]</a>.</p>
 <p id="rfc.section.4.p.10">Below is a sample JWE (partialy elided).  See <a href="#enc_eg">Appendix B</a> for the full values.</p>
 <p id="rfc.section.4.p.11">JWE protected header:</p>
-<pre>{
-        "typ": "openid-connect-porting",
-        "alg": "RSA-OAEP-256",
-        "enc": "A256GCM",
-        "kid": "oldop43",
-  "sector_id": "rp.example.org"
-}</pre>
+<pre>
+{
+   "typ": "openid-connect-porting"
+  ,"alg": "RSA-OAEP-256"
+  ,"enc": "A256GCM"
+  ,"kid": "oldop43"
+  ,"sector_id": "rp.example.org"
+}
+</pre>
 <p id="rfc.section.4.p.12">A 256-bit AES content encryption key (CEK) is randomly chosen, then encrypted with the Old OP's 2048-bit RSA public encryption key.</p>
 <p id="rfc.section.4.p.13">A 96-bit GCM initialization vector (IV) is randomly chosen.</p>
 <p id="rfc.section.4.p.14">The port_token (is this sample a 46 character string UTF-8-encoded into 46 bytes) is encrypted with AES-GCM to give a 46-byte ciphertext and 128-bit authentication tag.</p>
@@ -647,18 +649,20 @@ Content-Type: application/json
 <p id="rfc.section.5.p.3">An "enc_port_token" value is opaque to an RP who receives it: they simply copy it from the "aka" member to an API parameter.  The OP sending an "enc_port_token" MUST construct its value by encrypting a port token as per <a href="#enc">Section 4</a>.</p>
 <p id="rfc.section.5.p.4">On receiving an id_token, an RP uses "iss" &amp; "sub" to lookup the user's account in the RP's systems. If no such account is found, but the id_token contains an "aka" member, then the RP MUST process the "aka" value to determine if the RP knows the user via federation from an Old OP. Processing involves: calling the Porting check API for the Old OP with the given "enc_port_token"; looking for an existing account at the RP that matches the Old OP's "sub" value; and linking that account to the New OP's "sub" value.</p>
 <p id="rfc.section.5.p.5">Below is a sample payload of an id_token.</p>
-<pre>{
-  "iss": "https://newop.example.net/"
- ,"sub": "JRrr09BzhZ6BJ9t0yD8DzyZjg7ziB3a40jeoUvZkUgw"
- ,"aud": "s6BhdRkqt3"
- ,"iat": 1471238000
- ,"exp": 1471238300
- ,"at_hash": "mrxuWF8TvnILKqFpZgEYCQ"
- ,"aka": {
-    "iss": "https://oldop.example.net/"
-   ,"enc_port_token": "eyJ0eXAiOiJvcGVuaWQ &#8230; hknA"
-  }
-}</pre>
+<pre>
+{
+   "iss": "https://newop.example.net/"
+  ,"sub": "JRrr09BzhZ6BJ9t0yD8DzyZjg7ziB3a40jeoUvZkUgw"
+  ,"aud": "s6BhdRkqt3"
+  ,"iat": 1471238000
+  ,"exp": 1471238300
+  ,"at_hash": "mrxuWF8TvnILKqFpZgEYCQ"
+  ,"aka": {
+      "iss": "https://oldop.example.net/"
+     ,"enc_port_token": "eyJ0eXAiOiJvcGVuaWQ &#8230; hknA"
+   }
+}
+</pre>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#port_check" id="port_check">Porting check API</a></h1>
 <p id="rfc.section.6.p.1">The Porting check API is offered by an Old OP to RPs so they can confirm that a user did port to a specific New OP. The API converts an "enc_port_token" to a Subject Id ("sub" value), which the RP needs to identify the ported user's existing account at the RP.</p>
 <p id="rfc.section.6.p.2">Access to the Porting check API requires authentication of the RP.  This enables the Old OP to match the caller of the API to uses of the OpenID Connect authentication process so it can apply any RP-specific policy.  The Old OP and RP MUST support the OAuth 2.0 client credentials flow <a href="#RFC6749">[RFC6749]</a> and Bearer access tokens <a href="#RFC6750">[RFC6750]</a>.  The RP MUST include the scope "port_check" when requesting access.</p>
@@ -702,8 +706,8 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-     "sub": "kY6N64H86MBTho9I-JlRnpvaLOwAb5m3yYta6pq1VFM",
-  "remove": true
+   "sub": "kY6N64H86MBTho9I-JlRnpvaLOwAb5m3yYta6pq1VFM"
+  ,"remove": true
 }
 </pre>
 <p id="rfc.section.6.p.13">Below is a sample response that identifies a previous port. If the RP did not recognize "sub=kY6N6&#8230;" &amp; "iss=https://oldop&#8230;" it can process the "aka" value to see if that leads back to an account known to the RP.</p>
@@ -712,11 +716,11 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-     "sub": "kY6N64H86MBTho9I-JlRnpvaLOwAb5m3yYta6pq1VFM",
-  "remove": false,
-     "aka": {
-               "iss": "https://anotherop.example.net/",
-    "enc_port_token": "eyJraWQiOiJvbGRlcm9 &#8230; zLNh"
+   "sub": "kY6N64H86MBTho9I-JlRnpvaLOwAb5m3yYta6pq1VFM"
+  ,"remove": false
+  ,"aka": {
+      "iss": "https://anotherop.example.net/"
+     ,"enc_port_token": "eyJraWQiOiJvbGRlcm9 &#8230; zLNh"
   }
 }
 </pre>
@@ -726,8 +730,8 @@ HTTP/1.1 400 Bad request
 Content-Type: application/problem+json
 
 {
-   "type": "https://oldop.example.net/probs/porting_rp",
-  "title": "Port_token presented by the wrong RP"
+   "type": "https://oldop.example.net/probs/porting_rp"
+  ,"title": "Port_token presented by the wrong RP"
 }
 </pre>
 <h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#err" id="err">"user_ported" error code</a></h1>
@@ -949,42 +953,42 @@ Content-Type: application/problem+json
 <p id="rfc.section.B.p.2">Below is the Old OP's private key: a 2048-bit RSA key.  The public portion is published at the location given by the "jwks_uri" member in the Old OP's metadata.</p>
 <pre>
 {
-    "kty":"RSA"
-   ,"use":"enc"
-   ,"alg":"RSA-OAEP-256"
-   ,"kid":"oldop43"
-   ,"e":"AQAB"
-   ,"n":
+   "kty":"RSA"
+  ,"use":"enc"
+  ,"alg":"RSA-OAEP-256"
+  ,"kid":"oldop43"
+  ,"e":"AQAB"
+  ,"n":
  "lRWNgZGq7jaaYZKg_zMC2gDqIJ38qIAxTmUWkabd-OfyVwUruRFgFBXX74HBsK8N
 &#8618; f_omvBwov0Nyw9s_Y4jT5Dp6PXQDQCQjf4OwosL9bsl4k-x8h8SMaP4KUACVtxfo
 &#8618; hHivfr1hQHNodJbJNjLo9Pj_GTO0qTzqDrmkzjiCrBORGSk-5Bk7z7DMPYQWCdIq
 &#8618; yxV5MdI1Iei8dEemynbMW96kImh-U2p0M7YcIIVFBNrOTVCPUVesTpWTNe4vNCff
 &#8618; pmTo58IR840KVhZKGBZsYAtNL-BfQyHjJHi7BA0tgrCkngo_HtaQ-FresutM6Nsn
 &#8618; mc0vOitgDhmYX85jGp6Efw"
-   ,"d":
+  ,"d":
  "PGfBMDCPa3mgT8yTgxNuIlqggprA1p0qXTNEU7ui0MlaPbwQnSnXHgxDs_2FN0uW
 &#8618; UrZOn4VhVS3FAGqDYpb8E8tF4ERzVLfP0kjPdwM-oHbtbjIxuuj-Y0QbdZLnFoqP
 &#8618; Ya1snhOppe2c8zBtUpKKJUgGRHXYy4Gs7E534j6vY3ziZhFUEBnQIMmQJQ5UDVUR
 &#8618; h6sb87O_3tl2c8xykPIgfR6XPxwC8SfVCYNqfScZWgPtvipbgfHm1eBY_c8FhEdn
 &#8618; wSKP5OufdYyr7hTDgbTGYuhDdsNkAHrxJe-aeL0vRITdROm85jAP0lp5uY2m9Rxb
 &#8618; 0BUqvjyOQBOgfxb_lb5EYQ"
-   ,"p":
+  ,"p":
  "3xcunvbHYOslrQ3Tqp8utyUIsQrA0GAsW-VQfyYMF_7vRyYZKhuVXvDbpQ3tHgvR
 &#8618; dOVwG4p_EemRcOTIXUVHCZmoU8DSpk_Ko4FejnpK0VU4K8b9ilmSu_h6OpKPZJSW
 &#8618; -anluUfqpRRg1s02kCFqDlxi4QHVdTXNFgNt2e9vqCk"
-   ,"q":
+  ,"q":
  "qxOV6pch_woqIIevaAHLWydxEYLBEjUBwjT4XbacoTRbPU8clGUUF9AHI-f8fPUX
 &#8618; O_ZJ594WAc2gP2lEyubx15FZ_JBGR6FAZEw8n-x2A6qkfC1MUC4Tj_o4sHNsPRqP
 &#8618; 4m24zJCN4rpTa0EgHGhkCUBWKvDT0hTYBj05HjUOfGc"
-   ,"dp":
+  ,"dp":
  "Glxi5eXDKXCfwxMfL8ofewSlQkZDAlxa4YD3Qg783tkA7SdTUeZwgAd17Mr4edRr
 &#8618; q6Rw2tBCs5sl1HE0O9Ez066UdVETkxNanndq9Or-bD3lpUaeLvrmm8-AoesvhnMI
 &#8618; Y_fvbTVSRK9jwf39tIo-PfQsuum8j10MHs3I7TedugE"
-   ,"dq":
+  ,"dq":
  "lyQaksMrOdOVHGBDy7OqIcJa1omaYaeLAjUiKEkpYBKNeUDnkwMqGU-kv0g5fXxb
 &#8618; JpKVANDoyHcOWHd8W3Zlu3mi8svUC3yfEv13oiKasOqVn0-12DCc_9qlMt8GhYVu
 &#8618; ETG2zqP3dpP_FwbWg8KGftXkStOxkCzyHbEBQXrGbYk"
-   ,"qi":
+  ,"qi":
  "LCuMQiPczDeZSRcJdBcCeQDH6lHiV2wVEfWn21NgJHtmFrKWEOHxb_YAZTAmZUAE
 &#8618; Y5qAJrXtrLvRtHjjY7GIik84D9CJh6LNUmxtxq4IU-rySA49u9DGpR4Mvj6H_QeS
 &#8618; otgcP2pqyxsW_9Q92RLyDXqj7us9x3EAQfXOyXJXwAs"
@@ -1017,19 +1021,19 @@ Content-Type: application/problem+json
 </pre>
 <p id="rfc.section.B.p.5">Below is the RSA decryption of the encrypted key (dxK2&#8230;QPLA).  This step shows the result of the RSA exponentiation, which is a 2048-bit (342 base64url character) OAEP block.</p>
 <pre>
-ANPJj-quklogrQAVQ06tu-tcRz2S9gKQf0qyHpW70uF9E9ihlqqny0YLLGLox2_C
-t_10bngY0zFedBNr9Kcwr8rdnKsG8-Mwy5SUe7i3hJ4_pUHODy05XW455QzQp9U5
-xcvyNgINriwNF9ov7L8qyvI4x735oix2daE1zl-zl2b4kFsWgf3hUCGf595sdlIH
-2bqkuBaF1h5rpbTZV3BS-QAujoDk6mhv2tvq1KO-F2dxnEkauXDTUDiDmuyLJksv
-h7rv629wrx4MfEGO7WPC4YAhMo1guYqnxAzGQd_vlHtS1fziZb-s9gVHV5yyK-FB
-dszRLgHZStSHtyqSgyDNPg
+  ANPJj-quklogrQAVQ06tu-tcRz2S9gKQf0qyHpW70uF9E9ihlqqny0YLLGLox2_C
+&#8618; t_10bngY0zFedBNr9Kcwr8rdnKsG8-Mwy5SUe7i3hJ4_pUHODy05XW455QzQp9U5
+&#8618; xcvyNgINriwNF9ov7L8qyvI4x735oix2daE1zl-zl2b4kFsWgf3hUCGf595sdlIH
+&#8618; 2bqkuBaF1h5rpbTZV3BS-QAujoDk6mhv2tvq1KO-F2dxnEkauXDTUDiDmuyLJksv
+&#8618; h7rv629wrx4MfEGO7WPC4YAhMo1guYqnxAzGQd_vlHtS1fziZb-s9gVHV5yyK-FB
+&#8618; dszRLgHZStSHtyqSgyDNPg
 </pre>
 <p id="rfc.section.B.p.6">Unpacking the OAEP block gives 32 bytes (43 base64url chars), which is the 256-bit AES content encryption key (CEK).</p>
 <pre>
 MZ-DNnUyedxg9IHEzWm9RzQu_DSAiYVshqYrIKPhwbM
 </pre>
 <p id="rfc.section.B.p.7">AES-GCM symmetric decryption uses the above CEK with the IV (pyNuAX_QZsylRg3r, 3rd JWE part, 16 base64url chars, 96 bits).</p>
-<p id="rfc.section.B.p.8">The addiditional authenticated data (AAD) is the header (eyJ0&#8230;ZyJ9, 1st JWE part, 152 base64url chars, UTF-8 encoded to 152 bytes).</p>
+<p id="rfc.section.B.p.8">The additional authenticated data (AAD) is the header (eyJ0&#8230;ZyJ9, 1st JWE part, 152 base64url chars, UTF-8 encoded to 152 bytes).</p>
 <p id="rfc.section.B.p.9">The ciphertext (UDTg&#8230;l9iw, 4th JWE part, 62 base64url chars, 46 bytes) and tag (ZlmT&#8230;hknA, 5th JWE part, 22 base64url chars, 128 bits) decrypt and verify to give the plaintext (46 bytes, 46 UTF-8 encoded chars).  This is the port_token.</p>
 <pre>
 7x:3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI
