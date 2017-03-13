@@ -30,7 +30,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
   <address><email>argggh@telenordigital.com</email></address>
 </author>
 
-<date year="2017" month="March" day="11"/>
+<date year="2017" month="March" day="14"/>
 
 <workgroup>OpenID MODRNA Working Group</workgroup>
 
@@ -102,7 +102,7 @@ describes how an RP can confirm the porting information with the Old OP.
 <section anchor="rnc"
     title="Requirements Notation, Conventions, and Terminology">
 
-<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT",
+<t>The key words "MUST", "MUST NOT", "SHOULD", "SHOULD NOT",
 "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as
 described in <xref target="RFC2119"/>.</t>
 
@@ -252,13 +252,13 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "issuer"                : "https://oldop.example.net/"
- ,"authorization_endpoint": "https://oldop.example.net/connect/authorize"
- ,"token_endpoint"        : "https://oldop.example.net/connect/token"
- ,"port_data_endpoint"    : "https://oldop.example.net/connect/port_data"
- ,"port_check_endpoint"   : "https://oldop.example.net/connect/port_check"
- ,"jwks_uri"              : "https://oldop.example.net/keys.jwks"
- ,"port_enc_values_supported": [ "A256GCM", "A256CBC-HS512" ]
+   "issuer"                : "https://oldop.example.net/"
+  ,"authorization_endpoint": "https://oldop.example.net/connect/authorize"
+  ,"token_endpoint"        : "https://oldop.example.net/connect/token"
+  ,"port_data_endpoint"    : "https://oldop.example.net/connect/port_data"
+  ,"port_check_endpoint"   : "https://oldop.example.net/connect/port_check"
+  ,"jwks_uri"              : "https://oldop.example.net/keys.jwks"
+  ,"port_enc_values_supported": [ "A256GCM", "A256CBC-HS512" ]
 }
 </artwork></figure>
 
@@ -272,7 +272,7 @@ HTTP/1.1 200 OK
 Content-Type: application/jwk-set+json
 
 {
-  "keys":[
+   "keys":[
     {
       "kty": "RSA"
      ,"use": "enc"
@@ -339,8 +339,8 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "port_token": "7x:3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI"
- ,"extra_stuff": 34
+   "port_token": "7x:3O9YHawMDXLpKb-FVjQ1_qSS9R9wbwb0TWbUxLvqAAI"
+  ,"extra_stuff": 34
 }
 </artwork></figure>
 
@@ -416,13 +416,15 @@ See <xref target="enc_eg"/> for the full values.</t>
 
 <t>JWE protected header:</t>
 
-<figure><artwork>{
-        "typ": "openid-connect-porting",
-        "alg": "RSA-OAEP-256",
-        "enc": "A256GCM",
-        "kid": "oldop43",
-  "sector_id": "rp.example.org"
-}</artwork></figure>
+<figure><artwork>
+{
+   "typ": "openid-connect-porting"
+  ,"alg": "RSA-OAEP-256"
+  ,"enc": "A256GCM"
+  ,"kid": "oldop43"
+  ,"sector_id": "rp.example.org"
+}
+</artwork></figure>
 
 <t>A 256-bit AES content encryption key (CEK) is randomly chosen,
 then encrypted with the Old OP's 2048-bit RSA public encryption key.</t>
@@ -476,18 +478,20 @@ value; and linking that account to the New OP's "sub" value.</t>
 
 <t>Below is a sample payload of an id_token.</t>
 
-<figure><artwork>{
-  "iss": "https://newop.example.net/"
- ,"sub": "JRrr09BzhZ6BJ9t0yD8DzyZjg7ziB3a40jeoUvZkUgw"
- ,"aud": "s6BhdRkqt3"
- ,"iat": 1471238000
- ,"exp": 1471238300
- ,"at_hash": "mrxuWF8TvnILKqFpZgEYCQ"
- ,"aka": {
-    "iss": "https://oldop.example.net/"
-   ,"enc_port_token": "eyJ0eXAiOiJvcGVuaWQ &#x2026; hknA"
-  }
-}</artwork></figure>
+<figure><artwork>
+{
+   "iss": "https://newop.example.net/"
+  ,"sub": "JRrr09BzhZ6BJ9t0yD8DzyZjg7ziB3a40jeoUvZkUgw"
+  ,"aud": "s6BhdRkqt3"
+  ,"iat": 1471238000
+  ,"exp": 1471238300
+  ,"at_hash": "mrxuWF8TvnILKqFpZgEYCQ"
+  ,"aka": {
+      "iss": "https://oldop.example.net/"
+     ,"enc_port_token": "eyJ0eXAiOiJvcGVuaWQ &#x2026; hknA"
+   }
+}
+</artwork></figure>
 
 </section>
 
@@ -593,8 +597,8 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-     "sub": "kY6N64H86MBTho9I-JlRnpvaLOwAb5m3yYta6pq1VFM",
-  "remove": true
+   "sub": "kY6N64H86MBTho9I-JlRnpvaLOwAb5m3yYta6pq1VFM"
+  ,"remove": true
 }
 </artwork></figure>
 
@@ -608,11 +612,11 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-     "sub": "kY6N64H86MBTho9I-JlRnpvaLOwAb5m3yYta6pq1VFM",
-  "remove": false,
-     "aka": {
-               "iss": "https://anotherop.example.net/",
-    "enc_port_token": "eyJraWQiOiJvbGRlcm9 &#x2026; zLNh"
+   "sub": "kY6N64H86MBTho9I-JlRnpvaLOwAb5m3yYta6pq1VFM"
+  ,"remove": false
+  ,"aka": {
+      "iss": "https://anotherop.example.net/"
+     ,"enc_port_token": "eyJraWQiOiJvbGRlcm9 &#x2026; zLNh"
   }
 }
 </artwork></figure>
@@ -625,8 +629,8 @@ HTTP/1.1 400 Bad request
 Content-Type: application/problem+json
 
 {
-   "type": "https://oldop.example.net/probs/porting_rp",
-  "title": "Port_token presented by the wrong RP"
+   "type": "https://oldop.example.net/probs/porting_rp"
+  ,"title": "Port_token presented by the wrong RP"
 }
 </artwork></figure>
 
@@ -984,42 +988,42 @@ The public portion is published at the location given by the "jwks_uri" member
 in the Old OP's metadata.</t>
 <figure><artwork>
 {
-    "kty":"RSA"
-   ,"use":"enc"
-   ,"alg":"RSA-OAEP-256"
-   ,"kid":"oldop43"
-   ,"e":"AQAB"
-   ,"n":
+   "kty":"RSA"
+  ,"use":"enc"
+  ,"alg":"RSA-OAEP-256"
+  ,"kid":"oldop43"
+  ,"e":"AQAB"
+  ,"n":
  "lRWNgZGq7jaaYZKg_zMC2gDqIJ38qIAxTmUWkabd-OfyVwUruRFgFBXX74HBsK8N
 &#x21AA; f_omvBwov0Nyw9s_Y4jT5Dp6PXQDQCQjf4OwosL9bsl4k-x8h8SMaP4KUACVtxfo
 &#x21AA; hHivfr1hQHNodJbJNjLo9Pj_GTO0qTzqDrmkzjiCrBORGSk-5Bk7z7DMPYQWCdIq
 &#x21AA; yxV5MdI1Iei8dEemynbMW96kImh-U2p0M7YcIIVFBNrOTVCPUVesTpWTNe4vNCff
 &#x21AA; pmTo58IR840KVhZKGBZsYAtNL-BfQyHjJHi7BA0tgrCkngo_HtaQ-FresutM6Nsn
 &#x21AA; mc0vOitgDhmYX85jGp6Efw"
-   ,"d":
+  ,"d":
  "PGfBMDCPa3mgT8yTgxNuIlqggprA1p0qXTNEU7ui0MlaPbwQnSnXHgxDs_2FN0uW
 &#x21AA; UrZOn4VhVS3FAGqDYpb8E8tF4ERzVLfP0kjPdwM-oHbtbjIxuuj-Y0QbdZLnFoqP
 &#x21AA; Ya1snhOppe2c8zBtUpKKJUgGRHXYy4Gs7E534j6vY3ziZhFUEBnQIMmQJQ5UDVUR
 &#x21AA; h6sb87O_3tl2c8xykPIgfR6XPxwC8SfVCYNqfScZWgPtvipbgfHm1eBY_c8FhEdn
 &#x21AA; wSKP5OufdYyr7hTDgbTGYuhDdsNkAHrxJe-aeL0vRITdROm85jAP0lp5uY2m9Rxb
 &#x21AA; 0BUqvjyOQBOgfxb_lb5EYQ"
-   ,"p":
+  ,"p":
  "3xcunvbHYOslrQ3Tqp8utyUIsQrA0GAsW-VQfyYMF_7vRyYZKhuVXvDbpQ3tHgvR
 &#x21AA; dOVwG4p_EemRcOTIXUVHCZmoU8DSpk_Ko4FejnpK0VU4K8b9ilmSu_h6OpKPZJSW
 &#x21AA; -anluUfqpRRg1s02kCFqDlxi4QHVdTXNFgNt2e9vqCk"
-   ,"q":
+  ,"q":
  "qxOV6pch_woqIIevaAHLWydxEYLBEjUBwjT4XbacoTRbPU8clGUUF9AHI-f8fPUX
 &#x21AA; O_ZJ594WAc2gP2lEyubx15FZ_JBGR6FAZEw8n-x2A6qkfC1MUC4Tj_o4sHNsPRqP
 &#x21AA; 4m24zJCN4rpTa0EgHGhkCUBWKvDT0hTYBj05HjUOfGc"
-   ,"dp":
+  ,"dp":
  "Glxi5eXDKXCfwxMfL8ofewSlQkZDAlxa4YD3Qg783tkA7SdTUeZwgAd17Mr4edRr
 &#x21AA; q6Rw2tBCs5sl1HE0O9Ez066UdVETkxNanndq9Or-bD3lpUaeLvrmm8-AoesvhnMI
 &#x21AA; Y_fvbTVSRK9jwf39tIo-PfQsuum8j10MHs3I7TedugE"
-   ,"dq":
+  ,"dq":
  "lyQaksMrOdOVHGBDy7OqIcJa1omaYaeLAjUiKEkpYBKNeUDnkwMqGU-kv0g5fXxb
 &#x21AA; JpKVANDoyHcOWHd8W3Zlu3mi8svUC3yfEv13oiKasOqVn0-12DCc_9qlMt8GhYVu
 &#x21AA; ETG2zqP3dpP_FwbWg8KGftXkStOxkCzyHbEBQXrGbYk"
-   ,"qi":
+  ,"qi":
  "LCuMQiPczDeZSRcJdBcCeQDH6lHiV2wVEfWn21NgJHtmFrKWEOHxb_YAZTAmZUAE
 &#x21AA; Y5qAJrXtrLvRtHjjY7GIik84D9CJh6LNUmxtxq4IU-rySA49u9DGpR4Mvj6H_QeS
 &#x21AA; otgcP2pqyxsW_9Q92RLyDXqj7us9x3EAQfXOyXJXwAs"
@@ -1061,12 +1065,12 @@ and pretty-printing the resulting JSON object.</t>
 This step shows the result of the RSA exponentiation,
 which is a 2048-bit (342 base64url character) OAEP block.</t>
 <figure><artwork>
-ANPJj-quklogrQAVQ06tu-tcRz2S9gKQf0qyHpW70uF9E9ihlqqny0YLLGLox2_C
-t_10bngY0zFedBNr9Kcwr8rdnKsG8-Mwy5SUe7i3hJ4_pUHODy05XW455QzQp9U5
-xcvyNgINriwNF9ov7L8qyvI4x735oix2daE1zl-zl2b4kFsWgf3hUCGf595sdlIH
-2bqkuBaF1h5rpbTZV3BS-QAujoDk6mhv2tvq1KO-F2dxnEkauXDTUDiDmuyLJksv
-h7rv629wrx4MfEGO7WPC4YAhMo1guYqnxAzGQd_vlHtS1fziZb-s9gVHV5yyK-FB
-dszRLgHZStSHtyqSgyDNPg
+  ANPJj-quklogrQAVQ06tu-tcRz2S9gKQf0qyHpW70uF9E9ihlqqny0YLLGLox2_C
+&#x21AA; t_10bngY0zFedBNr9Kcwr8rdnKsG8-Mwy5SUe7i3hJ4_pUHODy05XW455QzQp9U5
+&#x21AA; xcvyNgINriwNF9ov7L8qyvI4x735oix2daE1zl-zl2b4kFsWgf3hUCGf595sdlIH
+&#x21AA; 2bqkuBaF1h5rpbTZV3BS-QAujoDk6mhv2tvq1KO-F2dxnEkauXDTUDiDmuyLJksv
+&#x21AA; h7rv629wrx4MfEGO7WPC4YAhMo1guYqnxAzGQd_vlHtS1fziZb-s9gVHV5yyK-FB
+&#x21AA; dszRLgHZStSHtyqSgyDNPg
 </artwork></figure>
 
 <t>Unpacking the OAEP block gives 32 bytes (43 base64url chars),
@@ -1078,7 +1082,7 @@ MZ-DNnUyedxg9IHEzWm9RzQu_DSAiYVshqYrIKPhwbM
 <t>AES-GCM symmetric decryption uses the above CEK with
 the IV (pyNuAX_QZsylRg3r, 3rd JWE part, 16 base64url chars, 96 bits).</t>
 
-<t>The addiditional authenticated data (AAD) is the header
+<t>The additional authenticated data (AAD) is the header
 (eyJ0&#x2026;ZyJ9, 1st JWE part, 152 base64url chars,
 UTF-8 encoded to 152 bytes).</t>
 
