@@ -200,7 +200,7 @@ identifiers for the same account at the RP.</t>
 
 <t>A user could have ported to the Old OP from an even Older OP.
 That can be indicated by the Old OP including an
-<spanx style="verb">aka</spanx>member in it's
+<spanx style="verb">aka</spanx> member in it's
 Porting check API response (step 5 above). An RP can automatically
 process that port in the same way that an <spanx style="verb">aka</spanx>
 value from the New OP is handled.</t>
@@ -564,7 +564,7 @@ A successful response means the user associated with
 <spanx style="verb">enc_port_token</spanx> has
 ported from the Old OP to the given New OP. Otherwise an unsuccessful HTTP
 response status code MUST be returned
-(eg <spanx style="verb">400</spanx> Bad request).</t>
+(eg <spanx style="verb">400 Bad request</spanx>).</t>
 
 <t>The Old OP makes the following checks:</t>
 <t><list style="symbols">
