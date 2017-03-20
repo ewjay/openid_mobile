@@ -408,7 +408,7 @@
 
   <meta name="dct.creator" content="Manger, J., Lodderstedt, T., and A. Gleditsch" />
   <meta name="dct.identifier" content="urn:ietf:id:openid-connect-account-porting-1_0-08alpha" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-3-14" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-3-20" />
   <meta name="dct.abstract" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
   <meta name="description" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
 
@@ -445,7 +445,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">March 14, 2017</td>
+  <td class="right">March 20, 2017</td>
 </tr>
 
     	
@@ -592,9 +592,9 @@ Content-Type: application/jwk-set+json
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#port_data" id="port_data">Porting data API</a></h1>
 <p id="rfc.section.3.p.1">The Porting data API (offered by an Old OP and consumed by a New OP) provides a token to represent a porting event. The New OP passes the token (after encrypting it [<a href="#enc">Section 4</a>]) to each RP when the user subsequently logs into that RP [<a href="#aka">Section 5</a>]. The RP, in turn, passes the token to the Porting check API [<a href="#port_check">Section 6</a>] to confirm the port with the Old OP.</p>
 <p id="rfc.section.3.p.2">Access to porting data requires the consent of the user to whom it relates.  The Old OP MUST support the OAuth 2.0 authorization code flow for accessing the API <a href="#RFC6749">[RFC6749]</a>. The Old OP MUST support Bearer access tokens <a href="#RFC6750">[RFC6750]</a>. The New OP MUST include the scope <samp>port_data</samp> when requesting access.</p>
-<p id="rfc.section.3.p.3">The API provides a single read-only resource per user. It can be read with a "GET" request. The path <samp>/me</samp> appended to the base URL (from the <samp>port_data_endpoint</samp> member in the Old OP discovery metadata) indicates the resource for the user associated with the access token used to make the request.</p>
+<p id="rfc.section.3.p.3">The API provides a single read-only resource per user. It can be read with a <samp>GET</samp> request. The path <samp>/me</samp> appended to the base URL (from the <samp>port_data_endpoint</samp> member in the Old OP discovery metadata) indicates the resource for the user associated with the access token used to make the request.</p>
 <p id="rfc.section.3.p.4">The response is a JSON object with a <samp>port_token</samp> member that has a string value. The Old OP needs to be able to identify the user and New OP involved in the porting from the port token. The Old OP MUST choose port token values to have sufficient entropy that they cannot be guessed by other parties, including by New OPs and RPs that have seen other port tokens.  All <samp>port_token</samp> values from the Old OP for a given New OP MUST be the same length so the length itself (which is typically preserved by encryption) does not allow correlation across RPs. Consequently, a port token cannot simply be the concatenation of ids for the user and New OP. It could be a combination of the user and New OP ids signed by the Old OP. It could also be a random number used as a reference to porting details recorded by the Old OP.</p>
-<p id="rfc.section.3.p.5">Any unrecognized members in the response MUST be ignored (such as "extra_stuff" in the example below).</p>
+<p id="rfc.section.3.p.5">Any unrecognized members in the response MUST be ignored (such as <samp>extra_stuff</samp> in the example below).</p>
 <p id="rfc.section.3.p.6">Below is a sample porting data request and response:</p>
 <pre>
 GET /connect/port_data/me HTTP/1.1
@@ -666,7 +666,7 @@ Content-Type: application/json
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#port_check" id="port_check">Porting check API</a></h1>
 <p id="rfc.section.6.p.1">The Porting check API is offered by an Old OP to RPs so they can confirm that a user did port to a specific New OP. The API converts an <samp>enc_port_token</samp> to a Subject Id (<samp>sub</samp> value), which the RP needs to identify the ported user's existing account at the RP.</p>
 <p id="rfc.section.6.p.2">Access to the Porting check API requires authentication of the RP.  This enables the Old OP to match the caller of the API to uses of the OpenID Connect authentication process so it can apply any RP-specific policy.  The Old OP and RP MUST support the OAuth 2.0 client credentials flow <a href="#RFC6749">[RFC6749]</a> and Bearer access tokens <a href="#RFC6750">[RFC6750]</a>.  The RP MUST include the scope <samp>port_check</samp> when requesting access.</p>
-<p id="rfc.section.6.p.3">An RP makes a <samp>GET</samp> request to the API endpoint (from the <samp>port_check_endpoint</samp> member in the Old OP discovery metadata), adding query parameters identifying the New OP (<samp>iss</samp>) and a porting event (<samp>enc_port_token</samp>).  A successful response (eg with a status code of <samp>200</samp>) conveys a JSON object that can have <samp>sub</samp>, <samp>aka</samp>, and <samp>remove</samp> members.  A successful response means the user associated with <samp>enc_port_token</samp> has ported from the Old OP to the given New OP. Otherwise an unsuccessful HTTP response status code MUST be returned (eg <samp>400 Bad request</samp>).</p>
+<p id="rfc.section.6.p.3">An RP makes a <samp>POST</samp> request to the API endpoint (from the <samp>port_check_endpoint</samp> member in the Old OP discovery metadata), sending parameters identifying the New OP (<samp>iss</samp>) and a porting event (<samp>enc_port_token</samp>).  The <samp>POST</samp> uses the <samp>application/x-www-form-urlencoded</samp> media type.  A successful response (eg with a status code of <samp>200</samp>) conveys a JSON object that can have <samp>sub</samp>, <samp>aka</samp>, and <samp>remove</samp> members.  A successful response means the user associated with <samp>enc_port_token</samp> has ported from the Old OP to the given New OP. Otherwise an unsuccessful HTTP response status code MUST be returned (eg <samp>400 Bad request</samp>).</p>
 <p id="rfc.section.6.p.4">The Old OP makes the following checks:</p>
 <p/>
 
@@ -694,12 +694,12 @@ Content-Type: application/json
 <p id="rfc.section.6.p.11">The Old OP MUST include the <samp>remove</samp> member when <samp>sub</samp> is present.</p>
 <p id="rfc.section.6.p.12">Below is a sample request with a successful response. The RP would lookup <samp>sub=kY6N6&#8230;</samp> &amp; <samp>iss=https://oldop&#8230;</samp> in its user database to find the existing account that has ported to the New OP.</p>
 <pre>
-GET /connect/port_check
-&#8618; ?iss=https://newop.example.net/
-&#8618; &amp;enc_port_token=eyJ0eXAiOiJvcGVuaWQ &#8230; hknA
-&#8618;   HTTP/1.1
+POST /connect/port_check HTTP/1.1
 Host: oldop.example.net
+Content-Type: application/x-www-form-urlencoded
 Authorization: Bearer JOpIXW60qfjKQOlQ8trLBTSzwDl8zGgujLxBVTvWMG8
+
+iss=https://newop.example.net/&amp;enc_port_token=eyJ0eXA &#8230; hknA
 </pre>
 <pre>
 HTTP/1.1 200 OK
@@ -1051,6 +1051,7 @@ MZ-DNnUyedxg9IHEzWm9RzQu_DSAiYVshqYrIKPhwbM
 
 <ul>
   <li>Full example in appendix</li>
+  <li>Porting check API uses POST</li>
 </ul>
 <p id="rfc.section.E.p.4">-07</p>
 <p/>
