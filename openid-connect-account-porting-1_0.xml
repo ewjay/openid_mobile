@@ -30,7 +30,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
   <address><email>argggh@telenordigital.com</email></address>
 </author>
 
-<date year="2017" month="March" day="14"/>
+<date year="2017" month="March" day="20"/>
 
 <workgroup>OpenID MODRNA Working Group</workgroup>
 
@@ -315,7 +315,8 @@ API <xref target="RFC6749"/>. The Old OP MUST support Bearer access tokens
 <spanx style="verb">port_data</spanx> when requesting access.</t>
 
 <t>The API provides a single read-only resource per user. It can be read with a
-"GET" request. The path <spanx style="verb">/me</spanx> appended to the base
+<spanx style="verb">GET</spanx> request. The path <spanx style="verb">/me</spanx>
+appended to the base
 URL (from the <spanx style="verb">port_data_endpoint</spanx> member in the
 Old OP discovery metadata) indicates the
 resource for the user associated with the access token used to make the
@@ -336,7 +337,7 @@ signed by the Old OP. It could also be a random number used as a reference to
 porting details recorded by the Old OP.</t>
 
 <t>Any unrecognized members in the response MUST be ignored (such as
-"extra_stuff" in the example below).</t>
+<spanx style="verb">extra_stuff</spanx> in the example below).</t>
 
 <t>Below is a sample porting data request and response:</t>
 
@@ -552,11 +553,13 @@ The Old OP and RP MUST support the OAuth 2.0 client credentials flow
 The RP MUST include the scope <spanx style="verb">port_check</spanx>
 when requesting access.</t>
 
-<t>An RP makes a <spanx style="verb">GET</spanx> request to the API endpoint
+<t>An RP makes a <spanx style="verb">POST</spanx> request to the API endpoint
 (from the <spanx style="verb">port_check_endpoint</spanx> member in the
-Old OP discovery metadata), adding query
+Old OP discovery metadata), sending
 parameters identifying the New OP (<spanx style="verb">iss</spanx>)
 and a porting event (<spanx style="verb">enc_port_token</spanx>).
+The <spanx style="verb">POST</spanx> uses the
+<spanx style="verb">application/x-www-form-urlencoded</spanx> media type.
 A successful response (eg with a status code of <spanx style="verb">200</spanx>)
 conveys a JSON object that can have <spanx style="verb">sub</spanx>,
 <spanx style="verb">aka</spanx>, and <spanx style="verb">remove</spanx> members.
@@ -643,12 +646,12 @@ when <spanx style="verb">sub</spanx> is present.</t>
 find the existing account that has ported to the New OP.</t>
 
 <figure><artwork>
-GET /connect/port_check
-&#x21AA; ?iss=https://newop.example.net/
-&#x21AA; &amp;enc_port_token=eyJ0eXAiOiJvcGVuaWQ &#x2026; hknA
-&#x21AA;   HTTP/1.1
+POST /connect/port_check HTTP/1.1
 Host: oldop.example.net
+Content-Type: application/x-www-form-urlencoded
 Authorization: Bearer JOpIXW60qfjKQOlQ8trLBTSzwDl8zGgujLxBVTvWMG8
+
+iss=https://newop.example.net/&amp;enc_port_token=eyJ0eXA &#x2026; hknA
 </artwork></figure>
 
 <figure><artwork>
@@ -1220,6 +1223,7 @@ cover technology that may be required to practice this specification.</t>
 
 <t><list style="symbols">
   <t>Full example in appendix</t>
+  <t>Porting check API uses POST</t>
 </list></t>
 
 <t>-07</t>
