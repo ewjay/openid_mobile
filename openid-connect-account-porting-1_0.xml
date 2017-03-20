@@ -845,7 +845,7 @@ in the IANA "JSON Web Token Claims"
 registry <xref target="IANA.JWT_Claims"/>.</t>
 
 <t><list style="symbols">
-  <t>Claim Name: "aka"</t>
+  <t>Claim Name: <spanx style="verb">aka</spanx></t>
   <t>Claim Description: Also Known As</t>
   <t>Change Controller: OpenID Foundation MODRNA working group
   &lt;https://openid.net/wg/mobile/&gt;</t>
@@ -858,7 +858,7 @@ in the IANA "JSON Web Signature and Encryption Header Parameters" registry
 <xref target="IANA.JOSE"/>.</t>
 
 <t><list style="symbols">
-  <t>Header Parameter Name: "sector_id"</t>
+  <t>Header Parameter Name: <spanx style="verb">sector_id</spanx></t>
   <t>Header Parameter Description: Sector identifier for a group of websites
 under common administrative control</t>
   <t>Header Parameter Usage Location: JWE</t>
@@ -873,7 +873,7 @@ code in the IANA
 "OAuth Extensions Error Registry" <xref target="IANA.OAUTH"/>.</t>
 
 <t><list style="symbols">
-  <t>Error name: "user_ported"</t>
+  <t>Error name: <spanx style="verb">user_ported</spanx></t>
   <t>Error usage location: authorization endpoint</t>
   <t>Related protocol extension: </t>
   <t>Change controller: OpenID Foundation MODRNA working group
@@ -889,8 +889,8 @@ It identifies a JSON Web Encryption (JWE) compact serialization that is
 the encryption of a port token.</t>
 
 <t><list style="symbols">
-  <t>Type name: application</t>
-  <t>Subtype name: openid-connect-porting</t>
+  <t>Type name: <spanx style="verb">application</spanx></t>
+  <t>Subtype name: <spanx style="verb">openid-connect-porting</spanx></t>
   <t>Required parameters: N/A</t>
   <t>Optional parameters: N/A</t>
   <t>Encoding considerations: 7bit</t>
