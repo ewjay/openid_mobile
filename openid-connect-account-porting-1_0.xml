@@ -30,7 +30,7 @@ href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
   <address><email>argggh@telenordigital.com</email></address>
 </author>
 
-<date year="2017" month="March" day="20"/>
+<date year="2017" month="April" day="4"/>
 
 <workgroup>OpenID MODRNA Working Group</workgroup>
 
@@ -594,7 +594,10 @@ response status code MUST be returned
   <t>SHOULD verify that the <spanx style="verb">sector_id</spanx> from the
   JWE header matches the <spanx style="verb">sector_id</spanx> for the RP
   or matches the domain name portion of the RP's
-  <spanx style="verb">redirect_uri</spanx>.</t>
+  <spanx style="verb">redirect_uri</spanx>.
+  This check aids privacy by preventing an RP from using an
+  <spanx style="verb">enc_port_token</spanx> intended for another RP
+  to correlate their pairwise Subject IDs for the user.</t>
 </list></t>
 
 <t>A successful response is a JSON object that can include the following members
