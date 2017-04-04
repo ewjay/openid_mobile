@@ -408,7 +408,7 @@
 
   <meta name="dct.creator" content="Manger, J., Lodderstedt, T., and A. Gleditsch" />
   <meta name="dct.identifier" content="urn:ietf:id:openid-connect-account-porting-1_0-08alpha" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-3-20" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-4-4" />
   <meta name="dct.abstract" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
   <meta name="description" content="This specification defines mechanisms to support a user porting from one OpenID Connect Provider to another, such that relying parties can automatically recognize and verify the change." />
 
@@ -445,7 +445,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">March 20, 2017</td>
+  <td class="right">April 4, 2017</td>
 </tr>
 
     	
@@ -676,7 +676,7 @@ Content-Type: application/json
   <li>MUST verify that the JWE <samp>typ</samp> member is present with the value <samp>openid-connect-porting</samp>, to avoid misinterpretting the meaning of the JWE.</li>
   <li>MUST verify that the <samp>port_token</samp> (the plaintext from the JWE) was issued by the Old OP.</li>
   <li>MUST verify that the <samp>iss</samp> query parameter matches the New OP to whom the <samp>port_token</samp> was given. This confirms that the RP and Old OP have the same understanding of who the New OP is.</li>
-  <li>SHOULD verify that the <samp>sector_id</samp> from the JWE header matches the <samp>sector_id</samp> for the RP or matches the domain name portion of the RP's <samp>redirect_uri</samp>.</li>
+  <li>SHOULD verify that the <samp>sector_id</samp> from the JWE header matches the <samp>sector_id</samp> for the RP or matches the domain name portion of the RP's <samp>redirect_uri</samp>.  This check aids privacy by preventing an RP from using an <samp>enc_port_token</samp> intended for another RP to correlate their pairwise Subject IDs for the user.</li>
 </ul>
 <p id="rfc.section.6.p.6">A successful response is a JSON object that can include the following members (any unrecognized members MUST be ignored):</p>
 <p/>
