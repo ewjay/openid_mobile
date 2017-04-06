@@ -204,7 +204,7 @@
             after processing the request. Moreover, the RP may pass MCC/MNC,
             IMSI, or MSISDN as part of the discovery request. If this data is
             available, it is used to determine the MNO. Otherwise or if this
-            attempt fals, the user interaction service first tries to deduce
+            attempt fails, the user interaction service first tries to deduce
             the MNO from source IP address range of the request. If that's
             impossible, the user is asked for her MSISDN, which is used to
             lookup the respective MNO from a database.</t>
