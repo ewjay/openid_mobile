@@ -1113,13 +1113,13 @@ HTTP/1.1 200 OK
 
       <?rfc include='reference.RFC.7519.xml' ?>
 
-      <reference anchor="IANA.OAuth.Parameters" target='http://www.iana.org/assignments/oauth-parameters'>
+      <reference anchor="IANA.OAuth.Parameters" target='https://www.iana.org/assignments/oauth-parameters'>
         <front>
           <title>OAuth Parameters</title>
-		<author fullname="" initials="" surname="">
+		<author>
 			 <organization>IANA</organization>
 		</author>
-	  <date month="" year=""/>
+	  <date/>
         </front>
       </reference>
 	  
