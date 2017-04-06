@@ -1109,32 +1109,7 @@ HTTP/1.1 200 OK
 	<seriesInfo name="RFC" value="7521"/>
       </reference>
 
-      <reference anchor="JWT" target='http://www.rfc-editor.org/info/rfc7519'>
-        <front>
-          <title>JSON Web Token (JWT)</title>
-	  <author fullname="Michael B. Jones" initials="M.B." surname="Jones">
-	    <organization>Microsoft</organization>
-	    <address>
-	      <email>mbj@microsoft.com</email>
-	      <uri>http://self-issued.info/</uri>
-	    </address>
-	  </author>
-	  <author fullname="John Bradley" initials="J." surname="Bradley">
-	    <organization abbrev="Ping Identity">Ping Identity</organization>
-	    <address>
-	      <email>ve7jtb@ve7jtb.com</email>
-	    </address>
-	  </author>
-	  <author fullname="Nat Sakimura" initials="N." surname="Sakimura">
-	    <organization abbrev="NRI">Nomura Research Institute</organization>
-	    <address>
-	      <email>n-sakimura@nri.co.jp</email>
-	    </address>
-	  </author>
-	  <date month="May" year="2015"/>
-        </front>
-        <seriesInfo name="RFC" value="7519"/>
-      </reference>
+      <?rfc include='reference.RFC.7519.xml' ?>
 
       <reference anchor="IANA.OAuth.Parameters" target='http://www.iana.org/assignments/oauth-parameters'>
         <front>
