@@ -928,7 +928,7 @@ HTTP/1.1 200 OK
 	<!---->
 	<t>Section 6 of <xref target="RFC7523"/></t>
 	<!---->
-	<t>Section 11 of <xref target="JWT"/></t>
+	<t>Section 11 of <xref target="RFC7519"/></t>
 	<!---->		
 	</list>
     </t>
@@ -941,7 +941,7 @@ HTTP/1.1 200 OK
 	<!---->
 	<t>Section 7 of <xref target="RFC7523"/></t>
 	<!---->
-	<t>Section 12 of <xref target="JWT"/></t>
+	<t>Section 12 of <xref target="RFC7519"/></t>
 	<!---->		
 	</list>
     </t>
