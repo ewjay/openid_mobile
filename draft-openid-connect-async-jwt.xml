@@ -85,7 +85,7 @@
 	  All terms are as defined in the following specifications:
 	  "The OAuth 2.0 Authorization Framework" <xref target="RFC6749"/>,
 	  the OAuth Assertion Framework
-	  <xref target="RFC7521"/>, <xref target="RFC7523"/>, and "JSON Web Token (JWT)" <xref target="JWT"/>.
+	  <xref target="RFC7521"/>, <xref target="RFC7523"/>, and "JSON Web Token (JWT)" <xref target="RFC7519"/>.
         </t>
       </section>
 
