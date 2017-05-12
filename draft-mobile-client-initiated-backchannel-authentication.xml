@@ -246,7 +246,7 @@
       </t>
       <t>
         Communication with the Backchannel Authentication Endpoint MUST utilize TLS. See Section 16.17 <xref target="OpenID.Core"/>
-        for more information on using TLS.
+        for more information on using TLS. The Client MUST be authenticated.
       </t>
 
       <section anchor="auth_request" title="Authentication Request">
