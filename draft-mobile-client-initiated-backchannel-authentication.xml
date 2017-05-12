@@ -50,7 +50,7 @@
     </author>
 
 
-    <date day="7" month="March" year="2017"/>
+    <date day="12" month="Mai" year="2017"/>
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -351,7 +351,16 @@
             <t>
               Authenticate the Client.
               <vspace />
-              e.g.: by validating the Client Credentials as described in Section 9 on <xref target="OpenID.Core"/>.
+              The client SHOULD use a signed OpenID Request object as defined in Section 6.3.2 of <xref target="OpenID.Core"/>.
+              Then that signature MUST be validated and the Authentication Request MUST fail if the signature is not valid.
+              <vspace />
+              If the value of the signature's "alg" parameter is "none" then another method of Client authentication MUST be used
+              as described in Section 9 on <xref target="OpenID.Core"/>.
+              CIBA is allowing the same Client authentication methods for the Authorization Endpoint that OpenID.Core uses for the Token Endpoint.
+              <vspace />
+              It is RECOMMENDED that Clients do not send shared secrets in the Authentication Request. 
+              It is RECOMMENDED that public key cryptography is used.
+              <vspace />
             </t>
             <t>
               The OpenID Provider MUST validate all the OAuth 2.0 parameters according to <xref target="MODRNA.Authentication" format="title"/>.
@@ -851,6 +860,14 @@
       <t>-03  
         <list style='symbols'>
           <t>Following the lead of user questioning remove the term Relying Party in most places.</t>
+        </list>
+      </t>
+      <t>-04
+        <list style='symbols'>
+          <t>The Client MUST be authenticated.</t>
+          <t>The Client SHOULD use a signed OpenID Connect Request object.</t>
+          <t>3)	The OP MUST support signed OpenID Connect Requests objects and if the validation of the signature fails the request MUST fail.
+          If alg == none another method of Client authentication MUST be used </t>
         </list>
       </t>
     </section>
