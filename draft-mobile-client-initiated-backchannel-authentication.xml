@@ -236,7 +236,6 @@
         </list>
         </t>
     </section>
-    </section>
 
     <section anchor="auth_backchannel_endpoint" title="Backchannel Authentication Endpoint">
       <t>
@@ -513,6 +512,15 @@
     ]]>
           </artwork>
         </figure>
+        <section title='Pairwise Identifier Algorithm and Polling Mode'>
+            <t><eref target="https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg">OpenID.Core</eref>
+            defines in Section 8.1 how "sub" is calculated when Pairwise Identifiers are used.
+            </t>
+            <t>
+            If the Client uses polling and the OpenId Provider uses Pairwise Identifiers then a sector_identifier_uri MUST be specified for this Client.
+            </t>
+        </section>
+
       </section>
 
       <section anchor="token_response" title="Successful Token Polling Response">
@@ -609,6 +617,16 @@
           </t>
 
         </section>
+        <section title='Pairwise Identifier Algorithm and Notification Mode'>
+            <t><eref target="https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg">OpenID.Core</eref>
+            defines in Section 8.1 how "sub" is calculated when Pairwise Identifiers are used.
+            </t>
+            <t>
+            In Client initiated Backchannel Authentication the URI of the Client Notification Endpoint is used instead of the redirect_uri when no sector_identifier_uri is specified for this Client.
+            </t>
+        </section>
+    </section>
+
       </section>
 
       <section anchor="token_error_response" title="Token Error Response">
@@ -870,6 +888,7 @@
           <t>The Client SHOULD use a signed OpenID Connect Request object.</t>
           <t>3)	The OP MUST support signed OpenID Connect Requests objects and if the validation of the signature fails the request MUST fail.
           If alg == none another method of Client authentication MUST be used </t>
+          <t>Added text regarding Pairwise Identifiers.</t>
         </list>
       </t>
     </section>
