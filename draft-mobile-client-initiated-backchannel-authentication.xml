@@ -353,9 +353,9 @@
             <t>
               Authenticate the Client.
               <vspace />
-              The client SHOULD use a signed OpenID Request object as defined in Section 6.3.2 of <xref target="OpenID.Core"/>.
+              The client SHOULD use a <eref target="https://openid.net/specs/openid-connect-core-1_0.html#SignedRequestObject">OpenID Connect Signed Request Object</eref>
+              as defined in Section 6.3.2 of <xref target="OpenID.Core"/>.
               Then that signature MUST be validated and the Authentication Request MUST fail if the signature is not valid.
-              <vspace />
               If the value of the signature's "alg" parameter is "none" then another method of Client authentication MUST be used
               as described in Section 9 on <xref target="OpenID.Core"/>.
               CIBA is allowing the same Client authentication methods for the Authorization Endpoint that OpenID.Core uses for the Token Endpoint.
