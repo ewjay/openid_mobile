@@ -764,7 +764,7 @@
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
       
-      <reference anchor="MODRNA.Authentication" target="https://bitbucket.org/openid/mobile/raw/default/draft-mobile-authentication-01.txt">
+      <reference anchor="MODRNA.Authentication" target="https://bitbucket.org/openid/mobile/raw/tip/openid-connect-modrna-authentication-1_0.txt">
         <front>
           <title>OpenID Connect MODRNA Authentication Profile 1.0</title>
           <author fullname="Joerg Connotte" initials="J." surname="Connotte">
