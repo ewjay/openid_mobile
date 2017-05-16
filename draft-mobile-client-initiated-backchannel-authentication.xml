@@ -756,6 +756,25 @@
         The login hint token is encrypted in order to protect the user's MSISDN from 
         being revealed to the Client unintentionally.
       </t>
+      <t>
+        For example a challenge authentication can be launched by the OP to the an applet  running in the 
+        end-user device's SIM that implements an authenticator that validates a Pin Code introduce by the end-user.
+
+        This authenticator would be implemented through the so-called MSSP (Mobile Signature Subscriber Provider) Server. 
+        When the AuthServer receives the request to authenticate the user and once it knows the user’s MSISDN, it makes a call 
+        to the MSSP Server which builts a binary Class 2 SMS that is sent to the SIM card of the user where the applet is located.
+        
+        This Class 2 SMS is not really sent directly from the MSSP but the MSSP sends a message using the GSM 3.48 protocol with 
+        a challenge (the text to be displayed asking the user if it grant access or not) signed with a key that was shared with 
+        the applet (this key is different for each MSISDN) to the OTA (Over the Air Platform), then the OTA signs and encrypts the 
+        message using a pair of keys (kyc, kyd) unique per each SIM Card.
+        
+        Once the message reachs the SIM Card, it is decrypted and the sign is verified (thanks to the same pair of keys: kyc, kyd) 
+        if everything is ok then the applet displays the challenge through a popup using the mobile phone native inteface) and the 
+        user is prompted to introduce a Pin Code that is validated locally. If the Pin Code is correct, the the applet builds an OK 
+        response and signs it with the same key used by the MSSP to sign the request, this response is sent as a Class 3 message to 
+        the MSSP that checks the sign, and builds the id_token and the access_token to be returned to the Client.
+      </t>
     </section>
 
   </middle>
