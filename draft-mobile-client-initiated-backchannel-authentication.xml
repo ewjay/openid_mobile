@@ -758,30 +758,8 @@
       </t>
 
       <t>
-        The following example is a non-normative example to illustrate the usage of authentication with CIBA specification.
-      </t>
-
-      <t>
-        For example a challenge authentication can be launched by the OP to the an applet  running in the
-        end-user device's SIM that implements an authenticator that validates a Pin Code introduce by the end-user.
-      </t>
-      <t>
-        This authenticator would be implemented through the so-called MSSP (Mobile Signature Subscriber Provider) Server.
-        When the AuthServer receives the request to authenticate the user and once it knows the user's MSISDN, it makes a call
-        to the MSSP Server which builts a binary Class 2 SMS that is sent to the SIM card of the user where the applet is located.
-      </t>
-
-      <t>
-        This Class 2 SMS is not really sent directly from the MSSP but through the OTA (Over the air) platform which in turn signs 
-        and encrypts the message using a pair of keys (kyc, kyd) unique per each SIM Card.
-      </t>
-        
-      <t>
-        Once the message reachs the SIM Card, it is decrypted by the CardManger and the signature is verified (thanks to the same pair of keys: kyc, kyd).
-        if everything is ok, the CardManager gives the message to the aplet that checks the signature (the another one made by the MSSP) and displays the challenge 
-        through a popup using the mobile phone native inteface) and the user is prompted to introduce a Pin Code that is validated locally. 
-        If the Pin Code is correct, the the applet builds an OK response and signs it with the same key used by the MSSP to sign the request, this 
-        response is sent as a Class 3 message to the MSSP that checks the signature, and builds the id_token and the access_token to be returned to the Client.
+        The section <xref target="SimAppletExample" format="title"/> shows an example to illustrate
+        the usage of CIBA specification to authenticate a user with a SIM Applet Authenticator.
       </t>
     </section>
 
@@ -820,8 +798,54 @@
 
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.3986"?>
+ 
+      <reference anchor="ETSI102204" target="http://www.etsi.org/deliver/etsi_ts/102200_102299/102204/01.01.04_60/ts_102204v010104p.pdf">
+        <front>
+          <title>Mobile Commerce (M-COMM) Mobile Signature Service; Web Service Interface</title>
+          <author fullname="ETSI TS 102 204 V1.1.4 (2003-08)" initials="ETSI">
+            <organization abbrev="ETSI">European Telecommunications Standards Institute</organization>
+          </author>
+          <date year="2003"/>
+        </front>
+      </reference>
+
 
     </references>
+
+    <section anchor="SimAppletExample" title="Example Flow">
+      <t>
+        This a non-normative example where a challenge authentication is launched by the OP to an applet that is running in the
+        end-user device's SIM. Such applet implements an authenticator that validates a Pin Code introduce by the end-user.
+      </t>
+      <t>
+        This authenticator would be implemented through the so-called MSSP (Mobile Signature Subscriber Provider) Server.
+        When the AuthServer receives the request to authenticate the user and once it knows the user's MSISDN, it makes a call
+        to the MSSP Server which builts a binary Class 2 SMS that is sent to the SIM card of the user where the applet is located.
+      </t>
+
+      <t>
+        This Class 2 SMS is not really sent directly from the MSSP but through the OTA (Over the air) platform which in turn signs 
+        and encrypts the message using a pair of keys (kyc, kyd) unique per each SIM Card.
+      </t>
+        
+      <t>
+        Once the message reachs the SIM Card, it is decrypted by the CardManger and the signature is verified (thanks to the same pair of keys: kyc, kyd).
+        if everything is ok, the CardManager gives the message to the aplet that checks the signature (the another one made by the MSSP) and displays the challenge 
+        through a popup using the mobile phone native inteface) and the user is prompted to introduce a Pin Code that is validated locally. 
+        If the Pin Code is correct, the the applet builds an OK response and signs it with the same key used by the MSSP to sign the request, this 
+        response is sent as a Class 3 message to the MSSP that checks the signature, and builds the id_token and the access_token to be returned to the Client.
+      </t>
+      <figure>
+        <artwork src="draft-mobile-client-initiated-backchannel-authentication.eg.png">
+          {{{img src="draft-mobile-client-initiated-backchannel-authentication.eg.png"/}}}
+        </artwork>
+      </figure>
+      <t>
+        Many of the details have advisedly been excluded in order to simplify the flow described. To go into details of how to 
+        implement a Mobile Signature Service look at <xref target="ETSI102204" format="title"/>.
+      </t>
+
+    </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>The following have contributed to the development of this specification.</t>
@@ -916,6 +940,7 @@
           <t>3)	The OP MUST support signed OpenID Connect Requests objects and if the validation of the signature fails the request MUST fail.
           If alg == none another method of Client authentication MUST be used </t>
           <t>Added text regarding Pairwise Identifiers.</t>
+          <t>Added SIM Applet Authenticator example to illustrate the CIBA flow with an specific authenticator</t>
         </list>
       </t>
     </section>

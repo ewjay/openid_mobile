@@ -1,0 +1,47 @@
+"RP" -> OP: 1.. POST /bc-authorize
+note over "RP", "OP"
+{
+             "scope": "openid",
+             "client_req_id": "8d67dc78-7faa-4d41-aabd-67707b374255",
+             "client_notification_endpoint": "https://client.example.com/cb",
+             "acr_values": "mod-mf",
+             "login_hint_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ......"
+            }
+end note
+
+"OP" --> "RP": 2. HTTP 200 OK
+note over "RP", "OP"
+{"auth_req_id"=40582304823, "expires_in"=3600}
+end note
+"OP" -> "OP": 3. Extract MSISDN
+"OP" -> "MSSP": 4. Authenticate(MSISDN)
+"MSSP" --> "OP": 5. OK (Processing...)
+"MSSP" -> "OTA": 6. Send(signed(challenge),MSISDN)
+"OTA" -> "SMSC": 7. Send(Encrypted(signed(challenge)),MSISDN)
+"SMSC" -> "SIM Applet": 8. Send(Encrypted(signed(challenge)))
+"SIM Applet" -> "SIM Applet": 9. Verify Request
+"SIM Applet" -> "end user": 10. Show Challenge
+"end user" -> "SIM Applet": 11. Pin Code
+"SIM Applet" -> "SIM Applet": 12. Verify Pin
+"SIM Applet" -> "SMSC": Send(Signed(Response OK))
+"SMSC" -> "MSSP": Signed(Response OK)
+"MSSP" -> "MSSP": Verify Response
+"MSSP" -> "OP": Authentication OK
+"OP" --> "MSSP": OK
+"OP" -> "OP": Generates(id_token, access_token)
+"OP" -> "RP": 9. POST https://client.example.com/cb
+note over "OP", "RP"
+              POST /cb HTTP/1.1
+              Host: client.example.com
+              Content-Type: application/json
+              {
+               "grant_type="urn:openid:params:modrna:grant-type:backchannel_token_response",
+               "client_req_id": "8d67dc78-7faa-4d41-aabd-67707b374255",
+               "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1",
+               "access_token": "SlAV32hkKG",
+               "token_type": "Bearer",
+               "refresh_token": "8xLOxBtZp8",
+               "expires_in": 3600,
+               "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc..."
+              }              
+end note
