@@ -815,11 +815,11 @@
     <section anchor="SimAppletExample" title="Example Flow">
       <t>
         This a non-normative example where a challenge authentication is launched by the OP to an applet that is running in the
-        end-user device's SIM. Such applet implements an authenticator that validates a Pin Code introduce by the end-user.
+        end-user device's SIM. Such applet implements an authenticator that validates a Pin Code entered by the end-user.
       </t>
       <t>
         This authenticator would be implemented through the so-called MSSP (Mobile Signature Subscriber Provider) Server.
-        When the AuthServer receives the request to authenticate the user and once it knows the user's MSISDN, it makes a call
+        When the Backchannel Authentication Endpoint receives the request to authenticate the user and once it knows the user's MSISDN, it makes a call
         to the MSSP Server which builts a binary Class 2 SMS that is sent to the SIM card of the user where the applet is located.
       </t>
 
@@ -829,10 +829,10 @@
       </t>
         
       <t>
-        Once the message reachs the SIM Card, it is decrypted by the CardManger and the signature is verified (thanks to the same pair of keys: kyc, kyd).
+        Once the message reaches the SIM Card, it is decrypted by the CardManger and the signature is verified (thanks to the same pair of keys: kyc, kyd).
         if everything is ok, the CardManager gives the message to the aplet that checks the signature (the another one made by the MSSP) and displays the challenge 
-        through a popup using the mobile phone native inteface) and the user is prompted to introduce a Pin Code that is validated locally. 
-        If the Pin Code is correct, the the applet builds an OK response and signs it with the same key used by the MSSP to sign the request, this 
+        through a popup using the mobile phone native inteface) and the user is prompted to enter a Pin Code that is validated locally. 
+        If the Pin Code is correct, the applet builds an OK response and signs it with the same key used by the MSSP to sign the request, this 
         response is sent as a Class 3 message to the MSSP that checks the signature, and builds the id_token and the access_token to be returned to the Client.
       </t>
       <figure>
