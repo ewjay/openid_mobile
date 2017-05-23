@@ -836,8 +836,63 @@
         response is sent as a Class 3 message to the MSSP that checks the signature, and builds the id_token and the access_token to be returned to the Client.
       </t>
       <figure>
-        <artwork src="draft-mobile-client-initiated-backchannel-authentication.eg.png">
-          {{{img src="draft-mobile-client-initiated-backchannel-authentication.eg.png"/}}}
+        <artwork>
+          <![CDATA[
+
++-----+                    +-----+                      +-------+                 +-----------+          +-------+
+| RP  |                    | OP  |                      | MSSP  |                 | SIMApplet |          | User  |
++-----+                    +-----+                      +-------+                 +-----------+          +-------+
+   |                          |                             |                           |                    |
+   | 1. POST /bc-authorize    |                             |                           |                    |
+   |------------------------->|                             |                           |                    |
+   |                          |                             |                           |                    |
+   |           2. HTTP 200 OK |                             |                           |                    |
+   |<-------------------------|                             |                           |                    |
+   |                          |                             |                           |                    |
+   |                          | 3. Authenticate(MSISDN)     |                           |                    |
+   |                          |---------------------------->|                           |                    |
+   |                          |                             |                           |                    |
+   |                          |                             | 4. Challenge              |                    |
+   |                          |                             |-------------------------->|                    |
+   |                          |                             |                           |                    |
+   |                          |                             |                           | 7. Verify Req      |
+   |                          |                             |                           |--------------      |
+   |                          |                             |                           |             |      |
+   |                          |                             |                           |<-------------      |
+   |                          |                             |                           |                    |
+   |                          |                             |                           | 8. Challenge       |
+   |                          |                             |                           |------------------->|
+   |                          |                             |                           |                    |
+   |                          |                             |                           |        9. Pin Code |
+   |                          |                             |                           |<-------------------|
+   |                          |                             |                           |                    |
+   |                          |                             |                           | 10. Verify Pin     |
+   |                          |                             |                           |---------------     |
+   |                          |                             |                           |              |     |
+   |                          |                             |                           |<--------------     |
+   |                          |                             |                           |                    |
+   |                          |                             |           11. Response OK |                    |
+   |                          |                             |<--------------------------|                    |
+   |                          |                             |                           |                    |
+   |                          |                             | 13. Verify Response       |                    |
+   |                          |                             |--------------------       |                    |
+   |                          |                             |                   |       |                    |
+   |                          |                             |<-------------------       |                    |
+   |                          |                             |                           |                    |
+   |                          |       14. Authentication OK |                           |                    |
+   |                          |<----------------------------|                           |                    |
+   |                          |                             |                           |                    |
+   |                          | 15. Generate Tokens         |                           |                    |
+   |                          |--------------------         |                           |                    |
+   |                          |                   |         |                           |                    |
+   |                          |<-------------------         |                           |                    |
+   |                          |                             |                           |                    |
+   |             16. POST /cb |                             |                           |                    |
+   |<-------------------------|                             |                           |                    |
+   |                          |                             |                           |                    |
+
+
+          ]]>
         </artwork>
       </figure>
       <t>
