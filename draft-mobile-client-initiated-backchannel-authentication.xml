@@ -2,6 +2,7 @@
 <?xml-stylesheet type='text/xsl' href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 <!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
   <!ENTITY OpenID.Core PUBLIC '' 'https://openid.net/bibxml/reference.OpenID.Core.xml'>
+  <!ENTITY OpenID.Registration PUBLIC '' 'https://openid.net/bibxml/reference.OpenID.Registration.xml'>
 ]>
 <!--
   NOTE:  This XML file is input used to produce the authoritative copy of an
@@ -50,7 +51,7 @@
     </author>
 
 
-    <date day="15" month="Mai" year="2017"/>
+    <date day="24" month="Mai" year="2017"/>
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -512,15 +513,6 @@
     ]]>
           </artwork>
         </figure>
-        <section title='Pairwise Identifier Algorithm and Polling Mode'>
-            <t><eref target="https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg">OpenID.Core</eref>
-            defines in Section 8.1 how "sub" is calculated when Pairwise Identifiers are used.
-            </t>
-            <t>
-            If the Client uses polling and the OpenId Provider uses Pairwise Identifiers then a sector_identifier_uri MUST be specified for this Client.
-            </t>
-        </section>
-
       </section>
 
       <section anchor="token_response" title="Successful Token Polling Response">
@@ -563,7 +555,7 @@
         <section anchor="issuing_successful_token" title="Successful Token Notification">
           <t>
             If the Client is registered for Client notifications (Notification mode), the OpenID Provider will send the token response making a "POST HTTP Request"  
-            to the Client's client_notification_endpoint. If the user is well authenticated, the OpenID Provider returns a successful response that includes an ID Token 
+            to the <xref target="client_notification_endpoint" format="title"/>. If the user is well authenticated, the OpenID Provider returns a successful response that includes an ID Token 
             and an Access Token and a Refresh Token. If the request failed Client authentication or is invalid, the OpenID Provider sends an error_message as described 
             in <xref target="token_error_response" format="title"/>.
           </t>
@@ -573,8 +565,8 @@
             application/json media type.
           </t>
           <figure>
-            <preamble>The following is a non-normative example of a token response sending as a HTTP POST request to the callback uri 
-              specified in the "client_notification_endpoint" parameter by the Client (with line wraps within values for display purposes only).
+            <preamble>The following is a non-normative example of a token response sent as a HTTP POST 
+              request to the Client's client_notification_endpoint (with line wraps within values for display purposes only).
               The request is authenticated through a bearer token that is the value of the "client_notification_token" provided by the Client in the Authentication Request.
             </preamble>
             <artwork>
@@ -612,18 +604,14 @@
             using a "bearer token" created by the Client and sent to the OP in the Authentication request as the value of the parameter "client_notification_token".
           </t>
           <t>
+          This specification defines a new Client Metadata key <spanx style="verb">client_notification_endpoint</spanx> for this purpose.
+          The value of this key MUST be an HTTPS URL. 
+          </t>
+          <t>
             Communication with the Client Notification Authentication Endpoint MUST utilize TLS. See Section 16.17 <xref target="OpenID.Core"/> 
             for more information on using TLS.
           </t>
 
-        </section>
-        <section title='Pairwise Identifier Algorithm and Notification Mode'>
-            <t><eref target="https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg">OpenID.Core</eref>
-            defines in Section 8.1 how "sub" is calculated when Pairwise Identifiers are used.
-            </t>
-            <t>
-            In Client initiated Backchannel Authentication the URI of the Client Notification Endpoint is used instead of the redirect_uri when no sector_identifier_uri is specified for this Client.
-            </t>
         </section>
     </section>
 
@@ -730,6 +718,17 @@
       </section>
     </section>
 
+    <section title='Pairwise Identifiers'>
+        <t>
+        If the OpenId Provider uses Pairwise Identifiers then a <spanx style="verb">sector_identifier_uri</spanx> MUST be specified for all Clients using CIBA.
+        The Client metadata key <spanx style="verb">sector_identifier_uri</spanx> is specified in section 2 of <xref target="OpenID.Registration"/>.
+        </t>
+        <t><xref target="OpenID.Core"/> discusses Pairwise Identifier Algorithms in section 8.1.
+        </t>
+        <t>Sector Identifier Validation at registration time is out-of-scope of this specification. Please see <xref target="OpenID.Registration"/>.
+        </t>
+    </section>
+
     <section anchor="security_considerations" title="Security Considerations">
       <t>
         The login hint token SHOULD be digitally signed by the issuer.
@@ -789,6 +788,7 @@
       </reference>
 
       &OpenID.Core;
+      &OpenID.Registration;
       
       <?rfc include="reference.I-D.draft-jones-oauth-amr-values-05.xml"?>
 
@@ -799,7 +799,7 @@
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.3986"?>
  
-      <reference anchor="ETSI102204" target="http://www.etsi.org/deliver/etsi_ts/102200_102299/102204/01.01.04_60/ts_102204v010104p.pdf">
+      <reference anchor="ETSI102204" target="https://www.etsi.org/deliver/etsi_ts/102200_102299/102204/01.01.04_60/ts_102204v010104p.pdf">
         <front>
           <title>Mobile Commerce (M-COMM) Mobile Signature Service; Web Service Interface</title>
           <author fullname="ETSI TS 102 204 V1.1.4 (2003-08)" initials="ETSI">
@@ -996,6 +996,11 @@
           If alg == none another method of Client authentication MUST be used </t>
           <t>Added text regarding Pairwise Identifiers.</t>
           <t>Added SIM Applet Authenticator example to illustrate the CIBA flow with an specific authenticator</t>
+        </list>
+      </t>
+      <t>-05
+        <list style='symbols'>
+          <t>If the OP uses Pairwise Identifiers then registering a sector_identifier_uri at registration time is mandatory.</t>
         </list>
       </t>
     </section>
