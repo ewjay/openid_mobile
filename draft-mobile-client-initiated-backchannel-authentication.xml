@@ -51,7 +51,7 @@
     </author>
 
 
-    <date day="24" month="Mai" year="2017"/>
+    <date day="26" month="Mai" year="2017"/>
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -147,7 +147,7 @@
           authentication. 
 		    </t>
 		    <t>
-          The OP will respond inmediatly with a unique identifier that identifies that authentication while it tries 
+          The OP will respond immediately with a unique identifier that identifies that authentication while it tries 
           to authenticate the user in the background. 
 		    </t>
 		    <t>
