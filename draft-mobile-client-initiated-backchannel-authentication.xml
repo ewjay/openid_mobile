@@ -481,6 +481,9 @@
           The Client must poll the token endpoint until the end-user grants or denies the request.
         </t>
         <t>
+        The Client MUST be authenticated as specified in Section 9 of <xref target="OpenID.Core"/>.
+        </t>
+        <t>
           The Client polls at reasonable interval which MUST NOT exceed the minimum interval provided by the OpenID Provider via the "interval" parameter (if provided).
         </t>
         <t>
@@ -494,6 +497,8 @@
              </t>
             <t hangText="auth_req_id">
               REQUIRED. It is a unique id to identify the authentication request (transaction) made by the Client.
+              The OP MUST check whether the auth_req_id was used in an <xref target="auth_request" format="title"/> by this Client.
+              Otherwise an error MUST be returned.
              </t>
           </list>
         </t>    
