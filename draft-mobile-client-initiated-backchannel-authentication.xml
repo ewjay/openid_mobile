@@ -51,7 +51,7 @@
     </author>
 
 
-    <date day="26" month="Mai" year="2017"/>
+    <date day="6" month="June" year="2017"/>
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -60,7 +60,7 @@
         OpenID Connect MODRNA Client initiated Backchannel Authentication Flow 1.0 is an authentication 
         flow like OpenID Connect. Unlike OpenID Connect there is a
         direct Relying Party to OpenID Provider communication without redirects through the user's browser.
-        This specification allows an Relying Party that knows the user's identitfier to obtain tokens from the
+        This specification allows an Relying Party that knows the user's identifier to obtain tokens from the
         OpenID Provider. The user consent is given at the user's Authentication Device mediated by the OpenID Provider.
       </t>
     </abstract>
