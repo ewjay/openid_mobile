@@ -89,9 +89,9 @@
       <t>
         This specification does not change the semantic of the OpenID Connect Authentication flow. 
         It introduces a new endpoint to which the authentication request is posted.
-        It indroduces a new asynchronous method for authentication result delivery.
+        It introduces a new asynchronous method for authentication result delivery.
         It does no introduce new scope values nor does it change the semantic of standard OpenID Connect parameters.
-        Some OpenID Connect parameters which are required in a redirect based protocol are meaningless in this server-to-server
+        Some OpenID Connect parameters which are required in a redirecti-based protocol are meaningless in this server-to-server
         communication.
         A few new parameters are introduced e.g. those required for the asynchronous authentication result delivery.
       </t>
@@ -117,7 +117,7 @@
     <section anchor="terminology" title="Terminology">
       <t>
         This specification uses the terms "OpenID Provider (OP)" and "Relying Party (RP)" as
-        defined by <xref target="OpenID.Core">OpenID Connect Core</xref>. Furthermore it uses the term "client" as 
+        defined by <xref target="OpenID.Core">OpenID Connect Core</xref>. Furthermore, it uses the term "client" as 
         defined by <xref target="RFC6749">OAuth 2.0</xref>. OAuth 2.0 Authentication Servers implementing OpenID Connect 
         and CIBA are also referred to as OpenID Providers (OPs). 
         OAuth 2.0 Clients using OpenID Connect and CIBA are also referred to as Relying Parties (RPs).
@@ -177,7 +177,7 @@
         a <xref target="client_notification_endpoint" format="title"/> during its registration at the OpenID Provider.
       </t>
       <t>
-        Otherwise the authentication response is retrieved by the Client by polling the OP's token endpoint using a new grant type. 
+        Otherwise, the authentication response is retrieved by the Client by polling the OP's token endpoint using a new grant type. 
       </t>
 
       <figure>
@@ -232,7 +232,7 @@
         Using additional scopes like e.g. "profile" or "phone" the call center agent would get access to claims
         about the user like "phone_number" and "phone_number_verified".
         </t>
-        <t>A bank teller wants to authenticate a customer in a bank branch - so it is using CIBA for auth in a face-to-face scenario.
+        <t>A bank teller wants to authenticate a customer in a bank branch - so it is using CIBA for authentication in a face-to-face scenario.
         </t>
         </list>
         </t>
@@ -253,7 +253,7 @@
         <t>
           An Authentication Request uses most of the parameters of an <xref target="RFC6749">OAuth 2.0</xref> 
           Authorization Request. The parameters used are not changed in their meaning and no new values for those
-          parameters are introduced. Some of an OAuth 2.0 Authorization Request parameters make no sense in a server to server
+          parameters are introduced. Some of the OAuth 2.0 Authorization Request parameters make no sense in a server to server
           communication and are therefore not part of a CIBA Authentication Request.
         </t>
         <t>
@@ -451,7 +451,7 @@
     <section anchor="auth_server_obtains_consent" title="OpenID Provider Obtains End-user Consent/Authorization">
       <t>
         After the OP has validated the Authentication Request and the OP identifies the user's Authentication Device.
-        The OP chooses a channel to best contact the AD and fullfil the Client's requirements regarding acr_values.
+        The OP chooses a channel to best contact the AD and fulfill the Client's requirements regarding acr_values.
       </t>
       <t>
         Once the End-User is authenticated, the OpenID Provider MUST obtain an authorization decision before 
@@ -498,7 +498,7 @@
             <t hangText="auth_req_id">
               REQUIRED. It is a unique id to identify the authentication request (transaction) made by the Client.
               The OP MUST check whether the auth_req_id was used in an <xref target="auth_request" format="title"/> by this Client.
-              Otherwise an error MUST be returned.
+              Otherwise, an error MUST be returned.
              </t>
           </list>
         </t>    
@@ -523,7 +523,7 @@
       <section anchor="token_response" title="Successful Token Polling Response">
         <t>
           The OpenID Provider will return the token as an HTTP response to the Client's poll request. If the user is well authenticated, the OpenID Provider 
-          will return a succesful response that includes an ID Token and an Access Token. Otherwise it responses with an error as defined in <xref target="token_error_response" format="title"/>.
+          will return a successful response that includes an ID Token and an Access Token. Otherwise, it responses with an error as defined in <xref target="token_error_response" format="title"/>.
         </t>      
         <figure>
           <preamble>The following is a non-normative example of a token response sending as an HTTP 200 OK Response to the Client's poll request
@@ -738,13 +738,13 @@
       <t>
         The login hint token SHOULD be digitally signed by the issuer.
         This ensures authenticity of the data and reduces the threat of an injection attack.
-        The signature allows the OP to authenicate and authorize the sender of the hint and 
+        The signature allows the OP to authenticate and authorize the sender of the hint and 
         prevent collecting of phone numbers by rogue Clients.
       </t>
       <t>
       The OP SHOULD ensure that the "client_notification_endpoint" configured at registration time
-      is in the administrativ authority of the Client.
-      Otherwise the OP would post authentication results to the wrong Client.
+      is in the administrative authority of the Client.
+      Otherwise, the OP would post authentication results to the wrong Client.
       </t>
       <t>
         How this check in done is outside the scope of this specification.
