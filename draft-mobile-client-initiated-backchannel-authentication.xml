@@ -264,9 +264,10 @@
         </t>
         <t>
           The Client MUST authenticate to the Backchannel Authentication Endpoint using the authentication method registered for its 
-          client_id, as described in Section 9 of  <xref target="OpenID.Core"/>. The RECOMMENDED method to authenticate the Client
-          is using an <eref target="https://openid.net/specs/openid-connect-core-1_0.html#SignedRequestObject">OpenID Connect Signed Request Object</eref> as described 
-          in OpenID.Core.
+          client_id. The RECOMMENDED method to authenticate the Client is using an 
+          <eref target="https://openid.net/specs/openid-connect-core-1_0.html#SignedRequestObject">OpenID Connect Signed Request Object</eref> 
+          as described in OpenID.Core. If a Signed Request Object is not used for authentication then one of the 
+          authentication methods of Section 9 of <xref target="OpenID.Core"/> should be used.
         </t>
         <t>
           Authentication Requests are made using <xref target="MODRNA.Authentication" format="title"/>. Only the following parameters are taken into consideration in the Client initiated Backchannel Authentication flow. The rest of the request parameters defined in <xref target="RFC6749">OAuth 2.0</xref> 
