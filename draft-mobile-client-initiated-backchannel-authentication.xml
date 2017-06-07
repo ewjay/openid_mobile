@@ -604,11 +604,10 @@
           </figure>
         <t>
           The Client Notification Endpoint SHOULD response with a HTTP 204 No Content.
-          The OP SHOULD accept HTTP 200 OK and any body in the response SHOULD be ignored.
+          The OP SHOULD also accept HTTP 200 OK and any body in the response SHOULD be ignored.
         </t>
         <t>
-          The OP SHOULD not follow redirects. HTTP 3xx codes SHOULD be ignored.
-          Administrative action is like to be needed.
+          The Client SHOULD NOT return an HTTP 3xx code. The OP SHOULD NOT follow redirects.
         </t>
         <t>
           How the OP handles HTTP error codes in the ranges of 4xx and 5xx is out-of-range of this specification.
