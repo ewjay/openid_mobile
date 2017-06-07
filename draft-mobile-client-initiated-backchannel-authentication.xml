@@ -607,10 +607,13 @@
           The OP SHOULD also accept HTTP 200 OK and any body in the response SHOULD be ignored.
         </t>
         <t>
-          The Client SHOULD NOT return an HTTP 3xx code. The OP SHOULD NOT follow redirects.
+            The Client SHOULD NOT return an HTTP 3xx code. The OP SHOULD NOT follow redirects.
+            All redirects MUST be HTTPS. 
+            As the <xref target="client_notification_endpoint" format="title"/> is set at registration time there SHOULD be no necessity for redirects.
+            OP policy might prohibit redirects but this is out-of-scope for this specification.
         </t>
         <t>
-          How the OP handles HTTP error codes in the ranges of 4xx and 5xx is out-of-range of this specification.
+          How the OP handles HTTP error codes in the ranges of 4xx and 5xx is out-of-scope of this specification.
           Administrative action is like to be needed in these cases.
         </t>
         </section>
