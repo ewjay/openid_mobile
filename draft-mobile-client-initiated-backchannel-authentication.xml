@@ -602,6 +602,18 @@
               ]]>
             </artwork>
           </figure>
+        <t>
+          The Client Notification Endpoint SHOULD response with a HTTP 204 No Content.
+          The OP SHOULD accept HTTP 200 OK and any body in the response SHOULD be ignored.
+        </t>
+        <t>
+          The OP SHOULD not follow redirects. HTTP 3xx codes SHOULD be ignored.
+          Administrative action is like to be needed.
+        </t>
+        <t>
+          How the OP handles HTTP error codes in the ranges of 4xx and 5xx is out-of-range of this specification.
+          Administrative action is like to be needed in these cases.
+        </t>
         </section>
         <section anchor="client_notification_endpoint" title="Client Notification Endpoint">
           <t>
