@@ -765,7 +765,11 @@
         </t>
         <t><xref target="OpenID.Core"/> discusses Pairwise Identifier Algorithms in section 8.1.
         </t>
-        <t>Sector Identifier Validation at registration time is out-of-scope of this specification. Please see <xref target="OpenID.Registration"/>.
+        <t>
+            How Sector Identifier Validation is done at registration time is out-of-scope of this specification.
+            Pre-arranged configurations between SP and OpenID Provider are always possible.
+            For Dynamic Registraton please see <xref target="OpenID.Registration"/>.
+            In OpenId Dynamic Registration there is currently no way to automatically validate whether a CIBA client using Polling Mode is allowed to join the group of clients sharing a sector_identifier_uri.
         </t>
     </section>
 
