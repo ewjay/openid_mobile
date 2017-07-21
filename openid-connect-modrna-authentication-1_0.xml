@@ -44,7 +44,7 @@
 
 
 
-    <date day="06" month="Mar" year="2017" />
+    <date day="21" month="Jul" year="2017" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -157,6 +157,13 @@
         	    	Protection of the login_hint_token's content is specified in 
         	    	<xref target="lht_encryption_signing" />.
 				</t>
+           		<t>
+	           		Only one of <spanx style="verb">login_hint_token</spanx>, <spanx style="verb">id_token_hint</spanx>
+	        	    or <spanx style="verb">login_hint</spanx> is allowed. If more than one of those parameters 
+	        	    are present in the authentication request the server MUST return 
+	        	    an <spanx style="verb">invalid_request</spanx> error.
+	           	</t>
+				
 				<t hangText="binding_message">
 				    OPTIONAL. This is a new parameter. An Interlock message to tie the consumption 
 				    device and the authentication device together.
