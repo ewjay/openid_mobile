@@ -343,13 +343,13 @@ The Biometric may be captured as part of the consent flow.
 			<t>If the authentication is by sending a secure message to a hardware 
 			element in mobile device's and the HW element signs a authentication challenge
 			only after the user has entered a local PIN then it SHOULD have a 
-			<spanx style="verb">amr</spanx> value of ["hpop","pin"]</t>
+			<spanx style="verb">amr</spanx> value of ["hwk","pin"]</t>
 		    
 		    <t>If the authentication is by sending a secure message to a software 
 			application in the mobile device that signs a authentication challenge
 			only after the user has entered a local fingerprint biometric then it 
 			SHOULD have a 
-			<spanx style="verb">amr</spanx> value of ["pop","fpt"]</t>
+			<spanx style="verb">amr</spanx> value of ["swk","fpt"]</t>
 			
 			<t>If the authentication is by sending a secure message to a hardware 
 			element in mobile device's and the HW element signs a authentication challenge
@@ -357,7 +357,7 @@ The Biometric may be captured as part of the consent flow.
 			and the IdP has preformed additional passive analytics based on
 			geo location, then it 
 			SHOULD have a 
-			<spanx style="verb">amr</spanx> value of ["hpop","fpt","geo"]</t>
+			<spanx style="verb">amr</spanx> value of ["hwk","fpt","geo"]</t>
 			
 			<t>Note that if two or more authentication factors are used the MNO may 
 			include the <spanx style="verb">amr</spanx> value <spanx style="verb">mfa</spanx>

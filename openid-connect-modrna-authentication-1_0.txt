@@ -295,19 +295,19 @@ Connotte & Bradley       Expires March 24, 2018                 [Page 5]
    If the authentication is by sending a secure message to a hardware
    element in mobile device's and the HW element signs a authentication
    challenge only after the user has entered a local PIN then it SHOULD
-   have a "amr" value of ["hpop","pin"]
+   have a "amr" value of ["hwk","pin"]
 
    If the authentication is by sending a secure message to a software
    application in the mobile device that signs a authentication
    challenge only after the user has entered a local fingerprint
-   biometric then it SHOULD have a "amr" value of ["pop","fpt"]
+   biometric then it SHOULD have a "amr" value of ["swk","fpt"]
 
    If the authentication is by sending a secure message to a hardware
    element in mobile device's and the HW element signs a authentication
    challenge only after the user has entered a local fingerprint
    biometric, and the IdP has preformed additional passive analytics
    based on geo location, then it SHOULD have a "amr" value of
-   ["hpop","fpt","geo"]
+   ["hwk","fpt","geo"]
 
    Note that if two or more authentication factors are used the MNO may
    include the "amr" value "mfa" and optionally not include the specific
