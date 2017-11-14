@@ -6,7 +6,7 @@
                                                      Deutsche Telekom AG
                                                               J. Bradley
                                                            Ping Identity
-                                                      September 20, 2017
+                                                       November 14, 2017
 
 
             OpenID Connect MODRNA Authentication Profile 1.0
@@ -53,14 +53,14 @@ Table of Contents
 
 
 
-Connotte & Bradley       Expires March 24, 2018                 [Page 1]
+Connotte & Bradley        Expires May 18, 2018                  [Page 1]
 
-                 OIDC MODRNA Authentication Profile 1.0   September 2017
+                 OIDC MODRNA Authentication Profile 1.0    November 2017
 
 
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  11
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  10
    Appendix B.  Notices  . . . . . . . . . . . . . . . . . . . . . .  11
-   Appendix C.  Document History . . . . . . . . . . . . . . . . . .  12
+   Appendix C.  Document History . . . . . . . . . . . . . . . . . .  11
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
 
 1.  Introduction
@@ -109,9 +109,9 @@ Connotte & Bradley       Expires March 24, 2018                 [Page 1]
 
 
 
-Connotte & Bradley       Expires March 24, 2018                 [Page 2]
+Connotte & Bradley        Expires May 18, 2018                  [Page 2]
 
-                 OIDC MODRNA Authentication Profile 1.0   September 2017
+                 OIDC MODRNA Authentication Profile 1.0    November 2017
 
 
 2.  Overview
@@ -165,9 +165,9 @@ Connotte & Bradley       Expires March 24, 2018                 [Page 2]
 
 
 
-Connotte & Bradley       Expires March 24, 2018                 [Page 3]
+Connotte & Bradley        Expires May 18, 2018                  [Page 3]
 
-                 OIDC MODRNA Authentication Profile 1.0   September 2017
+                 OIDC MODRNA Authentication Profile 1.0    November 2017
 
 
    This specification defines an initial set of "acr" values that
@@ -221,9 +221,9 @@ Connotte & Bradley       Expires March 24, 2018                 [Page 3]
 
 
 
-Connotte & Bradley       Expires March 24, 2018                 [Page 4]
+Connotte & Bradley        Expires May 18, 2018                  [Page 4]
 
-                 OIDC MODRNA Authentication Profile 1.0   September 2017
+                 OIDC MODRNA Authentication Profile 1.0    November 2017
 
 
    Clients MUST send the short registered forms of the authentication
@@ -277,9 +277,9 @@ Connotte & Bradley       Expires March 24, 2018                 [Page 4]
 
 
 
-Connotte & Bradley       Expires March 24, 2018                 [Page 5]
+Connotte & Bradley        Expires May 18, 2018                  [Page 5]
 
-                 OIDC MODRNA Authentication Profile 1.0   September 2017
+                 OIDC MODRNA Authentication Profile 1.0    November 2017
 
 
    hwk  Proof-of-possession (PoP) of a hardware-secured key.
@@ -333,9 +333,9 @@ Connotte & Bradley       Expires March 24, 2018                 [Page 5]
 
 
 
-Connotte & Bradley       Expires March 24, 2018                 [Page 6]
+Connotte & Bradley        Expires May 18, 2018                  [Page 6]
 
-                 OIDC MODRNA Authentication Profile 1.0   September 2017
+                 OIDC MODRNA Authentication Profile 1.0    November 2017
 
 
    The Authorization server may produce "login_hint_token" tokens in
@@ -389,9 +389,9 @@ Connotte & Bradley       Expires March 24, 2018                 [Page 6]
 
 
 
-Connotte & Bradley       Expires March 24, 2018                 [Page 7]
+Connotte & Bradley        Expires May 18, 2018                  [Page 7]
 
-                 OIDC MODRNA Authentication Profile 1.0   September 2017
+                 OIDC MODRNA Authentication Profile 1.0    November 2017
 
 
    The login_hint token MUST be signed using the private key of the
@@ -434,24 +434,21 @@ Connotte & Bradley       Expires March 24, 2018                 [Page 7]
    The login hint token SHOULD be digitally signed by the issuer.  This
    ensures authenticity of the data and reduces the threat of an
    injection attack.  The signature allows the OP to authenicate and
-   authorize the sender of the hint and prevent collecting of phone
-   numbers by rogue clients.
+   authorize the sender of the hint.
 
    To prevent modification of the "binding_message" value, the RP SHOULD
    send the parameter to the OP using a signed OpenID Connect Request
    Object (section 6.3.2 of [OpenID.Core]).
 
-
-
-
-
-Connotte & Bradley       Expires March 24, 2018                 [Page 8]
-
-                 OIDC MODRNA Authentication Profile 1.0   September 2017
-
-
    The OP MUST sanitize the "binding_message" value in order to prevent
    injection attacks.
+
+
+
+Connotte & Bradley        Expires May 18, 2018                  [Page 8]
+
+                 OIDC MODRNA Authentication Profile 1.0    November 2017
+
 
    The "binding_message" value being displayed on the consumption and
    authentication device SHOULD contain a random value (e.g. an
@@ -496,19 +493,18 @@ Connotte & Bradley       Expires March 24, 2018                 [Page 8]
               DOI 10.17487/RFC2119, March 1997, <https://www.rfc-
               editor.org/info/rfc2119>.
 
-
-
-
-
-
-Connotte & Bradley       Expires March 24, 2018                 [Page 9]
-
-                 OIDC MODRNA Authentication Profile 1.0   September 2017
-
-
    [RFC6711]  Johansson, L., "An IANA Registry for Level of Assurance
               (LoA) Profiles", RFC 6711, DOI 10.17487/RFC6711, August
               2012, <https://www.rfc-editor.org/info/rfc6711>.
+
+
+
+
+
+Connotte & Bradley        Expires May 18, 2018                  [Page 9]
+
+                 OIDC MODRNA Authentication Profile 1.0    November 2017
+
 
    [RFC7517]  Jones, M., "JSON Web Key (JWK)", RFC 7517,
               DOI 10.17487/RFC7517, May 2015, <https://www.rfc-
@@ -550,24 +546,21 @@ Connotte & Bradley       Expires March 24, 2018                 [Page 9]
               DOI 10.17487/RFC6750, October 2012, <https://www.rfc-
               editor.org/info/rfc6750>.
 
-
-
-
-
-
-
-
-Connotte & Bradley       Expires March 24, 2018                [Page 10]
-
-                 OIDC MODRNA Authentication Profile 1.0   September 2017
-
-
 Appendix A.  Acknowledgements
 
    The following have contributed to the development of this
    specification.
 
       Matthieu Verdier (matthieu.verdier@orange.com), Orange
+
+
+
+
+
+Connotte & Bradley        Expires May 18, 2018                 [Page 10]
+
+                 OIDC MODRNA Authentication Profile 1.0    November 2017
+
 
       Gonzalo Fernandez Rodriguez
       (gonzalo.fernandezrodriguez@telefonica.com), Telefonica
@@ -609,15 +602,6 @@ Appendix B.  Notices
    patents, patent applications, or other proprietary rights that may
    cover technology that may be required to practice this specification.
 
-
-
-
-
-Connotte & Bradley       Expires March 24, 2018                [Page 11]
-
-                 OIDC MODRNA Authentication Profile 1.0   September 2017
-
-
 Appendix C.  Document History
 
    [[ To be removed from the final specification ]]
@@ -625,6 +609,14 @@ Appendix C.  Document History
    -06
 
    o  update reference to amr spec
+
+
+
+
+Connotte & Bradley        Expires May 18, 2018                 [Page 11]
+
+                 OIDC MODRNA Authentication Profile 1.0    November 2017
+
 
    o  Make Date current for implementers draft
 
@@ -669,4 +661,12 @@ Authors' Addresses
 
 
 
-Connotte & Bradley       Expires March 24, 2018                [Page 12]
+
+
+
+
+
+
+
+
+Connotte & Bradley        Expires May 18, 2018                 [Page 12]
