@@ -403,7 +403,7 @@
 
   <meta name="dct.creator" content="Connotte, J. and J. Bradley" />
   <meta name="dct.identifier" content="urn:ietf:id:openid-connect-modrna-authentication-1_0" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-9-20" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-11-14" />
   <meta name="dct.abstract" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
   <meta name="description" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
 
@@ -432,7 +432,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">September 20, 2017</td>
+  <td class="right">November 14, 2017</td>
 </tr>
 
     	
@@ -610,7 +610,7 @@
   <dd style="margin-left: 8">All MODRNA compliant OP's MUST accept the acr_values specified in <a href="#acr_values">Section 4</a> </dd>
 </dl>
 <h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#security_considerations" id="security_considerations">Security Considerations</a></h1>
-<p id="rfc.section.9.p.1">The login hint token SHOULD be digitally signed by the issuer.  This ensures authenticity of the data and reduces the threat of an injection attack.  The signature allows the OP to authenicate and authorize the sender of the hint and prevent collecting of phone numbers by rogue clients.  </p>
+<p id="rfc.section.9.p.1">The login hint token SHOULD be digitally signed by the issuer.  This ensures authenticity of the data and reduces the threat of an injection attack.  The signature allows the OP to authenicate and authorize the sender of the hint.  </p>
 <p id="rfc.section.9.p.2">To prevent modification of the <samp>binding_message</samp> value, the RP SHOULD send the parameter to the OP using a signed OpenID Connect Request Object (section 6.3.2 of <a href="#OpenID.Core">[OpenID.Core]</a>).  </p>
 <p id="rfc.section.9.p.3">The OP MUST sanitize the <samp>binding_message</samp> value in order to prevent injection attacks.  </p>
 <p id="rfc.section.9.p.4">The <samp>binding_message</samp> value being displayed on the consumption and authentication device SHOULD contain a random value (e.g. an authorization code) of reasonable entropy.  This is a countermeasure against session fixation type attacks, where the attacker initiates an authentication process on a consumption device under his control, which will result in the same text being displayed on the authentication device as for legitimate transactions.  </p>

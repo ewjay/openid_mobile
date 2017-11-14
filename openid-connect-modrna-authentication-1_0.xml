@@ -44,7 +44,7 @@
 
 
 
-    <date day="20" month="Sep" year="2017" />
+    <date day="14" month="Nov" year="2017" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -508,8 +508,7 @@ The Biometric may be captured as part of the consent flow.
 	<t>
 		The login hint token SHOULD be digitally signed by the issuer.
 		This ensures authenticity of the data and reduces the threat of an injection attack.
-		The signature allows the OP to authenicate and authorize the sender of the hint and
-        prevent collecting of phone numbers by rogue clients.
+		The signature allows the OP to authenicate and authorize the sender of the hint.
 	</t>
 	<t>
 		To prevent modification of the <spanx style="verb">binding_message</spanx> value, 
