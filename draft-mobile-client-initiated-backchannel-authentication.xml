@@ -51,7 +51,7 @@
     </author>
 
 
-    <date day="21" month="June" year="2017"/>
+    <date day="10" month="January" year="2018"/>
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -687,7 +687,7 @@
         </t>
         <t>  
           If the End-User denies the request or the End-User authentication fails, the OP (Authorization Server) informs the Client by using
-          the follow Error Responses, many of them are defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>, however they cannot
+          the following Error Responses, many of them are defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>, however they cannot
           be sent using a redirection as OAuth 2.0 does because there isn't any User Agent through which send the error to the Client.
         </t>
         <t>
