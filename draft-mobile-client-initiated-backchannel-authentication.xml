@@ -167,6 +167,7 @@
         </t>
 		  </list>
       </t>
+    </section>
 
    <section title='Polling versus Notification'>
 
@@ -756,7 +757,6 @@
         </figure>      
  
       </section>
-    </section>
 
     <section title='Pairwise Identifiers'>
         <t>
