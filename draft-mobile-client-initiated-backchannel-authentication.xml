@@ -170,11 +170,12 @@
     </section>
     <section anchor="registration" title="Registration">
       <t>
-        As we said previously, it is a choice of the Client to set the via from which it desires receive the tokens, that is, by means
-        of push notifications or by polling the token endopoint, and this has to happen at the registration time. However CIBA does 
+        As we said previously, it is a choice of the Client to set the via from which it wishes to receive the tokens, that is, by means
+        of push notifications or by polling the token endpoint, and this has to happen at the registration time. However CIBA does 
         not provide a flag for the Clients to choose one or another, but it provides a Client Metadata key for the Clients to be sent
-        in the dynamic registration request (client_notification_endpoint) whose value MUST be an HTTPS URL and a new grant-type called
-        backchannel_request to poll the token endpoint, indicating this last one that the polling mechanism is preferred.
+        in the OpenID Dynamic Registration request (client_notification_endpoint) which MUST be an HTTPS URL, and a new grant-type called
+        backchannel_request to poll the token endpoint. If a client_notification_endpoint is registered, Notification mode will be used; otherwise, 
+        if the backchannel_request grant-type was registered, Polling mode will be used.
 
         <list style="hanging">
             <t hangText="Polling and Pairwise Identifiers">
@@ -186,12 +187,19 @@
               The only way that CIBA generates Pairwise Pseudonymous Identifiers is by providing a jwks_uri at the registration phase when the
               gran-type "backchannel_request" is registered. In that way the OpenID Provider will have a uri to set as a sector_identifier_uri and
               it will utilize it to generate the PPIDs. So, whenever the OpenID Provider receive an dynamic registration request it MUST check if a valid
-              jwks_uri is set when the backchannel_request grant-type is present in the list of the gran-types required.               
+              jwks_uri is set when the backchannel_request grant-type is present in the list of the gran-types required.
+
+              As the sector_identifier_uri, so it must be included in the list of URIs pointed by sector_identifier_uri.         
             </t>            
             <t>
               In case the jwks_uri is set as a sector_identifier_uri to generate the PPIDs, the OpenID Provider MUST accept only requests using the
               request object and signed with the asymetric keys provided by the jwks_uri, otherwise it MUST respond with an invalid_request error.
-            </t>            
+            </t>
+
+            <t hangText="Push Notification Mode and Pairwise Identifiers">
+              When using Notification mode, the PPIDs will use the client_notification_endpoint as a sector_identifier_uri, so it must be included in 
+              the list of URIs pointed by sector_identifier_uri.
+            </t>      
         </list>
         <figure>
           <preamble>The following is a non-normative example from an dynamic registration request that contains the "backchannel_request" grant-type
@@ -822,7 +830,7 @@
         </t>
         <t><xref target="OpenID.Core"/> discusses Pairwise Identifier Algorithms in section 8.1.
         </t>
-        <t>
+        <t>I
             How Sector Identifier Validation is done at registration time is out-of-scope of this specification.
             Pre-arranged configurations between SP and OpenID Provider are always possible.
             For Dynamic Registraton please see <xref target="OpenID.Registration"/>.
