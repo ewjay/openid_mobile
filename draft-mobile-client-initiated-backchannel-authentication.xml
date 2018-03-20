@@ -692,6 +692,30 @@
           How the OP handles HTTP error codes in the ranges of 4xx and 5xx is out-of-scope of this specification.
           Administrative action is like to be needed in these cases.
         </t>
+        <figure>
+            <preamble>
+              In order to bind the id_token, access_token and the auth_req_id, it is REQUIRED to add the hash value of the access_token
+              and the auth_req_id within the id_token. In case a refresh_token is sent to the client, the hash value of it MUST be added
+              to the id_token too.
+              The following is a non-normative example of a base64url decoded ID Token sent to the client notification endpoint:
+            </preamble>
+            <artwork>
+              <![CDATA[
+                {
+                  "iss": "http://server.example.com",
+                  "sub": "248289761001",
+                  "aud": "s6BhdRkqt3",
+                  "nonce": "n-0S6_WzA2Mj",
+                  "exp": 1311281970,
+                  "iat": 1311280970,
+                  "at_hash": "rXH7QWVTZnXYCou_6Vdpfg",
+                  "rt_hash": "njCczNMR6mTQQTPa93YPcQ",
+                  "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1"
+                }              
+              ]]>
+            </artwork>
+          </figure>
+
         </section>
         <section anchor="client_notification_endpoint" title="Client Notification Endpoint">
           <t>
