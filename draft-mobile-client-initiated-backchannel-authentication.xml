@@ -174,36 +174,49 @@
         of push notifications or by polling the token endpoint, and this has to happen at the registration time. However CIBA does 
         not provide a flag for the Clients to choose one or another, but it provides a Client Metadata key for the Clients to be sent
         in the OpenID Dynamic Registration request (client_notification_endpoint) which MUST be an HTTPS URL, and a new grant-type called
-        backchannel_request to poll the token endpoint. If a client_notification_endpoint is registered, Notification mode will be used; otherwise, 
+        backchannel_request to poll the token endpoint. If a "client_notification_endpoint" is registered, Notification mode will be used; otherwise, 
         if the backchannel_request grant-type was registered, Polling mode will be used.
 
         <list style="hanging">
             <t hangText="Polling and Pairwise Identifiers">
               The downside of using the Polling mechanism to get the tokens is that is not possible to use Pairwise Pseudonymous Identifiers
               unless the Client registers a URI that is of its ownership and it use it during the authentication process in order to verify that
-              such URI belongs to the client and so it can be considered as a sector_identifier_uri to generate the PPIDs.
+              such URI belongs to the client and so it can be considered as a "sector_identifier_uri" to generate the PPIDs.
             </t>
             <t>
-              The only way that CIBA generates Pairwise Pseudonymous Identifiers is by providing a jwks_uri at the registration phase when the
-              gran-type "backchannel_request" is registered. In that way the OpenID Provider will have a uri to set as a sector_identifier_uri and
+              The only way that CIBA generates Pairwise Pseudonymous Identifiers is by providing a "jwks_uri" at the registration phase when the
+              gran-type "backchannel_request" is registered. In that way the OpenID Provider will have a uri to set as a "sector_identifier_uri" and
               it will utilize it to generate the PPIDs. So, whenever the OpenID Provider receive an dynamic registration request it MUST check if a valid
-              jwks_uri is set when the backchannel_request grant-type is present in the list of the gran-types required.
+              "jwks_uri" is set when the backchannel_request grant-type is present in the list of the gran-types required.
 
-              As the sector_identifier_uri, so it must be included in the list of URIs pointed by sector_identifier_uri.         
+              If a "sector_identifier_uri" is explicitily provided, then the "jwks_uri" must be included in the list of URIs pointed by "sector_identifier_uri".         
             </t>            
             <t>
-              In case the jwks_uri is set as a sector_identifier_uri to generate the PPIDs, the OpenID Provider MUST accept only requests using the
-              request object and signed with the asymetric keys provided by the jwks_uri, otherwise it MUST respond with an invalid_request error.
+              But having registered a "jwks_uri" is not enough to use PPIDs, Client needs somehow to demonstrate that such "jws_uri" belongs to it. 
+              So, it is MANDATORY for the Client to authenticate the token endpoint using one of this two mechanisms:
+              <vspace />
+              <vspace />
+              <list style="numbers">
+                <t>
+                  Using Mutual TLS as defined in section 3 <eref target="https://tools.ietf.org/html/draft-ietf-oauth-mtls-07#section-3">Mutual TLS Sender Constrained Resources Access</eref> of the 
+                  <xref target="I-D.ietf-oauth-mtls"/>
+                </t> 
+                <t>
+                  Using the private_key_jwt method as per the section 9 <eref target="https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication">Client Authentication</eref>
+                  of the <xref target="OpenID.Core"/>, otherwise it MUST respond with an invalid_request error.
+                </t> 
+              </list>
+              Requests using the request object signed with the asymetric keys provided by the "jwks_uri" are OPTIONAL.              
             </t>
 
             <t hangText="Push Notification Mode and Pairwise Identifiers">
-              When using Notification mode, the PPIDs will use the client_notification_endpoint as a sector_identifier_uri, so it must be included in 
-              the list of URIs pointed by sector_identifier_uri.
+              When using Notification mode, the PPIDs will use the "client_notification_endpoint" as a "sector_identifier_uri". In case a "sector_identifier_uri"
+              is explicitily provided, then the "client_notification_endpoint" must be included in the list of URIs pointed by "sector_identifier_uri".
             </t>      
         </list>
         <figure>
           <preamble>The following is a non-normative example from an dynamic registration request that contains the "backchannel_request" grant-type
-          as required and a jwks_uri (with line wraps within values for display purposes only).
+          as required and a "jwks_uri" (with line wraps within values for display purposes only).
           </preamble>
           <artwork>
               <![CDATA[
@@ -926,6 +939,7 @@
       &OpenID.Registration;
       
       <?rfc include="reference.I-D.draft-jones-oauth-amr-values-05.xml"?>
+      <?rfc include="reference.I-D.draft-ietf-oauth-mtls-07"?>
 
     </references>
     
