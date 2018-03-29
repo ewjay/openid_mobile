@@ -694,9 +694,11 @@
         </t>
         <figure>
             <preamble>
-              In order to bind the id_token, access_token and the auth_req_id, it is REQUIRED to add the hash value of the access_token
-              and the auth_req_id within the id_token. In case a refresh_token is sent to the client, the hash value of it MUST be added
-              to the id_token too.
+              In order to bind the id_token, access_token and the auth_req_id, it is REQUIRED to add the hash value of the access_token and 
+              the auth_req_id within the id_token. In case a refresh_token is sent to the client, the hash value of it MUST be added to the 
+              id_token too. The Section 3.1.3.6 of <xref target="OpenID.Core"/> shows how to calculate the hash value of the access_token "at_hash"
+              that can also be applied to the refresh_token hash value calculation.
+
               The following is a non-normative example of a base64url decoded ID Token sent to the client notification endpoint:
             </preamble>
             <artwork>
@@ -719,9 +721,9 @@
         </section>
         <section anchor="client_notification_endpoint" title="Client Notification Endpoint">
           <t>
-            The Client Notification Endpoint is set by the Client during the registration phase. This endpoint is intended to receive
-            the result of the authentication (id_token, access_token and refresh token) and it requires the request to be authenticated 
-            using a "bearer token" created by the Client and sent to the OP in the Authentication request as the value of the parameter "client_notification_token".
+            The Client Notification Endpoint is set by the Client during the registration phase. This endpoint is intended to receive the result of 
+            the authentication (id_token, access_token and refresh token) and it requires the request to be authenticated using a "bearer token" 
+            created by the Client and sent to the OP in the Authentication request as the value of the parameter "client_notification_token".
           </t>
           <t>
           This specification defines a new Client Metadata key <spanx style="verb">client_notification_endpoint</spanx> for this purpose.
