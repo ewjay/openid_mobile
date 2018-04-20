@@ -1152,8 +1152,20 @@
           <t>If the OP uses Pairwise Identifiers then registering a sector_identifier_uri at registration time is mandatory.</t>
         </list>
       </t>
+      <t>-06
+        <list style='symbols'>
+          <t>
+            If the OP uses Pairwise Identifiers and the Polling Mechanism to retrieve the token, it is necessary to provide a "jwks_uri" at the registration phase and
+            it is MANDATORY for the Client to authenticate the token endpoint using one of this two mechanisms: 
+            Using Mutual TLS as defined in section 3 <eref target="https://tools.ietf.org/html/draft-ietf-oauth-mtls-07#section-3">Mutual TLS Sender Constrained Resources Access</eref> of the <xref target="I-D.ietf-oauth-mtls"/>
+            or using the private_key_jwt method as per the section 9 <eref target="https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication">Client Authentication</eref>
+            of the <xref target="OpenID.Core"/>
+          </t>
+          <t>
+            at_hash, rt_hash and auth_requ_id values have been added within the id_token to bind it with the access_token and the auth_req_id.
+          </t>
+        </list>
+      </t>
     </section>
-
-
   </back>
 </rfc>
