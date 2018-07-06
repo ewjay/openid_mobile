@@ -90,8 +90,8 @@
         This specification does not change the semantic of the OpenID Connect Authentication flow. 
         It introduces a new endpoint to which the authentication request is posted.
         It introduces a new asynchronous method for authentication result delivery.
-        It does no introduce new scope values nor does it change the semantic of standard OpenID Connect parameters.
-        Some OpenID Connect parameters which are required in a redirecti-based protocol are meaningless in this server-to-server
+        It does not introduce new scope values nor does it change the semantic of standard OpenID Connect parameters.
+        Some OpenID Connect parameters which are required in a redirect-based protocol are meaningless in this server-to-server
         communication.
         A few new parameters are introduced e.g. those required for the asynchronous authentication result delivery.
       </t>
@@ -127,7 +127,7 @@
         <list style="hanging">
           <t hangText="Consumption Device (CD)">
             The Consumption Device is the device that helps the user consume the service.
-            In CIBA use cases the user is not necessarily in control of the CD but the CD in the control 
+            In CIBA use cases the user is not necessarily in control of the CD but the CD is in the control
             of an SP agent (e.g. at a Bank teller) or the CD is a SP controlled device (e.g. a petrol pump).
           </t>
           <t hangText="Authentication Device (AD)">
@@ -170,7 +170,7 @@
     </section>
     <section anchor="registration" title="Registration">
       <t>
-        As we said previously, it is a choice of the Client to set the via from which it wishes to receive the tokens, that is, by means
+        As we said previously, it is a choice of the Client to establish the mode by which it wishes to receive the tokens, that is, by means
         of push notifications or by polling the token endpoint, and this has to happen at the registration time. However CIBA does 
         not provide a flag for the Clients to choose one or another, but it provides a Client Metadata key for the Clients to be sent
         in the OpenID Dynamic Registration request (client_notification_endpoint) which MUST be an HTTPS URL, and a new grant-type called
@@ -189,7 +189,7 @@
               it will utilize it to generate the PPIDs. So, whenever the OpenID Provider receive an dynamic registration request it MUST check if a valid
               "jwks_uri" is set when the backchannel_request grant-type is present in the list of the gran-types required.
 
-              If a "sector_identifier_uri" is explicitily provided, then the "jwks_uri" must be included in the list of URIs pointed by "sector_identifier_uri".         
+              If a "sector_identifier_uri" is explicitly provided, then the "jwks_uri" must be included in the list of URIs pointed by "sector_identifier_uri".
             </t>            
             <t>
               But having registered a "jwks_uri" is not enough to use PPIDs, Client needs somehow to demonstrate that such "jws_uri" belongs to it. 
@@ -206,12 +206,12 @@
                   of the <xref target="OpenID.Core"/>, otherwise it MUST respond with an invalid_request error.
                 </t> 
               </list>
-              Requests using the request object signed with the asymetric keys provided by the "jwks_uri" are OPTIONAL.              
+              Requests using the request object signed with the asymmetric keys provided by the "jwks_uri" are OPTIONAL.
             </t>
 
             <t hangText="Push Notification Mode and Pairwise Identifiers">
               When using Notification mode, the PPIDs will use the "client_notification_endpoint" as a "sector_identifier_uri". In case a "sector_identifier_uri"
-              is explicitily provided, then the "client_notification_endpoint" must be included in the list of URIs pointed by "sector_identifier_uri".
+              is explicitly provided, then the "client_notification_endpoint" must be included in the list of URIs pointed by "sector_identifier_uri".
             </t>      
         </list>
         <figure>
@@ -488,7 +488,7 @@
               The <spanx style="verb">auth_req_id</spanx> will be included too in the token notification when Notification mode is used to allow the Client correlate the authentication request and the received tokens. 
               It will not be included in the token response when using Polling Mode.
              </t>
-            <t hangText="expires in">
+            <t hangText="expires_in">
               REQUIRED. Expiration time of the "auth_req_id" in seconds since the auth_request was received. When using the Polling mode, the auth_req_id will be considered overdue and 
               the OpenID Provider will return an error to indicate it, see <xref target="token_error_response" format="title"/>.
              </t>
@@ -872,7 +872,7 @@
         <t>I
             How Sector Identifier Validation is done at registration time is out-of-scope of this specification.
             Pre-arranged configurations between SP and OpenID Provider are always possible.
-            For Dynamic Registraton please see <xref target="OpenID.Registration"/>.
+            For Dynamic Registration please see <xref target="OpenID.Registration"/>.
             In OpenId Dynamic Registration there is currently no way to automatically validate whether a CIBA client using Polling Mode is allowed to join the group of clients sharing a sector_identifier_uri.
         </t>
     </section>
@@ -969,7 +969,7 @@
       <t>
         This authenticator would be implemented through the so-called MSSP (Mobile Signature Subscriber Provider) Server.
         When the Backchannel Authentication Endpoint receives the request to authenticate the user and once it knows the user's MSISDN, it makes a call
-        to the MSSP Server which builts a binary Class 2 SMS that is sent to the SIM card of the user where the applet is located.
+        to the MSSP Server which builds a binary Class 2 SMS that is sent to the SIM card of the user where the applet is located.
       </t>
 
       <t>
@@ -979,8 +979,8 @@
         
       <t>
         Once the message reaches the SIM Card, it is decrypted by the CardManger and the signature is verified (thanks to the same pair of keys: kyc, kyd).
-        if everything is ok, the CardManager gives the message to the aplet that checks the signature (the another one made by the MSSP) and displays the challenge 
-        through a popup using the mobile phone native inteface) and the user is prompted to enter a Pin Code that is validated locally. 
+        if everything is ok, the CardManager gives the message to the applet that checks the signature (the another one made by the MSSP) and displays the challenge
+        through a popup using the mobile phone native interface) and the user is prompted to enter a Pin Code that is validated locally.
         If the Pin Code is correct, the applet builds an OK response and signs it with the same key used by the MSSP to sign the request, this 
         response is sent as a Class 3 message to the MSSP that checks the signature, and builds the id_token and the access_token to be returned to the Client.
       </t>
