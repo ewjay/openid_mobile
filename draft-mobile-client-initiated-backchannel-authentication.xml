@@ -185,7 +185,7 @@
             </t>
             <t>
               The only way that CIBA generates Pairwise Pseudonymous Identifiers is by providing a "jwks_uri" at the registration phase when the
-              "urn:openid:params:modrna:grant-type:backchannel_request" gran type is registered. In that way the OpenID Provider will have a uri to set as a "sector_identifier_uri" and
+              "urn:openid:params:modrna:grant-type:backchannel_request" grant type is registered. In that way the OpenID Provider will have a uri to set as a "sector_identifier_uri" and
               it will utilize it to generate the PPIDs. So, whenever the OpenID Provider receive an dynamic registration request it MUST check if a valid
               "jwks_uri" is set when the backchannel request grant type is present in the list of the grant types required.
 
