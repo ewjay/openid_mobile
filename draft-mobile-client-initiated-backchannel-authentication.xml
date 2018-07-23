@@ -152,7 +152,7 @@
           to authenticate the user in the background. 
 		    </t>
 		    <t>
-          The Client will receive the id_token, access_token and refresh_token by means of either Polling 
+          The Client will receive the id_token, access_token and, optionally, refresh_token by means of either Polling
           or Notification mechanisms, this choice MUST be established by the Client at the registration time.
           <list style="hanging">
             <t hangText="Notification mode">
@@ -650,8 +650,8 @@
         <section anchor="issuing_successful_token" title="Successful Token Notification">
           <t>
             If the Client is registered for Client notifications (Notification mode), the OpenID Provider will send the token response making a "POST HTTP Request"  
-            to the <xref target="client_notification_endpoint" format="title"/>. If the user is well authenticated, the OpenID Provider returns a successful response that includes an ID Token 
-            and an Access Token and a Refresh Token. If the request failed Client authentication or is invalid, the OpenID Provider sends an error_message as described 
+            to the <xref target="client_notification_endpoint" format="title"/>. If the user is well authenticated, the OpenID Provider returns a successful response that includes an ID Token,
+            an Access Token and, optionally, a Refresh Token. If the request failed Client authentication or is invalid, the OpenID Provider sends an error_message as described
             in <xref target="token_error_response" format="title"/>.
           </t>
           <t>
@@ -735,7 +735,7 @@
         <section anchor="client_notification_endpoint" title="Client Notification Endpoint">
           <t>
             The Client Notification Endpoint is set by the Client during the registration phase. This endpoint is intended to receive the result of 
-            the authentication (id_token, access_token and refresh token) and it requires the request to be authenticated using a "bearer token" 
+            the authentication (id_token, access_token and, optionally, refresh token) and it requires the request to be authenticated using a "bearer token"
             created by the Client and sent to the OP in the Authentication request as the value of the parameter "client_notification_token".
           </t>
           <t>
