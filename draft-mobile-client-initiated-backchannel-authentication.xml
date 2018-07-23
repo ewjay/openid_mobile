@@ -450,7 +450,7 @@
             </t>
             <t>
               In the event of a request contains more than one of this hints specified in <xref target="auth_request">Authentication Request</xref>, 
-              the OpenID Provider MUST return an "invalid_request" error response as per Section 3.1.2.6 of <xref target="OpenID.Core"/>.
+              the OpenID Provider MUST return an "invalid_request" error response as per <xref target="auth_error_response"/>.
             </t>
             <t>
               The OpenID Provider MUST validate the hint provided (login_hint, login_token_hint or id_token_hint).
@@ -470,7 +470,7 @@
             As specified in OAuth 2.0 <xref target="RFC6749" />, OpenID Providers SHOULD ignore unrecognized request parameters.
         </t>          
         <t>
-            If the OpenID Provider encounters any error, it MUST return an error response, per Section 3.1.2.6 of <xref target="OpenID.Core"/>.
+            If the OpenID Provider encounters any error, it MUST return an error response, per <xref target="auth_error_response"/>.
          </t>       
       </section>
 
@@ -787,8 +787,8 @@
 
       <section anchor="auth_error_response" title="Authentication Error Response">
         <t>
-          An Authentication Error Response is an OAuth 2.0 Authorization Error Response message returned from the OP's Authorization Endpoint 
-          in response to the Authorization Request message sent by the Client.
+          An Authentication Error Response is an OAuth 2.0 Authorization Error Response message that is returned directly from the
+          Backchannel Authentication Endpoint in response to the Authentication Request message sent by the Client.
         </t>
         <t>  
           If the End-User denies the request or the End-User authentication fails, the OP (Authorization Server) informs the Client by using
@@ -850,12 +850,14 @@
           </preamble>
           <artwork>
             <![CDATA[
-              HTTP/1.1 403 Forbidden 
-              Content-Type: application/json
-              {
-                "error": "unauthorized_client",
-                "error_description": "The client 'client.example.org' is not allowed to use Client Backchannel Authentication."
-              }
+  HTTP/1.1 403 Forbidden 
+  Content-Type: application/json
+
+  {
+    "error": "unauthorized_client",
+    "error_description":
+      "The client 'client.example.org' is not allowed to use CIBA."
+  }
             ]]>
           </artwork>
         </figure>      
