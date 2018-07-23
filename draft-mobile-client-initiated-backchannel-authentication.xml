@@ -1166,6 +1166,7 @@
           <t>
             at_hash, rt_hash and auth_requ_id values have been added within the id_token to bind it with the access_token and the auth_req_id.
           </t>
+          <t>Clarify that error responses from the Backchannel Authentication Endpoint are as defined in the Authentication Error Response section.</t>
         </list>
       </t>
     </section>
