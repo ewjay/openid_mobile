@@ -173,9 +173,9 @@
         As we said previously, it is a choice of the Client to establish the mode by which it wishes to receive the tokens, that is, by means
         of push notifications or by polling the token endpoint, and this has to happen at the registration time. However CIBA does 
         not provide a flag for the Clients to choose one or another, but it provides a Client Metadata key for the Clients to be sent
-        in the OpenID Dynamic Registration request (client_notification_endpoint) which MUST be an HTTPS URL, and a new grant-type called
-        backchannel_request to poll the token endpoint. If a "client_notification_endpoint" is registered, Notification mode will be used; otherwise, 
-        if the backchannel_request grant-type was registered, Polling mode will be used.
+        in the OpenID Dynamic Registration request (client_notification_endpoint) which MUST be an HTTPS URL, and a new backchannel request grant type
+        to poll the token endpoint. If a "client_notification_endpoint" is registered, Notification mode will be used; otherwise,
+        if the backchannel request grant type was registered, Polling mode will be used.
 
         <list style="hanging">
             <t hangText="Polling and Pairwise Identifiers">
@@ -185,9 +185,9 @@
             </t>
             <t>
               The only way that CIBA generates Pairwise Pseudonymous Identifiers is by providing a "jwks_uri" at the registration phase when the
-              gran-type "backchannel_request" is registered. In that way the OpenID Provider will have a uri to set as a "sector_identifier_uri" and
+              "urn:openid:params:modrna:grant-type:backchannel_request" grant type is registered. In that way the OpenID Provider will have a uri to set as a "sector_identifier_uri" and
               it will utilize it to generate the PPIDs. So, whenever the OpenID Provider receive an dynamic registration request it MUST check if a valid
-              "jwks_uri" is set when the backchannel_request grant-type is present in the list of the gran-types required.
+              "jwks_uri" is set when the backchannel request grant type is present in the list of the grant types required.
 
               If a "sector_identifier_uri" is explicitly provided, then the "jwks_uri" must be included in the list of URIs pointed by "sector_identifier_uri".
             </t>            
@@ -215,7 +215,7 @@
             </t>      
         </list>
         <figure>
-          <preamble>The following is a non-normative example from an dynamic registration request that contains the "backchannel_request" grant-type
+          <preamble>The following is a non-normative example from an dynamic registration request that contains the backchannel request grant type
           as required and a "jwks_uri" (with line wraps within values for display purposes only).
           </preamble>
           <artwork>
@@ -583,7 +583,7 @@
         <t>
           <list style="hanging">
             <t hangText="grant_type">
-              REQUIRED.  Value MUST be set to "urn:openid:params:modrna:grant&nbhy;type:backchannel_request".
+              REQUIRED.  Value MUST be set to <vspace/><spanx style="verb">urn:openid:params:modrna:grant-type:backchannel_request</spanx>
              </t>
             <t hangText="auth_req_id">
               REQUIRED. It is a unique id to identify the authentication request (transaction) made by the Client.
@@ -597,13 +597,13 @@
           </preamble>
           <artwork>
     <![CDATA[
-        POST /token HTTP/1.1
-        Host: server.example.com
-        Content-Type: application/x-www-form-urlencoded
-        Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
-                
-        grant_type=urn%3Aopenid%3Aparams%3Amodrna%3Agrant-type%3Abackchannel_request
-          &auth_req_id=1c266114-a1be-4252-8ad1-04986c5b9ac1
+    POST /token HTTP/1.1
+    Host: server.example.com
+    Content-Type: application/x-www-form-urlencoded
+    Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+
+    grant_type=urn%3Aopenid%3Aparams%3Amodrna%3Agrant-type%3Abackchannel_request
+      &auth_req_id=1c266114-a1be-4252-8ad1-04986c5b9ac1
 
     ]]>
           </artwork>
