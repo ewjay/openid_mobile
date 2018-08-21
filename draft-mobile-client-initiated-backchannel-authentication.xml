@@ -371,7 +371,10 @@
               until the end-user completes the approval process.
             </t>
             <t hangText="acr_values">
-              REQUIRED. As defined in <xref target="MODRNA.Authentication" format="title"/>. 
+              OPTIONAL. Requested Authentication Context Class Reference values.
+              Space-separated string that specifies the acr values that the Authorization Server is being requested to use for
+              processing this Authentication Request, with the values appearing in order of preference.
+              The Authentication Context Class satisfied by the authentication performed is returned as the acr Claim Value of the ID Token.
             </t>
 
             <t hangText="login_hint_token">
@@ -1166,6 +1169,7 @@
           <t>
             at_hash, rt_hash and auth_requ_id values have been added within the id_token to bind it with the access_token and the auth_req_id.
           </t>
+          <t>Change acr_values to be optional in the authentication request and define the parameter inline.</t>
           <t>Clarify that error responses from the Backchannel Authentication Endpoint are as defined in the Authentication Error Response section.</t>
         </list>
       </t>
