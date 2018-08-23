@@ -152,32 +152,71 @@
           to authenticate the user in the background. 
 		    </t>
 		    <t>
-          The Client will receive the id_token, access_token and, optionally, refresh_token by means of either Polling
-          or Notification mechanisms, this choice MUST be established by the Client at the registration time.
+          The Client will receive the ID Token, Access Token and optionally Refresh Token by means of either Polling,  
+          Partial Notification or Full Notification modes, this choice MUST be established by the Client at the registration time.
           <list style="hanging">
-            <t hangText="Notification mode">
-              When using Notification mode, the OP will sent a request with the tokens to a callback uri previously 
+           <t hangText="Polling">
+              When configured in Polling mode, the Client will poll the token endpoint to get a response with the tokens. 
+            </t>
+          <t hangText="Partial Notification">
+              When configured in Partial Notification mode, the OP will send a request to a callback uri previously 
+              registered by the Client with the unique identifier returned from the Backchannel Authentication Endpoint.
+            </t>
+            <t hangText="Full Notification">
+              When configured in Full Notification mode, the OP will send a request with the tokens to a callback uri previously 
               registered by the Client.
             </t>
-            <t hangText="Polling mode">
-              If Polling mode has been set, the Client will poll the token endpoint to get a response with the tokens. 
-              Clients MUST take the "interval" attribute into account that they received in the authentication response.
-            </t>
+
           </list>
         </t>
 		  </list>
       </t>
     </section>
-    <section anchor="registration" title="Registration">
-      <t>
-        As we said previously, it is a choice of the Client to establish the mode by which it wishes to receive the tokens, that is, by means
-        of push notifications or by polling the token endpoint, and this has to happen at the registration time. However CIBA does 
-        not provide a flag for the Clients to choose one or another, but it provides a Client Metadata key for the Clients to be sent
-        in the OpenID Dynamic Registration request (client_notification_endpoint) which MUST be an HTTPS URL, and a new backchannel request grant type
-        to poll the token endpoint. If a "client_notification_endpoint" is registered, Notification mode will be used; otherwise,
-        if the backchannel request grant type was registered, Polling mode will be used.
+   <section anchor="registration" title="Registration and Discovery">
+   <t>
+      <list style="hanging">
+        <t hangText="Grant Type">
+          This specification introduces the backchannel request grant type (an extension grant type as defined by 
+          Section 4.5 of <xref target="RFC6749">OAuth 2.0</xref>) with the value: 
+          <spanx style="verb">urn:openid:params:modrna:grant-type:backchannel_request</spanx>
+        </t>
+        <t hangText="OpenID Provider Metadata">
+          OPs SHOULD include the backchannel request grant type in the  <spanx style="verb">grant_types_supported</spanx> field of its discovery metadata.
+        </t>
+        <t>
+          OPs MUST publish the supported token delivery modes for clients using CIBA. 
+        </t>
+        <t>
+          The following parameters are introduced by this specification:
+        </t>
+        <t>
+          <vspace />
+          <list style="numbers">
+            <t><spanx style="verb">backchannel_token_delivery_modes</spanx> REQUIRED - JSON array containing one or more of the 
+            following values <spanx style="verb">polling</spanx>, <spanx style="verb">partial_notificatoin</spanx> and <spanx style="verb">full_notification</spanx>.</t> 
+          </list>
+        </t>
+          
+       
+      
+        <t hangText="Client Metadata">
+          Clients registering to use CIBA MUST send the backchannel grant type in the "grant_types" field and in addition must 
+          select a token delivery mode. If the client selects one of the notification modes it must register a client notification 
+          endpoint. The following parameters are introduced by this specification:
+          <vspace />
+          <list style="numbers">
+            <t><spanx style="verb">backchannel_token_delivery_mode</spanx>: REQUIRED - one of the following values <spanx style="verb">polling</spanx>, 
+            <spanx style="verb">partial_notificatoin</spanx> or <spanx style="verb">full_notification</spanx></t> 
+            <t><spanx style="verb">client_notification_endpoint</spanx>: REQUIRED if the token delivery mode is set to 
+            <spanx style="verb">partial_notification</spanx> or <spanx style="verb">full_notificiation</spanx>. This is the endpoint to 
+            which the OP will post a notification after a succesful or failed end-user authneitcation. 
+            It MUST be an HTTPS URL.
+            </t>
+          </list>
+          </t>
+     
 
-        <list style="hanging">
+    
             <t hangText="Polling and Pairwise Identifiers">
               The downside of using the Polling mechanism to get the tokens is that is not possible to use Pairwise Pseudonymous Identifiers
               unless the Client registers a URI that is of its ownership and it use it during the authentication process in order to verify that
@@ -209,7 +248,7 @@
               Requests using the request object signed with the asymmetric keys provided by the "jwks_uri" are OPTIONAL.
             </t>
 
-            <t hangText="Push Notification Mode and Pairwise Identifiers">
+            <t hangText="Push Notification Modes and Pairwise Identifiers">
               When using Notification mode, the PPIDs will use the "client_notification_endpoint" as a "sector_identifier_uri". In case a "sector_identifier_uri"
               is explicitly provided, then the "client_notification_endpoint" must be included in the list of URIs pointed by "sector_identifier_uri".
             </t>      
@@ -233,6 +272,7 @@
         "subject_type": "pairwise",
         "token_endpoint_auth_method": "private_key_jwt",
         "grant_types": ["urn:openid:params:modrna:grant-type:backchannel_request"],
+        "backchannel_token_delivery_mode": "polling",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
         "userinfo_encrypted_response_alg": "RSA1_5",
         "userinfo_encrypted_response_enc": "A128CBC-HS256",
@@ -244,18 +284,23 @@
       </t>
     </section>
 
-   <section title='Polling versus Notification'>
+   <section title='Polling, Partial Notification and Full Notification'>
 
       <t>
-        This specification allows the Client to get the authentication result in two ways: polling and notification.
+        This specification allows the Client to get the authentication result in three ways: polling, partial notification
+        and full notification.
       </t>
       <t>
-        If the Client expects to be notified about the authentication result asynchronously then it has to specify 
-        a <xref target="client_notification_endpoint" format="title"/> during its registration at the OpenID Provider.
+        In polling mode, the authentication response is retrieved by the Client by polling the OP's token endpoint using the new grant type. 
       </t>
       <t>
-        Otherwise, the authentication response is retrieved by the Client by polling the OP's token endpoint using a new grant type. 
+        In partial notofication mode, the OP will post the unqiue identifier of the authentication session to the Client, the 
+        Client will then retrieve the authentication response from the token endpoint using the new grant type.
       </t>
+      <t>
+        In full notification mode, the OP will post the full authentication response to the Client.
+      </t>
+   
 
       <figure>
         <preamble>
@@ -281,7 +326,30 @@
 
       <figure>
         <preamble>
-        CIBA notification is illustrated in the following diagram:
+        CIBA partial notification is illustrated in the following diagram:
+        </preamble>
+        <artwork>
+        +--------+                                               +--------+
+        |        |                                               |        |
+        |        |&lt;---(1) CIBA Request--------------------------&gt;|        |
+        |        |                                               |        |
+        |        |  +--------+                                   |        |
+        |        |  |        |                                   |        |
+        | Client |  |  AD    |&lt;--(2) User interactions ---------&gt;|   OP   |
+        |        |  |        |                                   |        |
+        |        |  +--------+                                   |        |
+        |        |                                               |        |
+        |        |&lt;---(3) CIBA Partial Notification Callback--|        |
+        |        |                                               |        |
+        |        |----(4a) CIBA Token Request-----------------&gt;|        |
+        |        |&lt;---(4b) CIBA Token Response-----------------|        |
+        +--------+                                               +--------+
+        </artwork>
+      </figure>
+
+      <figure>
+        <preamble>
+        CIBA full notification is illustrated in the following diagram:
         </preamble>
         <artwork>
         +--------+                                               +--------+
@@ -555,26 +623,28 @@
       </t>
     </section>
 
-    <section anchor="getting_transaction_result" title="Getting the Transaction Result">
+    <section anchor="getting_transaction_result" title="Getting the Authentication Result">
       <t>
-        Whether the Client uses Polling or Notification mode is determined at registration time.
+        Whether the Client uses Polling or Partial Notification or Full Notification modes is determined at registration time.
       </t>
       <t>
-        If the Client registered a <xref target="client_notification_endpoint" format="title"/> then the only allowed mode to get the tokens is through notifications.
+        A client can only register a single token delivery method and the OP MUST only deliver the Authentcation Result to the client through the registered mode.
       </t>
-      <t>
-        If the Client did not register a <xref target="client_notification_endpoint" format="title"/> then the only allowed mode to get the tokens is through polling.
-      </t>
-      <section anchor="token_request" title="Token Request Using Polling Mechanism">
+
+      <section anchor="token_request" title="Token Request Using Backchannel Request Grant Type">
         <t>
-          If the Client didn't register any callback URI for the "client_notification_endpoint" with the OpenID Provider, the Polling mode to get the token is set. 
-          The Client must poll the token endpoint until the end-user grants or denies the request.
+          If the Client registered to use "polling" or "partial_notification" as the token delivery method, the client will retrieve
+          the authentication result from the token endpoint.
         </t>
         <t>
         The Client MUST be authenticated as specified in Section 9 of <xref target="OpenID.Core"/>.
         </t>
         <t>
-          The Client polls at reasonable interval which MUST NOT exceed the minimum interval provided by the OpenID Provider via the "interval" parameter (if provided).
+          If the Client is registered to use the "polling" mode, then the Client must poll the token endpoint at reasonable interval which MUST NOT exceed the minimum interval provided by the OpenID Provider via the "interval" parameter (if provided).
+        </t>
+        <t>
+          If the Client is registered to use the "partial_notification" mode, then when the Client receives a notification to its
+          Client Notification Endpoint containing an auth_req_id that is verified against a client_notification_token, then it must call  the token endpoint to retrieve the authentication result. 
         </t>
         <t>
           The Client makes a "POST" request to the token endpoint by sending the following parameters using the "application/x-www-form-urlencoded" format with a character encoding of UTF-8 
@@ -587,7 +657,7 @@
              </t>
             <t hangText="auth_req_id">
               REQUIRED. It is a unique id to identify the authentication request (transaction) made by the Client.
-              The OP MUST check whether the auth_req_id was used in an <xref target="auth_request" format="title"/> by this Client.
+              The OP MUST check whether the auth_req_id was issued <xref target="auth_request" format="title"/> to this Client.
               Otherwise, an error MUST be returned.
              </t>
           </list>
@@ -655,7 +725,7 @@
             in <xref target="token_error_response" format="title"/>.
           </t>
           <t>
-            All the parameters in the successful response are defined in Section 4.1.4 of OAuth 2.0 [RFC6749] except the new one "auth_req_id" that will be the same received 
+            All the parameters in the successful response are defined in Section 4.1.4 of <xref target="RFC6749">OAuth 2.0</xref> except the new one "auth_req_id" that will be the same received 
             in the request as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref>. The response uses the 
             application/json media type.
           </t>
