@@ -153,17 +153,17 @@
 		    </t>
 		    <t>
           The Client will receive the ID Token, Access Token and optionally Refresh Token by means of either Polling,  
-          Partial Notification or Full Notification modes, this choice MUST be established by the Client at the registration time.
+          Notification Callback or Delivery Callback modes, this choice MUST be established by the Client at the registration time.
           <list style="hanging">
            <t hangText="Polling">
               When configured in Polling mode, the Client will poll the token endpoint to get a response with the tokens. 
             </t>
           <t hangText="Partial Notification">
-              When configured in Partial Notification mode, the OP will send a request to a callback uri previously 
+              When configured in Notification Callback mode, the OP will send a request to a callback uri previously 
               registered by the Client with the unique identifier returned from the Backchannel Authentication Endpoint.
             </t>
             <t hangText="Full Notification">
-              When configured in Full Notification mode, the OP will send a request with the tokens to a callback uri previously 
+              When configured in Delivery Callback mode, the OP will send a request with the tokens to a callback uri previously 
               registered by the Client.
             </t>
 
@@ -193,7 +193,7 @@
           <vspace />
           <list style="numbers">
             <t><spanx style="verb">backchannel_token_delivery_modes</spanx> REQUIRED - JSON array containing one or more of the 
-            following values <spanx style="verb">polling</spanx>, <spanx style="verb">partial_notificatoin</spanx> and <spanx style="verb">full_notification</spanx>.</t> 
+            following values <spanx style="verb">polling</spanx>, <spanx style="verb">notification_callback</spanx> and <spanx style="verb">delivery_callback</spanx>.</t> 
           </list>
         </t>
           
@@ -201,15 +201,14 @@
       
         <t hangText="Client Metadata">
           Clients registering to use CIBA MUST send the backchannel grant type in the "grant_types" field and in addition must 
-          select a token delivery mode. If the client selects one of the notification modes it must register a client notification 
+          select a token delivery mode. If the client selects one of the notification modes it MUST register a client notification 
           endpoint. The following parameters are introduced by this specification:
           <vspace />
           <list style="numbers">
             <t><spanx style="verb">backchannel_token_delivery_mode</spanx>: REQUIRED - one of the following values <spanx style="verb">polling</spanx>, 
-            <spanx style="verb">partial_notificatoin</spanx> or <spanx style="verb">full_notification</spanx></t> 
+            <spanx style="verb">notification_callback</spanx> or <spanx style="verb">delivery_callback</spanx></t> 
             <t><spanx style="verb">client_notification_endpoint</spanx>: REQUIRED if the token delivery mode is set to 
-            <spanx style="verb">partial_notification</spanx> or <spanx style="verb">full_notificiation</spanx>. This is the endpoint to 
-            which the OP will post a notification after a succesful or failed end-user authneitcation. 
+            <spanx style="verb">notification_callback</spanx> or <spanx style="verb">delivery_callback</spanx>. This is the endpoint to which the OP will post a notification after a succesful or failed end-user authentication. 
             It MUST be an HTTPS URL.
             </t>
           </list>
@@ -249,7 +248,7 @@
             </t>
 
             <t hangText="Push Notification Modes and Pairwise Identifiers">
-              When using Notification mode, the PPIDs will use the "client_notification_endpoint" as a "sector_identifier_uri". In case a "sector_identifier_uri"
+              When using Notification Callback or Delivery Callback modes, the PPIDs will use the "client_notification_endpoint" as a "sector_identifier_uri". In case a "sector_identifier_uri"
               is explicitly provided, then the "client_notification_endpoint" must be included in the list of URIs pointed by "sector_identifier_uri".
             </t>      
         </list>
@@ -284,27 +283,27 @@
       </t>
     </section>
 
-   <section title='Polling, Partial Notification and Full Notification'>
+   <section title='Polling, Notification Callback and Delivery Callback'>
 
       <t>
-        This specification allows the Client to get the authentication result in three ways: polling, partial notification
-        and full notification.
+        This specification allows the Client to get the authentication result in three ways: polling, notification callback
+        and delivery callback.
       </t>
       <t>
-        In polling mode, the authentication response is retrieved by the Client by polling the OP's token endpoint using the new grant type. 
+        In Polling mode, the authentication result is retrieved by the Client by polling the OP's token endpoint using the new grant type. 
       </t>
       <t>
-        In partial notofication mode, the OP will post the unqiue identifier of the authentication session to the Client, the 
+        In Notification Callback mode, the OP will post the unqiue identifier of the authentication session to the Client, the 
         Client will then retrieve the authentication response from the token endpoint using the new grant type.
       </t>
       <t>
-        In full notification mode, the OP will post the full authentication response to the Client.
+        In Delivery Callback mode, the OP will post the full authentication response to the Client.
       </t>
    
 
       <figure>
         <preamble>
-        CIBA polling is illustrated in the following diagram:
+        CIBA Polling is illustrated in the following diagram:
         </preamble>
         <artwork>
         +--------+                                               +--------+
@@ -326,7 +325,7 @@
 
       <figure>
         <preamble>
-        CIBA partial notification is illustrated in the following diagram:
+        CIBA Notification Callback is illustrated in the following diagram:
         </preamble>
         <artwork>
         +--------+                                               +--------+
@@ -339,7 +338,7 @@
         |        |  |        |                                   |        |
         |        |  +--------+                                   |        |
         |        |                                               |        |
-        |        |&lt;---(3) CIBA Partial Notification Callback--|        |
+        |        |&lt;---(3) CIBA Notification Callback----------|        |
         |        |                                               |        |
         |        |----(4a) CIBA Token Request-----------------&gt;|        |
         |        |&lt;---(4b) CIBA Token Response-----------------|        |
@@ -349,7 +348,7 @@
 
       <figure>
         <preamble>
-        CIBA full notification is illustrated in the following diagram:
+        CIBA Delivery Callback is illustrated in the following diagram:
         </preamble>
         <artwork>
         +--------+                                               +--------+
@@ -362,7 +361,7 @@
         |        |  |        |                                   |        |
         |        |  +--------+                                   |        |
         |        |                                               |        |
-        |        |&lt;---(3) CIBA Notification Callback ------------|        |
+        |        |&lt;---(3) CIBA Delivery Callback ------------|        |
         |        |                                               |        |
         +--------+                                               +--------+
         </artwork>
@@ -377,7 +376,7 @@
         Using additional scopes like e.g. "profile" or "phone" the call center agent would get access to claims
         about the user like "phone_number" and "phone_number_verified".
         </t>
-        <t>A bank teller wants to authenticate a customer in a bank branch - so it is using CIBA for authentication in a face-to-face scenario.
+        <t>A bank teller wants to authenticate a customer in a bank branch - using CIBA for authentication in a face-to-face scenario.
         </t>
         </list>
         </t>
@@ -426,14 +425,8 @@
               "openid" scope value in the Authorization Request.
             </t>
             <t hangText="client_notification_token">
-              REQUIRED if the Client is registered to be notified. 
-              It is a bearer token provided by the Client that will be used by the OpenID Provider to authenticate the callback request to send the tokens to the Client (Notification Mode).
-            </t>
-            <t>
-              At the time of registering the Client at the OpenID Provider, the Client must provide the information about whether receiving the token 
-              response through a callback to the "client_notification_endpoint" (Notification mode) or through a polling mechanism (Polling mode) 
-              where the Client MUST poll the OpenID Provider repeatedly as defined in <xref target="successful_authentication_request_acknowdlegment" format="title"/>
-              until the end-user completes the approval process.
+              REQUIRED if the Client is registered to use Notification Callback or Delivery Callback modes. 
+              It is a bearer token provided by the Client that will be used by the OpenID Provider to authenticate the callback request to the Client.
             </t>
             <t hangText="acr_values">
               OPTIONAL. Requested Authentication Context Class Reference values.
@@ -552,9 +545,7 @@
         <t>
           <list style="hanging">
             <t hangText="auth_req_id">
-              REQUIRED. It is a unique id to identify the authentication request (transaction) made by the Client. 
-              The <spanx style="verb">auth_req_id</spanx> will be included too in the token notification when Notification mode is used to allow the Client correlate the authentication request and the received tokens. 
-              It will not be included in the token response when using Polling Mode.
+              REQUIRED. This is a unique id to identify the authentication request made by the Client. 
              </t>
             <t hangText="expires_in">
               REQUIRED. Expiration time of the "auth_req_id" in seconds since the auth_request was received. When using the Polling mode, the auth_req_id will be considered overdue and 
@@ -562,7 +553,7 @@
              </t>
             <t hangText="interval">
               OPTIONAL. The minimum amount of time in seconds that the Client SHOULD wait between polling requests to the token endpoint. 
-              This parameter will only be present in case of there is not any callback URI registered as "client_notification_endpoint", that is in case the Client is using the Polling mode. 
+              This parameter will only be present if the Client is registered to use Polling mode.
              </t>
           </list>
         </t>
@@ -599,7 +590,7 @@
 
     <section anchor="auth_server_obtains_consent" title="OpenID Provider Obtains End-user Consent/Authorization">
       <t>
-        After the OP has validated the Authentication Request and the OP identifies the user's Authentication Device.
+        After the OP has validated the Authentication Request and the OP identifies the user's Authentication Device (AD).
         The OP chooses a channel to best contact the AD and fulfill the Client's requirements regarding acr_values.
       </t>
       <t>
@@ -623,9 +614,35 @@
       </t>
     </section>
 
+      <section anchor="client_notification_endpoint" title="Client Notification Endpoint">
+          <t>
+            The Client Notification Endpoint is set by the Client during <xref target="registration" format="title"/>. It is the endpoint the OP will call after a succesful or failed end-user authentication. 
+          </t>
+
+          <t>
+            It MUST be an HTTPS URL and Communication with the Client Notification Authentication Endpoint MUST utilize TLS. See Section 16.17 <xref target="OpenID.Core"/> 
+            for more information on using TLS.
+          </t>
+
+          <t>
+            When the Client is configured in Notification Callback mode, the endpoint receives a notification from the OP that an Authentication Result is ready to be retrieved from the Token Endpoint.
+          </t>
+
+          <t>
+            When the Client is configured in Delivery Callback mode, the endpoint receives the result of 
+            the authentication (id_token, access_token and, optionally, refresh token).
+          </t>
+            
+          <t>
+            Requests to the Client Notification Endpoint must be authenticated using a "bearer token" created by the Client and sent to the OP in the Authentication request as the value of the parameter "client_notification_token".
+          </t>
+        
+
+        </section>
+
     <section anchor="getting_transaction_result" title="Getting the Authentication Result">
       <t>
-        Whether the Client uses Polling or Partial Notification or Full Notification modes is determined at registration time.
+        The token delivery mode for the Client (Polling or Notification Callback or Delivery Callback) is determined at registration time.
       </t>
       <t>
         A client can only register a single token delivery method and the OP MUST only deliver the Authentcation Result to the client through the registered mode.
@@ -633,18 +650,17 @@
 
       <section anchor="token_request" title="Token Request Using Backchannel Request Grant Type">
         <t>
-          If the Client registered to use "polling" or "partial_notification" as the token delivery method, the client will retrieve
-          the authentication result from the token endpoint.
+          If the Client registered to use Polling or Notification Callback as the token delivery method, the Client will retrieve the authentication result from the token endpoint.
         </t>
         <t>
         The Client MUST be authenticated as specified in Section 9 of <xref target="OpenID.Core"/>.
         </t>
         <t>
-          If the Client is registered to use the "polling" mode, then the Client must poll the token endpoint at reasonable interval which MUST NOT exceed the minimum interval provided by the OpenID Provider via the "interval" parameter (if provided).
+          If the Client is registered to use the Polling mode, then the Client must poll the token endpoint at reasonable interval which MUST NOT exceed the minimum interval provided by the OpenID Provider via the "interval" parameter (if provided).
         </t>
         <t>
-          If the Client is registered to use the "partial_notification" mode, then when the Client receives a notification to its
-          Client Notification Endpoint containing an auth_req_id that is verified against a client_notification_token, then it must call  the token endpoint to retrieve the authentication result. 
+          If the Client is registered to use the Notification Callback mode, then when the Client receives a notification to its
+          Client Notification Endpoint containing an auth_req_id that is verified against a client_notification_token, then it must call the token endpoint to retrieve the authentication result. 
         </t>
         <t>
           The Client makes a "POST" request to the token endpoint by sending the following parameters using the "application/x-www-form-urlencoded" format with a character encoding of UTF-8 
@@ -678,15 +694,16 @@
     ]]>
           </artwork>
         </figure>
-      </section>
+     
 
-      <section anchor="token_response" title="Successful Token Polling Response">
+      <section anchor="token_response" title="Successful Token Response">
         <t>
-          The OpenID Provider will return the token as an HTTP response to the Client's poll request. If the user is well authenticated, the OpenID Provider 
-          will return a successful response that includes an ID Token and an Access Token. Otherwise, it responses with an error as defined in <xref target="token_error_response" format="title"/>.
+          After receiving and validating a valid and authorized Token Request from the Client and when the End-User associated with the supplied <spanx style="verb">auth_req_id</spanx> has been authenticated and has authorized the request, the OpenID Provider returns a successful response that includes an ID Token, Access Token and optionally a Refresh Token as specified in Section 3.1.3.3 of <xref target="OpenID.Core"/>. 
+
+          If the End-User associated with the supplied <spanx style="verb">auth_req_id</spanx> has not been authenticated or has not authorized the request, an error response must be sent as defined in <xref target="token_error_response" format="title"/>.
         </t>      
         <figure>
-          <preamble>The following is a non-normative example of a token response sending as an HTTP 200 OK Response to the Client's poll request
+          <preamble>The following is a non-normative example of a successful token response
            (with line wraps within values for display purposes only).
           </preamble>
           <artwork>
@@ -714,12 +731,64 @@
             ]]>
           </artwork>
         </figure>
-      </section>    
+      </section>   
+       </section>
 
-      <section anchor="token_notification" title="Token Notification">
-        <section anchor="issuing_successful_token" title="Successful Token Notification">
+        <section anchor="notification_callback" title="Notification Callback">
           <t>
-            If the Client is registered for Client notifications (Notification mode), the OpenID Provider will send the token response making a "POST HTTP Request"  
+            If the Client is registered for in Notification Callback mode, the OpenID Provider will send a "POST HTTP Request"  
+            to the <xref target="client_notification_endpoint" format="title"/> either when the End-User is well authenticated and has authorized the request or if the End-User has denied the request.
+          </t>
+          <t>
+            In this mode the OP sends the client_notification_token as a bearer token in the Authorization header field and sends only the auth_req_id in the body of the request. The request uses the application/json media type.
+          </t>
+          <figure>
+            <preamble>The following is a non-normative example of a Notification Callback sent as a HTTP POST 
+              request to the Client's client_notification_endpoint (with line wraps within values for display purposes only).
+            </preamble>
+            <artwork>
+              <![CDATA[
+                  POST /cb HTTP/1.1
+                  Host: client.example.com
+                  Authorization: Bearer 8d67dc78-7faa-4d41-aabd-67707b374255
+                  Content-Type: application/json
+                  
+                  { 
+                   "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1"
+                  }              
+              ]]>
+            </artwork>
+          </figure>
+          <t>
+            The Client MUST verify the <spanx style="verb">client_notification_token</spanx> used to authenitcate the request is valid and is assoicated with the <spanx style="verb">auth_req_id</spanx> received in the Notification Callback. If the bearer token is not valid the Client SHOULD return a HTTP 401 Unauthorized response. 
+          </t>
+          <t>
+            For valid requests, the Client Notification Endpoint SHOULD respond with a HTTP 204 No Content.
+            The OP SHOULD also accept responses with HTTP 200 OK, any body in the response SHOULD be ignored.
+          </t>
+          <t>
+              The Client SHOULD NOT return an HTTP 3xx code. The OP SHOULD NOT follow redirects.
+              All redirects MUST be HTTPS. 
+              As the <xref target="client_notification_endpoint" format="title"/> is set at registration time there SHOULD be no necessity for redirects.
+              OP policy might prohibit redirects but this is out-of-scope for this specification.
+          </t>
+          <t>
+            How the OP handles HTTP error codes in the ranges of 4xx and 5xx is out-of-scope of this specification.
+            Administrative action is like to be needed in these cases.
+          </t>
+
+          <t>
+            For valid requests, the Client MUST use the received <spanx style="verb">auth_req_id</spanx> to make a Token Request using the Backchannel Request Grant Type to the Token Endpoint as described in <xref target="token_request" format="title"/>.
+
+          </t>
+       
+      </section>
+
+
+      <section anchor="delivery_callback" title="Delivery Callback">
+        <section anchor="issuing_successful_token" title="Successful Token Delivery">
+          <t>
+            If the Client is registered in the Delivery Callback mode, the OpenID Provider will send the token response making a "POST HTTP Request"  
             to the <xref target="client_notification_endpoint" format="title"/>. If the user is well authenticated, the OpenID Provider returns a successful response that includes an ID Token,
             an Access Token and, optionally, a Refresh Token. If the request failed Client authentication or is invalid, the OpenID Provider sends an error_message as described
             in <xref target="token_error_response" format="title"/>.
@@ -762,7 +831,11 @@
             </artwork>
           </figure>
         <t>
-          The Client Notification Endpoint SHOULD response with a HTTP 204 No Content.
+          The Client MUST verify the client_notification_token used to authenitcate the request is valid and is assoicated with the auth_req_id received in the Delivery Callback. If the bearer token is not valid the Client SHOULD return a HTTP 401 Unauthorized response.
+        </t>
+
+        <t>
+          For valid requests, he Client Notification Endpoint SHOULD respond with a HTTP 204 No Content.
           The OP SHOULD also accept HTTP 200 OK and any body in the response SHOULD be ignored.
         </t>
         <t>
@@ -775,13 +848,13 @@
           How the OP handles HTTP error codes in the ranges of 4xx and 5xx is out-of-scope of this specification.
           Administrative action is like to be needed in these cases.
         </t>
+        <t>
+              In order to bind the id_token, access_token and the auth_req_id, the OP must add the hash value of the access_token and the auth_req_id within the id_token. 
+              In case a refresh_token is sent to the client, the hash value of it MUST be added to the id_token too. The Section 3.1.3.6 of <xref target="OpenID.Core"/> shows how to calculate the hash value of the access_token "at_hash",
+              the same method can also be applied to calculate the refresh_token hash value.
+        </t>
         <figure>
             <preamble>
-              In order to bind the id_token, access_token and the auth_req_id, it is REQUIRED to add the hash value of the access_token and 
-              the auth_req_id within the id_token. In case a refresh_token is sent to the client, the hash value of it MUST be added to the 
-              id_token too. The Section 3.1.3.6 of <xref target="OpenID.Core"/> shows how to calculate the hash value of the access_token "at_hash"
-              that can also be applied to the refresh_token hash value calculation.
-
               The following is a non-normative example of a base64url decoded ID Token sent to the client notification endpoint:
             </preamble>
             <artwork>
@@ -800,53 +873,42 @@
               ]]>
             </artwork>
           </figure>
+          <t>
 
-        </section>
-        <section anchor="client_notification_endpoint" title="Client Notification Endpoint">
-          <t>
-            The Client Notification Endpoint is set by the Client during the registration phase. This endpoint is intended to receive the result of 
-            the authentication (id_token, access_token and, optionally, refresh token) and it requires the request to be authenticated using a "bearer token"
-            created by the Client and sent to the OP in the Authentication request as the value of the parameter "client_notification_token".
-          </t>
-          <t>
-          This specification defines a new Client Metadata key <spanx style="verb">client_notification_endpoint</spanx> for this purpose.
-          The value of this key MUST be an HTTPS URL. 
-          </t>
-          <t>
-            Communication with the Client Notification Authentication Endpoint MUST utilize TLS. See Section 16.17 <xref target="OpenID.Core"/> 
-            for more information on using TLS.
+
           </t>
 
         </section>
+      
     </section>
 
       </section>
 
       <section anchor="token_error_response" title="Token Error Response">
         <t>
-           If the Client has registered a <xref target="client_notification_endpoint" format="title"/> then it MUST NOT use polling and the following error is returned.
+           If the Client has registered to use the Delivery Callback mode then it MUST NOT call the Token Endpoint with the Backchannel Request Grant Type and the following error is returned.
         </t>
         <t hangText="HTTP 403 Forbidden">
           <list style="hanging">        
             <t hangText="unauthorized_client">
-              The Client is not authorized to poll for tokens because it registered a <xref target="client_notification_endpoint" format="title"/>
+              The Client is not authorized as it registered for Delivery Callback
             </t>
           </list>
         </t>
         <t>
            If the Token Request is invalid or unauthorized, the OpenID Provider constructs the error response according to the section 3.1.3.4 Token Error Response of <xref target="OpenID.Core"/>.
-           In addition to the error codes defined in Section 5.2 of <xref target="RFC6749"/>, the following error codes are specific for the Client Initiated Backchannel flow:
+           In addition to the error codes defined in Section 5.2 of <xref target="RFC6749"/>, the following error codes are specific for the Client Initiated Backchannel flow and may be returned from the token endpoint when the Client makes a Token Request using the Backchannel Request Grant Type.
         </t>
         <t>
           <list style="hanging">
             <t hangText="unknown_auth_req_id">
-              The OP doesn't know the auth_req_id that the Client is asking for. It only applies when using Polling mode.
+              The OP doesn't know the auth_req_id that the Client is asking for.
             </t>
             <t hangText="authorization_pending">
-              The authorization request is still pending as the end-user hasn't yet been authenticated. It only applies when using Polling mode.
+              The authorization request is still pending as the end-user hasn't yet been authenticated. 
             </t>
             <t hangText="slow_down">
-              The Client is polling too quickly and should back off at a reasonable rate. It only applies when using Polling mode.
+              The Client is polling too quickly and should back off at a reasonable rate.
             </t>
             <t hangText="expired_token">
               The auth_req_id has expired. The Client will need to make a new Authentication Request.
