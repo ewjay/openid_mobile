@@ -158,11 +158,11 @@
            <t hangText="Polling">
               When configured in Polling mode, the Client will poll the token endpoint to get a response with the tokens. 
             </t>
-          <t hangText="Partial Notification">
+          <t hangText="Notification Callback">
               When configured in Notification Callback mode, the OP will send a request to a callback uri previously 
               registered by the Client with the unique identifier returned from the Backchannel Authentication Endpoint.
             </t>
-            <t hangText="Full Notification">
+            <t hangText="Delivery Callback">
               When configured in Delivery Callback mode, the OP will send a request with the tokens to a callback uri previously 
               registered by the Client.
             </t>
@@ -740,7 +740,7 @@
             to the <xref target="client_notification_endpoint" format="title"/> either when the End-User is well authenticated and has authorized the request or if the End-User has denied the request.
           </t>
           <t>
-            In this mode the OP sends the client_notification_token as a bearer token in the Authorization header field and sends only the auth_req_id in the body of the request. The request uses the application/json media type.
+            In this mode the OP sends the <spanx style="verb">client_notification_token</spanx> as a bearer token in the Authorization header field and sends only the auth_req_id in the body of the request. The request uses the application/json media type.
           </t>
           <figure>
             <preamble>The following is a non-normative example of a Notification Callback sent as a HTTP POST 
@@ -891,7 +891,7 @@
         <t hangText="HTTP 403 Forbidden">
           <list style="hanging">        
             <t hangText="unauthorized_client">
-              The Client is not authorized as it registered for Delivery Callback
+              The Client is not authorized as it is registered for Delivery Callback
             </t>
           </list>
         </t>
