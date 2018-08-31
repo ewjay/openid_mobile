@@ -176,7 +176,8 @@
           <t hangText="Notification Callback">
               When configured in Notification Callback mode, the OP will send a request to a callback uri previously 
               registered by the Client with the unique identifier returned from the Backchannel Authentication Endpoint.
-            </t>
+              Upon receipt of the notification, the Client makes a request to the token endpoint to obtain the tokens.
+          </t>
             <t hangText="Delivery Callback">
               When configured in Delivery Callback mode, the OP will send a request with the tokens to a callback uri previously 
               registered by the Client.
