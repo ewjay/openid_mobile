@@ -153,7 +153,7 @@
 		    </t>
 		    <t>
           The Client will receive the ID Token, Access Token and optionally Refresh Token by means of either Polling,  
-          Notification Callback or Delivery Callback modes. The choice of mode MUST be established by the Client at the registration time.
+          Notification Callback or Delivery Callback modes. The choice of mode MUST be established by the Client at registration time.
           <list style="hanging">
            <t hangText="Polling">
               When configured in Polling mode, the Client will poll the token endpoint to get a response with the tokens. 
