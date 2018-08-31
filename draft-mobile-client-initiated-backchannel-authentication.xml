@@ -50,6 +50,21 @@
       </address>
     </author>
 
+    <author fullname="Dave Tonge" initials="D." surname="Tonge">
+      <organization abbrev="Moneyhub">Moneyhub</organization>
+      <address>
+        <email>dave.tonge@moneyhub.com</email>
+      </address>
+    </author>
+
+    <author fullname="Brian Campbell" initials="B." surname="Campbell">
+      <organization abbrev="Ping Identity">Ping Identity</organization>
+      <address>
+        <email>bcampbell@pingidentity.com</email>
+      </address>
+    </author>
+
+
 
     <date day="10" month="January" year="2018"/>
     
