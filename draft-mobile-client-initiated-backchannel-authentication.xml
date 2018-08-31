@@ -1320,7 +1320,8 @@
           </t>
           <t>Change acr_values to be optional in the authentication request and define the parameter inline.</t>
           <t>Clarify that error responses from the Backchannel Authentication Endpoint are as defined in the Authentication Error Response section.</t>
-          <t>Be clear that refresh tokens are optional.</t>        
+          <t>Be clear that refresh tokens are optional.</t>
+          <t>Introduce a third mode for getting the tokens so now there's 1) polling, 2) notification_callback and 3) delivery_callback.</t>
         </list>
       </t>
     </section>
