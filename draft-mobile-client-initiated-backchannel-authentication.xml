@@ -334,6 +334,9 @@
         |        |                                               |        |
         |        |----(3a) CIBA Polling Request-----------------&gt;|        |
         |        |&lt;---(3b) CIBA Polling Response-----------------|        |
+        |        |                ...                            |        |
+        |        |----(3a) CIBA Polling Request-----------------&gt;|        |
+        |        |&lt;---(3b) CIBA Polling Response-----------------|        |
         |        |                                               |        |
         +--------+                                               +--------+
         </artwork>
