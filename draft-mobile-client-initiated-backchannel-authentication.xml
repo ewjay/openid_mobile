@@ -184,7 +184,7 @@
           OPs SHOULD include the backchannel request grant type in the  <spanx style="verb">grant_types_supported</spanx> field of its discovery metadata.
         </t>
         <t>
-          OPs MUST publish the supported token delivery modes for clients using CIBA. 
+          OPs SHOULD publish the supported token delivery modes for clients using CIBA.
         </t>
         <t>
           The following parameters are introduced by this specification:
@@ -200,15 +200,15 @@
        
       
         <t hangText="Client Metadata">
-          Clients registering to use CIBA MUST send the backchannel grant type in the "grant_types" field and in addition must 
-          select a token delivery mode. If the client selects one of the notification modes it MUST register a client notification 
+          Clients registering to use CIBA MUST include the backchannel grant type in the "grant_types" field and in addition must
+          indicate a token delivery mode. If the client selects one of the notification modes, it MUST register a client notification
           endpoint. The following parameters are introduced by this specification:
           <vspace />
           <list style="numbers">
             <t><spanx style="verb">backchannel_token_delivery_mode</spanx>: REQUIRED - one of the following values <spanx style="verb">polling</spanx>, 
             <spanx style="verb">notification_callback</spanx> or <spanx style="verb">delivery_callback</spanx></t> 
             <t><spanx style="verb">client_notification_endpoint</spanx>: REQUIRED if the token delivery mode is set to 
-            <spanx style="verb">notification_callback</spanx> or <spanx style="verb">delivery_callback</spanx>. This is the endpoint to which the OP will post a notification after a succesful or failed end-user authentication. 
+            <spanx style="verb">notification_callback</spanx> or <spanx style="verb">delivery_callback</spanx>. This is the endpoint to which the OP will post the callback after a successful or failed end-user authentication.
             It MUST be an HTTPS URL.
             </t>
           </list>
@@ -338,10 +338,10 @@
         |        |  |        |                                   |        |
         |        |  +--------+                                   |        |
         |        |                                               |        |
-        |        |&lt;---(3) CIBA Notification Callback----------|        |
+        |        |&lt;---(3) CIBA Notification Callback-------------|        |
         |        |                                               |        |
-        |        |----(4a) CIBA Token Request-----------------&gt;|        |
-        |        |&lt;---(4b) CIBA Token Response-----------------|        |
+        |        |----(4a) CIBA Token Request-------------------&gt;|        |
+        |        |&lt;---(4b) CIBA Token Response-------------------|        |
         +--------+                                               +--------+
         </artwork>
       </figure>
@@ -361,7 +361,7 @@
         |        |  |        |                                   |        |
         |        |  +--------+                                   |        |
         |        |                                               |        |
-        |        |&lt;---(3) CIBA Delivery Callback ------------|        |
+        |        |&lt;---(3) CIBA Delivery Callback ----------------|        |
         |        |                                               |        |
         +--------+                                               +--------+
         </artwork>
@@ -656,7 +656,7 @@
         The Client MUST be authenticated as specified in Section 9 of <xref target="OpenID.Core"/>.
         </t>
         <t>
-          If the Client is registered to use the Polling mode, then the Client must poll the token endpoint at reasonable interval which MUST NOT exceed the minimum interval provided by the OpenID Provider via the "interval" parameter (if provided).
+          If the Client is registered to use the Polling mode, then the Client polls the token endpoint at reasonable interval, which MUST NOT be more frequent than the minimum interval provided by the OpenID Provider via the "interval" parameter (if provided).
         </t>
         <t>
           If the Client is registered to use the Notification Callback mode, then when the Client receives a notification to its
@@ -672,8 +672,8 @@
               REQUIRED.  Value MUST be set to <vspace/><spanx style="verb">urn:openid:params:modrna:grant-type:backchannel_request</spanx>
              </t>
             <t hangText="auth_req_id">
-              REQUIRED. It is a unique id to identify the authentication request (transaction) made by the Client.
-              The OP MUST check whether the auth_req_id was issued <xref target="auth_request" format="title"/> to this Client.
+              REQUIRED. It is the unique id to identify the authentication request (transaction) made by the Client.
+              The OP MUST check whether the auth_req_id was issued to this Client in response to an <xref target="auth_request" format="title"/>.
               Otherwise, an error MUST be returned.
              </t>
           </list>
@@ -708,26 +708,26 @@
           </preamble>
           <artwork>
             <![CDATA[
-                HTTP/1.1 200 OK
-                Content-Type: application/json
-                Cache-Control: no-store
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    Cache-Control: no-store
 
-                {
-                 "access_token": "SlAV32hkKG",
-                 "token_type": "Bearer",
-                 "refresh_token": "8xLOxBtZp8",
-                 "expires_in": 3600,
-                 "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
-                   yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
-                   NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
-                   fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
-                   AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
-                   Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
-                   NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
-                   QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
-                   K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
-                   XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
-                }              
+    {
+     "access_token": "SlAV32hkKG",
+     "token_type": "Bearer",
+     "refresh_token": "8xLOxBtZp8",
+     "expires_in": 3600,
+     "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
+       yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
+       NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
+       fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
+       AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
+       Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
+       NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
+       QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
+       K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
+       XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
+    }
             ]]>
           </artwork>
         </figure>
@@ -736,7 +736,7 @@
 
         <section anchor="notification_callback" title="Notification Callback">
           <t>
-            If the Client is registered for in Notification Callback mode, the OpenID Provider will send a "POST HTTP Request"  
+            If the Client is registered for in Notification Callback mode, the OpenID Provider will send an HTTP POST Request
             to the <xref target="client_notification_endpoint" format="title"/> either when the End-User is well authenticated and has authorized the request or if the End-User has denied the request.
           </t>
           <t>
@@ -748,14 +748,14 @@
             </preamble>
             <artwork>
               <![CDATA[
-                  POST /cb HTTP/1.1
-                  Host: client.example.com
-                  Authorization: Bearer 8d67dc78-7faa-4d41-aabd-67707b374255
-                  Content-Type: application/json
-                  
-                  { 
-                   "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1"
-                  }              
+    POST /cb HTTP/1.1
+    Host: client.example.com
+    Authorization: Bearer 8d67dc78-7faa-4d41-aabd-67707b374255
+    Content-Type: application/json
+
+    {
+     "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1"
+    }
               ]]>
             </artwork>
           </figure>
@@ -788,10 +788,11 @@
       <section anchor="delivery_callback" title="Delivery Callback">
         <section anchor="issuing_successful_token" title="Successful Token Delivery">
           <t>
-            If the Client is registered in the Delivery Callback mode, the OpenID Provider will send the token response making a "POST HTTP Request"  
-            to the <xref target="client_notification_endpoint" format="title"/>. If the user is well authenticated, the OpenID Provider returns a successful response that includes an ID Token,
-            an Access Token and, optionally, a Refresh Token. If the request failed Client authentication or is invalid, the OpenID Provider sends an error_message as described
-            in <xref target="token_error_response" format="title"/>.
+            If the Client is registered in the Delivery Callback mode, the OpenID Provider will send the token response making an HTTP POST Request
+            to the <xref target="client_notification_endpoint" format="title"/>. If the user is well authenticated, the OpenID Provider delivers a successful response that includes an ID Token,
+            an Access Token and, optionally, a Refresh Token.
+            Error conditions associated with the transaction are delivered to the Client by sending a <xref target="token_error_response" format="title"/> in the
+            body of the callback request.
           </t>
           <t>
             All the parameters in the successful response are defined in Section 4.1.4 of <xref target="RFC6749">OAuth 2.0</xref> except the new one "auth_req_id" that will be the same received 
@@ -805,28 +806,28 @@
             </preamble>
             <artwork>
               <![CDATA[
-                  POST /cb HTTP/1.1
-                  Host: client.example.com
-                  Authorization: Bearer 8d67dc78-7faa-4d41-aabd-67707b374255
-                  Content-Type: application/json
-                  
-                  { 
-                   "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1",
-                   "access_token": "SlAV32hkKG",
-                   "token_type": "Bearer",
-                   "refresh_token": "8xLOxBtZp8",
-                   "expires_in": 3600,
-                   "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
-                     yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
-                     NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
-                     fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
-                     AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
-                     Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
-                     NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
-                     QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
-                     K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
-                     XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
-                  }              
+    POST /cb HTTP/1.1
+    Host: client.example.com
+    Authorization: Bearer 8d67dc78-7faa-4d41-aabd-67707b374255
+    Content-Type: application/json
+
+    {
+     "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1",
+     "access_token": "SlAV32hkKG",
+     "token_type": "Bearer",
+     "refresh_token": "8xLOxBtZp8",
+     "expires_in": 3600,
+     "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
+       yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
+       NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
+       fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
+       AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
+       Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
+       NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
+       QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
+       K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
+       XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
+    }
               ]]>
             </artwork>
           </figure>
@@ -859,17 +860,17 @@
             </preamble>
             <artwork>
               <![CDATA[
-                {
-                  "iss": "http://server.example.com",
-                  "sub": "248289761001",
-                  "aud": "s6BhdRkqt3",
-                  "nonce": "n-0S6_WzA2Mj",
-                  "exp": 1311281970,
-                  "iat": 1311280970,
-                  "at_hash": "rXH7QWVTZnXYCou_6Vdpfg",
-                  "rt_hash": "njCczNMR6mTQQTPa93YPcQ",
-                  "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1"
-                }              
+    {
+      "iss": "http://server.example.com",
+      "sub": "248289761001",
+      "aud": "s6BhdRkqt3",
+      "nonce": "n-0S6_WzA2Mj",
+      "exp": 1311281970,
+      "iat": 1311280970,
+      "at_hash": "rXH7QWVTZnXYCou_6Vdpfg",
+      "rt_hash": "njCczNMR6mTQQTPa93YPcQ",
+      "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1"
+    }
               ]]>
             </artwork>
           </figure>
