@@ -1074,7 +1074,7 @@
           <?rfc subcompact="yes"?>
           <list style='symbols'>
             <t>Metadata Name: <spanx style="verb">backchannel_authentication_endpoint</spanx></t>
-            <t>Metadata Description: </t>
+            <t>Metadata Description: CIBA Backchannel Authentication Endpoint</t>
             <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
             <t>Specification Document(s): <xref target="registration"/> of this document</t>
           </list>
@@ -1352,6 +1352,7 @@
           <t>Clarify that error responses from the Backchannel Authentication Endpoint are as defined in the Authentication Error Response section.</t>
           <t>Be clear that refresh tokens are optional.</t>
           <t>Introduce a third mode for getting the tokens so now there's 1) Poll, 2) Ping and 3) Push.</t>
+          <t>Add AS/OP metadata paramater for the Backchannel Authentication Endpoint.n</t>
         </list>
       </t>
     </section>
