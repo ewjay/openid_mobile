@@ -1352,7 +1352,7 @@
           <t>Clarify that error responses from the Backchannel Authentication Endpoint are as defined in the Authentication Error Response section.</t>
           <t>Be clear that refresh tokens are optional.</t>
           <t>Introduce a third mode for getting the tokens so now there's 1) Poll, 2) Ping and 3) Push.</t>
-          <t>Add AS/OP metadata paramater for the Backchannel Authentication Endpoint.n</t>
+          <t>Add AS/OP metadata parameter for the Backchannel Authentication Endpoint.n</t>
         </list>
       </t>
     </section>
