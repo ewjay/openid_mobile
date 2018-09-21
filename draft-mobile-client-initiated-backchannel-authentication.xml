@@ -14,7 +14,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-mobile-client-initiated-backchannel-authentication" ipr="none">
+<rfc category="std" docName="draft-mobile-client-initiated-backchannel-authentication-06" ipr="none">
 
   <?rfc toc="yes" ?>
   <?rfc tocdepth="5" ?>
@@ -245,7 +245,7 @@
               <vspace />
               <list style="numbers">
                 <t>
-                  Using the <eref target="https://tools.ietf.org/html/draft-ietf-oauth-mtls-10#section-2.1">PKI Mutual TLS OAuth Client Authentication Method</eref> as defined in section 2.1 of
+                  Using the <eref target="https://tools.ietf.org/html/draft-ietf-oauth-mtls#section-2.1">PKI Mutual TLS OAuth Client Authentication Method</eref> as defined in section 2.1 of
                   <xref target="I-D.ietf-oauth-mtls"/>
                 </t> 
                 <t>
@@ -492,6 +492,7 @@
         <t>
           A signed authentication request can be made by encoding the authentication request parameters as
           claims of a signed JWT, with each parameter name as the claim name and its value as a JSON string.
+          The <spanx style='verb'>none</spanx> algorithm MUST NOT be used.
           The signed authentication request JWT is passes as an <spanx style='verb'>application/x-www-form-urlencoded</spanx>
           HTTP request parameter with the name <spanx style='verb'>request</spanx>.
           The JWT MUST also contain the following <xref target="RFC7519"/> registered claims:
@@ -532,10 +533,12 @@
               <vspace />
             </t>
             <t>
-              Validate all the authentication request parameters.
+              If the authentication request is signed, validate the JWT sent with the <spanx style='verb'>request</spanx> parameter, which includes
+              verifying the signature and ensuring that the JWT is valid in all other respects per <xref target="RFC7519"/>.
             </t>
             <t>
-              In the event of a request contains more than one of this hints specified in <xref target="auth_request">Authentication Request</xref>, 
+              Validate all the authentication request parameters.
+              In the event the request contains more than one of the hints specified in <xref target="auth_request">Authentication Request</xref>,
               the OpenID Provider MUST return an "invalid_request" error response as per <xref target="auth_error_response"/>.
             </t>
             <t>
@@ -553,7 +556,7 @@
           </list>
         </t>
         <t>
-            As specified in OAuth 2.0 <xref target="RFC6749" />, OpenID Providers SHOULD ignore unrecognized request parameters.
+            OpenID Providers SHOULD ignore unrecognized request parameters.
         </t>          
         <t>
             If the OpenID Provider encounters any error, it MUST return an error response, per <xref target="auth_error_response"/>.
@@ -787,7 +790,7 @@
             </artwork>
           </figure>
           <t>
-            The Client MUST verify the <spanx style="verb">client_notification_token</spanx> used to authenitcate the request is valid and is assoicated with the <spanx style="verb">auth_req_id</spanx> received in the Ping callback. If the bearer token is not valid the Client SHOULD return a HTTP 401 Unauthorized response. 
+            The Client MUST verify the <spanx style="verb">client_notification_token</spanx> used to authenticate the request is valid and is associated with the <spanx style="verb">auth_req_id</spanx> received in the Ping callback. If the bearer token is not valid the Client SHOULD return a HTTP 401 Unauthorized response.
           </t>
           <t>
             For valid requests, the Client Notification Endpoint SHOULD respond with a HTTP 204 No Content.
@@ -859,7 +862,7 @@
             </artwork>
           </figure>
         <t>
-          The Client MUST verify the client_notification_token used to authenitcate the request is valid and is assoicated with the auth_req_id received in the Delivery Callback. If the bearer token is not valid the Client SHOULD return a HTTP 401 Unauthorized response.
+          The Client MUST verify the client_notification_token used to authenticate the request is valid and is associated with the auth_req_id received in the Delivery Callback. If the bearer token is not valid the Client SHOULD return a HTTP 401 Unauthorized response.
         </t>
 
         <t>
@@ -1124,15 +1127,13 @@
       &OpenID.Core;
       &OpenID.Registration;
       
-      <?rfc include="reference.I-D.draft-jones-oauth-amr-values-05.xml"?>
-      <?rfc include="reference.I-D.draft-ietf-oauth-mtls-10"?>
+      <?rfc include="reference.I-D.draft-ietf-oauth-mtls-11"?>
 
     </references>
     
     <references title="Informative References">
 
       <?rfc include="reference.RFC.6749"?>
-      <?rfc include="reference.RFC.3986"?>
       <?rfc include='reference.RFC.8414'?> <!-- OAuth AS metadata -->
       <reference anchor="IANA.OAuth.Parameters" target="http://www.iana.org/assignments/oauth-parameters">
         <front>
@@ -1364,7 +1365,8 @@
           <t>Clarify that error responses from the Backchannel Authentication Endpoint are as defined in the Authentication Error Response section.</t>
           <t>Be clear that refresh tokens are optional.</t>
           <t>Introduce a third mode for getting the tokens so now there's 1) Poll, 2) Ping and 3) Push.</t>
-          <t>Add AS/OP metadata parameter for the Backchannel Authentication Endpoint.n</t>
+          <t>Add AS/OP metadata parameter for the Backchannel Authentication Endpoint.</t>
+          <t>More clearly define the authentication request format and client authentication to the Backchannel Authentication Endpoint.</t>
         </list>
       </t>
     </section>
