@@ -156,7 +156,7 @@
       <t>
       <list style="numbers">
 		    <t>
-          The Client shall make an "HTTP POST" request to a new endpoint called bc-authorize to ask for the end-user 
+          The Client shall make an "HTTP POST" request to the Backchannel Authentication Endpoint to ask for end-user
           authentication. 
 		    </t>
 		    <t>
@@ -194,38 +194,34 @@
           <spanx style="verb">urn:openid:params:modrna:grant-type:backchannel_request</spanx>
         </t>
         <t hangText="OpenID Provider Metadata">
-          OPs SHOULD include the backchannel request grant type in the  <spanx style="verb">grant_types_supported</spanx> field of its discovery metadata.
+          OPs supporting the ping or poll modes of CIBA SHOULD include the backchannel request grant type in the <spanx style="verb">grant_types_supported</spanx> field of their discovery metadata
+          and SHOULD publish the supported token delivery modes for clients using CIBA. The location of an OP's Backchannel Authentication Endpoint SHOULD be published in metadata.
+          The following authorization server metadata parameters are introduced by this specification:
         </t>
         <t>
-          OPs SHOULD publish the supported token delivery modes for clients using CIBA.
-        </t>
-        <t>
-          The following parameters are introduced by this specification:
-        </t>
-        <t>
-          <vspace />
-          <list style="numbers">
-            <t><spanx style="verb">backchannel_token_delivery_modes</spanx> REQUIRED - JSON array containing one or more of the 
-            following values <spanx style="verb">poll</spanx>, <spanx style="verb">ping</spanx> and <spanx style="verb">push</spanx>.</t> 
+          <list style="symbols">
+            <t><spanx style="verb">backchannel_token_delivery_modes</spanx>: a JSON array containing one or more of the
+            following values <spanx style="verb">poll</spanx>, <spanx style="verb">ping</spanx> and <spanx style="verb">push</spanx>.</t>
+            <t><spanx style="verb">backchannel_authentication_endpoint</spanx>: URL of the OP's Backchannel Authentication Endpoint
+              as defined in <xref target="auth_backchannel_endpoint"/>.</t>
           </list>
         </t>
-          
-       
-      
+
         <t hangText="Client Metadata">
           Clients registering to use CIBA MUST include the backchannel grant type in the "grant_types" field and in addition must
           indicate a token delivery mode. If the client selects one of the notification modes, it MUST register a client notification
           endpoint. The following parameters are introduced by this specification:
-          <vspace />
-          <list style="numbers">
+        </t>
+        <t>
+          <list style="symbols">
             <t><spanx style="verb">backchannel_token_delivery_mode</spanx>: REQUIRED - one of the following values <spanx style="verb">poll</spanx>, 
             <spanx style="verb">ping</spanx> or <spanx style="verb">push</spanx></t> 
             <t><spanx style="verb">client_notification_endpoint</spanx>: REQUIRED if the token delivery mode is set to 
-            <spanx style="verb">ping</spanx> or <spanx style="verb">push</spanx>. This is the endpoint to which the OP will post a notification after a succesful or failed end-user authentication. 
+            <spanx style="verb">ping</spanx> or <spanx style="verb">push</spanx>. This is the endpoint to which the OP will post a notification after a successful or failed end-user authentication.
             It MUST be an HTTPS URL.
             </t>
           </list>
-          </t>
+        </t>
      
 
     
@@ -1076,6 +1072,29 @@
       </t>
     </section>
 
+
+    <section anchor="IANA" title="IANA Considerations">
+
+      <section anchor="ietf-oauth-discoveryIANA" title="OAuth Authorization Server Metadata Registration">
+        <t>
+          This specification requests registration of the following values
+          in the IANA "OAuth Authorization Server Metadata" registry
+          <xref target="IANA.OAuth.Parameters"/> established by <xref target="RFC8414"/>.
+        </t>
+        <t>
+          <?rfc subcompact="yes"?>
+          <list style='symbols'>
+            <t>Metadata Name: <spanx style="verb">backchannel_authentication_endpoint</spanx></t>
+            <t>Metadata Description: CIBA Backchannel Authentication Endpoint</t>
+            <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
+            <t>Specification Document(s): <xref target="registration"/> of this document</t>
+          </list>
+          <?rfc subcompact="no"?>
+        </t>
+      </section>
+
+    </section>
+
   </middle>
 
   <back>
@@ -1114,7 +1133,17 @@
 
       <?rfc include="reference.RFC.6749"?>
       <?rfc include="reference.RFC.3986"?>
- 
+      <?rfc include='reference.RFC.8414'?> <!-- OAuth AS metadata -->
+      <reference anchor="IANA.OAuth.Parameters" target="http://www.iana.org/assignments/oauth-parameters">
+        <front>
+          <title>OAuth Parameters</title>
+          <author>
+            <organization>IANA</organization>
+          </author>
+          <date/>
+        </front>
+      </reference>
+
       <reference anchor="ETSI102204" target="https://www.etsi.org/deliver/etsi_ts/102200_102299/102204/01.01.04_60/ts_102204v010104p.pdf">
         <front>
           <title>Mobile Commerce (M-COMM) Mobile Signature Service; Web Service Interface</title>
@@ -1335,6 +1364,7 @@
           <t>Clarify that error responses from the Backchannel Authentication Endpoint are as defined in the Authentication Error Response section.</t>
           <t>Be clear that refresh tokens are optional.</t>
           <t>Introduce a third mode for getting the tokens so now there's 1) Poll, 2) Ping and 3) Push.</t>
+          <t>Add AS/OP metadata parameter for the Backchannel Authentication Endpoint.n</t>
         </list>
       </t>
     </section>
