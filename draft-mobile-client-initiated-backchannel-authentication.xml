@@ -106,9 +106,6 @@
         It introduces a new endpoint to which the authentication request is posted.
         It introduces a new asynchronous method for authentication result delivery.
         It does not introduce new scope values nor does it change the semantic of standard OpenID Connect parameters.
-        Some OpenID Connect parameters which are required in a redirect-based protocol are meaningless in this server-to-server
-        communication.
-        A few new parameters are introduced e.g. those required for the asynchronous authentication result delivery.
       </t>
       <t>
         <spanx style="strong">Remark:</spanx> As the user has no consumption device through which the user is interacting with the Client, 
@@ -260,7 +257,7 @@
                   of the <xref target="OpenID.Core"/>, otherwise it MUST respond with an invalid_request error.
                 </t> 
               </list>
-              Requests using the request object signed with the asymmetric keys provided by the "jwks_uri" are OPTIONAL.
+              Signed authentication request with the asymmetric keys provided by the "jwks_uri" are OPTIONAL.
             </t>
 
             <t hangText="Ping and Push Modes with Pairwise Identifiers">
@@ -402,22 +399,16 @@
 
     <section anchor="auth_backchannel_endpoint" title="Backchannel Authentication Endpoint">
       <t>
-        The Backchannel Authentication Endpoint performs Authentication of the End-User. This is done by sending an HTTP
+        The Backchannel Authentication Endpoint is used to initiate an out-of-band authentication of the End-User. This is done by sending an HTTP
         POST message directly from the Client to the OpenID Provider's Backchannel Authentication Endpoint, using 
-        request parameters defined by OAuth 2.0 and additional parameters and parameter values defined by OpenID Connect. 
+        a request defined in the following subsections.
       </t>
       <t>
         Communication with the Backchannel Authentication Endpoint MUST utilize TLS. See Section 16.17 <xref target="OpenID.Core"/>
-        for more information on using TLS. The Client MUST be authenticated.
+        for more information on using TLS.
       </t>
 
       <section anchor="auth_request" title="Authentication Request">
-        <t>
-          An Authentication Request uses most of the parameters of an <xref target="RFC6749">OAuth 2.0</xref> 
-          Authorization Request. The parameters used are not changed in their meaning and no new values for those
-          parameters are introduced. Some of the OAuth 2.0 Authorization Request parameters make no sense in a server to server
-          communication and are therefore not part of a CIBA Authentication Request.
-        </t>
         <t>
           MODRNA Client initiated Backchannel Authentication defines an authentication request that is requested directly from 
           the Client to the OpenID Provider without going through the user's browser. The Client MUST send an authentication 
@@ -426,16 +417,12 @@
         </t>
         <t>
           The Client MUST authenticate to the Backchannel Authentication Endpoint using the authentication method registered for its 
-          client_id. The RECOMMENDED method to authenticate the Client is using an 
-          <eref target="https://openid.net/specs/openid-connect-core-1_0.html#SignedRequestObject">OpenID Connect Signed Request Object</eref> 
-          as described in OpenID.Core. If a Signed Request Object is not used for authentication then one of the 
-          authentication methods of Section 9 of <xref target="OpenID.Core"/> should be used.
+          client_id, such as the authentication methods from Section 9 of <xref target="OpenID.Core"/> or authentication methods
+          defined by extension in other specifications.
         </t>
         <t>
-          Authentication Requests are made using <xref target="MODRNA.Authentication" format="title"/>. Only the following parameters are taken into consideration in the Client initiated Backchannel Authentication flow. The rest of the request parameters defined in <xref target="RFC6749">OAuth 2.0</xref> 
-          MUST be ignored by the OpenID Provider.
+          An authentication request is composed of the following parameters:
         </t>
-
         <t>
           <list style="hanging">
             <t hangText="scope">
@@ -473,35 +460,66 @@
           it is REQUIRED that the Client provides one (and only one) of the hints specified above in the authentication request, that is "login_hint_token", 
           "id_token_hint" or "login_hint".
         </t>
+        <t>
+          An authentication request is made using the
+          HTTP <spanx style='verb'>POST</spanx> method with the aforementioned
+          parameters in the <spanx style='verb'>application/x-www-form-urlencoded</spanx>
+          format and a character encoding of UTF-8 in the HTTP request entity-body.
+        </t>
         <figure>
-          <preamble>The following is a non-normative example from an authentication request (with line wraps within values for display purposes only):
+          <preamble>The following is a non-normative example of an authentication request (with line wraps within values for display purposes only):
           </preamble>
           <artwork>
        <![CDATA[
    POST /bc-authorize HTTP/1.1
    Host: server.example.com
    Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
-   Content-Type: application/json
+   Content-Type: application/x-www-form-urlencoded
 
-   {
-    "scope": "openid",
-    "client_notification_token": "8d67dc78-7faa-4d41-aabd-67707b374255",
-    "acr_values": "mod-mf",
-    "login_hint_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
-       OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
-       ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
-       Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
-       mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
-       1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi
-       6UklfCpIMfIjf7iGdXKHzg.
-       48V1_ALb6US04U3b.
-       5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
-       SdiwkIr3ajwQzaBtQD_A.
-       XFBoMYUZodetZdvTiFvSkQ"
-   }
+   scope=openid&
+   client_notification_token=8d67dc78-7faa-4d41-aabd-67707b374255&
+   acr_values=mod-mf&x
+   login_hint_token=eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
+   OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
+   ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
+   Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
+   mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
+   1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi
+   6UklfCpIMfIjf7iGdXKHzg.
+   48V1_ALb6US04U3b.
+   5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
+   SdiwkIr3ajwQzaBtQD_A.
+   XFBoMYUZodetZdvTiFvSkQ
        ]]>
           </artwork>
-        </figure>      
+        </figure>
+        <t>
+          A signed authentication request can be made by encoding the authentication request parameters as
+          claims of a signed JWT, with each parameter name as the claim name and its value as a JSON string.
+          The signed authentication request JWT is passes as an <spanx style='verb'>application/x-www-form-urlencoded</spanx>
+          HTTP request parameter with the name <spanx style='verb'>request</spanx>.
+          The JWT MUST also contain the following <xref target="RFC7519"/> registered claims:
+        </t>
+        <t>
+          <list style="hanging">
+            <t hangText="aud">
+              The Audience claim must contain the value of the Issuer Identifier for the OP, which identifies the Authorization Server as an intended audience.
+            </t>
+            <t hangText="iss">
+              The Issuer claim must be the <spanx style="verb">client_id</spanx> of the OAuth Client.
+            </t>
+            <t hangText="exp">
+              An expiration time that limits the validity lifetime of the signed authentication request.
+            </t>
+            <t hangText="iat">
+              The time at which the signed authentication request was created.
+            </t>
+            <t hangText="jti">
+              A unique identifier for the signed authentication request.
+            </t>
+          </list>
+        </t>
+
       </section>
 
       <section anchor="auth_request_validation" title="Authentication Request Validation">
@@ -511,21 +529,14 @@
         <t>
           <list style="numbers">
             <t>
-              Authenticate the Client.
-              <vspace />
-              The client SHOULD use a <eref target="https://openid.net/specs/openid-connect-core-1_0.html#SignedRequestObject">OpenID Connect Signed Request Object</eref>
-              as defined in Section 6.3.2 of <xref target="OpenID.Core"/>.
-              Then that signature MUST be validated and the Authentication Request MUST fail if the signature is not valid.
-              If the value of the signature's "alg" parameter is "none" then another method of Client authentication MUST be used
-              as described in Section 9 on <xref target="OpenID.Core"/>.
-              CIBA is allowing the same Client authentication methods for the Authorization Endpoint that OpenID.Core uses for the Token Endpoint.
+              Authenticate the Client per the authentication method registered or configured for its client_id.
               <vspace />
               It is RECOMMENDED that Clients do not send shared secrets in the Authentication Request. 
               It is RECOMMENDED that public key cryptography is used.
               <vspace />
             </t>
             <t>
-              The OpenID Provider MUST validate all the OAuth 2.0 parameters according to <xref target="MODRNA.Authentication" format="title"/>.
+              Validate all the authentication request parameters.
             </t>
             <t>
               In the event of a request contains more than one of this hints specified in <xref target="auth_request">Authentication Request</xref>, 
@@ -1070,7 +1081,8 @@
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
-      
+      <?rfc include="reference.RFC.7519"?> <!-- JWT -->
+
       <reference anchor="MODRNA.Authentication" target="https://bitbucket.org/openid/mobile/raw/tip/openid-connect-modrna-authentication-1_0.txt">
         <front>
           <title>OpenID Connect MODRNA Authentication Profile 1.0</title>
