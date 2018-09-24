@@ -504,7 +504,7 @@
           claims of a signed JWT, with each parameter name as the claim name and its value as a JSON string.
           The JWT MUST be secured with an asymmetric signature and follow the guidance from
           <eref target="https://openid.net/specs/openid-connect-core-1_0.html#Signing">Section 10.1</eref> of
-          <xref target="OpenID.Core"/> regarding  asymmetric signatures.
+          <xref target="OpenID.Core"/> regarding asymmetric signatures.
           The signed authentication request JWT is passes as an <spanx style='verb'>application/x-www-form-urlencoded</spanx>
           HTTP request parameter with the name <spanx style='verb'>request</spanx>.
           The JWT MUST also contain the following <xref target="RFC7519"/> registered claims:
@@ -749,7 +749,7 @@
         The token delivery mode for the Client (Poll Ping or Push) is determined at registration time.
       </t>
       <t>
-        A client can only register a single token delivery method and the OP MUST only deliver the Authentcation Result to the client through the registered mode.
+        A client can only register a single token delivery method and the OP MUST only deliver the Authentication Result to the client through the registered mode.
       </t>
 
       <section anchor="token_request" title="Token Request Using Backchannel Request Grant Type">
