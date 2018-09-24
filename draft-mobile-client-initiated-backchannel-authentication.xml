@@ -492,7 +492,9 @@
         <t>
           A signed authentication request can be made by encoding the authentication request parameters as
           claims of a signed JWT, with each parameter name as the claim name and its value as a JSON string.
-          The <spanx style='verb'>none</spanx> algorithm MUST NOT be used.
+          The JWT MUST be secured with an asymmetric signature and follow the guidance from
+          <eref target="https://openid.net/specs/openid-connect-core-1_0.html#Signing">Section 10.1</eref> of
+          <xref target="OpenID.Core"/> regarding  asymmetric signatures.
           The signed authentication request JWT is passes as an <spanx style='verb'>application/x-www-form-urlencoded</spanx>
           HTTP request parameter with the name <spanx style='verb'>request</spanx>.
           The JWT MUST also contain the following <xref target="RFC7519"/> registered claims:
