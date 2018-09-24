@@ -489,6 +489,7 @@
        ]]>
           </artwork>
         </figure>
+        <section title="Signed Authentication Request" anchor="signed_auth_request">
         <t>
           A signed authentication request can be made by encoding the authentication request parameters as
           claims of a signed JWT, with each parameter name as the claim name and its value as a JSON string.
@@ -520,7 +521,7 @@
         </t>
         <figure>
           <preamble>For example, a signed authentication request using the same authentication request parameters and values
-            as the previous example would look like the following (with line wraps within values for display purposes only):
+            as the example from the previous section would look like the following (with line wraps within values for display purposes only):
           </preamble>
           <artwork>
             <![CDATA[
@@ -583,6 +584,7 @@
        ]]>
         </artwork>
       </figure>
+        </section>
     </section>
 
       <section anchor="auth_request_validation" title="Authentication Request Validation">
