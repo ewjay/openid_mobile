@@ -518,8 +518,72 @@
             </t>
           </list>
         </t>
+        <figure>
+          <preamble>For example, a signed authentication request using the same authentication request parameters and values
+            as the previous example would look like the following (with line wraps within values for display purposes only):
+          </preamble>
+          <artwork>
+            <![CDATA[
+   POST /bc-authorize HTTP/1.1
+   Host: server.example.com
+   Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+   Content-Type: application/x-www-form-urlencoded
 
-      </section>
+   request=eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJz
+   NkJoZFJrcXQzIiwiYXVkIjoiaHR0cDovL3NlcnZlci5leGFtcGxlLmNvbSIsImV4
+   cCI6MTUzNzgyMDA4NiwiaWF0IjoxNTM3ODE5NDg2LCJqdGkiOiI0TFRDcUFDQzJF
+   U0M1QldDbk4zajU4RW5BIiwic2NvcGUiOiJvcGVuaWQiLCJjbGllbnRfbm90aWZp
+   Y2F0aW9uX3Rva2VuIjoiOGQ2N2RjNzgtN2ZhYS00ZDQxLWFhYmQtNjc3MDdiMzc0
+   MjU1IiwiYWNyX3ZhbHVlcyI6Im1vZC1tZiIsImxvZ2luX2hpbnRfdG9rZW4iOiJl
+   eUpoYkdjaU9pSlNVMEV0VDBGRlVDSXNJbVZ1WXlJNklrRXlOVFpIUTAwaWZRLk9L
+   T2F3RG8xM2dScDJvamFIVjdMRnBaY2dWN1Q2RFZaS1R5S09NVFlVbUtvVENWSlJn
+   Y2tDTDlraU1UMDNKR2VpcHNFZFkzbXhfZXRMYmJXU3JGcjA1a0x6Y1NyNHFLQXE3
+   WU43ZTlqd1FSYjIzbmZhNmM5ZC1TdG5JbUd5RkRiU3YwNHVWdXhJcDVabXMxZ054
+   S0tLMkRhMTRCOFM0cnpWUmx0ZFl3YW1fbERwNVhuWkFZcFFkYjc2RmRJS0xhVm1x
+   Z2Z3WDdYV1J4djIzMjJpLXZEeFJmcU56b190RVRLenBWTHpmaXdReWV5UEdMQklP
+   NTZZSjdlT2JkdjBqZTgxODYwcHBhbWF2bzM1VWdvUmRiWWFCY29oOVFjZnlsUXI2
+   Nm9jNnZGV1hSY1pfWlQyTGF3VkNXVEl5M2JyR1BpNlVrbGZDcElNZklqZjdpR2RY
+   S0h6Zy40OFYxX0FMYjZVUzA0VTNiLjVleW04VFdfYzhTdUswbHRKM3JwWUl6T2VE
+   UXo3VEFMdnR1NlVHOW9NbzR2cHpzOXRYX0VGU2hTOGlCN2o2amlTZGl3a0lyM2Fq
+   d1F6YUJ0UURfQS5YRkJvTVlVWm9kZXRaZHZUaUZ2U2tRIn0.DnK-GIVtB2SYhzO-
+   wjgF3l9u_UvQ-dHFZnWrW3tV2vR0OkiYeH_vdzt7G-I6BylGw2WN7nE_lJJkolT4
+   1625Oh8xOcrycPGmDMTQlz73HgrMx8FZkan9XKT1W8CrNDhPw_FpFxxarEOBfss8
+   DM8Vw9LkdutY3_a_U-PGqOmXphU_9Y4Kx6aBRqJm1bLbzy5mrzwU4WbusqnKtakT
+   waN31DX9mvTlztzQzdH1TmdugnCvJ5LZ5laXdq8ca4IxBl-rJAUar58F34dxMyHw
+   xcC4djEL1nvr2MuXUUEZ-N31HW-78S0JwoXnHKB1cQBSObSRLaNlbulAxCDd7E9g
+   SycxDA
+       ]]>
+          </artwork>
+        </figure>
+
+      <figure>
+        <preamble>Where the following is the JWT payload (with line wraps and added whitespace for display purposes only):
+        </preamble>
+        <artwork>
+          <![CDATA[
+    {
+     "iss": "s6BhdRkqt3",
+     "aud": "http://server.example.com",
+     "exp": 1537820086,
+     "iat": 1537819486,
+     "jti": "4LTCqACC2ESC5BWCnN3j58EnA",
+     "scope": "openid",
+     "client_notification_token": "8d67dc78-7faa-4d41-aabd-67707b374255",
+     "acr_values": "mod-mf",
+     "login_hint_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ
+       00ifQ.OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL
+       9kiMT03JGeipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6
+       c9d-StnImGyFDbSv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5
+       XnZAYpQdb76FdIKLaVmqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQy
+       eyPGLBIO56YJ7eObdv0je81860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6
+       vFWXRcZ_ZT2LawVCWTIy3brGPi6UklfCpIMfIjf7iGdXKHzg.48V1_ALb6US
+       04U3b.5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFS
+       hS8iB7j6jiSdiwkIr3ajwQzaBtQD_A.XFBoMYUZodetZdvTiFvSkQ"
+    }
+       ]]>
+        </artwork>
+      </figure>
+    </section>
 
       <section anchor="auth_request_validation" title="Authentication Request Validation">
         <t>
