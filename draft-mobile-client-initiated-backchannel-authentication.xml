@@ -644,8 +644,7 @@
         <t>
           If the <xref target="auth_request" format="title"/> is validated as per Section <xref target="auth_request_validation" format="title"/>, 
           the OpenID Provider will return an HTTP 200 OK response to the Client
-          to indicate that the authentication request has been accepted and it is going to be processed. The body of this response 
-          will contain:
+          to indicate that the authentication request has been accepted and it is going to be processed. The body of this response will contain:
         </t>
         <t>
           <list style="hanging">
@@ -653,8 +652,7 @@
               REQUIRED. This is a unique id to identify the authentication request made by the Client. 
              </t>
             <t hangText="expires_in">
-              REQUIRED. Expiration time of the "auth_req_id" in seconds since the auth_request was received. When using the Polling mode, the auth_req_id will be considered overdue and 
-              the OpenID Provider will return an error to indicate it, see <xref target="token_error_response" format="title"/>.
+              REQUIRED. Expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
              </t>
             <t hangText="interval">
               OPTIONAL. The minimum amount of time in seconds that the Client SHOULD wait between polling requests to the token endpoint. 
@@ -683,11 +681,14 @@
 
       <section anchor="auth_request_acknowdlegment_validation" title="Authentication Request Acknowledgment Validation">
         <t>
-          If the Client receives an HTTP 200 OK, it MUST validate that all the required parameters are received. The Client should keep the authentication request identifier 
-          <spanx style="verb">auth_req_id</spanx> in order to match it with token response.
+          If the Client receives an HTTP 200 OK, it MUST validate that all the required parameters are received. 
         </t>
         <t>
-          The Client will have to keep the expiration time as well to be able to discard the authentication request acknowledgment.
+          The Client MUST keep the <spanx style="verb">auth_req_id</spanx> in order to validate the callbacks received in Ping and Push modes or to use when polling the token endppint in Poll mode.
+        </t>
+        <t>
+          The Client should store the expiration time in order to clean up authentication requests for which
+          no Ping Callback or Push Callback is received. 
         </t>
       </section>
 
