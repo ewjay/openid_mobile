@@ -936,7 +936,7 @@
             </artwork>
           </figure>
         <t>
-          The Client MUST verify the client_notification_token used to authenticate the request is valid and is associated with the auth_req_id received in the Delivery Callback. If the bearer token is not valid the Client SHOULD return a HTTP 401 Unauthorized response.
+          The Client MUST verify the client_notification_token used to authenticate the request is valid and is associated with the auth_req_id received in the Push Callback. If the bearer token is not valid the Client SHOULD return a HTTP 401 Unauthorized response.
         </t>
 
         <t>
@@ -987,12 +987,12 @@
 
       <section anchor="token_error_response" title="Token Error Response">
         <t>
-           If the Client has registered to use the Delivery Callback mode then it MUST NOT call the Token Endpoint with the Backchannel Request Grant Type and the following error is returned.
+           If the Client has registered to use the Push Mode then it MUST NOT call the Token Endpoint with the Backchannel Request Grant Type and the following error is returned.
         </t>
         <t hangText="HTTP 403 Forbidden">
           <list style="hanging">        
             <t hangText="unauthorized_client">
-              The Client is not authorized as it is registered for Delivery Callback
+              The Client is not authorized as it is configured in Push Mode
             </t>
           </list>
         </t>
