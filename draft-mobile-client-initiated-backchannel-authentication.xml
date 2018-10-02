@@ -289,7 +289,7 @@
         "subject_type": "pairwise",
         "token_endpoint_auth_method": "private_key_jwt",
         "grant_types": ["urn:openid:params:modrna:grant-type:backchannel_request"],
-        "backchannel_token_delivery_mode": "polling",
+        "backchannel_token_delivery_mode": "poll",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
         "userinfo_encrypted_response_alg": "RSA1_5",
         "userinfo_encrypted_response_enc": "A128CBC-HS256",
