@@ -892,20 +892,20 @@
       <section anchor="push_callback" title="Push Callback">
         <section anchor="issuing_successful_token" title="Successful Token Delivery">
           <t>
-            If the Client is registered in Push mode, the OpenID Provider will send the token response making an HTTP POST Request
-            to the <xref target="client_notification_endpoint" format="title"/>. If the user is well authenticated, the OpenID Provider delivers a successful response that includes an ID Token,
-            an Access Token and, optionally, a Refresh Token.
-            Error conditions associated with the transaction are delivered to the Client by sending a <xref target="token_error_response" format="title"/> in the
-            body of the callback request.
+            If the Client is registered in Push mode and the user is well authenticated, the OpenID Provider delivers a payload that includes an ID Token, an Access Token and, optionally, a Refresh Token to the <xref target="client_notification_endpoint" format="title"/>.
           </t>
           <t>
-            All the parameters in the successful response are defined in Section 4.1.4 of <xref target="RFC6749">OAuth 2.0</xref> except the new one "auth_req_id" that will be the same received 
-            in the request as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref>. The response uses the 
-            application/json media type.
+            Error conditions associated with the authentication request are delivered to the Client by sending a <xref target="push_error_payload" format="title"/>  to the <xref target="client_notification_endpoint" format="title"/>.
+          </t>
+          <t>
+            The Push Callback uses the parameters defined for a succesful token response in Section 4.1.4 of <xref target="RFC6749">OAuth 2.0</xref> and Section 3.1.3.3 of <xref target="OpenID.Core"/>. In addition a new parameter "auth_req_id" is included in the payload. This is the authentication request identifier as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref>. 
+          </t>
+          <t>
+            The Push Callback uses the application/json media type.
           </t>
           <figure>
-            <preamble>The following is a non-normative example of a token response sent as a HTTP POST 
-              request to the Client's client_notification_endpoint (with line wraps within values for display purposes only).
+            <preamble>The following is a non-normative example of a Push Callback sent as a HTTP POST 
+              request to the Client's notification endpoint (with line wraps within values for display purposes only).
               The request is authenticated through a bearer token that is the value of the "client_notification_token" provided by the Client in the Authentication Request.
             </preamble>
             <artwork>
@@ -940,7 +940,7 @@
         </t>
 
         <t>
-          For valid requests, he Client Notification Endpoint SHOULD respond with a HTTP 204 No Content.
+          For valid requests, the Client Notification Endpoint SHOULD respond with a HTTP 204 No Content.
           The OP SHOULD also accept HTTP 200 OK and any body in the response SHOULD be ignored.
         </t>
         <t>
@@ -975,8 +975,6 @@
             </artwork>
           </figure>
           <t>
-
-
           </t>
 
         </section>
@@ -987,6 +985,31 @@
 
       <section anchor="token_error_response" title="Token Error Response">
         <t>
+            If the Token Request is invalid or unauthorized, the OpenID Provider constructs the error response according to the section 3.1.3.4 Token Error Response of <xref target="OpenID.Core"/>.
+            In addition to the error codes defined in Section 5.2 of <xref target="RFC6749"/>, the following error codes defined in <xref target="OAuth Device Flow" /> are also applicable: 
+          </t>
+           <t>
+            <list style="hanging">
+              <t hangText="authorization_pending">
+                The authorization request is still pending as the end-user hasn't yet been authenticated. 
+              </t>
+              <t hangText="slow_down">
+                A variant of "authorization_pending", the authorization request is still pending and polling should continue, but the interval MUST be increased by 5 seconds for this and all subsequent requests.
+              </t>
+              <t hangText="expired_token">
+                The auth_req_id has expired. The Client will need to make a new Authentication Request.
+              </t>
+              <t hangText="access_denied">
+                The end user denied the authorization request.
+              </t>
+             </list>
+        </t>       
+
+       <t>
+           If the auth_req_id is invalid or was issued to another Client, an <spanx style="verb">invalid_grant</spanx> error MUST be returned as described in Section 5.2 of <xref target="RFC6749"/>.
+        </t>
+
+        <t>
            If the Client has registered to use the Delivery Callback mode then it MUST NOT call the Token Endpoint with the Backchannel Request Grant Type and the following error is returned.
         </t>
         <t hangText="HTTP 403 Forbidden">
@@ -995,87 +1018,91 @@
               The Client is not authorized as it is registered for Delivery Callback
             </t>
           </list>
-        </t>
-        <t>
-           If the Token Request is invalid or unauthorized, the OpenID Provider constructs the error response according to the section 3.1.3.4 Token Error Response of <xref target="OpenID.Core"/>.
-           In addition to the error codes defined in Section 5.2 of <xref target="RFC6749"/>, the following error codes are specific for the Client Initiated Backchannel flow and may be returned from the token endpoint when the Client makes a Token Request using the Backchannel Request Grant Type.
-        </t>
-        <t>
-          <list style="hanging">
-            <t hangText="unknown_auth_req_id">
-              The OP doesn't know the auth_req_id that the Client is asking for.
-            </t>
-            <t hangText="authorization_pending">
-              The authorization request is still pending as the end-user hasn't yet been authenticated. 
-            </t>
-            <t hangText="slow_down">
-              The Client is polling too quickly and should back off at a reasonable rate.
-            </t>
-            <t hangText="expired_token">
-              The auth_req_id has expired. The Client will need to make a new Authentication Request.
-            </t>
-          </list>
-        </t>          
+        </t>       
       </section>
 
-      <section anchor="auth_error_response" title="Authentication Error Response">
+      <section anchor="push_error_payload" title="Push Error Payload">
         <t>
-          An Authentication Error Response is an OAuth 2.0 Authorization Error Response message that is returned directly from the
-          Backchannel Authentication Endpoint in response to the Authentication Request message sent by the Client.
-        </t>
-        <t>  
-          If the End-User denies the request or the End-User authentication fails, the OP (Authorization Server) informs the Client by using
-          the following Error Responses, many of them are defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>, however they cannot
-          be sent using a redirection as OAuth 2.0 does because there isn't any User Agent through which send the error to the Client.
-        </t>
-        <t>
-          Errors will be sent directly to the client as HTTP Error Responses, whose body will contain a json with two parameters
+          When Clients are configured to use the Push token delivery mode they can receive error payloads at their Client Notification Endpoint. These errors will be sent using the application/json media type with the following three parameters:
           <list style="hanging">
               <t hangText="error_description">
                 OPTIONAL.  Human-readable ASCII [USASCII] text providing additional information, used to assist the client developer in understanding the error that occurred.
                 Values for the "error_description" parameter MUST NOT include characters outside the set %x20-21 / %x23-5B / %x5D-7E
               </t>
               <t hangText="error">
-                REQUIRED. A single ASCII error code from one of the present in the list below.
+                REQUIRED. A single ASCII error code from one present in the list below.
+              </t>
+              <t hangText="auth_req_id">
+                REQUIRED. The authentication request identifier.
+              </t>
+            </list>
+        </t>
+        <t>
+          Error codes applicable to the push error payload:
+           <list style="hanging">
+              <t hangText="access_denied">
+                The end user denied the authorization request.
+              </t>
+              <t hangText="expired_token">
+                The auth_req_id has expired. The Client will need to make a new Authentication Request. OpenID Provider are not required to send this error, but Clients SHOULD support receiving this error.
+              </t>
+            </list>
+        </t>
+
+      </section>
+
+      <section anchor="auth_error_response" title="Authentication Error Response">
+        <t>
+          An Authentication Error Response is returned directly from the Backchannel Authentication Endpoint in response to the Authentication Request sent by the Client. Error codes from both Section 4.1.2.1 and Section 5.2 <xref target='RFC6749'>OAuth 2.0</xref> are applicable and are detailed below. 
+        </t>
+        <t>  
+          Authentication Error Responses are sent in the same format as Token Error Responses, i.e. the HTTP response body uses the application/json media type with the following two parameters:
+          <list style="hanging">
+              <t hangText="error_description">
+                OPTIONAL.  Human-readable ASCII [USASCII] text providing additional information, used to assist the client developer in understanding the error that occurred.
+                Values for the "error_description" parameter MUST NOT include characters outside the set %x20-21 / %x23-5B / %x5D-7E
+              </t>
+              <t hangText="error">
+                REQUIRED. A single ASCII error code from one present in the list below.
               </t>
           </list>
         </t>
         <t>
-          List of authentication error codes associated to a HTTP Errors.
+          List of authentication error codes associated to HTTP Errors.
         </t>
         <t>
           <list style="hanging">        
             <t hangText="HTTP 400 Bad Request">
                 <list style="hanging">        
                     <t hangText="invalid_request">
-                      The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.
+                      The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed, as defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>
                     </t>
                     <t hangText="invalid_scope">
-                      The requested scope is invalid, unknown, or malformed.
+                      The requested scope is invalid, unknown, or malformed, as defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>
                     </t>
-                    <t hangText="expired_token">
-                      The login_hint_token or the id_token_hint provided in the authentication request is expired, so not valid.
+                    <t hangText="expired_login_hint_token">
+                      The login_hint_token provided in the authentication request is expired, so not valid.
+                    </t>
+                    <t hangText="unknown_user_id">
+                      The OpenID Provider is not able to identify which end-user the Client wishes to be authenticated by means of the hint provided in the request (login_hint_token, 
+                      id_token_hint or login_hint).
                     </t>
                 </list>
             </t>
             <t hangText="HTTP 403 Forbidden">
                 <list style="hanging">        
                     <t hangText="unauthorized_client">
-                      The client is not authorized to request an authentication using this method.
+                      The Client is not authorized to use this authentication flow, as defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>.
+                    </t>
+                    <t hangText="invalid_client">
+                      Client authentication failed (e.g., unknown client, no client authentication included, or unsupported authentication method) as defined in Section 5.2 of <xref target='RFC6749'>OAuth 2.0</xref>
                     </t>
                     <t hangText="access_denied">
-                      The resource owner or authorization server denied the request.
+                      The resource owner or authorization server denied the request, as defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>. Note that as the authentication error response is received prior to any user interaction, such an error would only be received if a resource owner or authorization server had made a decision to deny a certain type of request or requests from a certain type of client. The mechanism for such a decision to be made in outside the scope of this specification. 
                     </t>
                 </list>
             </t>
-            <t hangText="HTTP 404 Not Found">
-                <list style="hanging">        
-                    <t hangText="unknown_user_id">
-                      The OpenID Provider is not able to figure out which user has to be authenticated by means of the hint provided in the request (login_hint_token, 
-                      id_token_hint or login_hint).
-                    </t>
-                </list>
-            </t>
+            
           </list>
         </t>         
         <figure> 
