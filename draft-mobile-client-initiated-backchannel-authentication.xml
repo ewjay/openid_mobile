@@ -462,6 +462,9 @@
             <t hangText="binding_message">
               OPTIONAL. As defined in <xref target="MODRNA.Authentication" format="title"/>.
             </t>
+            <t hangText="user_code">
+              OPTIONAL. A secret code, such as password or pin, known only to the user. The code is used to authorize sending an authentication request to user's authentication device.
+            </t>
           </list>
         </t>
         <t>
@@ -469,6 +472,18 @@
           it is REQUIRED that the Client provides one (and only one) of the hints specified above in the authentication request, that is "login_hint_token", 
           "id_token_hint" or "login_hint".
         </t>
+        <section title="User Code" anchor="user_code">
+        <t>
+        User code is a mechanism to prevent unsolicited authentication requests from appearing on user's authentication device. 
+        </t>
+        <t>
+        User code is optional. The authentication service may allow users without registered user code. Clients that establish a security context with the user before sending an authentication request should not be required to send a user code.
+        </t>
+        <t>
+        Registering a user code for a user is not in scope of this specification. Examples include a facility provided by the authentication device or SMS text messages.
+        </t>
+        </section>
+        <section title="Authentication Request Example">
         <figure>
           <preamble>The following is a non-normative example from an authentication request (with line wraps within values for display purposes only):
           </preamble>
@@ -498,6 +513,7 @@
        ]]>
           </artwork>
         </figure>      
+        </section>
       </section>
 
       <section anchor="auth_request_validation" title="Authentication Request Validation">
@@ -980,6 +996,12 @@
                     </t>
                     <t hangText="access_denied">
                       The resource owner or authorization server denied the request.
+                    </t>
+                    <t hangText="missing_user_code">
+                    User code is required but was missing from request
+                    </t>
+                    <t hangText="invalid_user_code">
+                    User code was invalid
                     </t>
                 </list>
             </t>
