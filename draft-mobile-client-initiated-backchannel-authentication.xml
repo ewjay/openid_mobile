@@ -201,7 +201,7 @@
         </t>
         <t>
           <list style="symbols">
-            <t><spanx style="verb">backchannel_token_delivery_modes</spanx>: a JSON array containing one or more of the
+            <t><spanx style="verb">backchannel_token_delivery_modes_supported</spanx>: a JSON array containing one or more of the
             following values <spanx style="verb">poll</spanx>, <spanx style="verb">ping</spanx> and <spanx style="verb">push</spanx>.</t>
             <t><spanx style="verb">backchannel_authentication_endpoint</spanx>: URL of the OP's Backchannel Authentication Endpoint
               as defined in <xref target="auth_backchannel_endpoint"/>.</t>
@@ -289,7 +289,7 @@
         "subject_type": "pairwise",
         "token_endpoint_auth_method": "private_key_jwt",
         "grant_types": ["urn:openid:params:modrna:grant-type:backchannel_request"],
-        "backchannel_token_delivery_mode": "polling",
+        "backchannel_token_delivery_mode": "poll",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
         "userinfo_encrypted_response_alg": "RSA1_5",
         "userinfo_encrypted_response_enc": "A128CBC-HS256",
