@@ -1162,14 +1162,34 @@
       <section anchor="ietf-oauth-discoveryIANA" title="OAuth Authorization Server Metadata Registration">
         <t>
           This specification requests registration of the following values
-          in the IANA "OAuth Authorization Server Metadata" registry
+          in the IANA "OAuth Authorization Server Metadata" registry of
           <xref target="IANA.OAuth.Parameters"/> established by <xref target="RFC8414"/>.
+        </t>
+        <t>
+          <?rfc subcompact="yes"?>
+          <list style='symbols'>
+            <t>Metadata Name: <spanx style="verb">backchannel_token_delivery_modes_supported</spanx></t>
+            <t>Metadata Description: Supported CIBA authentication result delivery modes.</t>
+            <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
+            <t>Specification Document(s): <xref target="registration"/> of this document</t>
+          </list>
+          <?rfc subcompact="no"?>
         </t>
         <t>
           <?rfc subcompact="yes"?>
           <list style='symbols'>
             <t>Metadata Name: <spanx style="verb">backchannel_authentication_endpoint</spanx></t>
             <t>Metadata Description: CIBA Backchannel Authentication Endpoint</t>
+            <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
+            <t>Specification Document(s): <xref target="registration"/> of this document</t>
+          </list>
+          <?rfc subcompact="no"?>
+        </t>
+        <t>
+          <?rfc subcompact="yes"?>
+          <list style='symbols'>
+            <t>Metadata Name: <spanx style="verb">backchannel_authentication_request_signing_alg_values_supported</spanx></t>
+            <t>Metadata Description: JSON array containing a list of the JWS signing algorithms supported for validation of signed CIBA authentication requests</t>
             <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
             <t>Specification Document(s): <xref target="registration"/> of this document</t>
           </list>
