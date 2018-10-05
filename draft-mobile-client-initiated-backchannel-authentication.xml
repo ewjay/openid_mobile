@@ -1288,6 +1288,8 @@
 
       <?rfc include="reference.RFC.6749"?>
       <?rfc include='reference.RFC.8414'?> <!-- OAuth AS metadata -->
+      <?rfc include="reference.RFC.7591"?> <!-- Client Registration -->
+
       <reference anchor="IANA.OAuth.Parameters" target="http://www.iana.org/assignments/oauth-parameters">
         <front>
           <title>OAuth Parameters</title>
