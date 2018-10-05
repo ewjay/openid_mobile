@@ -1161,8 +1161,18 @@
       <section anchor="ietf-oauth-discoveryIANA" title="OAuth Authorization Server Metadata Registration">
         <t>
           This specification requests registration of the following values
-          in the IANA "OAuth Authorization Server Metadata" registry
+          in the IANA "OAuth Authorization Server Metadata" registry of
           <xref target="IANA.OAuth.Parameters"/> established by <xref target="RFC8414"/>.
+        </t>
+        <t>
+          <?rfc subcompact="yes"?>
+          <list style='symbols'>
+            <t>Metadata Name: <spanx style="verb">backchannel_token_delivery_modes_supported</spanx></t>
+            <t>Metadata Description: Supported CIBA authentication result delivery modes</t>
+            <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
+            <t>Specification Document(s): <xref target="registration"/> of this document</t>
+          </list>
+          <?rfc subcompact="no"?>
         </t>
         <t>
           <?rfc subcompact="yes"?>
@@ -1174,8 +1184,71 @@
           </list>
           <?rfc subcompact="no"?>
         </t>
+        <t>
+          <?rfc subcompact="yes"?>
+          <list style='symbols'>
+            <t>Metadata Name: <spanx style="verb">backchannel_authentication_request_signing_alg_values_supported</spanx></t>
+            <t>Metadata Description: JSON array containing a list of the JWS signing algorithms supported for validation of signed CIBA authentication requests</t>
+            <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
+            <t>Specification Document(s): <xref target="registration"/> of this document</t>
+          </list>
+          <?rfc subcompact="no"?>
+        </t>
       </section>
 
+      <section anchor="DynRegReg" title="OAuth Dynamic Client Registration Metadata Registration">
+        <t>
+          This specification requests registration of the following client metadata definitions
+          in the IANA "OAuth Dynamic Client Registration Metadata" registry of
+          <xref target="IANA.OAuth.Parameters"/>
+          established by <xref target="RFC7591"/>:
+        </t>
+        <t>
+          <?rfc subcompact="yes"?>
+          <list style="symbols">
+            <t>Client Metadata Name: <spanx style="verb">backchannel_token_delivery_mode</spanx></t>
+            <t>Client Metadata Description: CIBA authentication result delivery mode</t>
+            <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
+            <t>Specification Document(s): <xref target="registration"/> of this document</t>
+          </list>
+        </t>
+        <t>
+          <?rfc subcompact="yes"?>
+          <list style="symbols">
+            <t>Client Metadata Name: <spanx style="verb">client_notification_endpoint</spanx></t>
+            <t>Client Metadata Description: Endpoint to which a notification will be sent after a CIBA end-user authentication event</t>
+            <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
+            <t>Specification Document(s): <xref target="registration"/> of this document</t>
+          </list>
+        </t>
+        <t>
+          <?rfc subcompact="yes"?>
+          <list style="symbols">
+            <t>Client Metadata Name: <spanx style="verb">backchannel_authentication_request_signing_alg</spanx></t>
+            <t>Client Metadata Description: The JWS algorithm that the client will use to sign CIBA authentication requests</t>
+            <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
+            <t>Specification Document(s): <xref target="registration"/> of this document</t>
+          </list>
+        </t>
+      </section>
+
+      <section anchor="OAuthParametersReg" title="OAuth Parameters Registration">
+        <t>
+          This specification requests registration of the following value
+          in the IANA "OAuth Parameters" registry of
+          <xref target="IANA.OAuth.Parameters"/>
+          established by <xref target="RFC6749"/>.
+        </t>
+        <t>
+          <?rfc subcompact="yes"?>
+          <list style='symbols'>
+            <t>Parameter name: auth_req_id</t>
+            <t>Parameter usage location: token response</t>
+            <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
+            <t>Specification document(s): <xref target="successful_authentication_request_acknowdlegment"/> of this document</t>
+          </list>
+        </t>
+      </section>
     </section>
 
   </middle>
