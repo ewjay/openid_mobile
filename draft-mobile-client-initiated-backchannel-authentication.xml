@@ -1233,7 +1233,23 @@
         </t>
       </section>
 
-
+      <section anchor="OAuthParametersReg" title="OAuth Parameters Registration">
+        <t>
+          This specification requests registration of the following value
+          in the IANA "OAuth Parameters" registry of
+          <xref target="IANA.OAuth.Parameters"/>
+          established by <xref target="RFC6749"/>.
+        </t>
+        <t>
+          <?rfc subcompact="yes"?>
+          <list style='symbols'>
+            <t>Parameter name: auth_req_id</t>
+            <t>Parameter usage location: token response</t>
+            <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
+            <t>Specification document(s): <xref target="successful_authentication_request_acknowdlegment"/> of this document</t>
+          </list>
+        </t>
+      </section>
     </section>
 
   </middle>
