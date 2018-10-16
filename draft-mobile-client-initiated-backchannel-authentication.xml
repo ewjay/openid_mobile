@@ -619,10 +619,10 @@
               the OpenID Provider MUST return an "invalid_request" error response as per <xref target="auth_error_response"/>.
             </t>
             <t>
-              The OpenID Provider MUST validate the hint provided (login_hint, login_token_hint or id_token_hint).
-              <vspace />
-              e.g.: If a signature is provided it MUST be checked. If a validity date is provided it MUST be checked.
-              <vspace />
+              The OpenID Provider MUST process the hint provided to determine if the hint is valid and if it corresponds to a valid user. The type, issuer (where applicable) and maximum age (where applicable) of a hint that an OP accepts should be communicated to Clients. How the OP validates hints and informs Clients of its hint requirements is out-of-scope of this specification.
+            </t>
+               
+            <t>
               If the hint is not valid or if the OP is not able to determine the user then 
               an error should be returned to the Client as per section <xref target="auth_error_response" format="title"/>.
             </t>
@@ -1064,7 +1064,7 @@
                       The requested scope is invalid, unknown, or malformed.
                     </t>
                     <t hangText="expired_token">
-                      The login_hint_token or the id_token_hint provided in the authentication request is expired, so not valid.
+                      The login_hint_token provided in the authentication request is expired, so not valid.
                     </t>
                 </list>
             </t>
@@ -1137,6 +1137,12 @@
       <t>
         How this check in done is outside the scope of this specification.
       </t>
+      <t>
+        id_token_hints cannot be validated using standard JWT processing rules. This is because an expired ID Token could still be a valid id_token_hint, the audience and issuer claims are likely to be the wrong way round, and the OP may no longer have access to the key used to sign the ID Token. Given these restrictions, implementers should consider only accepting ID Tokens with pairwise subject identifiers, as hints. The OP could then validate that the Client authenticated at the Backchannel Authentication Endpoint was issued the pairwise subject identifier (or shares a Sector Identifier with the Client who was issued the pairwise subject identifier).   
+      </t>
+
+    
+
     </section>
 
     <section anchor="privacy_considerations" title="Privacy Considerations">
