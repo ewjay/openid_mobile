@@ -893,7 +893,7 @@
       <section anchor="push_callback" title="Push Callback">
         <section anchor="issuing_successful_token" title="Successful Token Delivery">
           <t>
-            If the Client is registered in Push mode and the user is well authenticated, the OpenID Provider delivers a payload that includes an ID Token, an Access Token and, optionally, a Refresh Token to the <xref target="client_notification_endpoint" format="title"/>.
+            If the Client is registered in Push mode and the user is well authenticated and has authorized the request, the OpenID Provider delivers a payload that includes an ID Token, an Access Token and, optionally, a Refresh Token to the <xref target="client_notification_endpoint" format="title"/>.
           </t>
           <t>
             Error conditions associated with the authentication request are delivered to the Client by sending a <xref target="push_error_payload" format="title"/>  to the <xref target="client_notification_endpoint" format="title"/>.
