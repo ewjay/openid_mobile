@@ -1054,7 +1054,7 @@
                 The end user denied the authorization request.
               </t>
               <t hangText="expired_token">
-                The auth_req_id has expired. The Client will need to make a new Authentication Request. OpenID Provider are not required to send this error, but Clients SHOULD support receiving this error.
+                The auth_req_id has expired. The Client will need to make a new Authentication Request. OpenID Providers are not required to send this error, but Clients SHOULD support receiving this error.
               </t>
             </list>
         </t>
@@ -1097,16 +1097,20 @@
                       The OpenID Provider is not able to identify which end-user the Client wishes to be authenticated by means of the hint provided in the request (login_hint_token, 
                       id_token_hint or login_hint).
                     </t>
+                    <t hangText="unauthorized_client">
+                      The Client is not authorized to use this authentication flow, as defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>.
+                    </t>
+                </list>
+            </t>
+            <t hangText="HTTP 401 Unauthorized">
+                <list style="hanging">        
+                    <t hangText="invalid_client">
+                      Client authentication failed (e.g., unknown client, no client authentication included, or unsupported authentication method) as defined in Section 5.2 of <xref target='RFC6749'>OAuth 2.0</xref>
+                    </t>
                 </list>
             </t>
             <t hangText="HTTP 403 Forbidden">
                 <list style="hanging">        
-                    <t hangText="unauthorized_client">
-                      The Client is not authorized to use this authentication flow, as defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>.
-                    </t>
-                    <t hangText="invalid_client">
-                      Client authentication failed (e.g., unknown client, no client authentication included, or unsupported authentication method) as defined in Section 5.2 of <xref target='RFC6749'>OAuth 2.0</xref>
-                    </t>
                     <t hangText="access_denied">
                       The resource owner or authorization server denied the request, as defined in Section 4.1.2.1 of <xref target='RFC6749'>OAuth 2.0</xref>. Note that as the authentication error response is received prior to any user interaction, such an error would only be received if a resource owner or authorization server had made a decision to deny a certain type of request or requests from a certain type of client. The mechanism for such a decision to be made in outside the scope of this specification. 
                     </t>
@@ -1120,7 +1124,7 @@
           </preamble>
           <artwork>
             <![CDATA[
-  HTTP/1.1 403 Forbidden 
+  HTTP/1.1 400 Bad Request 
   Content-Type: application/json
 
   {
