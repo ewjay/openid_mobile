@@ -1182,7 +1182,7 @@
         expired ID Token could still be a valid id_token_hind, and the OP may no longer have access 
         to the key used to sign the ID Token.
         
-        In addition while the OP is the “audience” for the id_token_hint, the audience claim in 
+        In addition while the OP is the audience for the id_token_hint, the audience claim in 
         the ID Token will be the Client identifier not the OP issuer value, therefore standard 
         audience validation cannot be applied.
 
