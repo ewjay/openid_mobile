@@ -1064,7 +1064,7 @@
                       The requested scope is invalid, unknown, or malformed.
                     </t>
                     <t hangText="expired_token">
-                      The login_hint_token provided in the authentication request is expired, so not valid.
+                      The login_hint_token provided in the authentication request is not valid because it has expired.
                     </t>
                 </list>
             </t>
@@ -1138,7 +1138,18 @@
         How this check in done is outside the scope of this specification.
       </t>
       <t>
-        id_token_hints cannot be validated using standard JWT processing rules. This is because an expired ID Token could still be a valid id_token_hint, the audience and issuer claims are likely to be the wrong way round, and the OP may no longer have access to the key used to sign the ID Token. Given these restrictions, implementers should consider only accepting ID Tokens with pairwise subject identifiers, as hints. The OP could then validate that the Client authenticated at the Backchannel Authentication Endpoint was issued the pairwise subject identifier (or shares a Sector Identifier with the Client who was issued the pairwise subject identifier).   
+        id_token_hints cannot be validated using standard JWT processing rules. This is because an 
+        expired ID Token could still be a valid id_token_hind, and the OP may no longer have access 
+        to the key used to sign the ID Token.
+        
+        In addition while the OP is the “audience” for the id_token_hint, the audience claim in 
+        the ID Token will be the Client identifier not the OP issuer value, therefore standard 
+        audience validation cannot be applied.
+
+        Given these restrictions, implementers should consider only accepting ID Tokens with pairwise 
+        subject identifiers, as hints. The OP could then validate that the Client authenticated at 
+        the Backchannel Authentication Endpoint was issued the pairwise subject identifier (or shares 
+        a Sector Identifier with the Client who was issued the pairwise subject identifier).   
       </t>
 
     
