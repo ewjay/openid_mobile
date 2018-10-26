@@ -593,6 +593,8 @@
        ]]>
         </artwork>
       </figure>
+
+          <t>Note that encrypted JWT authentication requests are not supported.</t>
         </section>
     </section>
 
