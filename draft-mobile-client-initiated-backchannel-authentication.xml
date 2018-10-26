@@ -863,20 +863,19 @@
     Cache-Control: no-store
 
     {
-     "access_token": "SlAV32hkKG",
+     "access_token": "G5kXH2wHvUra0sHlDy1iTkDJgsgUO1bN",
      "token_type": "Bearer",
-     "refresh_token": "8xLOxBtZp8",
+     "refresh_token": "4bwc0ESC_IAhflf-ACC_vjD_ltc11ne-8gFPfA2Kx16",
      "expires_in": 3600,
-     "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
-       yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
-       NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
-       fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
-       AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
-       Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
-       NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
-       QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
-       K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
-       XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
+     "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE2NzcyNiJ9.eyJpc3MiOiJ
+       odHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwic3ViIjoiMjQ4Mjg5NzYxMDAxIi
+       wiYXVkIjoiczZCaGRSa3F0MyIsImV4cCI6MTUzNzgxOTgwMywiaWF0IjoxNTM3O
+       <DE5NTAzfQ class="F2eCLLkKuhI0mHHucgaXv1kvw8Ex2jJJAnACcxKcrXXw5C-pa2yLs"></DE5NTAzfQ>
+       VGjy82sW5nfmxOtzyjn4qxkLQb5SvCF2vIWAVAJNxDBMDRtG5gzUxFr44_6Z2Aj
+       4MnS3chi7UaGJ4RVWdknxoWqjNVrhwa-pVehXDnsGPr88lf9O3mVlK3VjdEjTo2
+       jEbo_fq37A1zitXvdBdLZmUSkBkrj7Gd52j5lkJco_BqeXypctk5oAUVZiJEza8
+       V8loLm5zE2aEedSKE9PmoiF_hqXoLEtzYAZ-moFsMWyENNWURr3uI5P2TOmXQJw
+       3RQa9HBAQtX4dhSXcY4z603jg42AZn2jfv5Hg"
     }
             ]]>
           </artwork>
@@ -947,8 +946,8 @@
             The Push Callback uses the application/json media type.
           </t>
            <t>
-              In order to bind the ID Token, Access Token and the auth_req_id, the OP MUST include the hash value of the Access Token and the auth_req_id within the ID Token. 
-              In case a Refresh Token is sent to the Client, the hash value of it MUST be added to the ID too. Section 3.1.3.6 of <xref target="OpenID.Core"/> shows how to calculate the hash value of the access_token "at_hash",
+              In order to bind together the ID Token, Access Token and the auth_req_id, the OP MUST include the hash value of the Access Token and the auth_req_id within the ID Token using the <spanx style="verb">at_hash</spanx> and <spanx style="verb">urn:openid:params:jwt:claim:auth_req_id</spanx> claims respectively.
+              In case a Refresh Token is sent to the Client, the hash value of it MUST also be added to the ID token using the <spanx style="verb">urn:openid:params:jwt:claim:rt_hash</spanx> claim. Section 3.1.3.6 of <xref target="OpenID.Core"/> shows how to calculate the hash value of the access_token for <spanx style="verb">at_hash</spanx>,
               the same method can also be applied to calculate the Refresh Token hash value.
         </t>
           <figure>
@@ -965,20 +964,22 @@
 
     {
      "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1",
-     "access_token": "SlAV32hkKG",
+     "access_token": "G5kXH2wHvUra0sHlDy1iTkDJgsgUO1bN",
      "token_type": "Bearer",
-     "refresh_token": "8xLOxBtZp8",
+     "refresh_token": "4bwc0ESC_IAhflf-ACC_vjD_ltc11ne-8gFPfA2Kx16",
      "expires_in": 3600,
-     "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
-       yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
-       NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
-       fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
-       AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
-       Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
-       NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
-       QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
-       K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
-       XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
+     "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE2NzcyNiJ9.eyJpc3MiOiJ
+       odHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwic3ViIjoiMjQ4Mjg5NzYxMDAxIi
+       wiYXVkIjoiczZCaGRSa3F0MyIsImV4cCI6MTUzNzgxOTgwMywiaWF0IjoxNTM3O
+       DE5NTAzLCJ1cm46b3BlbmlkOnBhcmFtczpqd3Q6Y2xhaW06cnRfaGFzaCI6InNI
+       YWhDdVNwWENSZzVta0REdnZyNHciLCJ1cm46b3BlbmlkOnBhcmFtczpqd3Q6Y2x
+       haW06YXV0aF9yZXFfaWQiOiIxYzI2NjExNC1hMWJlLTQyNTItOGFkMS0wNDk4Nm
+       M1YjlhYzEifQ.GaHY-V4LSPADMLdpa5-P3Ffkz6B2fW6zQ7GQ3-Fob6pfk-YIlF
+       MuZps-k5MgFNCbF1bWMqr9P_7fZDy_AQgNI0SVfbWqWzqIBwAVrj784O9sfZucw
+       26kGDiXdMK-BKt-yVKwZEqwj2FlERN6rBchJtCmAvLKzbo2m9P9PhKo4ESW7pCg
+       YbXZPQeBP0pS1y35gmEkztTqmkS4HLD9Adm-tj2DJyCHH6cOGpg0HpMThQOn7gZ
+       zX15Yps8egmW_VYNui36HEQ-ehIV4wz5p3D7zzV2zP6vpFsa1YJXKtg4KYGc-_Z
+       akdNs2INDAZ2a7s3hlQQhwEslM-YesE4Wy72uchg"
     }
               ]]>
             </artwork>
@@ -990,10 +991,10 @@
           The Client MUST validate the ID Token, which acts as a detached signature, as per Section 3.1.3.7 of <xref target="OpenID.Core"/>.
         </t>
         <t>
-        The Client MUST ensure that that the auth_req_id in the ID Token matches the auth_req_id in the request.
+          The Client MUST ensure that that the value of the <spanx style="verb">urn:openid:params:jwt:claim:auth_req_id</spanx> claim in the ID Token matches the auth_req_id in the request.
         </t>
         <t>
-        The Client MUST validate the access token received in request using the at_hash in the ID Token as per Section 3.2.2.9 of <xref target="OpenID.Core"/>. If a refresh token is present in the request, the Client MUST validate it using the rt_hash in the ID Token in a similar manner as the access token is validated.
+        The Client MUST validate the access token received using the at_hash in the ID Token as per Section 3.2.2.9 of <xref target="OpenID.Core"/>. If a refresh token is present, the Client MUST validate it using the <spanx style="verb">urn:openid:params:jwt:claim:rt_hash</spanx> in the ID Token in a similar manner as the access token is validated.
       </t>
 
         <t>
@@ -1017,11 +1018,11 @@
       "iss": "http://server.example.com",
       "sub": "248289761001",
       "aud": "s6BhdRkqt3",
-      "exp": 1311281970,
-      "iat": 1311280970,
-      "at_hash": "rXH7QWVTZnXYCou_6Vdpfg",
-      "rt_hash": "njCczNMR6mTQQTPa93YPcQ",
-      "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1"
+      "exp": 1537819803,
+      "iat": 1537819503,
+      "urn:openid:params:jwt:claim:rt_hash": "sHahCuSpXCRg5mkDDvvr4w",
+      "urn:openid:params:jwt:claim:auth_req_id":
+        "1c266114-a1be-4252-8ad1-04986c5b9ac1"
     }
               ]]>
             </artwork>
@@ -1597,7 +1598,8 @@
             of the <xref target="OpenID.Core"/>
           </t>
           <t>
-            at_hash, rt_hash and auth_requ_id values have been added within the id_token to bind it with the access_token and the auth_req_id.
+            at_hash, urn:openid:params:jwt:claim:rt_hash and urn:openid:params:jwt:claim:auth_req_id values have been added within the id_token to bind it with the access_token, refresh_token and the auth_req_id
+            in the push mode.
           </t>
           <t>Change acr_values to be optional in the authentication request and define the parameter inline.</t>
           <t>Clarify that error responses from the Backchannel Authentication Endpoint are as defined in the Authentication Error Response section.</t>
