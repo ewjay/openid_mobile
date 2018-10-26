@@ -444,6 +444,9 @@
             <t hangText="client_notification_token">
               REQUIRED if the Client is registered to use Ping or Push modes. 
               It is a bearer token provided by the Client that will be used by the OpenID Provider to authenticate the callback request to the Client.
+              The length of the token MUST NOT exceed 1024 characters and it MUST conform to the syntax for Bearer credentials as defined in Section 2.1 of <xref target="RFC6750"/>.
+              Clients should ensure that it contains sufficient entropy (at least 128 bits) or be otherwise protected such as to make
+              brute force guessing or forgery of a valid token computationally infeasible.
             </t>
             <t hangText="acr_values">
               OPTIONAL. Requested Authentication Context Class Reference values.
@@ -1341,6 +1344,7 @@
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.6750"?>
       <?rfc include="reference.RFC.7519"?> <!-- JWT -->
 
       &OpenID.Core;
