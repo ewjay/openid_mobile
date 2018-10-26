@@ -211,6 +211,12 @@
               If omitted, signed authentication requests are not supported by the OP.</t>
           </list>
         </t>
+        <t>
+          The supported client authentication methods and, when applicable, the associated JWS signing
+          algorithms of the OP's Backchannel Authentication Endpoint are the same as those
+          indicated by the <spanx style="verb">token_endpoint_auth_methods_supported</spanx> and
+          <spanx style="verb">token_endpoint_auth_signing_alg_values_supported</spanx> metadata parameters respectively.
+        </t>
 
         <t hangText="Client Metadata">
           Clients registering to use CIBA MUST indicate a token delivery mode. When using the ping or poll mode, the client MUST
@@ -230,6 +236,11 @@
             The JWS algorithm <spanx style="verb">alg</spanx> value that the client will use for signing authentication request, as described in <xref target="signed_auth_request"/>.
             When omitted, the client will not send signed authentication requests.</t>
           </list>
+        </t>
+        <t>
+          The <spanx style="verb">token_endpoint_auth_method</spanx> indicates the registered authentication method for the
+          client to use when making direct requests to the OP, including requests to both the token endpoint and
+          the backchannel authentication endpoint.
         </t>
 
 
