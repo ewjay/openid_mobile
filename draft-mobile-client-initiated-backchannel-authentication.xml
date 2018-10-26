@@ -1337,7 +1337,7 @@
       &OpenID.Core;
       &OpenID.Registration;
       
-      <?rfc include="reference.I-D.draft-ietf-oauth-mtls-11"?>
+      <?rfc include="reference.I-D.draft-ietf-oauth-mtls-12"?>
 
     </references>
     
