@@ -600,6 +600,8 @@
        ]]>
         </artwork>
       </figure>
+
+          <t>Note that encrypted JWT authentication requests are not supported.</t>
         </section>
     </section>
 
@@ -1344,7 +1346,7 @@
       &OpenID.Core;
       &OpenID.Registration;
       
-      <?rfc include="reference.I-D.draft-ietf-oauth-mtls-11"?>
+      <?rfc include="reference.I-D.draft-ietf-oauth-mtls-12"?>
 
     </references>
     
