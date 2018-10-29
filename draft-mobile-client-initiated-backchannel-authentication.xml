@@ -1216,21 +1216,26 @@
       The OP SHOULD ensure that the "client_notification_endpoint" configured at registration time
       is in the administrative authority of the Client.
       Otherwise, the OP would post authentication results to the wrong Client.
+      How this check is done is outside the scope of this specification.
       </t>
       <t>
-        How this check is done is outside the scope of this specification.
-      </t>
-      <t>
-        id_token_hints cannot be validated using standard JWT processing rules. This is because an 
-        expired ID Token could still be a valid id_token_hind, and the OP may no longer have access 
-        to the key used to sign the ID Token.
-        
-        In addition while the OP is the audience for the id_token_hint, the audience claim in 
-        the ID Token will be the Client identifier not the OP issuer value, therefore standard 
-        audience validation cannot be applied.
+        An id_token_hint cannot be validated using standard JWT processing rules because
+        the token is being used in a context (sent from the Client back to the OP) that is different
+        than that for which it was originally issued (typically a short lived token issued by
+        the OP intended to convey claims about the authentication of an end-user to the Client).
+        An expired ID Token therefore could still be considered valid as an id_token_hint so an OP should,
+        for some reasonable period, accept id_token_hints with an expiration time that has passed.
+        The OP should ensure that it is the issuer of the token and that
+        the Client presenting the id_token_hint is listed in the the audience claim.
+        The OP should verify the signature to ensure that the token was, in fact, issued by it and
+        hasn't been modified since. Note that due to key rotation, however, the the OP may not
+        necessarily have access to the key used to sign the tokenso the length of time an
+        ID Token is considered a valid hint will likely be limited by the OP's key rotation interval and
+        retention period.
 
-        Given these restrictions, implementers should consider only accepting ID Tokens with pairwise 
-        subject identifiers, as hints. The OP could then validate that the Client authenticated at 
+        Given these restrictions, implementers may consider not verifying the signature at all and
+        only accepting ID Tokens with pairwise subject identifiers as hints.
+        The OP could then validate that the Client authenticated at
         the Backchannel Authentication Endpoint was issued the pairwise subject identifier (or shares 
         a Sector Identifier with the Client who was issued the pairwise subject identifier).   
       </t>
