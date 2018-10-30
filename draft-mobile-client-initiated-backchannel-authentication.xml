@@ -1229,7 +1229,7 @@
         the Client presenting the id_token_hint is listed in the the audience claim.
         The OP should verify the signature to ensure that the token was, in fact, issued by it and
         hasn't been modified since. Note that due to key rotation, however, the the OP may not
-        necessarily have access to the key used to sign the tokenso the length of time an
+        necessarily have access to the key used to sign the token, so the length of time an
         ID Token is considered a valid hint will likely be limited by the OP's key rotation interval and
         retention period.
 
