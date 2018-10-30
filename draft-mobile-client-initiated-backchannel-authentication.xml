@@ -416,7 +416,7 @@
     <section anchor="auth_backchannel_endpoint" title="Backchannel Authentication Endpoint">
       <t>
         The Backchannel Authentication Endpoint is used to initiate an out-of-band authentication of the End-User. This is done by sending an HTTP
-        POST message directly from the Client to the OpenID Provider's Backchannel Authentication Endpoint, using 
+        POST message directly from the Client to the OpenID Provider's Backchannel Authentication Endpoint, using
         a request defined in the following subsections.
       </t>
       <t>
@@ -426,13 +426,13 @@
 
       <section anchor="auth_request" title="Authentication Request">
         <t>
-          MODRNA Client initiated Backchannel Authentication defines an authentication request that is requested directly from 
-          the Client to the OpenID Provider without going through the user's browser. The Client MUST send an authentication 
-          request to the OpenID Provider by building an "HTTP POST" request that will take to the OpenID Provider all the 
-          information needed to authenticate the user without asking them for their identifier.      
+          MODRNA Client initiated Backchannel Authentication defines an authentication request that is requested directly from
+          the Client to the OpenID Provider without going through the user's browser. The Client MUST send an authentication
+          request to the OpenID Provider by building an "HTTP POST" request that will take to the OpenID Provider all the
+          information needed to authenticate the user without asking them for their identifier.
         </t>
         <t>
-          The Client MUST authenticate to the Backchannel Authentication Endpoint using the authentication method registered for its 
+          The Client MUST authenticate to the Backchannel Authentication Endpoint using the authentication method registered for its
           client_id, such as the authentication methods from Section 9 of <xref target="OpenID.Core"/> or authentication methods
           defined by extension in other specifications.
         </t>
@@ -453,7 +453,7 @@
               and <spanx style="verb">phone</spanx> scope values from Section 5.4 of <xref target="OpenID.Core"/>, .
             </t>
             <t hangText="client_notification_token">
-              REQUIRED if the Client is registered to use Ping or Push modes. 
+              REQUIRED if the Client is registered to use Ping or Push modes.
               It is a bearer token provided by the Client that will be used by the OpenID Provider to authenticate the callback request to the Client.
               The length of the token MUST NOT exceed 1024 characters and it MUST conform to the syntax for Bearer credentials as defined in Section 2.1 of <xref target="RFC6750"/>.
               Clients should ensure that it contains sufficient entropy (at least 128 bits) or be otherwise protected such as to make
@@ -479,7 +479,7 @@
               the end-user for whom authentication is being requested.
               If the ID Token received by the client from the OP was encrypted, to use it as an id_token_hint,
               the client MUST decrypt the signed ID Token contained within the encrypted ID Token.
-            </t> 
+            </t>
             <t hangText="login_hint">
               OPTIONAL.
               A hint to the authorization server regarding the end-user for whom authentication is being requested.
@@ -504,8 +504,8 @@
           </list>
         </t>
         <t>
-          As the Client initiated Backchannel Authentication flow does not have an interaction with the end-user through a consumption device, 
-          it is REQUIRED that the Client provides one (and only one) of the hints specified above in the authentication request, that is "login_hint_token", 
+          As the Client initiated Backchannel Authentication flow does not have an interaction with the end-user through a consumption device,
+          it is REQUIRED that the Client provides one (and only one) of the hints specified above in the authentication request, that is "login_hint_token",
           "id_token_hint" or "login_hint".
         </t>
         <t>
@@ -515,21 +515,21 @@
           format and a character encoding of UTF-8 in the HTTP request entity-body.
         </t>
         <section title="User Code" anchor="user_code">        <t>
-        User code is a mechanism to prevent unsolicited authentication requests from appearing on user's authentication device. 
-        </t>
-        <t>
-        User code is optional. The authentication service may allow users without registered user code. Clients that establish a security context with the user before sending an authentication request should not be required to send a user code.
-        </t>
-        <t>
-        Registering a user code for a user is not in scope of this specification. Examples include a facility provided by the authentication device or SMS text messages.
-        </t>
+            User code is a mechanism to prevent unsolicited authentication requests from appearing on user's authentication device.
+          </t>
+          <t>
+            User code is optional. The authentication service may allow users without registered user code. Clients that establish a security context with the user before sending an authentication request should not be required to send a user code.
+          </t>
+          <t>
+            Registering a user code for a user is not in scope of this specification. Examples include a facility provided by the authentication device or SMS text messages.
+          </t>
         </section>
         <section title="Authentication Request Example">
-        <figure>
+          <figure>
           <preamble>The following is a non-normative example of an authentication request (with line wraps within values for display purposes only):
-          </preamble>
-          <artwork>
-       <![CDATA[
+            </preamble>
+            <artwork>
+              <![CDATA[
    POST /bc-authorize HTTP/1.1
    Host: server.example.com
    Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
@@ -550,44 +550,44 @@
        SdiwkIr3ajwQzaBtQD_A.
    XFBoMYUZodetZdvTiFvSkQ
        ]]>
-          </artwork>
-        </figure>
-        <section title="Signed Authentication Request" anchor="signed_auth_request">
-        <t>
-          A signed authentication request can be made by encoding the authentication request parameters as
-          claims of a signed JWT, with each parameter name as the claim name and its value as a JSON string.
-          The JWT MUST be secured with an asymmetric signature and follow the guidance from
-          <eref target="https://openid.net/specs/openid-connect-core-1_0.html#Signing">Section 10.1</eref> of
-          <xref target="OpenID.Core"/> regarding asymmetric signatures.
-          The signed authentication request JWT is passed as an <spanx style='verb'>application/x-www-form-urlencoded</spanx>
-          HTTP request parameter with the name <spanx style='verb'>request</spanx>.
-          The JWT MUST also contain the following <xref target="RFC7519"/> registered claims:
-        </t>
-        <t>
-          <list style="hanging">
-            <t hangText="aud">
-              The Audience claim must contain the value of the Issuer Identifier for the OP, which identifies the Authorization Server as an intended audience.
+            </artwork>
+          </figure>
+          <section title="Signed Authentication Request" anchor="signed_auth_request">
+            <t>
+              A signed authentication request can be made by encoding the authentication request parameters as
+              claims of a signed JWT, with each parameter name as the claim name and its value as a JSON string.
+              The JWT MUST be secured with an asymmetric signature and follow the guidance from
+              <eref target="https://openid.net/specs/openid-connect-core-1_0.html#Signing">Section 10.1</eref> of
+              <xref target="OpenID.Core"/> regarding asymmetric signatures.
+              The signed authentication request JWT is passed as an <spanx style='verb'>application/x-www-form-urlencoded</spanx>
+              HTTP request parameter with the name <spanx style='verb'>request</spanx>.
+              The JWT MUST also contain the following <xref target="RFC7519"/> registered claims:
             </t>
-            <t hangText="iss">
-              The Issuer claim must be the <spanx style="verb">client_id</spanx> of the OAuth Client.
+            <t>
+              <list style="hanging">
+                <t hangText="aud">
+                  The Audience claim must contain the value of the Issuer Identifier for the OP, which identifies the Authorization Server as an intended audience.
+                </t>
+                <t hangText="iss">
+                  The Issuer claim must be the <spanx style="verb">client_id</spanx> of the OAuth Client.
+                </t>
+                <t hangText="exp">
+                  An expiration time that limits the validity lifetime of the signed authentication request.
+                </t>
+                <t hangText="iat">
+                  The time at which the signed authentication request was created.
+                </t>
+                <t hangText="jti">
+                  A unique identifier for the signed authentication request.
+                </t>
+              </list>
             </t>
-            <t hangText="exp">
-              An expiration time that limits the validity lifetime of the signed authentication request.
-            </t>
-            <t hangText="iat">
-              The time at which the signed authentication request was created.
-            </t>
-            <t hangText="jti">
-              A unique identifier for the signed authentication request.
-            </t>
-          </list>
-        </t>
-        <figure>
+            <figure>
           <preamble>For example, a signed authentication request using the same authentication request parameters and values
-            as the example from the previous section would look like the following (with line wraps within values for display purposes only):
-          </preamble>
-          <artwork>
-            <![CDATA[
+                as the example from the previous section would look like the following (with line wraps within values for display purposes only):
+              </preamble>
+              <artwork>
+                <![CDATA[
    POST /bc-authorize HTTP/1.1
    Host: server.example.com
    Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
@@ -617,14 +617,14 @@
    xcC4djEL1nvr2MuXUUEZ-N31HW-78S0JwoXnHKB1cQBSObSRLaNlbulAxCDd7E9g
    SycxDA
        ]]>
-          </artwork>
-        </figure>
+              </artwork>
+            </figure>
 
-      <figure>
+            <figure>
         <preamble>Where the following is the JWT payload (with line wraps and added whitespace for display purposes only):
-        </preamble>
-        <artwork>
-          <![CDATA[
+              </preamble>
+              <artwork>
+                <![CDATA[
     {
      "iss": "s6BhdRkqt3",
      "aud": "http://server.example.com",
@@ -645,82 +645,82 @@
        hS8iB7j6jiSdiwkIr3ajwQzaBtQD_A.XFBoMYUZodetZdvTiFvSkQ"
    }
        ]]>
-          </artwork>
-      </figure>
+              </artwork>
+            </figure>
 
-          <t>Note that encrypted JWT authentication requests are not supported.</t>
+            <t>Note that encrypted JWT authentication requests are not supported.</t>
+          </section>
         </section>
-      </section>
 
-      <section anchor="auth_request_validation" title="Authentication Request Validation">
-        <t>
-          The OpenID Provider MUST validate the request received as follows:
-        </t>
-        <t>
-          <list style="numbers">
-            <t>
-              Authenticate the Client per the authentication method registered or configured for its client_id.
-              <vspace />
-              It is RECOMMENDED that Clients do not send shared secrets in the Authentication Request. 
-              It is RECOMMENDED that public key cryptography is used.
-              <vspace />
-            </t>
-            <t>
-              If the authentication request is signed, validate the JWT sent with the <spanx style='verb'>request</spanx> parameter, which includes
-              verifying the signature and ensuring that the JWT is valid in all other respects per <xref target="RFC7519"/>.
-            </t>
-            <t>
-              Validate all the authentication request parameters.
-              In the event the request contains more than one of the hints specified in <xref target="auth_request">Authentication Request</xref>,
-              the OpenID Provider MUST return an "invalid_request" error response as per <xref target="auth_error_response"/>.
-            </t>
-            <t>
-              The OpenID Provider MUST process the hint provided to determine if the hint is valid and if it corresponds to a valid user. The type, issuer (where applicable) and maximum age (where applicable) of a hint that an OP accepts should be communicated to Clients. How the OP validates hints and informs Clients of its hint requirements is out-of-scope of this specification.
-            </t>
-               
-            <t>
-              If the hint is not valid or if the OP is not able to determine the user then 
-              an error should be returned to the Client as per section <xref target="auth_error_response" format="title"/>.
-            </t>
-            <t>
-              The OpenID Provider MUST verify that all the REQUIRED parameters are present and their usage conforms to this 
-              specification.
-            </t>
-          </list>
-        </t>
-        <t>
+        <section anchor="auth_request_validation" title="Authentication Request Validation">
+          <t>
+            The OpenID Provider MUST validate the request received as follows:
+          </t>
+          <t>
+            <list style="numbers">
+              <t>
+                Authenticate the Client per the authentication method registered or configured for its client_id.
+                <vspace />
+                It is RECOMMENDED that Clients do not send shared secrets in the Authentication Request.
+                It is RECOMMENDED that public key cryptography is used.
+                <vspace />
+              </t>
+              <t>
+                If the authentication request is signed, validate the JWT sent with the <spanx style='verb'>request</spanx> parameter, which includes
+                verifying the signature and ensuring that the JWT is valid in all other respects per <xref target="RFC7519"/>.
+              </t>
+              <t>
+                Validate all the authentication request parameters.
+                In the event the request contains more than one of the hints specified in <xref target="auth_request">Authentication Request</xref>,
+                the OpenID Provider MUST return an "invalid_request" error response as per <xref target="auth_error_response"/>.
+              </t>
+              <t>
+                The OpenID Provider MUST process the hint provided to determine if the hint is valid and if it corresponds to a valid user. The type, issuer (where applicable) and maximum age (where applicable) of a hint that an OP accepts should be communicated to Clients. How the OP validates hints and informs Clients of its hint requirements is out-of-scope of this specification.
+              </t>
+
+              <t>
+                If the hint is not valid or if the OP is not able to determine the user then
+                an error should be returned to the Client as per section <xref target="auth_error_response" format="title"/>.
+              </t>
+              <t>
+                The OpenID Provider MUST verify that all the REQUIRED parameters are present and their usage conforms to this
+                specification.
+              </t>
+            </list>
+          </t>
+          <t>
             OpenID Providers SHOULD ignore unrecognized request parameters.
-        </t>          
-        <t>
+          </t>
+          <t>
             If the OpenID Provider encounters any error, it MUST return an error response, per <xref target="auth_error_response"/>.
-         </t>       
-      </section>
+          </t>
+        </section>
 
-      <section anchor="successful_authentication_request_acknowdlegment" title="Successful Authentication Request Acknowledgement">
-        <t>
-          If the <xref target="auth_request" format="title"/> is validated as per Section <xref target="auth_request_validation" format="title"/>, 
-          the OpenID Provider will return an HTTP 200 OK response to the Client
-          to indicate that the authentication request has been accepted and it is going to be processed. The body of this response will contain:
-        </t>
-        <t>
-          <list style="hanging">
-            <t hangText="auth_req_id">
-              REQUIRED. This is a unique identifier to identify the authentication request made by the Client.
-             </t>
-            <t hangText="expires_in">
-              REQUIRED. Expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
-             </t>
-            <t hangText="interval">
-              OPTIONAL. The minimum amount of time in seconds that the Client MUST wait between polling requests to the token endpoint. 
-              This parameter will only be present if the Client is registered to use the Poll or Ping modes.
-             </t>
-          </list>
-        </t>
-        <figure> 
+        <section anchor="successful_authentication_request_acknowdlegment" title="Successful Authentication Request Acknowledgement">
+          <t>
+            If the <xref target="auth_request" format="title"/> is validated as per Section <xref target="auth_request_validation" format="title"/>,
+            the OpenID Provider will return an HTTP 200 OK response to the Client
+            to indicate that the authentication request has been accepted and it is going to be processed. The body of this response will contain:
+          </t>
+          <t>
+            <list style="hanging">
+              <t hangText="auth_req_id">
+                REQUIRED. This is a unique identifier to identify the authentication request made by the Client.
+              </t>
+              <t hangText="expires_in">
+                REQUIRED. Expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
+              </t>
+              <t hangText="interval">
+                OPTIONAL. The minimum amount of time in seconds that the Client MUST wait between polling requests to the token endpoint.
+                This parameter will only be present if the Client is registered to use the Poll or Ping modes.
+              </t>
+            </list>
+          </t>
+          <figure>
           <preamble>The following is a non-normative example from an authentication response
-          </preamble>
-          <artwork>
-            <![CDATA[
+            </preamble>
+            <artwork>
+              <![CDATA[
     HTTP/1.1 200 OK
     Content-Type: application/json
     Cache-Control: no-store
@@ -731,25 +731,26 @@
       "interval": 2
     }
             ]]>
-          </artwork>
-        </figure>      
-      </section>
+            </artwork>
+          </figure>
+        </section>
 
-      <section anchor="auth_request_acknowdlegment_validation" title="Authentication Request Acknowledgment Validation">
-        <t>
-          If the Client receives an HTTP 200 OK, it MUST validate that all the required parameters are received. 
-        </t>
-        <t>
-          The Client MUST keep the <spanx style="verb">auth_req_id</spanx> in order to validate the callbacks received in Ping and Push modes or to use when polling the token endpoint in Poll mode.
-        </t>
-        <t>
-          The Client should store the expiration time in order to clean up authentication requests for which
-          no Ping Callback or Push Callback is received. 
-        </t>
-      </section>
+        <section anchor="auth_request_acknowdlegment_validation" title="Authentication Request Acknowledgment Validation">
+          <t>
+            If the Client receives an HTTP 200 OK, it MUST validate that all the required parameters are received.
+          </t>
+          <t>
+            The Client MUST keep the <spanx style="verb">auth_req_id</spanx> in order to validate the callbacks received in Ping and Push modes or to use when polling the token endpoint in Poll mode.
+          </t>
+          <t>
+            The Client should store the expiration time in order to clean up authentication requests for which
+            no Ping Callback or Push Callback is received.
+          </t>
+        </section>
 
+      </section>
     </section>
-
+      
     <section anchor="auth_server_obtains_consent" title="OpenID Provider Obtains End-user Consent/Authorization">
       <t>
         After the OP has validated the Authentication Request, the OP identifies the user's Authentication Device (AD).
