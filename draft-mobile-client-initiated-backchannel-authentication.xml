@@ -539,7 +539,7 @@
             The OP declares support for user code with provider metadata parameter <spanx style="verb">user_code_parameter_supported</spanx>.
           </t>
           <t>
-            The client registration <spanx style="verb">parameter user_code_parameter</spanx> defines if user code is required from the client. This parameter has one of three values: <spanx style="verb">required</spanx> - user code is required, <spanx style="verb">not_required</spanx> - user code is not required, <spanx style="verb">optional</spanx> - client is trusted and allowed to choose at its own discretion.
+            The client registration parameter <spanx style="verb">user_code_parameter</spanx> defines if user code is required from the client. This parameter has one of three values: <spanx style="verb">required</spanx> - user code is required, <spanx style="verb">not_required</spanx> - user code is not required, <spanx style="verb">optional</spanx> - client is trusted and allowed to choose at its own discretion.
             If user code is optional for a client then authentication request parameter <spanx style="verb">user_code_omitted</spanx> is used to define a request without user code.
           </t>
           <t>
