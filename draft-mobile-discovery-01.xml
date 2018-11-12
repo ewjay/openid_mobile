@@ -12,7 +12,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-mobile-discovery-04" ipr="none">
+<rfc category="std" docName="draft-mobile-discovery-05" ipr="none">
   <?rfc toc="yes" ?>
 
   <?rfc tocdepth="5" ?>
