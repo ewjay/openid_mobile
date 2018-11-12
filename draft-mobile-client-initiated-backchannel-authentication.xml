@@ -265,7 +265,7 @@
               <vspace />
               <list style="numbers">
                 <t>
-                  Using the <eref target="https://tools.ietf.org/html/draft-ietf-oauth-mtls#section-2.1">PKI Mutual TLS OAuth Client Authentication Method</eref> as defined in section 2.1 of
+                  Using the <eref target="https://tools.ietf.org/html/draft-ietf-oauth-mtls#section-2.2">Self-Signed Certificate Mutual TLS OAuth Client Authentication Method</eref> as defined in section 2.2 of
                   <xref target="I-D.ietf-oauth-mtls"/>
                 </t> 
                 <t>
@@ -1596,7 +1596,7 @@
           <t>
             If the OP uses Pairwise Identifiers and the Polling Mechanism to retrieve the token, it is necessary to provide a "jwks_uri" at the registration phase and
             it is MANDATORY for the Client to authenticate the token endpoint using one of this two mechanisms: 
-            Using Mutual TLS PKI method as defined in section 2.1 of <xref target="I-D.ietf-oauth-mtls"/>
+            Using Mutual TLS Self-Signed Certificate method as defined in section 2.2 of <xref target="I-D.ietf-oauth-mtls"/>
             or using the private_key_jwt method as per the section 9 <eref target="https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication">Client Authentication</eref>
             of the <xref target="OpenID.Core"/>
           </t>
