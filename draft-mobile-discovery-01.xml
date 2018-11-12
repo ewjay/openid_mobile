@@ -28,7 +28,7 @@
   <?rfc private="Draft" ?>
 
   <front>
-    <title abbrev="OIDC Mobile Discoery Profile 1.0">OpenID Connect Mobile
+    <title abbrev="OIDC Mobile Discovery Profile 1.0">OpenID Connect Mobile
     Discovery Profile 1.0</title>
 
     <author fullname="Torsten Lodderstedt" initials="T." surname="Lodderstedt">
