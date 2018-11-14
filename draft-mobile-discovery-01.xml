@@ -960,7 +960,6 @@ POST /token HTTP/1.1
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
 
-
       <t>-05 <list style="symbols">
           <t>moved section on use of account chooser to appendix</t>
           <t>updated author's affiliations</t>
