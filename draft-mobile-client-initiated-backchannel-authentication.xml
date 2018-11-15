@@ -245,24 +245,25 @@
 
 
     
-            <t hangText="Polling and Pairwise Identifiers">
-              The downside of using the polling mechanism to get the tokens is that is not possible to use Pairwise Pseudonymous Identifiers (PPIDs)
-              unless the Client registers a URI that is of its ownership and uses it during the authentication process in order to verify that
-              such URI belongs to the Client and so it can be considered as a "sector_identifier_uri" to generate the PPIDs.
+            <t hangText="Poll and Ping Modes with Pairwise Identifiers">
+              In order to use the Poll or Ping mode with Pairwise Pseudonymous Identifiers (PPIDs),
+              the Client needs to register a URI that is of its ownership and use it during the authentication process in a way that demonstrates that
+              the URI belongs to it, which allows the OP to consider the URI as the Sector Identifier for the pairwise identifier calculation per
+              <eref target="https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg">Section 8.1 of OpenID Connect Core</eref>.
             </t>
             <t>
               The only way that CIBA generates Pairwise Pseudonymous Identifiers is by providing a "jwks_uri" at the registration phase when the
-              "urn:openid:params:modrna:grant-type:backchannel_request" grant type is registered. In that way the OpenID Provider will have a URI to set as a "sector_identifier_uri" and
-              it will utilize it to generate the PPIDs. So, whenever the OpenID Provider receives a dynamic registration request it MUST check if a valid
-              "jwks_uri" is set when the backchannel request grant type is present in the list of the grant types required.
+              "urn:openid:params:modrna:grant-type:backchannel_request" grant type is registered. In that way the OpenID Provider will have a URI to use as the Sector Identifier
+              to generate the PPIDs for the Client. So, when an OpenID Provider that supports PPIDs receives a dynamic registration request it MUST check if a valid
+              "jwks_uri" is set when the backchannel request grant type is present in the "grant_types" list and the "subject_type" is "pairwise".
 
-              If a "sector_identifier_uri" is explicitly provided, then the "jwks_uri" must be included in the list of URIs pointed by "sector_identifier_uri".
+              If a "sector_identifier_uri" is explicitly provided, then the "jwks_uri" must be included in the list of URIs pointed to by "sector_identifier_uri".
             </t>            
             <t>
               But having registered a "jwks_uri" is not enough to use PPIDs, Client needs somehow to demonstrate that such "jwks_uri" belongs to it,
               which can be accomplished by proving possession of a private key corresponding to one of the public keys published at the "jwks_uri".
-              It is therefore MANDATORY for the Client to authenticate to the token endpoint using one of the following two mechanisms in conjunction
-              with a key from its "jwks_uri":
+              Such proof can be demonstrated with signed authentication requests using the asymmetric keys provided by the "jwks_uri" or
+              by authenticating to the OP using one of the following two mechanisms in conjunction with a key from its "jwks_uri":
               <vspace />
               <vspace />
               <list style="numbers">
@@ -275,11 +276,10 @@
                   of <xref target="OpenID.Core"/>.
                 </t> 
               </list>
-              Signed authentication request with the asymmetric keys provided by the "jwks_uri" are OPTIONAL.
             </t>
 
-            <t hangText="Ping and Push Modes with Pairwise Identifiers">
-              When using Ping or Push modes, the PPIDs will use the "client_notification_endpoint" as a "sector_identifier_uri". In case a "sector_identifier_uri"
+            <t hangText="Push Mode with Pairwise Identifiers">
+              When using the Push mode, the PPIDs will use the "client_notification_endpoint" as the Sector Identifier. In case a "sector_identifier_uri"
               is explicitly provided, then the "client_notification_endpoint" must be included in the list of URIs pointed by "sector_identifier_uri".
             </t>      
         </list>
