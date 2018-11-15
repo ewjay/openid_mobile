@@ -228,7 +228,7 @@
           <list style="symbols">
             <t><spanx style="verb">backchannel_token_delivery_mode</spanx>: REQUIRED - one of the following values <spanx style="verb">poll</spanx>, 
             <spanx style="verb">ping</spanx> or <spanx style="verb">push</spanx>.</t>
-            <t><spanx style="verb">client_notification_endpoint</spanx>: REQUIRED if the token delivery mode is set to 
+            <t><spanx style="verb">backchannel_client_notification_endpoint</spanx>: REQUIRED if the token delivery mode is set to
             <spanx style="verb">ping</spanx> or <spanx style="verb">push</spanx>. This is the endpoint to which the OP will post a notification after a successful or failed end-user authentication.
             It MUST be an HTTPS URL.
             </t>
@@ -277,8 +277,8 @@
             </t>
 
             <t hangText="Ping and Push Modes with Pairwise Identifiers">
-              When using Ping or Push modes, the PPIDs will use the "client_notification_endpoint" as a "sector_identifier_uri". In case a "sector_identifier_uri"
-              is explicitly provided, then the "client_notification_endpoint" must be included in the list of URIs pointed by "sector_identifier_uri".
+              When using Ping or Push modes, the PPIDs will use the "backchannel_client_notification_endpoint" as a "sector_identifier_uri". In case a "sector_identifier_uri"
+              is explicitly provided, then the "backchannel_client_notification_endpoint" must be included in the list of URIs pointed by "sector_identifier_uri".
             </t>      
         </list>
         <figure>
@@ -758,7 +758,7 @@
       </t>
     </section>
 
-      <section anchor="client_notification_endpoint" title="Client Notification Endpoint">
+      <section anchor="backchannel_client_notification_endpoint" title="Client Notification Endpoint">
           <t>
             The Client Notification Endpoint is set by the Client during <xref target="registration" format="title"/>. It is the endpoint the OP will call after a succesful or failed end-user authentication. 
           </t>
@@ -883,14 +883,14 @@
         <section anchor="ping_callback" title="Ping Callback">
           <t>
             If the Client is registered in Ping mode, the OpenID Provider will send an HTTP POST Request
-            to the <xref target="client_notification_endpoint" format="title"/> either when the end-user is well authenticated and has authorized the request or if the end-user has denied the request.
+            to the <xref target="backchannel_client_notification_endpoint" format="title"/> either when the end-user is well authenticated and has authorized the request or if the end-user has denied the request.
           </t>
           <t>
             In this mode the OP sends the <spanx style="verb">client_notification_token</spanx> as a bearer token in the Authorization header field and sends only the auth_req_id in the body of the request. The request uses the application/json media type.
           </t>
           <figure>
             <preamble>The following is a non-normative example of a Ping callback sent as an HTTP POST
-              request to the Client's client_notification_endpoint (with line wraps within values for display purposes only).
+              request to the Client's Notification Endpoint (with line wraps within values for display purposes only).
             </preamble>
             <artwork>
               <![CDATA[
@@ -931,10 +931,10 @@
       <section anchor="push_callback" title="Push Callback">
         <section anchor="issuing_successful_token" title="Successful Token Delivery">
           <t>
-            If the Client is registered in Push mode and the user is well authenticated and has authorized the request, the OpenID Provider delivers a payload that includes an ID Token, an Access Token and, optionally, a Refresh Token to the <xref target="client_notification_endpoint" format="title"/>.
+            If the Client is registered in Push mode and the user is well authenticated and has authorized the request, the OpenID Provider delivers a payload that includes an ID Token, an Access Token and, optionally, a Refresh Token to the <xref target="backchannel_client_notification_endpoint" format="title"/>.
           </t>
           <t>
-            Error conditions associated with the authentication request are delivered to the Client by sending a <xref target="push_error_payload" format="title"/>  to the <xref target="client_notification_endpoint" format="title"/>.
+            Error conditions associated with the authentication request are delivered to the Client by sending a <xref target="push_error_payload" format="title"/>  to the <xref target="backchannel_client_notification_endpoint" format="title"/>.
           </t>
           <t>
             The Push Callback uses the parameters defined for a successful token response in Section 4.1.4 of <xref target="RFC6749">OAuth 2.0</xref> and Section 3.1.3.3 of <xref target="OpenID.Core"/>. In addition a new parameter "auth_req_id" is included in the payload. This is the authentication request identifier as defined in <xref target="successful_authentication_request_acknowdlegment">Successful Authentication Response</xref>.
@@ -1212,7 +1212,7 @@
         prevent collecting of phone numbers by rogue Clients.
       </t>
       <t>
-      The OP SHOULD ensure that the "client_notification_endpoint" configured at registration time
+      The OP SHOULD ensure that the "backchannel_client_notification_endpoint" configured at registration time
       is in the administrative authority of the Client.
       Otherwise, the OP would post authentication results to the wrong Client.
       How this check is done is outside the scope of this specification.
@@ -1319,7 +1319,7 @@
         <t>
           <?rfc subcompact="yes"?>
           <list style="symbols">
-            <t>Client Metadata Name: <spanx style="verb">client_notification_endpoint</spanx></t>
+            <t>Client Metadata Name: <spanx style="verb">backchannel_client_notification_endpoint</spanx></t>
             <t>Client Metadata Description: Endpoint to which a notification will be sent after a CIBA end-user authentication event</t>
             <t>Change Controller: OpenID Foundation MODRNA Working Group - openid-specs-mobile-profile@lists.openid.net</t>
             <t>Specification Document(s): <xref target="registration"/> of this document</t>
@@ -1611,6 +1611,7 @@
           <t>Introduce a third mode for getting the tokens so now there's 1) Poll, 2) Ping and 3) Push.</t>
           <t>Add AS/OP metadata parameter for the Backchannel Authentication Endpoint.</t>
           <t>More clearly define the authentication request format and client authentication to the Backchannel Authentication Endpoint.</t>
+          <t>Change client_notification_endpoint to backchannel_client_notification_endpoint.</t>
         </list>
       </t>
     </section>
