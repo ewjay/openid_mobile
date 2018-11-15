@@ -437,7 +437,7 @@
           defined by extension in other specifications.
         </t>
         <t>
-          An authentication request is composed of the following parameters:
+          An authentication request is composed of the following parameters and MAY contain additional parameters defined by extension or profile:
         </t>
         <t>
           <list style="hanging">
