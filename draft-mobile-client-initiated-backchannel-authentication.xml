@@ -259,18 +259,20 @@
               If a "sector_identifier_uri" is explicitly provided, then the "jwks_uri" must be included in the list of URIs pointed by "sector_identifier_uri".
             </t>            
             <t>
-              But having registered a "jwks_uri" is not enough to use PPIDs, Client needs somehow to demonstrate that such "jwks_uri" belongs to it.
-              It is therefore MANDATORY for the Client to authenticate the token endpoint using one of the following two mechanisms:
+              But having registered a "jwks_uri" is not enough to use PPIDs, Client needs somehow to demonstrate that such "jwks_uri" belongs to it,
+              which can be accomplished by proving possession of a private key corresponding to one of the public keys published at the "jwks_uri".
+              It is therefore MANDATORY for the Client to authenticate to the token endpoint using one of the following two mechanisms in conjunction
+              with a key from its "jwks_uri":
               <vspace />
               <vspace />
               <list style="numbers">
                 <t>
                   Using the <eref target="https://tools.ietf.org/html/draft-ietf-oauth-mtls#section-2.2">Self-Signed Certificate Mutual TLS OAuth Client Authentication Method</eref> as defined in section 2.2 of
-                  <xref target="I-D.ietf-oauth-mtls"/>
+                  <xref target="I-D.ietf-oauth-mtls"/>.
                 </t> 
                 <t>
                   Using the private_key_jwt method as per the section 9 <eref target="https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication">Client Authentication</eref>
-                  of the <xref target="OpenID.Core"/>, otherwise it MUST respond with an invalid_request error.
+                  of <xref target="OpenID.Core"/>.
                 </t> 
               </list>
               Signed authentication request with the asymmetric keys provided by the "jwks_uri" are OPTIONAL.
