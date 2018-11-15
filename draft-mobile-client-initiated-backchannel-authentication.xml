@@ -424,7 +424,7 @@
     <section anchor="auth_backchannel_endpoint" title="Backchannel Authentication Endpoint">
       <t>
         The Backchannel Authentication Endpoint is used to initiate an out-of-band authentication of the end-user. This is done by sending an HTTP
-        POST message directly from the Client to the OpenID Provider's Backchannel Authentication Endpoint, using
+        POST message directly from the Client to the OpenID Provider's Backchannel Authentication Endpoint, using 
         a request defined in the following subsections.
       </t>
       <t>
@@ -440,7 +440,7 @@
           information needed to authenticate the user without asking them for their identifier.      
         </t>
         <t>
-          The Client MUST authenticate to the Backchannel Authentication Endpoint using the authentication method registered for its
+          The Client MUST authenticate to the Backchannel Authentication Endpoint using the authentication method registered for its 
           client_id, such as the authentication methods from Section 9 of <xref target="OpenID.Core"/> or authentication methods
           defined by extension in other specifications.
         </t>
@@ -461,7 +461,7 @@
               and <spanx style="verb">phone</spanx> scope values from Section 5.4 of <xref target="OpenID.Core"/>, .
             </t>
             <t hangText="client_notification_token">
-              REQUIRED if the Client is registered to use Ping or Push modes.
+              REQUIRED if the Client is registered to use Ping or Push modes. 
               It is a bearer token provided by the Client that will be used by the OpenID Provider to authenticate the callback request to the Client.
               The length of the token MUST NOT exceed 1024 characters and it MUST conform to the syntax for Bearer credentials as defined in Section 2.1 of <xref target="RFC6750"/>.
               Clients should ensure that it contains sufficient entropy (at least 128 bits) or be otherwise protected such as to make
@@ -487,7 +487,7 @@
               the end-user for whom authentication is being requested.
               If the ID Token received by the Client from the OP was encrypted, to use it as an id_token_hint,
               the client MUST decrypt the encrypted ID Token to extract the signed ID Token contained in it.
-            </t>
+            </t> 
             <t hangText="login_hint">
               OPTIONAL.
               A hint to the OpenID Provider regarding the end-user for whom authentication is being requested.
@@ -525,36 +525,11 @@
           parameters in the <spanx style='verb'>application/x-www-form-urlencoded</spanx>
           format and a character encoding of UTF-8 in the HTTP request entity-body.
         </t>
-        <section title="User Code" anchor="user_code">
-          <t>
-            User code is a mechanism to prevent unsolicited authentication requests from appearing on a user's authentication device.
-          </t>
-          <t>
-            User code is optional. It is optional for the authentication service (OP) to implement user code functionality. If the OP implements user code functionality then it may allow 1) clients without user code and 2) users without user code.
-          </t>
-          <t>
-            Typically clients that establish a security context with the user prior to sending a CIBA request should be allowed without user code. Example use cases of client security context are web applications that use CIBA for step-up authentication or call center applications where caller id is used to identify user.
-          </t>
-          <t>
-            The OP declares support for user code with provider metadata parameter <spanx style="verb">user_code_parameter_supported</spanx>.
-          </t>
-          <t>
-            The client registration parameter <spanx style="verb">user_code_parameter</spanx> defines if user code is required from the client. This parameter has one of three values: <spanx style="verb">required</spanx> - user code is required, <spanx style="verb">not_required</spanx> - user code is not required, <spanx style="verb">optional</spanx> - client is trusted and allowed to choose at its own discretion.
-            If user code is optional for a client then authentication request parameter <spanx style="verb">user_code_omitted</spanx> must be used to define a request without user code.
-          </t>
-          <t>
-            A client may detect users who require user code from authentication request error code. For example a client may first attempt authentication request without user code, and only prompt for user code if it receives error code <spanx style="verb">user_code_required</spanx>.
-          </t>
-          <t>
-            Registering a user code for a user is not in scope of this specification. Examples include a facility provided by the authentication device or SMS text messages.
-          </t>          
-        </section>
-        <section title="Authentication Request Example">
-          <figure>
+        <figure>
           <preamble>The following is a non-normative example of an authentication request (with line wraps within values for display purposes only):
-            </preamble>
-            <artwork>
-              <![CDATA[
+          </preamble>
+          <artwork>
+       <![CDATA[
    POST /bc-authorize HTTP/1.1
    Host: server.example.com
    Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
@@ -564,15 +539,15 @@
    client_notification_token=8d67dc78-7faa-4d41-aabd-67707b374255&
    acr_values=mod-mf&
    login_hint_token=eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
-       OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
-       ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
-       Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
-       mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
-       1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi
-       6UklfCpIMfIjf7iGdXKHzg.
-       48V1_ALb6US04U3b.
-       5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
-       SdiwkIr3ajwQzaBtQD_A.
+   OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
+   ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
+   Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
+   mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
+   1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi
+   6UklfCpIMfIjf7iGdXKHzg.
+   48V1_ALb6US04U3b.
+   5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
+   SdiwkIr3ajwQzaBtQD_A.
    XFBoMYUZodetZdvTiFvSkQ
        ]]>
           </artwork>
@@ -596,12 +571,23 @@
             <t hangText="iss">
               The Issuer claim MUST be the <spanx style="verb">client_id</spanx> of the OAuth Client.
             </t>
-            <figure>
+            <t hangText="exp">
+              An expiration time that limits the validity lifetime of the signed authentication request.
+            </t>
+            <t hangText="iat">
+              The time at which the signed authentication request was created.
+            </t>
+            <t hangText="jti">
+              A unique identifier for the signed authentication request.
+            </t>
+          </list>
+        </t>
+        <figure>
           <preamble>For example, a signed authentication request using the same authentication request parameters and values
-                as the example from the previous section would look like the following (with line wraps within values for display purposes only):
-              </preamble>
-              <artwork>
-                <![CDATA[
+            as the example from the previous section would look like the following (with line wraps within values for display purposes only):
+          </preamble>
+          <artwork>
+            <![CDATA[
    POST /bc-authorize HTTP/1.1
    Host: server.example.com
    Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
@@ -631,14 +617,14 @@
    xcC4djEL1nvr2MuXUUEZ-N31HW-78S0JwoXnHKB1cQBSObSRLaNlbulAxCDd7E9g
    SycxDA
        ]]>
-              </artwork>
-            </figure>
+          </artwork>
+        </figure>
 
-            <figure>
+      <figure>
         <preamble>Where the following is the JWT payload (with line wraps and added whitespace for display purposes only):
-              </preamble>
-              <artwork>
-                <![CDATA[
+        </preamble>
+        <artwork>
+          <![CDATA[
     {
      "iss": "s6BhdRkqt3",
      "aud": "http://server.example.com",
@@ -657,14 +643,38 @@
        vFWXRcZ_ZT2LawVCWTIy3brGPi6UklfCpIMfIjf7iGdXKHzg.48V1_ALb6US
        04U3b.5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFS
        hS8iB7j6jiSdiwkIr3ajwQzaBtQD_A.XFBoMYUZodetZdvTiFvSkQ"
-   }
+    }
        ]]>
-              </artwork>
-            </figure>
+        </artwork>
+      </figure>
 
-            <t>Note that encrypted JWT authentication requests are not supported.</t>
-          </section>
+          <t>Note that encrypted JWT authentication requests are not supported.</t>
         </section>
+        <section title="User Code" anchor="user_code">
+          <t>
+            User code is a mechanism to prevent unsolicited authentication requests from appearing on a user's authentication device.
+          </t>
+          <t>
+            User code is optional. It is optional for the authentication service (OP) to implement user code functionality. If the OP implements user code functionality then it may allow 1) clients without user code and 2) users without user code.
+          </t>
+          <t>
+            Typically clients that establish a security context with the user prior to sending a CIBA request should be allowed without user code. Example use cases of client security context are web applications that use CIBA for step-up authentication or call center applications where caller id is used to identify user.
+          </t>
+          <t>
+            The OP declares support for user code with provider metadata parameter <spanx style="verb">user_code_parameter_supported</spanx>.
+          </t>
+          <t>
+            The client registration parameter <spanx style="verb">user_code_parameter</spanx> defines if user code is required from the client. This parameter has one of three values: <spanx style="verb">required</spanx> - user code is required, <spanx style="verb">not_required</spanx> - user code is not required, <spanx style="verb">optional</spanx> - client is trusted and allowed to choose at its own discretion.
+            If user code is optional for a client then authentication request parameter <spanx style="verb">user_code_omitted</spanx> must be used to define a request without user code.
+          </t>
+          <t>
+            A client may detect users who require user code from authentication request error code. For example a client may first attempt authentication request without user code, and only prompt for user code if it receives error code <spanx style="verb">user_code_required</spanx>.
+          </t>
+          <t>
+            Registering a user code for a user is not in scope of this specification. Examples include a facility provided by the authentication device or SMS text messages.
+          </t>          
+        </section>        
+    </section>
 
       <section anchor="auth_request_validation" title="Authentication Request Validation">
         <t>
@@ -702,37 +712,37 @@
         </t>
         <t>
             OpenID Providers SHOULD ignore unrecognized request parameters.
-          </t>
-          <t>
+        </t>          
+        <t>
             If the OpenID Provider encounters any error, it MUST return an error response, per <xref target="auth_error_response"/>.
-          </t>
-        </section>
+         </t>       
+      </section>
 
-        <section anchor="successful_authentication_request_acknowdlegment" title="Successful Authentication Request Acknowledgement">
-          <t>
-            If the <xref target="auth_request" format="title"/> is validated as per Section <xref target="auth_request_validation" format="title"/>,
-            the OpenID Provider will return an HTTP 200 OK response to the Client
-            to indicate that the authentication request has been accepted and it is going to be processed. The body of this response will contain:
-          </t>
-          <t>
-            <list style="hanging">
-              <t hangText="auth_req_id">
-                REQUIRED. This is a unique identifier to identify the authentication request made by the Client.
-              </t>
-              <t hangText="expires_in">
-                REQUIRED. Expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
-              </t>
-              <t hangText="interval">
-                OPTIONAL. The minimum amount of time in seconds that the Client MUST wait between polling requests to the token endpoint.
-                This parameter will only be present if the Client is registered to use the Poll or Ping modes.
-              </t>
-            </list>
-          </t>
-          <figure>
+      <section anchor="successful_authentication_request_acknowdlegment" title="Successful Authentication Request Acknowledgement">
+        <t>
+          If the <xref target="auth_request" format="title"/> is validated as per Section <xref target="auth_request_validation" format="title"/>, 
+          the OpenID Provider will return an HTTP 200 OK response to the Client
+          to indicate that the authentication request has been accepted and it is going to be processed. The body of this response will contain:
+        </t>
+        <t>
+          <list style="hanging">
+            <t hangText="auth_req_id">
+              REQUIRED. This is a unique identifier to identify the authentication request made by the Client.
+             </t>
+            <t hangText="expires_in">
+              REQUIRED. Expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
+             </t>
+            <t hangText="interval">
+              OPTIONAL. The minimum amount of time in seconds that the Client MUST wait between polling requests to the token endpoint. 
+              This parameter will only be present if the Client is registered to use the Poll or Ping modes.
+             </t>
+          </list>
+        </t>
+        <figure> 
           <preamble>The following is a non-normative example from an authentication response
-            </preamble>
-            <artwork>
-              <![CDATA[
+          </preamble>
+          <artwork>
+            <![CDATA[
     HTTP/1.1 200 OK
     Content-Type: application/json
     Cache-Control: no-store
@@ -743,26 +753,25 @@
       "interval": 2
     }
             ]]>
-            </artwork>
-          </figure>
-        </section>
-
-        <section anchor="auth_request_acknowdlegment_validation" title="Authentication Request Acknowledgment Validation">
-          <t>
-            If the Client receives an HTTP 200 OK, it MUST validate that all the required parameters are received.
-          </t>
-          <t>
-            The Client MUST keep the <spanx style="verb">auth_req_id</spanx> in order to validate the callbacks received in Ping and Push modes or to use when polling the token endpoint in Poll mode.
-          </t>
-          <t>
-            The Client should store the expiration time in order to clean up authentication requests for which
-            no Ping Callback or Push Callback is received.
-          </t>
-        </section>
-
+          </artwork>
+        </figure>      
       </section>
+
+      <section anchor="auth_request_acknowdlegment_validation" title="Authentication Request Acknowledgment Validation">
+        <t>
+          If the Client receives an HTTP 200 OK, it MUST validate that all the required parameters are received. 
+        </t>
+        <t>
+          The Client MUST keep the <spanx style="verb">auth_req_id</spanx> in order to validate the callbacks received in Ping and Push modes or to use when polling the token endpoint in Poll mode.
+        </t>
+        <t>
+          The Client should store the expiration time in order to clean up authentication requests for which
+          no Ping Callback or Push Callback is received. 
+        </t>
+      </section>
+
     </section>
-      
+
     <section anchor="auth_server_obtains_consent" title="OpenID Provider Obtains End-User Consent/Authorization">
       <t>
         After the OP has validated the Authentication Request, the OP identifies the user's Authentication Device (AD).
@@ -1067,25 +1076,25 @@
         <t>
             If the Token Request is invalid or unauthorized, the OpenID Provider constructs the error response according to Section 3.1.3.4 Token Error Response of <xref target="OpenID.Core"/>.
           In addition to the error codes defined in Section 5.2 of <xref target="RFC6749"/>, the following error codes defined in the <xref target="I-D.ietf-oauth-device-flow">OAuth Device Flow</xref> are also applicable:
-        </t>
-        <t>
-          <list style="hanging">
-            <t hangText="authorization_pending">
-              The authorization request is still pending as the end-user hasn't yet been authenticated. 
-            </t>
-            <t hangText="slow_down">
+          </t>
+           <t>
+            <list style="hanging">
+              <t hangText="authorization_pending">
+                The authorization request is still pending as the end-user hasn't yet been authenticated. 
+              </t>
+              <t hangText="slow_down">
                 A variant of "authorization_pending", the authorization request is still pending and polling should continue, but the interval MUST be increased by 5 seconds for this and all subsequent requests.
-            </t>
-            <t hangText="expired_token">
-              The auth_req_id has expired. The Client will need to make a new Authentication Request.
-            </t>
+              </t>
+              <t hangText="expired_token">
+                The auth_req_id has expired. The Client will need to make a new Authentication Request.
+              </t>
               <t hangText="access_denied">
                 The end user denied the authorization request.
               </t>
-          </list>
-        </t>          
+             </list>
+        </t>       
 
-        <t>
+       <t>
            If the auth_req_id is invalid or was issued to another Client, an <spanx style="verb">invalid_grant</spanx> error MUST be returned as described in Section 5.2 of <xref target="RFC6749"/>.
         </t>
 
@@ -1115,14 +1124,14 @@
               <t hangText="auth_req_id">
                 REQUIRED. The authentication request identifier.
               </t>
-          </list>
+            </list>
         </t>
         <t>
           Error codes applicable to the push error payload:
            <list style="hanging">
               <t hangText="access_denied">
                 The end user denied the authorization request.
-        </t>
+              </t>
               <t hangText="expired_token">
                 The auth_req_id has expired. The Client will need to make a new Authentication Request. OpenID Providers are not required to send this error, but Clients SHOULD support receiving this error.
               </t>
@@ -1185,12 +1194,6 @@
                 <list style="hanging">        
                     <t hangText="invalid_client">
                       Client authentication failed (e.g., invalid client credentials, unknown client, no client authentication included, or unsupported authentication method).
-                    </t>
-                    <t hangText="user_code_required">
-                    User code is required but was missing from request
-                    </t>
-                    <t hangText="invalid_user_code">
-                    User code was invalid
                     </t>
                 </list>
             </t>
@@ -1368,7 +1371,7 @@
             <t>Specification Document(s): <xref target="registration"/> of this document</t>
           </list>
         </t>
-    </section>
+      </section>
 
       <section anchor="OAuthParametersReg" title="OAuth Parameters Registration">
         <t>
