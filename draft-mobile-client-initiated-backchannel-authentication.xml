@@ -445,12 +445,13 @@
               REQUIRED.
               The scope of the access request as described by Section 3.3 of <xref target="RFC6749"/>.
               OpenID Connect implements authentication as an extension to OAuth 2.0 by including the
-              <spanx style="verb">openid</spanx> scope value in the authorization requests.
-              CIBA authentication requests MUST therefore contain the <spanx style="verb">openid</spanx> value
-              and the behavior is entirely unspecified, if the <spanx style="verb">openid</spanx> scope value is not present.
+              <spanx style="verb">openid</spanx> scope value in the authorization requests. Consitent with that,
+              CIBA authentication requests MUST therefore contain the <spanx style="verb">openid</spanx> scope value.
+              The behavior when the <spanx style="verb">openid</spanx> scope value is not present is left unspecified by this document,
+              thus allowing for the potential definition of the behavior in a non OpenID context, such as an OAuth authorization flow.
               Other scope values MAY be present, including but not limited to the
               <spanx style="verb">profile</spanx>, <spanx style="verb">email</spanx>, <spanx style="verb">address</spanx>
-              and <spanx style="verb">phone</spanx> scope values from Section 5.4 of <xref target="OpenID.Core"/>, .
+              and <spanx style="verb">phone</spanx> scope values from Section 5.4 of <xref target="OpenID.Core"/>.
             </t>
             <t hangText="client_notification_token">
               REQUIRED if the Client is registered to use Ping or Push modes. 
