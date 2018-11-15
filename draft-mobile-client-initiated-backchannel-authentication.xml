@@ -1046,7 +1046,7 @@
                 The authorization request is still pending as the end-user hasn't yet been authenticated. 
               </t>
               <t hangText="slow_down">
-                A variant of "authorization_pending", the authorization request is still pending and polling should continue, but the interval MUST be increased by 5 seconds for this and all subsequent requests.
+                A variant of "authorization_pending", the authorization request is still pending and polling should continue, but the interval MUST be increased by at least 5 seconds for this and all subsequent requests.
               </t>
               <t hangText="expired_token">
                 The auth_req_id has expired. The Client will need to make a new Authentication Request.
