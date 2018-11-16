@@ -929,7 +929,7 @@
 
 
       <section anchor="push_callback" title="Push Callback">
-        <section anchor="issuing_successful_token" title="Successful Token Delivery">
+        <section anchor="successful_token_push" title="Successful Token Delivery">
           <t>
             If the Client is registered in Push mode and the user is well authenticated and has authorized the request, the OpenID Provider delivers a payload that includes an ID Token, an Access Token and, optionally, a Refresh Token to the <xref target="client_notification_endpoint" format="title"/>.
           </t>
@@ -1353,8 +1353,23 @@
           </list>
         </t>
       </section>
-    </section>
 
+      <section anchor="ClaimsReg" title="JSON Web Token Claims">
+        <t>
+          This specification makes no request of IANA with respect to the "JSON Web Token Claims" registry at
+          <xref target="IANA.JWT"/> established by <xref target="RFC7519"/>.
+          <eref target="https://tools.ietf.org/html/rfc7519#section-4.2">Public Claim Names</eref>
+          where used for the auth_req_id and refresh token hash in the ID Token in <xref target="successful_token_push"/>
+          in order to avoid further congestion of the registry with application specific claims that are
+          unlikely to be of general applicability.
+          For a <xref target="signed_auth_request">Signed Authentication Request</xref>, where
+          the the authentication request parameters are encoded as claims of a the request JWT,
+          the context of use is sufficiently constrained so as to safely consider those to be
+          <eref target="https://tools.ietf.org/html/rfc7519#section-4.3">Private Claim Names</eref>.
+
+        </t>
+      </section>
+    </section>
   </middle>
 
   <back>
@@ -1381,6 +1396,16 @@
       <reference anchor="IANA.OAuth.Parameters" target="http://www.iana.org/assignments/oauth-parameters">
         <front>
           <title>OAuth Parameters</title>
+          <author>
+            <organization>IANA</organization>
+          </author>
+          <date/>
+        </front>
+      </reference>
+
+      <reference anchor="IANA.JWT" target="http://www.iana.org/assignments/jwt">
+        <front>
+          <title>JSON Web Token (JWT)</title>
           <author>
             <organization>IANA</organization>
           </author>
