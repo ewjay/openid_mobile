@@ -1189,6 +1189,12 @@
                     <t hangText="unauthorized_client">
                       The Client is not authorized to use this authentication flow.
                     </t>
+                    <t hangText="missing_user_code">
+                      User code is required but was missing from request.
+                    </t>
+                    <t hangText="invalid_user_code">
+                      User code was invalid.
+                    </t>
                 </list>
             </t>
             <t hangText="HTTP 401 Unauthorized">
