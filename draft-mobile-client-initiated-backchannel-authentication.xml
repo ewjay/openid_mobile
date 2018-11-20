@@ -209,7 +209,7 @@
               JSON array containing a list of the JWS signing algorithms (alg values) supported by the OP for signed authentication requests,
               which are described in <xref target="signed_auth_request"/>.
               If omitted, signed authentication requests are not supported by the OP.</t>
-            <t><spanx style="verb">user_code_parameter_supported</spanx>:
+            <t><spanx style="verb">backchannel_user_code_parameter_supported</spanx>:
             OPTIONAL. Boolean value specifying whether the OP supports use of the <spanx style="verb">user_code</spanx> parameter, with true indicating support. If omitted, the default value is false. 
             </t>
           </list>
@@ -238,7 +238,7 @@
             <t><spanx style="verb">backchannel_authentication_request_signing_alg</spanx>:
             The JWS algorithm <spanx style="verb">alg</spanx> value that the Client will use for signing authentication request, as described in <xref target="signed_auth_request"/>.
             When omitted, the Client will not send signed authentication requests.</t>
-            <t><spanx style="verb">user_code_parameter</spanx>:
+            <t><spanx style="verb">backchannel_user_code_parameter</spanx>:
             OPTIONAL. One of three values: <spanx style="verb">required</spanx>, <spanx style="verb">not_required</spanx> and <spanx style="verb">optional</spanx>. 
             Where <spanx style="verb">required</spanx> - user code is required, <spanx style="verb">not_required</spanx> - user code is not required, <spanx style="verb">optional</spanx> - client is trusted and allowed to choose at its own discretion. 
             If omitted, the default value is <spanx style="verb">not_required</spanx>.
@@ -507,10 +507,10 @@
               SHOULD be relatively short and use a limited set of plain text characters.
             </t>
             <t hangText="user_code">
-              OPTIONAL. A secret code, such as password or pin, known only to the user. The code is used to authorize sending an authentication request to user's authentication device. This parameter should only be present if client registration parameter <spanx style="verb">user_code_parameter</spanx> indicates support for user code.
+              OPTIONAL. A secret code, such as password or pin, known only to the user. The code is used to authorize sending an authentication request to user's authentication device. This parameter should only be present if client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> indicates support for user code.
             </t>
             <t hangText="user_code_omitted">
-              OPTIONAL. Boolean value specifying whether the client chooses to send a request without user code. If omitted, the default value is false. If this parameter has value true then <spanx style="verb">user_code</spanx> parameter shall not be present. This parameter should only be present if client registration parameter <spanx style="verb">user_code_parameter</spanx> has value <spanx style="verb">optional</spanx>.
+              OPTIONAL. Boolean value specifying whether the client chooses to send a request without user code. If omitted, the default value is false. If this parameter has value true then <spanx style="verb">user_code</spanx> parameter shall not be present. This parameter should only be present if client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> has value <spanx style="verb">optional</spanx>.
             </t>
           </list>
         </t>
@@ -659,10 +659,10 @@
             Typically clients that establish a security context with the user prior to sending a CIBA request should be allowed without user code. Example use cases of client security context are web applications that use CIBA for step-up authentication or call center applications where caller id is used to identify user.
           </t>
           <t>
-            The OP declares support for user code with provider metadata parameter <spanx style="verb">user_code_parameter_supported</spanx>.
+            The OP declares support for user code with provider metadata parameter <spanx style="verb">backchannel_user_code_parameter_supported</spanx>.
           </t>
           <t>
-            The client registration parameter <spanx style="verb">user_code_parameter</spanx> defines if user code is required from the client. This parameter has one of three values: <spanx style="verb">required</spanx> - user code is required, <spanx style="verb">not_required</spanx> - user code is not required, <spanx style="verb">optional</spanx> - client is trusted and allowed to choose at its own discretion.
+            The client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> defines if user code is required from the client. This parameter has one of three values: <spanx style="verb">required</spanx> - user code is required, <spanx style="verb">not_required</spanx> - user code is not required, <spanx style="verb">optional</spanx> - client is trusted and allowed to choose at its own discretion.
             If user code is optional for a client then authentication request parameter <spanx style="verb">user_code_omitted</spanx> must be used to define a request without user code.
           </t>
           <t>
