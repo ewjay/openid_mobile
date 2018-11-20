@@ -507,7 +507,7 @@
               SHOULD be relatively short and use a limited set of plain text characters.
             </t>
             <t hangText="user_code">
-              OPTIONAL. A secret code, such as password or pin, known only to the user. The code is used to authorize sending an authentication request to user's authentication device. This parameter should only be present if client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> indicates support for user code.
+              OPTIONAL. A secret code, such as password or pin, known only to the user but verifiable by the OP. The code is used to authorize sending an authentication request to user's authentication device. This parameter should only be present if client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> indicates support for user code.
             </t>
             <t hangText="user_code_omitted">
               OPTIONAL. Boolean value specifying whether the client chooses to send a request without user code. If omitted, the default value is false. If this parameter has value true then <spanx style="verb">user_code</spanx> parameter shall not be present. This parameter should only be present if client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> has value <spanx style="verb">optional</spanx>.
