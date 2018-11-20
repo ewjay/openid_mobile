@@ -464,7 +464,9 @@
               OPTIONAL. Requested Authentication Context Class Reference values.
               Space-separated string that specifies the acr values that the OpenID Provider is being requested to use for
               processing this Authentication Request, with the values appearing in order of preference.
-              The Authentication Context Class satisfied by the authentication performed is returned as the acr Claim Value of the ID Token.
+              The Authentication Context Class satisfied by the authentication performed is returned as the <spanx style="verb">acr</spanx> Claim Value of the ID Token.
+              When the <spanx style="verb">acr_values</spanx> parameter is present in the authentication request, it is RECOMMENDED that the resulting ID Token
+              contain an <spanx style="verb">acr</spanx> Claim.
             </t>
 
             <t hangText="login_hint_token">
