@@ -239,9 +239,8 @@
             The JWS algorithm <spanx style="verb">alg</spanx> value that the Client will use for signing authentication request, as described in <xref target="signed_auth_request"/>.
             When omitted, the Client will not send signed authentication requests.</t>
             <t><spanx style="verb">backchannel_user_code_parameter</spanx>:
-            OPTIONAL. One of three values: <spanx style="verb">required</spanx>, <spanx style="verb">not_required</spanx> and <spanx style="verb">optional</spanx>. 
-            Where <spanx style="verb">required</spanx> - user code is required, <spanx style="verb">not_required</spanx> - user code is not required, <spanx style="verb">optional</spanx> - client is trusted and allowed to choose at its own discretion. 
-            If omitted, the default value is <spanx style="verb">not_required</spanx>.
+            OPTIONAL. Boolean value specifying whether the Client must support the <spanx style="verb">user_code</spanx> parameter. If omitted, the default value is true. 
+            This parameter only applies when OP parameter <spanx style="verb">backchannel_user_code_parameter_supported</spanx> is true.
             </t>
           </list>
         </t>
