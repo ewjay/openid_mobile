@@ -511,10 +511,8 @@
               SHOULD be relatively short and use a limited set of plain text characters.
             </t>
             <t hangText="user_code">
-              OPTIONAL. A secret code, such as password or pin, known only to the user but verifiable by the OP. The code is used to authorize sending an authentication request to user's authentication device. This parameter should only be present if client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> indicates support for user code.
-            </t>
-            <t hangText="user_code_omitted">
-              OPTIONAL. Boolean value specifying whether the client chooses to send a request without user code. If omitted, the default value is false. If this parameter has value true then <spanx style="verb">user_code</spanx> parameter shall not be present. This parameter should only be present if client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> has value <spanx style="verb">optional</spanx>.
+              OPTIONAL. A secret code, such as password or pin, known only to the user but verifiable by the OP. The code is used to authorize sending an authentication request to user's authentication device. 
+              This parameter should only be present if client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> indicates support for user code.
             </t>
           </list>
         </t>
@@ -666,14 +664,13 @@
             The OP declares support for user code with provider metadata parameter <spanx style="verb">backchannel_user_code_parameter_supported</spanx>.
           </t>
           <t>
-            The client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> defines if user code is required from the client. This parameter has one of three values: <spanx style="verb">required</spanx> - user code is required, <spanx style="verb">not_required</spanx> - user code is not required, <spanx style="verb">optional</spanx> - client is trusted and allowed to choose at its own discretion.
-            If user code is optional for a client then authentication request parameter <spanx style="verb">user_code_omitted</spanx> must be used to define a request without user code.
+            The client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> specifies if support for user code is required from the Client.
           </t>
           <t>
-            A client may detect users who require user code from authentication request error code. For example a client may first attempt authentication request without user code, and only prompt for user code if it receives error code <spanx style="verb">user_code_required</spanx>.
+            A client may detect users who require user code from authentication request error code. For example a client may first attempt authentication request without user code, and only prompt for user code if it receives error code <spanx style="verb">missing_user_code</spanx>.
           </t>
           <t>
-            Registering a user code for a user is not in scope of this specification. Examples include a facility provided by the authentication device or SMS text messages.
+            Registering a user code for a user is not in scope of this specification. Examples include a facility provided by the authentication device, SMS text messages or other service provided by the OP.
           </t>          
         </section>        
     </section>
