@@ -526,6 +526,10 @@
           HTTP <spanx style='verb'>POST</spanx> method with the aforementioned
           parameters in the <spanx style='verb'>application/x-www-form-urlencoded</spanx>
           format and a character encoding of UTF-8 in the HTTP request entity-body.
+          When applicable, additional parameters required by the given client authentication method
+          are also included (e.g. JWT assertion based client authentication uses
+          <spanx style="verb">client_assertion</spanx> and <spanx style="verb">client_assertion_type</spanx>
+          while Mutual TLS client authentication uses <spanx style="verb">client_id</spanx>).
         </t>
         <figure>
           <preamble>The following is a non-normative example of an authentication request (with line wraps within values for display purposes only):
@@ -553,15 +557,12 @@
         </figure>
         <section title="Signed Authentication Request" anchor="signed_auth_request">
         <t>
-          A signed authentication request can be made by encoding all of the authentication request parameters as
+          A signed authentication request is made by encoding all of the authentication request parameters as
           claims of a signed JWT, with each parameter name as the claim name and its value as a JSON string.
           The JWT MUST contain all of the authentication request parameters.
           The JWT MUST be secured with an asymmetric signature and follow the guidance from
           <eref target="https://openid.net/specs/openid-connect-core-1_0.html#Signing">Section 10.1</eref> of
           <xref target="OpenID.Core"/> regarding asymmetric signatures.
-          The signed authentication request JWT is passed as an <spanx style='verb'>application/x-www-form-urlencoded</spanx>
-          HTTP request parameter with the name <spanx style='verb'>request</spanx>, which is the only HTTP request parameter that has meaning
-          in the case of a signed CIBA authentication request.
           The JWT MUST also contain the following <xref target="RFC7519"/> registered claims:
         </t>
         <t>
@@ -582,6 +583,16 @@
               A unique identifier for the signed authentication request.
             </t>
           </list>
+        </t>
+        <t>
+          The signed authentication request JWT is passed as an <spanx style='verb'>application/x-www-form-urlencoded</spanx>
+          HTTP request parameter with the name <spanx style='verb'>request</spanx>. Authentication
+          request parameters MUST NOT be be outside the JWT and appear as HTTP request parameters.
+          Additional HTTP request parameters as required by the given client authentication method, however, will be
+          included as <spanx style='verb'>application/x-www-form-urlencoded</spanx>
+          parameters (e.g.  Mutual TLS client authentication uses <spanx style="verb">client_id</spanx>
+          while JWT assertion based client authentication uses
+          <spanx style="verb">client_assertion</spanx> and <spanx style="verb">client_assertion_type</spanx>).
         </t>
         <figure>
           <preamble>For example, a signed authentication request using the same authentication request parameters and values
