@@ -684,7 +684,13 @@
             A client may detect users who require a user code from the authentication request error code. For example a client may first attempt an authentication request without a user code, and only prompt for a user code if it receives the error code <spanx style="verb">missing_user_code</spanx>.
           </t>
           <t>
-            Registering a user code for a user is not in scope of this specification. Examples include a facility provided by the authentication device, SMS text messages or other service provided by the OP.
+            The Client MUST NOT store the user code, but should rather request it from the user 
+            for each CIBA flow.
+          </t>
+          <t>
+            Registering a user code for a user is not in scope of this specification. Examples include 
+            a facility provided by the authentication device, SMS text messages or other service provided 
+            by the OP. OP's should provide a method for the user to change the user code. 
           </t>          
         </section>        
     </section>
