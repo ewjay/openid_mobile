@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<?xml-stylesheet type='text/xsl' href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
+<!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
+  <!ENTITY OpenID.Core PUBLIC '' 'https://openid.net/bibxml/reference.OpenID.Core.xml'>
+  <!ENTITY OpenID.Registration PUBLIC '' 'https://openid.net/bibxml/reference.OpenID.Registration.xml'>
+]>
+<!--
+  NOTE:  This XML file is input used to produce the authoritative copy of an
+  OpenID Foundation specification.  The authoritative copy is the HTML output.
+  This XML source file is not authoritative.  The statement ipr="none" is
+  present only to satisfy the document compilation tool and is not indicative
+  of the IPR status of this specification.  The IPR for this specification is
+  described in the "Notices" section.  This is a public OpenID Foundation
+  document and not a private document, as the private="..." declaration could
+  be taken to indicate.
+-->
+<rfc category="std" docName="draft-mobile-client-initiated-backchannel-authentication-profile" ipr="none">
+
+  <?rfc toc="yes" ?>
+  <?rfc tocdepth="5" ?>
+  <?rfc symrefs="yes" ?>
+  <?rfc sortrefs="yes"?>
+  <?rfc strict="yes" ?>
+  <?rfc iprnotified="no" ?>
+  <?rfc private="Draft" ?>
+  
+  <front>
+    <title abbrev="CIBA-Mobile">
+            MODRNA: Client Initiated Backchannel Authentication Profile</title>
+
+
+    <author fullname="Gonzalo Fernandez Rodriguez" initials="G." surname="Fernandez">
+      <organization abbrev="Telefonica">Telefonica I+D</organization>
+      <address>
+        <email>gonzalo.fernandezrodriguez@telefonica.com</email>
+      </address>
+    </author>
+
+    <author fullname="Florian Walter" initials="F." surname="Walter">
+      <organization abbrev="">Deutsche Telekom AG</organization>
+      <address>
+        <email>F.Walter@telekom.de</email>
+      </address>
+    </author>
+
+    <author fullname="Axel Nennker" initials="A." surname="Nennker">
+      <organization abbrev="">Deutsche Telekom AG</organization>
+      <address>
+        <email>axel.nennker@telekom.de</email>
+      </address>
+    </author>
+
+    <author fullname="Dave Tonge" initials="D." surname="Tonge">
+      <organization abbrev="Moneyhub">Moneyhub</organization>
+      <address>
+        <email>dave.tonge@moneyhub.com</email>
+      </address>
+    </author>
+
+    <author fullname="Brian Campbell" initials="B." surname="Campbell">
+      <organization abbrev="Ping Identity">Ping Identity</organization>
+      <address>
+        <email>bcampbell@pingidentity.com</email>
+      </address>
+    </author>
+
+
+
+    <date day="10" month="January" year="2018"/>
+    
+    <workgroup>OpenID Mobile Profile Working Group</workgroup>
+
+    <abstract>    
+      <t>
+        MODRNA: Client Initiated Backchannel Authentication Profile is a profile of OpenID 
+        Connect Client Initiated Backchannel Authentication Flow -  Core. This profile is targeted
+        for use a Mobile Network Operator context. 
+      </t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="Introduction" title="Introduction">
+      <t>
+        Todo: intro to the mobile profile
+
+      </t>
+      <section anchor="rnc" title="Requirements Notation and Conventions">
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+          "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+          document are to be interpreted as described in <xref target="RFC2119"/>.
+        </t>
+
+        <t>
+          Throughout this document, values are quoted to indicate that they are
+          to be taken literally. When using these values in protocol messages, the
+          quotes MUST NOT be used as part of the value.
+        </t>
+      </section>
+    </section>
+
+    <section title='Examples of Use Cases'>
+        <t>
+          todo: more examples of mobile use-cases
+        </t>
+        <t>The following use cases are non-normative examples to illustrate the usage of this specification.</t>
+        <t>
+        <list style="numbers">
+        <t>A call center agent wants to authenticate a caller. 
+        Using additional scopes like e.g. "profile" or "phone" the call center agent would get access to claims
+        about the user like "phone_number" and "phone_number_verified".
+        </t>
+        <t>A bank teller wants to authenticate a customer in a bank branch - using CIBA for authentication in a face-to-face scenario.
+        </t>
+        </list>
+        </t>
+    </section>
+    <section anchor="auth_request" title="Authentication Request">
+      <t>
+        The Authentication Request has the following differences from the Core CIBA spec:
+      </t>
+       <t>
+          <list style="hanging">
+            <t hangText="acr_values">
+              REQUIRED. This value is required as defined in OpenID Connect MODRNA Authentication Profile 1.0.
+            </t>
+             <t hangText="login_hint">
+              todo: define using auth profile - example with phone number
+
+            </t>
+            <t hangText="login_hint_token">
+              todo: define using auth profile - closer to the token from the auth profile
+
+            </t>
+          </list>
+        </t>
+    
+    </section>
+
+    
+
+    <section anchor="security_considerations" title="Security Considerations">
+      <t>
+       todo: 
+      </t>
+
+    
+
+    </section>
+
+    <section anchor="privacy_considerations" title="Privacy Considerations">
+      <t>
+        Using MODRNA Client Initiated Backchannel Authentication it is possible for the Client
+        to authenticate a user without knowing e.g. the MSISDN of the user.
+        Users might be reluctant to provide their MSISDN to Clients because they fear
+        misuse through automated calls or their number being leaked.
+        The login hint token is encrypted in order to protect the user's MSISDN from 
+        being revealed to the Client unintentionally.
+      </t>
+
+      <t>
+        The section <xref target="SimAppletExample" format="title"/> shows an example to illustrate
+        the usage of CIBA specification to authenticate a user with a SIM Applet Authenticator.
+      </t>
+    </section>
+
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.6750"?>
+      <?rfc include="reference.RFC.7519"?> <!-- JWT -->
+
+      &OpenID.Core;
+      &OpenID.Registration;
+      
+      <?rfc include="reference.I-D.draft-ietf-oauth-mtls-12"?>
+
+    </references>
+    
+    <references title="Informative References">
+
+      <?rfc include="reference.RFC.6749"?>
+      <?rfc include='reference.RFC.8414'?> <!-- OAuth AS metadata -->
+      <?rfc include="reference.RFC.7591"?> <!-- Client Registration -->
+
+      <?rfc include="reference.I-D.draft-ietf-oauth-device-flow-13"?>
+
+      
+
+      <reference anchor="ETSI102204" target="https://www.etsi.org/deliver/etsi_ts/102200_102299/102204/01.01.04_60/ts_102204v010104p.pdf">
+        <front>
+          <title>Mobile Commerce (M-COMM) Mobile Signature Service; Web Service Interface</title>
+          <author fullname="ETSI TS 102 204 V1.1.4 (2003-08)" initials="ETSI">
+            <organization abbrev="ETSI">European Telecommunications Standards Institute</organization>
+          </author>
+          <date year="2003"/>
+        </front>
+      </reference>
+
+
+    </references>
+
+    <section anchor="SimAppletExample" title="Example Flow">
+      <t>
+        This is a non-normative example where a challenge authentication is launched by the OP to an applet that is running in the
+        end-user device's SIM. Such applet implements an authenticator that validates a Pin Code entered by the end-user.
+      </t>
+      <t>
+        This authenticator would be implemented through the so-called MSSP (Mobile Signature Subscriber Provider) Server.
+        When the Backchannel Authentication Endpoint receives the request to authenticate the user and once it knows the user's MSISDN, it makes a call
+        to the MSSP Server which builds a binary Class 2 SMS that is sent to the SIM card of the user where the applet is located.
+      </t>
+
+      <t>
+        This Class 2 SMS is not really sent directly from the MSSP but through the OTA (Over the air) platform which in turn signs 
+        and encrypts the message using a pair of keys (kyc, kyd) unique per each SIM Card.
+      </t>
+        
+      <t>
+        Once the message reaches the SIM Card, it is decrypted by the CardManager and the signature is verified (thanks to the same pair of keys: kyc, kyd).
+        If everything is ok, the CardManager gives the message to the applet that checks the signature (the another one made by the MSSP) and displays the challenge
+        through a popup using the mobile phone native interface) and the user is prompted to enter a Pin Code that is validated locally.
+        If the Pin Code is correct, the applet builds an OK response and signs it with the same key used by the MSSP to sign the request, this 
+        response is sent as a Class 3 message to the MSSP that checks the signature, and builds the id_token and the access_token to be returned to the Client.
+      </t>
+      <figure>
+        <artwork>
+          <![CDATA[
+
++-----+                    +-----+                      +-------+                 +-----------+          +-------+
+| RP  |                    | OP  |                      | MSSP  |                 | SIMApplet |          | User  |
++-----+                    +-----+                      +-------+                 +-----------+          +-------+
+   |                          |                             |                           |                    |
+   | 1. POST /bc-authorize    |                             |                           |                    |
+   |------------------------->|                             |                           |                    |
+   |                          |                             |                           |                    |
+   |           2. HTTP 200 OK |                             |                           |                    |
+   |<-------------------------|                             |                           |                    |
+   |                          |                             |                           |                    |
+   |                          | 3. Authenticate(MSISDN)     |                           |                    |
+   |                          |---------------------------->|                           |                    |
+   |                          |                             |                           |                    |
+   |                          |                             | 4. Challenge              |                    |
+   |                          |                             |-------------------------->|                    |
+   |                          |                             |                           |                    |
+   |                          |                             |                           | 7. Verify Req      |
+   |                          |                             |                           |--------------      |
+   |                          |                             |                           |             |      |
+   |                          |                             |                           |<-------------      |
+   |                          |                             |                           |                    |
+   |                          |                             |                           | 8. Challenge       |
+   |                          |                             |                           |------------------->|
+   |                          |                             |                           |                    |
+   |                          |                             |                           |        9. Pin Code |
+   |                          |                             |                           |<-------------------|
+   |                          |                             |                           |                    |
+   |                          |                             |                           | 10. Verify Pin     |
+   |                          |                             |                           |---------------     |
+   |                          |                             |                           |              |     |
+   |                          |                             |                           |<--------------     |
+   |                          |                             |                           |                    |
+   |                          |                             |           11. Response OK |                    |
+   |                          |                             |<--------------------------|                    |
+   |                          |                             |                           |                    |
+   |                          |                             | 13. Verify Response       |                    |
+   |                          |                             |--------------------       |                    |
+   |                          |                             |                   |       |                    |
+   |                          |                             |<-------------------       |                    |
+   |                          |                             |                           |                    |
+   |                          |       14. Authentication OK |                           |                    |
+   |                          |<----------------------------|                           |                    |
+   |                          |                             |                           |                    |
+   |                          | 15. Generate Tokens         |                           |                    |
+   |                          |--------------------         |                           |                    |
+   |                          |                   |         |                           |                    |
+   |                          |<-------------------         |                           |                    |
+   |                          |                             |                           |                    |
+   |             16. POST /cb |                             |                           |                    |
+   |<-------------------------|                             |                           |                    |
+   |                          |                             |                           |                    |
+
+
+          ]]>
+        </artwork>
+      </figure>
+      <t>
+        Many of the details have advisedly been excluded in order to simplify the flow described. To go into details of how to 
+        implement a Mobile Signature Service look at <xref target="ETSI102204" format="title"/>.
+      </t>
+
+    </section>
+
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>The following have contributed to the development of this specification.</t>
+    </section>
+
+
+    <section anchor="Notices" title="Notices">
+      <t>Copyright (c) 2018 The OpenID Foundation.</t>
+      <t>
+        The OpenID Foundation (OIDF) grants to any Contributor, developer, 
+        implementer, or other interested party a non-exclusive, royalty free, 
+        worldwide copyright license to reproduce, prepare derivative works from, 
+        distribute, perform and display, this Implementers Draft or 
+        Final Specification solely for the purposes of (i) developing 
+        specifications, and (ii) implementing Implementers Drafts and 
+        Final Specifications based on such documents, provided that attribution 
+        be made to the OIDF as the source of the material, but that such attribution 
+        does not indicate an endorsement by the OIDF.
+      </t>
+      <t>
+        The technology described in this specification was 
+        made available from contributions from various sources, 
+        including members of the OpenID Foundation and others.  
+        Although the OpenID Foundation has taken steps to help ensure 
+        that the technology is available for distribution, it takes 
+        no position regarding the validity or scope of any intellectual 
+        property or other rights that might be claimed to pertain to 
+        the implementation or use of the technology described in 
+        this specification or the extent to which any license under 
+        such rights might or might not be available; neither does it 
+        represent that it has made any independent effort to identify 
+        any such rights.  The OpenID Foundation and the contributors 
+        to this specification make no (and hereby expressly disclaim any) 
+        warranties (express, implied, or otherwise), including implied 
+        warranties of merchantability, non-infringement, fitness for 
+        a particular purpose, or title, related to this specification, 
+        and the entire risk as to implementing this specification is 
+        assumed by the implementer.  The OpenID Intellectual 
+        Property Rights policy requires contributors to offer 
+        a patent promise not to assert certain patent claims against 
+        other contributors and against implementers.  The OpenID Foundation invites 
+        any interested party to bring to its attention any copyrights, 
+        patents, patent applications, or other proprietary rights 
+        that may cover technology that may be required to practice 
+        this specification.
+      </t>
+    </section>
+
+    <section anchor='History' title='Document History'>
+      <t>[[ To be removed from the final specification ]]</t>
+      <t>-01 
+        <list style='symbols'>
+          <t>Initial draft of mobile profile</t>
+        </list>
+      </t>
+    </section>
+  </back>
+</rfc>
