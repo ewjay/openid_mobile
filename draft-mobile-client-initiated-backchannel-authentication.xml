@@ -765,6 +765,7 @@
     HTTP/1.1 200 OK
     Content-Type: application/json
     Cache-Control: no-store
+    Pragma: no-cache
 
     {
       "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1",
@@ -907,6 +908,7 @@
     HTTP/1.1 200 OK
     Content-Type: application/json
     Cache-Control: no-store
+    Pragma: no-cache
 
     {
      "access_token": "G5kXH2wHvUra0sHlDy1iTkDJgsgUO1bN",
