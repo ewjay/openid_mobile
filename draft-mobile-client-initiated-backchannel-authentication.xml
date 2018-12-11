@@ -140,7 +140,7 @@
           <t hangText="Consumption Device (CD)">
             The Consumption Device is the device that helps the user consume the service.
             In the CIBA use case, the user is not necessarily in control of the CD but the CD is in the control
-            of a RP agent (e.g. at a bank teller) or the CD is an RP controlled device (e.g. a petrol pump).
+            of an RP agent (e.g. at a bank teller) or the CD is an RP controlled device (e.g. a petrol pump).
           </t>
           <t hangText="Authentication Device (AD)">
             The device on which the user will authenticate and authorize the request, often a smartphone. 
