@@ -1492,17 +1492,6 @@
         </front>
       </reference>
 
-      <reference anchor="ETSI102204" target="https://www.etsi.org/deliver/etsi_ts/102200_102299/102204/01.01.04_60/ts_102204v010104p.pdf">
-        <front>
-          <title>Mobile Commerce (M-COMM) Mobile Signature Service; Web Service Interface</title>
-          <author fullname="ETSI TS 102 204 V1.1.4 (2003-08)" initials="ETSI">
-            <organization abbrev="ETSI">European Telecommunications Standards Institute</organization>
-          </author>
-          <date year="2003"/>
-        </front>
-      </reference>
-
-
     </references>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
