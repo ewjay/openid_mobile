@@ -1324,19 +1324,7 @@
             decode the identifier and embed it in a <spanx style="verb">login_hint_token</spanx> which
             it would use to initiate a CIBA flow. The OP would then gain consent from the end-user for 
             the access requested by the RP. 
-          </t>
-
-          <t hangText="Transaction identifier - transferred from the CD to the AD">
-            The RP could request that the OP generate a transaction identifier, not linked to a user, 
-            via a custom backchannel endpoint (this could be an intent or payment id). This 
-            identifier would then be used as a hint in a CIBA authentication request. At this point 
-            the OP would not know which user the CIBA request is for. The RP would then display 
-            the transaction identifier on the CD and instruct the user to transfer it to the AD. At 
-            this point the OP would correlate the CIBA request with the user authenticated on the AD
-            and the CIBA flow would continue. For example this flow could involve the user scanning 
-            a QR code (containing the transaction identifier) displayed on the CD with their AD. 
-          </t>
-          
+          </t>                   
           <t hangText="Discovery Service">
             For some ecosystems the RP may be able to send the user to a discovery service and receive
             back an encrypted <spanx style="verb">login_hint_token</spanx> which it can use in the 
