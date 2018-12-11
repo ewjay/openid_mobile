@@ -57,15 +57,6 @@
       </address>
     </author>
 
-    <author fullname="Brian Campbell" initials="B." surname="Campbell">
-      <organization abbrev="Ping Identity">Ping Identity</organization>
-      <address>
-        <email>bcampbell@pingidentity.com</email>
-      </address>
-    </author>
-
-
-
     <date day="10" month="January" year="2018"/>
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
