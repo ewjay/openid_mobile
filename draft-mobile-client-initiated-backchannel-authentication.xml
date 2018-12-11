@@ -14,7 +14,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-openid-connect-client-initiated-backchannel-authentication-flow-core-01" ipr="none">
+<rfc category="std" docName="openid-client-initiated-backchannel-authentication-core-01" ipr="none">
 
   <?rfc toc="yes" ?>
   <?rfc tocdepth="5" ?>
