@@ -14,7 +14,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="draft-mobile-client-initiated-backchannel-authentication-06" ipr="none">
+<rfc category="std" docName="draft-openid-connect-client-initiated-backchannel-authentication-flow-core-01" ipr="none">
 
   <?rfc toc="yes" ?>
   <?rfc tocdepth="5" ?>
@@ -26,7 +26,7 @@
   
   <front>
     <title abbrev="CIBA">
-            OpenID Connect MODRNA Client Initiated Backchannel Authentication Flow 1.0</title>
+            OpenID Connect Client Initiated Backchannel Authentication Flow - Core 1.0</title>
 
 
     <author fullname="Gonzalo Fernandez Rodriguez" initials="G." surname="Fernandez">
@@ -72,9 +72,9 @@
 
     <abstract>    
       <t>
-        OpenID Connect MODRNA Client Initiated Backchannel Authentication Flow 1.0 is an authentication
-        flow like OpenID Connect. Unlike OpenID Connect there is a
-        direct Relying Party to OpenID Provider communication without redirects through the user's browser.
+        OpenID Connect Client Initiated Backchannel Authentication Flow is an authentication
+        flow like OpenID Connect. Unlike OpenID Connect there is direct Relying Party to OpenID 
+        Provider communication without redirects through the user's browser.
         This specification allows a Relying Party that knows the user's identifier to obtain tokens from the
         OpenID Provider. The user consent is given at the user's Authentication Device mediated by the OpenID Provider.
       </t>
@@ -91,20 +91,20 @@
       <t>
         In all of these flows initiated by the RP, the end-user interaction from the consumption device is 
         required and, they are based on HTTP redirection mechanisms. However, some use cases not covered by
-        these flows have been raised, where the RP needs to be the initiator of the user authentication flow and the end-user interaction
+        these flows have been raised, where the RP needs to be the initiator of the user authentication flow and end-user interaction
         from the consumption device is not needed.
       </t>
       <t>
-        The MODRNA Client Initiated Backchannel Authentication Flow specifies a new authentication flow,
-        by means of which the RP's that know the user identifier they want to authenticate (e-mail, phone number),
-        will be able to initiate an interaction flow to authenticate their users without having end-user interaction
-        from the consumption device. The flow is a direct communication from the Client to the OpenID Provider without redirect through the
-        user's browser (consumption device).
+        OpenID Connect Client Initiated Backchannel Authentication Flow - Core specifies a new authentication flow,
+        in which RP's that can obtain a valid identifier for the user they want to authenticate, will be able to 
+        initiate an interaction flow to authenticate their users without having end-user interaction
+        from the consumption device. The flow involves direct communication from the Client to the OpenID Provider 
+        without redirect through the user's browser (consumption device).
       </t>
       <t>
         This specification does not change the semantics of the OpenID Connect Authentication flow.
         It introduces a new endpoint to which the authentication request is posted.
-        It introduces a new asynchronous method for authentication result delivery.
+        It introduces a new asynchronous method for authentication result notification or delivery.
         It does not introduce new scope values nor does it change the semantics of standard OpenID Connect parameters.
       </t>
       <t>
@@ -139,11 +139,11 @@
         <list style="hanging">
           <t hangText="Consumption Device (CD)">
             The Consumption Device is the device that helps the user consume the service.
-            In CIBA use cases the user is not necessarily in control of the CD but the CD is in the control
-            of an SP agent (e.g. at a bank teller) or the CD is an SP controlled device (e.g. a petrol pump).
+            In the CIBA use case, the user is not necessarily in control of the CD but the CD is in the control
+            of an RP agent (e.g. at a bank teller) or the CD is an RP controlled device (e.g. a petrol pump).
           </t>
           <t hangText="Authentication Device (AD)">
-            A mobile device on which the user will authenticate the actual login.
+            The device on which the user will authenticate and authorize the request, often a smartphone. 
           </t>
         </list>
       </t>
@@ -418,6 +418,9 @@
         </t>
         <t>A bank teller wants to authenticate a customer in a bank branch - using CIBA for authentication in a face-to-face scenario.
         </t>
+        <t>
+          A user wants to user their smartphone to authorise a payment they are making at a point of sale terminal.
+        </t>
         </list>
         </t>
     </section>
@@ -666,22 +669,28 @@
             User code is a mechanism to prevent unsolicited authentication requests from appearing on a user's authentication device.
           </t>
           <t>
-            User code is optional. It is optional for the authentication service (OP) to implement user code functionality. If the OP implements user code functionality then it may allow 1) clients without user code and 2) users without user code.
+            It is optional for the OP to implement user code functionality. If the OP implements user code functionality then it may allow 1) clients without user code and 2) users without user code.
           </t>
           <t>
-            Typically clients that establish a security context with the user prior to sending a CIBA request should be allowed without user code. Example use cases of client security context are web applications that use CIBA for step-up authentication or call center applications where caller id is used to identify user.
+            Typically clients that establish a security context with the user prior to sending a CIBA request should be allowed without user code. Example use cases of client security context are web applications that use CIBA for step-up authentication or call center applications where caller id is used to identify the user.
           </t>
           <t>
-            The OP declares support for user code with provider metadata parameter <spanx style="verb">backchannel_user_code_parameter_supported</spanx>.
+            The OP declares support for user code with the provider metadata parameter <spanx style="verb">backchannel_user_code_parameter_supported</spanx>.
           </t>
           <t>
-            The client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> specifies if support for user code is required from the Client.
+            The Client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> specifies if support for user code is required from the Client.
           </t>
           <t>
-            A client may detect users who require user code from authentication request error code. For example a client may first attempt authentication request without user code, and only prompt for user code if it receives error code <spanx style="verb">missing_user_code</spanx>.
+            A client may detect users who require a user code from the authentication request error code. For example a client may first attempt an authentication request without a user code, and only prompt for a user code if it receives the error code <spanx style="verb">missing_user_code</spanx>.
           </t>
           <t>
-            Registering a user code for a user is not in scope of this specification. Examples include a facility provided by the authentication device, SMS text messages or other service provided by the OP.
+            The Client MUST NOT store the user code, but should rather request it from the user 
+            for each CIBA flow.
+          </t>
+          <t>
+            Registering a user code for a user is not in scope of this specification. Examples include 
+            a facility provided by the authentication device, SMS text messages or other service provided 
+            by the OP. OP's should provide a method for the user to change the user code. 
           </t>          
         </section>        
     </section>
@@ -784,27 +793,18 @@
 
     <section anchor="auth_server_obtains_consent" title="OpenID Provider Obtains End-User Consent/Authorization">
       <t>
-        After the OP has validated the Authentication Request, the OP identifies the user's Authentication Device (AD).
-        The OP chooses a channel to best contact the AD and fulfill the Client's requirements regarding acr_values.
+        After the OP has validated the Authentication Request, the OP identifies the user and chooses a channel to 
+        best authenticate the user and authorize the request, in line with the Client's requirements regarding 
+        acr_values. Typically this involves the OP initiating an interactive session on the user's authentication device. 
       </t>
       <t>
-        Once the end-user is authenticated, the OpenID Provider MUST obtain an authorization decision before
-        releasing information to the Client. As in OAuth 2.0 and as in OpenID Connect the OP informs the user
-        about the current Authentication Request e.g.: Which Client is requesting which information and which
-        access.
+        Once the end-user is authenticated, the OpenID Provider MUST obtain an authorization decision as described 
+        in Section 3.1.2.4 of <xref target="OpenID.Core"/>.
       </t>
       <t>
-        When using the Client Initiated Backchannel Authentication flow,
-        there is not any interactive dialogue between the OpenID Provider and the end-user through the user's consumption device. 
-        There might be an agent of the Client involved who transfers the binding_message to the user.
-      </t>
-      <t>
-        The consent establishing only can take place via the authentication device or by establishing consent 
-        via conditions for processing the request or other means (for example, via previous administrative consent). 
-        Sections 2 and 5.3 of <xref target="OpenID.Core"/> describe information release mechanisms.
-      </t>
-      <t>
-        NOTE: the current version of the Client Initiated Backchannel Authentication Flow spec. does not specify any mechanism to use the authentication device to obtain the end-user consent.
+        When using the Client Initiated Backchannel Authentication flow, there is no interactive dialogue between 
+        the OpenID Provider and the end-user through the user's consumption device. There might be an agent of the 
+        Client involved who transfers the binding_message to the user.
       </t>
     </section>
 
@@ -1301,18 +1301,41 @@
 
     <section anchor="privacy_considerations" title="Privacy Considerations">
       <t>
-        Using MODRNA Client Initiated Backchannel Authentication it is possible for the Client
-        to authenticate a user without knowing e.g. the MSISDN of the user.
-        Users might be reluctant to provide their MSISDN to Clients because they fear
-        misuse through automated calls or their number being leaked.
-        The login hint token is encrypted in order to protect the user's MSISDN from 
-        being revealed to the Client unintentionally.
+        This flow requires the Client to obtain an identifier for the end-user.  When this identifier is 
+        a static global identifier, such as a phone number or email address, there are clear 
+        privacy implications. However this flow does not require the use of such identifiers and in 
+        deployments with higher privacy requirements, alternative identifiers could be used, such as:
+      </t>
+      <t>
+        <list style="hanging">
+          <t hangText="ID Token containing a pairwise identifier">
+            CIBA supports the use of ID Tokens as an <spanx style="verb">id_token_hint</spanx> in 
+            the authentication request. If the OP has previously issued an ID Token to the Client 
+            that contains a pairwise identifier and no personally identifiable information, then a 
+            CIBA flow can be initialised without the RP asking the user for a static identifier. 
+            This ID Token may have been obtained by the Client via a standard front-channel 
+            redirect flow. 
+          </t>
+          <t hangText="Single-use user identifier, transferred from the AD to the CD">
+            The OP could generate a single-use identifier which could be transferred from the 
+            Authentication Device to the Consumption Device at the start of the flow. For example,
+            the user could authenticate on the AD and request an identifier for a CIBA flow. This could 
+            be displayed as a QR code, the user could scan this QR code at the CD. The RP would then 
+            decode the identifier and embed it in a <spanx style="verb">login_hint_token</spanx> which
+            it would use to initiate a CIBA flow. The OP would then gain consent from the end-user for 
+            the access requested by the RP. 
+          </t>                   
+          <t hangText="Discovery Service">
+            For some ecosystems the RP may be able to send the user to a discovery service and receive
+            back an encrypted <spanx style="verb">login_hint_token</spanx> which it can use in the 
+            authentication request. The OP would decrypt the token, identify the user and continue the 
+            CIBA flow.
+          </t>
+
+
+        </list>
       </t>
 
-      <t>
-        The section <xref target="SimAppletExample" format="title"/> shows an example to illustrate
-        the usage of CIBA specification to authenticate a user with a SIM Applet Authenticator.
-      </t>
     </section>
 
 
@@ -1482,96 +1505,6 @@
 
     </references>
 
-    <section anchor="SimAppletExample" title="Example Flow">
-      <t>
-        This is a non-normative example where a challenge authentication is launched by the OP to an applet that is running in the
-        end-user device's SIM. Such applet implements an authenticator that validates a Pin Code entered by the end-user.
-      </t>
-      <t>
-        This authenticator would be implemented through the so-called MSSP (Mobile Signature Subscriber Provider) Server.
-        When the Backchannel Authentication Endpoint receives the request to authenticate the user and once it knows the user's MSISDN, it makes a call
-        to the MSSP Server which builds a binary Class 2 SMS that is sent to the SIM card of the user where the applet is located.
-      </t>
-
-      <t>
-        This Class 2 SMS is not really sent directly from the MSSP but through the OTA (Over the air) platform which in turn signs 
-        and encrypts the message using a pair of keys (kyc, kyd) unique per each SIM Card.
-      </t>
-        
-      <t>
-        Once the message reaches the SIM Card, it is decrypted by the CardManager and the signature is verified (thanks to the same pair of keys: kyc, kyd).
-        If everything is ok, the CardManager gives the message to the applet that checks the signature (the another one made by the MSSP) and displays the challenge
-        through a popup using the mobile phone native interface) and the user is prompted to enter a Pin Code that is validated locally.
-        If the Pin Code is correct, the applet builds an OK response and signs it with the same key used by the MSSP to sign the request, this 
-        response is sent as a Class 3 message to the MSSP that checks the signature, and builds the id_token and the access_token to be returned to the Client.
-      </t>
-      <figure>
-        <artwork>
-          <![CDATA[
-
-+-----+                    +-----+                      +-------+                 +-----------+          +-------+
-| RP  |                    | OP  |                      | MSSP  |                 | SIMApplet |          | User  |
-+-----+                    +-----+                      +-------+                 +-----------+          +-------+
-   |                          |                             |                           |                    |
-   | 1. POST /bc-authorize    |                             |                           |                    |
-   |------------------------->|                             |                           |                    |
-   |                          |                             |                           |                    |
-   |           2. HTTP 200 OK |                             |                           |                    |
-   |<-------------------------|                             |                           |                    |
-   |                          |                             |                           |                    |
-   |                          | 3. Authenticate(MSISDN)     |                           |                    |
-   |                          |---------------------------->|                           |                    |
-   |                          |                             |                           |                    |
-   |                          |                             | 4. Challenge              |                    |
-   |                          |                             |-------------------------->|                    |
-   |                          |                             |                           |                    |
-   |                          |                             |                           | 7. Verify Req      |
-   |                          |                             |                           |--------------      |
-   |                          |                             |                           |             |      |
-   |                          |                             |                           |<-------------      |
-   |                          |                             |                           |                    |
-   |                          |                             |                           | 8. Challenge       |
-   |                          |                             |                           |------------------->|
-   |                          |                             |                           |                    |
-   |                          |                             |                           |        9. Pin Code |
-   |                          |                             |                           |<-------------------|
-   |                          |                             |                           |                    |
-   |                          |                             |                           | 10. Verify Pin     |
-   |                          |                             |                           |---------------     |
-   |                          |                             |                           |              |     |
-   |                          |                             |                           |<--------------     |
-   |                          |                             |                           |                    |
-   |                          |                             |           11. Response OK |                    |
-   |                          |                             |<--------------------------|                    |
-   |                          |                             |                           |                    |
-   |                          |                             | 13. Verify Response       |                    |
-   |                          |                             |--------------------       |                    |
-   |                          |                             |                   |       |                    |
-   |                          |                             |<-------------------       |                    |
-   |                          |                             |                           |                    |
-   |                          |       14. Authentication OK |                           |                    |
-   |                          |<----------------------------|                           |                    |
-   |                          |                             |                           |                    |
-   |                          | 15. Generate Tokens         |                           |                    |
-   |                          |--------------------         |                           |                    |
-   |                          |                   |         |                           |                    |
-   |                          |<-------------------         |                           |                    |
-   |                          |                             |                           |                    |
-   |             16. POST /cb |                             |                           |                    |
-   |<-------------------------|                             |                           |                    |
-   |                          |                             |                           |                    |
-
-
-          ]]>
-        </artwork>
-      </figure>
-      <t>
-        Many of the details have advisedly been excluded in order to simplify the flow described. To go into details of how to 
-        implement a Mobile Signature Service look at <xref target="ETSI102204" format="title"/>.
-      </t>
-
-    </section>
-
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>The following have contributed to the development of this specification.</t>
     </section>
@@ -1693,6 +1626,14 @@
           <t>Add AS/OP metadata parameter for the Backchannel Authentication Endpoint.</t>
           <t>More clearly define the authentication request format and client authentication to the Backchannel Authentication Endpoint.</t>
           <t>Change client_notification_endpoint to backchannel_client_notification_endpoint.</t>
+        </list>
+      </t>
+      <t>-OIDC-CIBA-CORE-01 
+        <list style='symbols'>
+          <t>Changed name to OpenID Connect Client Initiated Backchannel Authentication Flow - Core</t>
+          <t>Removed SimApplet Example</t>
+          <t>Changed Privacy Considerations to be less MNO specific and explain the different identifiers
+          that can be used.</t>
         </list>
       </t>
     </section>
