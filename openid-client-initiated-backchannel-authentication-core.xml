@@ -1496,6 +1496,19 @@
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>The following have contributed to the development of this specification.</t>
+      <t>
+        John Bradley,
+        Ralph Bragg,
+        Joseph Heenan,
+        Bjorn Hjelm,
+        Takahiko Kawasaki,
+        Torsten Lodderstedt,
+        James Manger,
+        Charles Marais,
+        Nat Sakimura,
+        and
+        Petteri Stenius.
+      </t>
     </section>
 
 
