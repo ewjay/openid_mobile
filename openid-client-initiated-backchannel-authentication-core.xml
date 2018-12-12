@@ -589,9 +589,9 @@
         </t>
         <t>
           The signed authentication request JWT is passed as an <spanx style='verb'>application/x-www-form-urlencoded</spanx>
-          HTTP request parameter with the name <spanx style='verb'>request</spanx>. Authentication
-          request parameters MUST NOT be be outside the JWT and appear as HTTP request parameters.
-          Additional HTTP request parameters as required by the given client authentication method, however, will be
+          HTTP request parameter with the name <spanx style='verb'>request</spanx>. Authentication request parameters
+          MUST NOT be present outside of the JWT, in particular they MUST NOT appear as HTTP request parameters.
+          Additional HTTP request parameters as required by the given client authentication method, however, MUST be
           included as <spanx style='verb'>application/x-www-form-urlencoded</spanx>
           parameters (e.g.  Mutual TLS client authentication uses <spanx style="verb">client_id</spanx>
           while JWT assertion based client authentication uses
