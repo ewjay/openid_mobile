@@ -73,7 +73,7 @@
     <abstract>    
       <t>
         OpenID Connect Client Initiated Backchannel Authentication Flow is an authentication
-        flow like OpenID Connect. Unlike OpenID Connect there is direct Relying Party to OpenID 
+        flow like OpenID Connect. However, unlike OpenID Connect, there is direct Relying Party to OpenID
         Provider communication without redirects through the user's browser.
         This specification allows a Relying Party that knows the user's identifier to obtain tokens from the
         OpenID Provider. The user consent is given at the user's Authentication Device mediated by the OpenID Provider.
@@ -95,7 +95,7 @@
         from the consumption device is not needed.
       </t>
       <t>
-        OpenID Connect Client Initiated Backchannel Authentication Flow - Core specifies a new authentication flow,
+        Client Initiated Backchannel Authentication (CIBA) is a new authentication flow,
         in which RP's that can obtain a valid identifier for the user they want to authenticate, will be able to 
         initiate an interaction flow to authenticate their users without having end-user interaction
         from the consumption device. The flow involves direct communication from the Client to the OpenID Provider 
