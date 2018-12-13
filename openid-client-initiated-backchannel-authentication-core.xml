@@ -95,8 +95,8 @@
         from the consumption device is not needed.
       </t>
       <t>
-        Client Initiated Backchannel Authentication (CIBA) is a new authentication flow,
-        in which RP's that can obtain a valid identifier for the user they want to authenticate, will be able to 
+        Client Initiated Backchannel Authentication (CIBA) is a new authentication flow
+        in which RPs, that can obtain a valid identifier for the user they want to authenticate, will be able to
         initiate an interaction flow to authenticate their users without having end-user interaction
         from the consumption device. The flow involves direct communication from the Client to the OpenID Provider 
         without redirect through the user's browser (consumption device).
@@ -139,8 +139,8 @@
         <list style="hanging">
           <t hangText="Consumption Device (CD)">
             The Consumption Device is the device that helps the user consume the service.
-            In the CIBA use case, the user is not necessarily in control of the CD but the CD is in the control
-            of an RP agent (e.g. at a bank teller) or the CD is an RP controlled device (e.g. a petrol pump).
+            In the CIBA use case, the user is not necessarily in control of the CD. For example, the CD may be in the control
+            of an RP agent (e.g. at a bank teller) or may be an RP controlled device (e.g. a petrol pump).
           </t>
           <t hangText="Authentication Device (AD)">
             The device on which the user will authenticate and authorize the request, often a smartphone. 
@@ -165,7 +165,7 @@
 		    </t>
 		    <t>
           The Client will receive the ID Token, Access Token and optionally Refresh Token by means of either the Poll,  
-          Ping or Push modes, this choice MUST be established by the Client at the registration time.
+          Ping or Push modes, this choice MUST be established by the Client at registration time.
           <list style="hanging">
            <t hangText="Poll Mode">
               When configured in Poll mode, the Client will poll the token endpoint to get a response with the tokens. 
