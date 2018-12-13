@@ -1301,9 +1301,7 @@
         delivered directly to the Client at its Client Notification Endpoint. Implementers should ensure that apprproiate 
         security controls are in place for this endpoint and its registration with the OP. CIBA requires that a hash of 
         the access token, a hash of the refresh token and the auth_req_id itself are included in the ID Token when the Push 
-        mode is used. This allows the Client to verify that the values in the Push Callback have not been tampered with.        
-        However due to the different security properties of the Push Callback mode, implementers may want to consider
-        the use of sender constrained tokens to further protect this mode. 
+        mode is used. This allows the Client to verify that the values in the Push Callback have not been tampered with.                
       </t>
 
     
