@@ -781,7 +781,7 @@
           If the Client receives an HTTP 200 OK, it MUST validate that all the required parameters are received. 
         </t>
         <t>
-          The Client MUST keep the <spanx style="verb">auth_req_id</spanx> in order to validate the callbacks received in Ping and Push modes or to to use when making a token request in Poll and Ping modes.
+          The Client MUST keep the <spanx style="verb">auth_req_id</spanx> in order to validate the callbacks received in Ping and Push modes or to use when making a token request in Poll and Ping modes.
         </t>
         <t>
           The Client should store the expiration time in order to clean up authentication requests for which
