@@ -582,6 +582,9 @@
             <t hangText="iat">
               The time at which the signed authentication request was created.
             </t>
+            <t hangText="nbf">
+              The time before which the signed authentication request is unacceptable.
+            </t>
             <t hangText="jti">
               A unique identifier for the signed authentication request.
             </t>
@@ -610,26 +613,26 @@
 
    request=eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJz
    NkJoZFJrcXQzIiwiYXVkIjoiaHR0cHM6Ly9zZXJ2ZXIuZXhhbXBsZS5jb20iLCJl
-   eHAiOjE1Mzc4MjAwODYsImlhdCI6MTUzNzgxOTQ4NiwianRpIjoiNExUQ3FBQ0My
-   RVNDNUJXQ25OM2o1OEVuQSIsInNjb3BlIjoib3BlbmlkIGVtYWlsIGV4YW1wbGUt
-   c2NvcGUiLCJjbGllbnRfbm90aWZpY2F0aW9uX3Rva2VuIjoiOGQ2N2RjNzgtN2Zh
-   YS00ZDQxLWFhYmQtNjc3MDdiMzc0MjU1IiwiYmluZGluZ19tZXNzYWdlIjoiVzRT
-   Q1QiLCJsb2dpbl9oaW50X3Rva2VuIjoiZXlKcmFXUWlPaUpzZEdGalpYTmlkeUlz
-   SW1Gc1p5STZJbEpUTWpVMkluMC5leUp6ZFdKcVpXTjBJanA3SW5OMVltcGxZM1Jm
-   ZEhsd1pTSTZJbkJvYjI1bElpd2ljR2h2Ym1VaU9pSXJNVE16TURJNE1UZ3dNRFFp
-   ZlgwLllCOF84T2tzSmQxRndmVnNJVWxILXJzOWNQaGtJYTBEVWk3T1ZXX0RhOWdQ
-   Nmh1QnhmN2FTRGwzcUtYQTIwdVQxelRodVNpWXowYmR6OEpfS1BSSHVDNnZ3b0Zs
-   ejl5Qko5a3NXT1AyOHNIUFBpMTlfNC14aWR3bmI4UDEyLVJvWHdZMmVBRjgyX05B
-   bjJ2bXB2cVVqbHVvV3lOSGF5OHZndUNoSXV0cXppVjBiRmwtN29heHAzNmk0ZWxi
-   dlRfRFllZzIwYTBqejR3SUJLY180Nks4STI4RXJrd2JJNU8zNUdmRWxQWGwtNEo1
-   NU5Ia2tPc0R4dVVZUXRXalNNM3dtZTE5NzM1WFdxMkRJVDJubUxGaTRIenpUMjdX
-   MGNuSmc3TF9haTl1Tk5Cdkl4X01wNUFiY21rUjgzYXBSNGp4blF1RTVYZjIzcXlS
-   cEFoYXdlN0lQUSJ9.RifvKPcABRakRyUplF5wOe3sFPgj_RgVwGDAvRlsa0Fs9wn
-   g-XF0_-Jw11GaOD5kNN6JyTVo4OuqbeP-gbwh0MuNsWnUS9YGov-YJ7QdeYmT_i9
-   snlSgTKpZ31d63A0vUrwJaTuCLsrmlw_Z5Bbp0HKrg6kGUpw5mtMQBDsjJ5HQiod
-   qK_5zMO-mlsPwIEeNx0g6HJ8fMQvji5WSx617W4zbjeGuzFS-TJNSBaXHe4ymvpX
-   ICKoGJq5x1ihXV6Yy3x5ZLoEbjuGjNnAZkf1lW8_M7WhoCwpBPVnKII9ZPgIZjnw
-   c_Hb16mzLwmCodh3-bvNtni3geHCf_8rF5S3Mow
+   eHAiOjE1Mzc4MjAwODYsImlhdCI6MTUzNzgxOTQ4NiwibmJmIjoxNTM3ODE4ODg2
+   LCJqdGkiOiI0TFRDcUFDQzJFU0M1QldDbk4zajU4RW5BIiwic2NvcGUiOiJvcGVu
+   aWQgZW1haWwgZXhhbXBsZS1zY29wZSIsImNsaWVudF9ub3RpZmljYXRpb25fdG9r
+   ZW4iOiI4ZDY3ZGM3OC03ZmFhLTRkNDEtYWFiZC02NzcwN2IzNzQyNTUiLCJiaW5k
+   aW5nX21lc3NhZ2UiOiJXNFNDVCIsImxvZ2luX2hpbnRfdG9rZW4iOiJleUpyYVdR
+   aU9pSnNkR0ZqWlhOaWR5SXNJbUZzWnlJNklsSlRNalUySW4wLmV5SnpkV0pxWldO
+   MElqcDdJbk4xWW1wbFkzUmZkSGx3WlNJNkluQm9iMjVsSWl3aWNHaHZibVVpT2lJ
+   ck1UTXpNREk0TVRnd01EUWlmWDAuWUI4XzhPa3NKZDFGd2ZWc0lVbEgtcnM5Y1Bo
+   a0lhMERVaTdPVldfRGE5Z1A2aHVCeGY3YVNEbDNxS1hBMjB1VDF6VGh1U2lZejBi
+   ZHo4Sl9LUFJIdUM2dndvRmx6OXlCSjlrc1dPUDI4c0hQUGkxOV80LXhpZHduYjhQ
+   MTItUm9Yd1kyZUFGODJfTkFuMnZtcHZxVWpsdW9XeU5IYXk4dmd1Q2hJdXRxemlW
+   MGJGbC03b2F4cDM2aTRlbGJ2VF9EWWVnMjBhMGp6NHdJQktjXzQ2SzhJMjhFcmt3
+   Ykk1TzM1R2ZFbFBYbC00SjU1Tkhra09zRHh1VVlRdFdqU00zd21lMTk3MzVYV3Ey
+   RElUMm5tTEZpNEh6elQyN1cwY25KZzdMX2FpOXVOTkJ2SXhfTXA1QWJjbWtSODNh
+   cFI0anhuUXVFNVhmMjNxeVJwQWhhd2U3SVBRIn0.IBuxW3F_L9tj9f6fGC7FnVsH
+   9B9RoJYA8QyxtnxgOgMc1kcnufyGxdtd7lU1TjPCVNsbkR0vfGasCmoMYSMohPOb
+   nwAlkm8Yf0uglhxM83B0dj_I10vwlMGnVFvydaH9wnacM4Ln7E-JIYOxtZa33abf
+   1PB3fLs29GKOBmgNPn3NrxJ0iCLb0F243556Ypzdhcyj7vM8ukNzkKT3eQ0ZWJ1v
+   VRToThgKyIN-HvLFpeSfJtSH5ycMYOjob-qXUgKpQryUbgbpqsM1XnUV-8aBD5d8
+   VF5fQoz0PQWq63B_zpC22nstIFxNmfxztSFpnW0vgX0htNKOtL_HMwFRfwh71g
        ]]>
           </artwork>
         </figure>
@@ -644,6 +647,7 @@
      "aud": "https://server.example.com",
      "exp": 1537820086,
      "iat": 1537819486,
+     "nbf": 1537818886,
      "jti": "4LTCqACC2ESC5BWCnN3j58EnA",
      "scope": "openid email example-scope",
      "client_notification_token": "8d67dc78-7faa-4d41-aabd-67707b374255",
