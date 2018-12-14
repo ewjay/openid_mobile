@@ -108,9 +108,9 @@
         It does not introduce new scope values nor does it change the semantics of standard OpenID Connect parameters.
       </t>
       <t>
-        <spanx style="strong">Remark:</spanx> As the user has no consumption device through which the user is interacting with the Client, 
-        this flow will not cause any user credentials to go through the RP. So it should be highlighted that traditional username/password 
-        authentication could not be used because only out-of-band mechanisms will work in conjunction with this flow.
+        As the user does not provide authentication credentials directly to the consumption device, supporting this 
+        flow requires the to OP have some mechanism of initiating user authentication out-of-band from the interaction 
+        with the consumption device.
       </t>
       <section anchor="rnc" title="Requirements Notation and Conventions">
         <t>
@@ -254,17 +254,20 @@
     
             <t hangText="Poll and Ping Modes with Pairwise Identifiers">
               In order to use the Poll or Ping mode with Pairwise Pseudonymous Identifiers (PPIDs),
-              the Client needs to register a URI that is of its ownership and use it during the authentication process in a way that demonstrates that
-              the URI belongs to it, which allows the OP to consider the URI as the Sector Identifier for the pairwise identifier calculation per
-              <eref target="https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg">Section 8.1 of OpenID Connect Core</eref>.
+              the Client needs to register a URI that is of its ownership and use it during the authentication process in a way that demonstrates 
+              that the URI belongs to it, which allows the OP to consider the host component of that URI as the Sector Identifier for the pairwise 
+              identifier calculation per <eref target="https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg">Section 8.1 of OpenID 
+              Connect Core</eref>.
             </t>
             <t>
-              The only way that CIBA generates Pairwise Pseudonymous Identifiers is by providing a "jwks_uri" at the registration phase when the
-              "urn:openid:params:modrna:grant-type:backchannel_request" grant type is registered. In that way the OpenID Provider will have a URI to use as the Sector Identifier
-              to generate the PPIDs for the Client. So, when an OpenID Provider that supports PPIDs receives a dynamic registration request it MUST check if a valid
-              "jwks_uri" is set when the backchannel request grant type is present in the "grant_types" list and the "subject_type" is "pairwise".
+              The only way that CIBA generates Pairwise Pseudonymous Identifiers in Ping and Poll modes is by providing a "jwks_uri" at the 
+              registration phase when the "urn:openid:params:modrna:grant-type:backchannel_request" grant type is registered. In that way 
+              the OpenID Provider can use the host component of the "jwks_uri" as the Sector Identifier to generate the PPIDs for the Client. 
+              So, when an OpenID Provider that supports PPIDs receives a dynamic registration request for a Client that indicates that it wishes 
+              to use the Poll or Ping CIBA modes, it MUST check if a valid "jwks_uri" is set when the "subject_type" is "pairwise".
 
-              If a "sector_identifier_uri" is explicitly provided, then the "jwks_uri" must be included in the list of URIs pointed to by "sector_identifier_uri".
+              If a "sector_identifier_uri" is explicitly provided, then the "jwks_uri" must be included in the list of URIs pointed to by 
+              the "sector_identifier_uri".
             </t>            
             <t>
               But having registered a "jwks_uri" is not enough to use PPIDs, Client needs somehow to demonstrate that such "jwks_uri" belongs to it,
@@ -286,8 +289,9 @@
             </t>
 
             <t hangText="Push Mode with Pairwise Identifiers">
-              When using the Push mode, the PPIDs will use the "backchannel_client_notification_endpoint" as the Sector Identifier. In case a "sector_identifier_uri"
-              is explicitly provided, then the "backchannel_client_notification_endpoint" must be included in the list of URIs pointed by "sector_identifier_uri".
+              When using the Push mode, the PPIDs will use the host component of the "backchannel_client_notification_endpoint" as the Sector Identifier. 
+              In case a "sector_identifier_uri" is explicitly provided, then the "backchannel_client_notification_endpoint" must be included in the 
+              list of URIs pointed to by the "sector_identifier_uri".
             </t>      
         </list>
         <figure>
@@ -582,6 +586,9 @@
             <t hangText="iat">
               The time at which the signed authentication request was created.
             </t>
+            <t hangText="nbf">
+              The time before which the signed authentication request is unacceptable.
+            </t>
             <t hangText="jti">
               A unique identifier for the signed authentication request.
             </t>
@@ -610,26 +617,26 @@
 
    request=eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJz
    NkJoZFJrcXQzIiwiYXVkIjoiaHR0cHM6Ly9zZXJ2ZXIuZXhhbXBsZS5jb20iLCJl
-   eHAiOjE1Mzc4MjAwODYsImlhdCI6MTUzNzgxOTQ4NiwianRpIjoiNExUQ3FBQ0My
-   RVNDNUJXQ25OM2o1OEVuQSIsInNjb3BlIjoib3BlbmlkIGVtYWlsIGV4YW1wbGUt
-   c2NvcGUiLCJjbGllbnRfbm90aWZpY2F0aW9uX3Rva2VuIjoiOGQ2N2RjNzgtN2Zh
-   YS00ZDQxLWFhYmQtNjc3MDdiMzc0MjU1IiwiYmluZGluZ19tZXNzYWdlIjoiVzRT
-   Q1QiLCJsb2dpbl9oaW50X3Rva2VuIjoiZXlKcmFXUWlPaUpzZEdGalpYTmlkeUlz
-   SW1Gc1p5STZJbEpUTWpVMkluMC5leUp6ZFdKcVpXTjBJanA3SW5OMVltcGxZM1Jm
-   ZEhsd1pTSTZJbkJvYjI1bElpd2ljR2h2Ym1VaU9pSXJNVE16TURJNE1UZ3dNRFFp
-   ZlgwLllCOF84T2tzSmQxRndmVnNJVWxILXJzOWNQaGtJYTBEVWk3T1ZXX0RhOWdQ
-   Nmh1QnhmN2FTRGwzcUtYQTIwdVQxelRodVNpWXowYmR6OEpfS1BSSHVDNnZ3b0Zs
-   ejl5Qko5a3NXT1AyOHNIUFBpMTlfNC14aWR3bmI4UDEyLVJvWHdZMmVBRjgyX05B
-   bjJ2bXB2cVVqbHVvV3lOSGF5OHZndUNoSXV0cXppVjBiRmwtN29heHAzNmk0ZWxi
-   dlRfRFllZzIwYTBqejR3SUJLY180Nks4STI4RXJrd2JJNU8zNUdmRWxQWGwtNEo1
-   NU5Ia2tPc0R4dVVZUXRXalNNM3dtZTE5NzM1WFdxMkRJVDJubUxGaTRIenpUMjdX
-   MGNuSmc3TF9haTl1Tk5Cdkl4X01wNUFiY21rUjgzYXBSNGp4blF1RTVYZjIzcXlS
-   cEFoYXdlN0lQUSJ9.RifvKPcABRakRyUplF5wOe3sFPgj_RgVwGDAvRlsa0Fs9wn
-   g-XF0_-Jw11GaOD5kNN6JyTVo4OuqbeP-gbwh0MuNsWnUS9YGov-YJ7QdeYmT_i9
-   snlSgTKpZ31d63A0vUrwJaTuCLsrmlw_Z5Bbp0HKrg6kGUpw5mtMQBDsjJ5HQiod
-   qK_5zMO-mlsPwIEeNx0g6HJ8fMQvji5WSx617W4zbjeGuzFS-TJNSBaXHe4ymvpX
-   ICKoGJq5x1ihXV6Yy3x5ZLoEbjuGjNnAZkf1lW8_M7WhoCwpBPVnKII9ZPgIZjnw
-   c_Hb16mzLwmCodh3-bvNtni3geHCf_8rF5S3Mow
+   eHAiOjE1Mzc4MjAwODYsImlhdCI6MTUzNzgxOTQ4NiwibmJmIjoxNTM3ODE4ODg2
+   LCJqdGkiOiI0TFRDcUFDQzJFU0M1QldDbk4zajU4RW5BIiwic2NvcGUiOiJvcGVu
+   aWQgZW1haWwgZXhhbXBsZS1zY29wZSIsImNsaWVudF9ub3RpZmljYXRpb25fdG9r
+   ZW4iOiI4ZDY3ZGM3OC03ZmFhLTRkNDEtYWFiZC02NzcwN2IzNzQyNTUiLCJiaW5k
+   aW5nX21lc3NhZ2UiOiJXNFNDVCIsImxvZ2luX2hpbnRfdG9rZW4iOiJleUpyYVdR
+   aU9pSnNkR0ZqWlhOaWR5SXNJbUZzWnlJNklsSlRNalUySW4wLmV5SnpkV0pxWldO
+   MElqcDdJbk4xWW1wbFkzUmZkSGx3WlNJNkluQm9iMjVsSWl3aWNHaHZibVVpT2lJ
+   ck1UTXpNREk0TVRnd01EUWlmWDAuWUI4XzhPa3NKZDFGd2ZWc0lVbEgtcnM5Y1Bo
+   a0lhMERVaTdPVldfRGE5Z1A2aHVCeGY3YVNEbDNxS1hBMjB1VDF6VGh1U2lZejBi
+   ZHo4Sl9LUFJIdUM2dndvRmx6OXlCSjlrc1dPUDI4c0hQUGkxOV80LXhpZHduYjhQ
+   MTItUm9Yd1kyZUFGODJfTkFuMnZtcHZxVWpsdW9XeU5IYXk4dmd1Q2hJdXRxemlW
+   MGJGbC03b2F4cDM2aTRlbGJ2VF9EWWVnMjBhMGp6NHdJQktjXzQ2SzhJMjhFcmt3
+   Ykk1TzM1R2ZFbFBYbC00SjU1Tkhra09zRHh1VVlRdFdqU00zd21lMTk3MzVYV3Ey
+   RElUMm5tTEZpNEh6elQyN1cwY25KZzdMX2FpOXVOTkJ2SXhfTXA1QWJjbWtSODNh
+   cFI0anhuUXVFNVhmMjNxeVJwQWhhd2U3SVBRIn0.IBuxW3F_L9tj9f6fGC7FnVsH
+   9B9RoJYA8QyxtnxgOgMc1kcnufyGxdtd7lU1TjPCVNsbkR0vfGasCmoMYSMohPOb
+   nwAlkm8Yf0uglhxM83B0dj_I10vwlMGnVFvydaH9wnacM4Ln7E-JIYOxtZa33abf
+   1PB3fLs29GKOBmgNPn3NrxJ0iCLb0F243556Ypzdhcyj7vM8ukNzkKT3eQ0ZWJ1v
+   VRToThgKyIN-HvLFpeSfJtSH5ycMYOjob-qXUgKpQryUbgbpqsM1XnUV-8aBD5d8
+   VF5fQoz0PQWq63B_zpC22nstIFxNmfxztSFpnW0vgX0htNKOtL_HMwFRfwh71g
        ]]>
           </artwork>
         </figure>
@@ -644,6 +651,7 @@
      "aud": "https://server.example.com",
      "exp": 1537820086,
      "iat": 1537819486,
+     "nbf": 1537818886,
      "jti": "4LTCqACC2ESC5BWCnN3j58EnA",
      "scope": "openid email example-scope",
      "client_notification_token": "8d67dc78-7faa-4d41-aabd-67707b374255",
@@ -995,7 +1003,7 @@
            <t>
               In order to bind together the ID Token, the Access Token and the auth_req_id, the OP MUST include the hash value of the Access Token and the auth_req_id within the ID Token using the <spanx style="verb">at_hash</spanx> and <spanx style="verb">urn:openid:params:jwt:claim:auth_req_id</spanx> claims respectively.
               In case a Refresh Token is sent to the Client, the hash value of it MUST also be added to the ID token using the <spanx style="verb">urn:openid:params:jwt:claim:rt_hash</spanx> claim. Section 3.1.3.6 of <xref target="OpenID.Core"/> shows how to calculate the hash value of the access_token for <spanx style="verb">at_hash</spanx>,
-              the same method can also be applied to calculate the Refresh Token hash value.
+              the same method can also be applied to calculate the Refresh Token hash value. Note that these claims are only required in Push mode. 
         </t>
           <figure>
             <preamble>The following is a non-normative example of a Push Callback sent as an HTTP POST
@@ -1245,21 +1253,6 @@
  
       </section>
 
-    <section title='Pairwise Identifiers'>
-        <t>
-        If the OpenID Provider uses Pairwise Identifiers then a <spanx style="verb">sector_identifier_uri</spanx> MUST be specified for all Clients using CIBA.
-        The Client metadata key <spanx style="verb">sector_identifier_uri</spanx> is specified in section 2 of <xref target="OpenID.Registration"/>.
-        </t>
-        <t><xref target="OpenID.Core"/> discusses Pairwise Identifier Algorithms in section 8.1.
-        </t>
-        <t>
-            How Sector Identifier Validation is done at registration time is out-of-scope of this specification.
-            Pre-arranged configurations between RP and OpenID Provider are always possible.
-            For Dynamic Registration please see <xref target="OpenID.Registration"/>.
-            In OpenID Dynamic Registration there is currently no way to automatically validate whether a CIBA client using Polling Mode is allowed to join the group of clients sharing a sector_identifier_uri.
-        </t>
-    </section>
-
     <section anchor="security_considerations" title="Security Considerations">
       <t>
         The login_hint_token SHOULD be digitally signed by the issuer.
@@ -1293,6 +1286,15 @@
         The OP could then validate that the Client authenticated at
         the Backchannel Authentication Endpoint was issued the pairwise subject identifier (or shares 
         a Sector Identifier with the Client who was issued the pairwise subject identifier).   
+      </t>
+      <t>
+        This specification defines a method of token delivery, "Push Callback", which differs from standard OAuth 2.0 
+        flows. Most OAuth 2.0 and OpenID Connect profiles require the Client to authenticate at the token endpoint 
+        in order to retrieve access tokens, ID Tokens and refresh tokens. However with the CIBA Push mode, tokens are 
+        delivered directly to the Client at its Client Notification Endpoint. Implementers should ensure that apprproiate 
+        security controls are in place for this endpoint and its registration with the OP. CIBA requires that a hash of 
+        the access token, a hash of the refresh token and the auth_req_id itself are included in the ID Token when the Push 
+        mode is used. This allows the Client to verify that the values in the Push Callback have not been tampered with.                
       </t>
 
     
