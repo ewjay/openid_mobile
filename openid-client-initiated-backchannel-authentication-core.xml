@@ -1077,6 +1077,7 @@
       "email": "janedoe@example.com",
       "exp": 1537819803,
       "iat": 1537819503,
+      "at_hash": "Wt0kVFXMacqvnHeyU0001w",
       "urn:openid:params:jwt:claim:rt_hash": "sHahCuSpXCRg5mkDDvvr4w",
       "urn:openid:params:jwt:claim:auth_req_id":
         "1c266114-a1be-4252-8ad1-04986c5b9ac1"
