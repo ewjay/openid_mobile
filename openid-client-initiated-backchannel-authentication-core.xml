@@ -473,7 +473,7 @@
               REQUIRED if the Client is registered to use Ping or Push modes. 
               It is a bearer token provided by the Client that will be used by the OpenID Provider to authenticate the callback request to the Client.
               The length of the token MUST NOT exceed 1024 characters and it MUST conform to the syntax for Bearer credentials as defined in Section 2.1 of <xref target="RFC6750"/>.
-              Clients should ensure that it contains sufficient entropy (at least 128 bits) or be otherwise protected such as to make
+              Clients MUST ensure that it contains sufficient entropy (at least 128 bits) or be otherwise protected such as to make
               brute force guessing or forgery of a valid token computationally infeasible.
             </t>
             <t hangText="acr_values">
@@ -755,7 +755,7 @@
         <t>
           <list style="hanging">
             <t hangText="auth_req_id">
-              REQUIRED. This is a unique identifier to identify the authentication request made by the Client. It SHOULD contain sufficient 
+              REQUIRED. This is a unique identifier to identify the authentication request made by the Client. It MUST contain sufficient
               entropy (at least 128 bits) or be otherwise protected such as to make brute force guessing computationally infeasible.
              </t>
             <t hangText="expires_in">
