@@ -108,9 +108,9 @@
         It does not introduce new scope values nor does it change the semantics of standard OpenID Connect parameters.
       </t>
       <t>
-        <spanx style="strong">Remark:</spanx> As the user has no consumption device through which the user is interacting with the Client, 
-        this flow will not cause any user credentials to go through the RP. So it should be highlighted that traditional username/password 
-        authentication could not be used because only out-of-band mechanisms will work in conjunction with this flow.
+        As the user does not provide authentication credentials directly to the consumption device, supporting this 
+        flow requires the to OP have some mechanism of initiating user authentication out-of-band from the interaction 
+        with the consumption device.
       </t>
       <section anchor="rnc" title="Requirements Notation and Conventions">
         <t>
