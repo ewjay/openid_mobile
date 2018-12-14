@@ -254,17 +254,20 @@
     
             <t hangText="Poll and Ping Modes with Pairwise Identifiers">
               In order to use the Poll or Ping mode with Pairwise Pseudonymous Identifiers (PPIDs),
-              the Client needs to register a URI that is of its ownership and use it during the authentication process in a way that demonstrates that
-              the URI belongs to it, which allows the OP to consider the URI as the Sector Identifier for the pairwise identifier calculation per
-              <eref target="https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg">Section 8.1 of OpenID Connect Core</eref>.
+              the Client needs to register a URI that is of its ownership and use it during the authentication process in a way that demonstrates 
+              that the URI belongs to it, which allows the OP to consider the host component of that URI as the Sector Identifier for the pairwise 
+              identifier calculation per <eref target="https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg">Section 8.1 of OpenID 
+              Connect Core</eref>.
             </t>
             <t>
-              The only way that CIBA generates Pairwise Pseudonymous Identifiers is by providing a "jwks_uri" at the registration phase when the
-              "urn:openid:params:modrna:grant-type:backchannel_request" grant type is registered. In that way the OpenID Provider will have a URI to use as the Sector Identifier
-              to generate the PPIDs for the Client. So, when an OpenID Provider that supports PPIDs receives a dynamic registration request it MUST check if a valid
-              "jwks_uri" is set when the backchannel request grant type is present in the "grant_types" list and the "subject_type" is "pairwise".
+              The only way that CIBA generates Pairwise Pseudonymous Identifiers in Ping and Poll modes is by providing a "jwks_uri" at the 
+              registration phase when the "urn:openid:params:modrna:grant-type:backchannel_request" grant type is registered. In that way 
+              the OpenID Provider can use the host component of the "jwks_uri" as the Sector Identifier to generate the PPIDs for the Client. 
+              So, when an OpenID Provider that supports PPIDs receives a dynamic registration request for a Client that indicates that it wishes 
+              to use the Poll or Ping CIBA modes, it MUST check if a valid "jwks_uri" is set when the "subject_type" is "pairwise".
 
-              If a "sector_identifier_uri" is explicitly provided, then the "jwks_uri" must be included in the list of URIs pointed to by "sector_identifier_uri".
+              If a "sector_identifier_uri" is explicitly provided, then the "jwks_uri" must be included in the list of URIs pointed to by 
+              the "sector_identifier_uri".
             </t>            
             <t>
               But having registered a "jwks_uri" is not enough to use PPIDs, Client needs somehow to demonstrate that such "jwks_uri" belongs to it,
@@ -286,8 +289,9 @@
             </t>
 
             <t hangText="Push Mode with Pairwise Identifiers">
-              When using the Push mode, the PPIDs will use the "backchannel_client_notification_endpoint" as the Sector Identifier. In case a "sector_identifier_uri"
-              is explicitly provided, then the "backchannel_client_notification_endpoint" must be included in the list of URIs pointed by "sector_identifier_uri".
+              When using the Push mode, the PPIDs will use the host component of the "backchannel_client_notification_endpoint" as the Sector Identifier. 
+              In case a "sector_identifier_uri" is explicitly provided, then the "backchannel_client_notification_endpoint" must be included in the 
+              list of URIs pointed to by the "sector_identifier_uri".
             </t>      
         </list>
         <figure>
@@ -1248,21 +1252,6 @@
         </figure>      
  
       </section>
-
-    <section title='Pairwise Identifiers'>
-        <t>
-        If the OpenID Provider uses Pairwise Identifiers then a <spanx style="verb">sector_identifier_uri</spanx> MUST be specified for all Clients using CIBA.
-        The Client metadata key <spanx style="verb">sector_identifier_uri</spanx> is specified in section 2 of <xref target="OpenID.Registration"/>.
-        </t>
-        <t><xref target="OpenID.Core"/> discusses Pairwise Identifier Algorithms in section 8.1.
-        </t>
-        <t>
-            How Sector Identifier Validation is done at registration time is out-of-scope of this specification.
-            Pre-arranged configurations between RP and OpenID Provider are always possible.
-            For Dynamic Registration please see <xref target="OpenID.Registration"/>.
-            In OpenID Dynamic Registration there is currently no way to automatically validate whether a CIBA client using Polling Mode is allowed to join the group of clients sharing a sector_identifier_uri.
-        </t>
-    </section>
 
     <section anchor="security_considerations" title="Security Considerations">
       <t>
