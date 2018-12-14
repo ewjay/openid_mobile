@@ -942,7 +942,8 @@
         <section anchor="ping_callback" title="Ping Callback">
           <t>
             If the Client is registered in Ping mode, the OpenID Provider will send an HTTP POST Request
-            to the <xref target="backchannel_client_notification_endpoint" format="title"/> either when the end-user is well authenticated and has authorized the request or if the end-user has denied the request.
+            to the <xref target="backchannel_client_notification_endpoint" format="title"/> after a succesful or 
+            failed end-user authentication.
           </t>
           <t>
             In this mode the OP sends the <spanx style="verb">client_notification_token</spanx> as a bearer token in the Authorization header field and sends only the auth_req_id in the body of the request. The request uses the application/json media type.
