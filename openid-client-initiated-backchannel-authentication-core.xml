@@ -196,17 +196,17 @@
         <t hangText="OpenID Provider Metadata">
           OPs supporting the ping or poll modes of CIBA SHOULD include the backchannel request grant type in the <spanx style="verb">grant_types_supported</spanx> field of their discovery metadata
           and SHOULD publish the supported token delivery modes for clients using CIBA. The location of an OP's Backchannel Authentication Endpoint SHOULD be published in metadata.
-          OPs that support signed authentication request SHOULD publish the algorithms supported for signature verification.
+          OPs that support signed authentication requests SHOULD publish the algorithms supported for signature verification.
           The following authorization server metadata parameters are introduced by this specification:
         </t>
         <t>
           <list style="symbols">
-            <t><spanx style="verb">backchannel_token_delivery_modes_supported</spanx>: JSON array containing one or more of the
+            <t><spanx style="verb">backchannel_token_delivery_modes_supported</spanx>: REQUIRED. JSON array containing one or more of the
             following values: <spanx style="verb">poll</spanx>, <spanx style="verb">ping</spanx> and <spanx style="verb">push</spanx>.</t>
             <t><spanx style="verb">backchannel_authentication_endpoint</spanx>: URL of the OP's Backchannel Authentication Endpoint
               as defined in <xref target="auth_backchannel_endpoint"/>.</t>
             <t><spanx style="verb">backchannel_authentication_request_signing_alg_values_supported</spanx>:
-              JSON array containing a list of the JWS signing algorithms (alg values) supported by the OP for signed authentication requests,
+              OPTIONAL. JSON array containing a list of the JWS signing algorithms (alg values) supported by the OP for signed authentication requests,
               which are described in <xref target="signed_auth_request"/>.
               If omitted, signed authentication requests are not supported by the OP.</t>
             <t><spanx style="verb">backchannel_user_code_parameter_supported</spanx>:
@@ -223,23 +223,23 @@
 
         <t hangText="Client Metadata">
           Clients registering to use CIBA MUST indicate a token delivery mode. When using the ping or poll mode, the Client MUST
-          include the backchannel grant type in the "grant_types" field and MUST also register a client notification
+          include the backchannel grant type in the "grant_types" field. When using the ping or push mode, the Client MUST register a client notification
           endpoint. Clients intending to send signed authentication requests MUST register the signature algorithm that will be used.
           The following parameters are introduced by this specification:
         </t>
         <t>
           <list style="symbols">
-            <t><spanx style="verb">backchannel_token_delivery_mode</spanx>: REQUIRED - one of the following values: <spanx style="verb">poll</spanx>,
+            <t><spanx style="verb">backchannel_token_delivery_mode</spanx>: REQUIRED. One of the following values: <spanx style="verb">poll</spanx>,
             <spanx style="verb">ping</spanx> or <spanx style="verb">push</spanx>.</t>
             <t><spanx style="verb">backchannel_client_notification_endpoint</spanx>: REQUIRED if the token delivery mode is set to
             <spanx style="verb">ping</spanx> or <spanx style="verb">push</spanx>. This is the endpoint to which the OP will post a notification after a successful or failed end-user authentication.
             It MUST be an HTTPS URL.
             </t>
             <t><spanx style="verb">backchannel_authentication_request_signing_alg</spanx>:
-            The JWS algorithm <spanx style="verb">alg</spanx> value that the Client will use for signing authentication request, as described in <xref target="signed_auth_request"/>.
+            OPTIONAL. The JWS algorithm <spanx style="verb">alg</spanx> value that the Client will use for signing authentication request, as described in <xref target="signed_auth_request"/>.
             When omitted, the Client will not send signed authentication requests.</t>
             <t><spanx style="verb">backchannel_user_code_parameter</spanx>:
-            OPTIONAL. Boolean value specifying whether the Client must support the <spanx style="verb">user_code</spanx> parameter. If omitted, the default value is true. 
+            OPTIONAL. Boolean value specifying whether the Client supports the <spanx style="verb">user_code</spanx> parameter. If omitted, the default value is true.
             This parameter only applies when OP parameter <spanx style="verb">backchannel_user_code_parameter_supported</spanx> is true.
             </t>
           </list>
@@ -412,7 +412,7 @@
       </figure>
     </section>
 
-    <section title='Examples of Use Cases'>
+    <section title='Example Use Cases'>
         <t>The following use cases are non-normative examples to illustrate the usage of this specification.</t>
         <t>
         <list style="numbers">
@@ -524,7 +524,7 @@
           </list>
         </t>
         <t>
-          As the CIBA flow does not have an interaction with the end-user through a consumption device,
+          As in the CIBA flow the OP does not have an interaction with the end-user through the consumption device,
           it is REQUIRED that the Client provides one (and only one) of the hints specified above in the authentication request, that is "login_hint_token", 
           "id_token_hint" or "login_hint".
         </t>
@@ -698,7 +698,7 @@
           <t>
             Registering a user code for a user is not in scope of this specification. Examples include 
             a facility provided by the authentication device, SMS text messages or other service provided 
-            by the OP. OP's should provide a method for the user to change the user code. 
+            by the OP. OPs should provide a method for the user to change the user code.
           </t>          
         </section>        
     </section>
@@ -803,7 +803,7 @@
     <section anchor="auth_server_obtains_consent" title="OpenID Provider Obtains End-User Consent/Authorization">
       <t>
         After the OP has validated the Authentication Request, the OP identifies the user and chooses a channel to 
-        best authenticate the user and authorize the request, in line with the Client's requirements regarding 
+        best authenticate the user and authorize the request, in line with the Client's requests regarding
         acr_values. Typically this involves the OP initiating an interactive session on the user's authentication device. 
       </t>
       <t>
@@ -1294,7 +1294,7 @@
         This specification defines a method of token delivery, "Push Callback", which differs from standard OAuth 2.0 
         flows. Most OAuth 2.0 and OpenID Connect profiles require the Client to authenticate at the token endpoint 
         in order to retrieve access tokens, ID Tokens and refresh tokens. However with the CIBA Push mode, tokens are 
-        delivered directly to the Client at its Client Notification Endpoint. Implementers should ensure that apprproiate 
+        delivered directly to the Client at its Client Notification Endpoint. Implementers should ensure that appropriate
         security controls are in place for this endpoint and its registration with the OP. CIBA requires that a hash of 
         the access token, a hash of the refresh token and the auth_req_id itself are included in the ID Token when the Push 
         mode is used. This allows the Client to verify that the values in the Push Callback have not been tampered with.                
