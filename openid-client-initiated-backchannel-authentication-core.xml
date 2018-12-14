@@ -981,7 +981,7 @@
           </t>
 
           <t>
-            For valid requests, the Client MUST use the received <spanx style="verb">auth_req_id</spanx> to make a Token Request using the Backchannel Request Grant Type to the Token Endpoint as described in <xref target="token_request" format="title"/>.
+            For valid requests, the Client can now use the received <spanx style="verb">auth_req_id</spanx> to make a Token Request using the Backchannel Request Grant Type to the Token Endpoint as described in <xref target="token_request" format="title"/>.
 
           </t>
        
