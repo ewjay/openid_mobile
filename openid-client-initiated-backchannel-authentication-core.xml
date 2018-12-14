@@ -754,7 +754,8 @@
         <t>
           <list style="hanging">
             <t hangText="auth_req_id">
-              REQUIRED. This is a unique identifier to identify the authentication request made by the Client.
+              REQUIRED. This is a unique identifier to identify the authentication request made by the Client. It SHOULD contain sufficient 
+              entropy (at least 128 bits) or be otherwise protected such as to make brute force guessing computationally infeasible.
              </t>
             <t hangText="expires_in">
               REQUIRED. Expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
