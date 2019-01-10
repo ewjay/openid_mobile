@@ -759,10 +759,10 @@
               entropy (at least 128 bits) or be otherwise protected such as to make brute force guessing computationally infeasible.
              </t>
             <t hangText="expires_in">
-              REQUIRED. Expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
+              REQUIRED. A JSON number with a positive integer value indicating the expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
              </t>
             <t hangText="interval">
-              OPTIONAL. The minimum amount of time in seconds that the Client MUST wait between polling requests to the token endpoint. 
+              OPTIONAL. A JSON number with a positive integer value indicating the minimum amount of time in seconds that the Client MUST wait between polling requests to the token endpoint.
               This parameter will only be present if the Client is registered to use the Poll or Ping modes.
              </t>
           </list>
@@ -1667,7 +1667,7 @@
       </t>
       <t>-OIDC-CIBA-CORE-02
         <list style='symbols'>
-          <t></t>
+          <t>Be explicit that expires_in and interval of the Authentication Request Acknowledgement are positive integers represented as JSON numbers.</t>
         </list>
       </t>
     </section>
