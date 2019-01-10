@@ -1112,7 +1112,8 @@
                 A variant of "authorization_pending", the authorization request is still pending and polling should continue, but the interval MUST be increased by at least 5 seconds for this and all subsequent requests.
               </t>
               <t hangText="expired_token">
-                The auth_req_id has expired. The Client will need to make a new Authentication Request.
+                The Authentication Request has expired, either because the expiration time has been exceeded or because the OP 
+                has stopped processing the request due to a timeout or other error. The Client may make a new Authentication Request.
               </t>
               <t hangText="access_denied">
                 The end-user denied the authorization request.
@@ -1159,7 +1160,10 @@
                 The end-user denied the authorization request.
               </t>
               <t hangText="expired_token">
-                The auth_req_id has expired. The Client will need to make a new Authentication Request. OpenID Providers are not required to send this error, but Clients SHOULD support receiving this error.
+                 The Authentication Request has expired, either because the expiration time has been exceeded or because 
+                 the OP has stopped processing the request due to a timeout or other error. The Client may make a new 
+                 Authentication Request. OpenID Providers are not required to send this error, but Clients SHOULD support 
+                 receiving this error.
               </t>
             </list>
         </t>
