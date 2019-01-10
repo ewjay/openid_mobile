@@ -189,12 +189,12 @@
    <t>
       <list style="hanging">
         <t hangText="Grant Type">
-          This specification introduces the backchannel request grant type (an extension grant type as defined by 
+          This specification introduces the CIBA grant type (an extension grant type as defined by
           Section 4.5 of <xref target="RFC6749">OAuth 2.0</xref>) with the value: 
-          <spanx style="verb">urn:openid:params:modrna:grant-type:backchannel_request</spanx>
+          <spanx style="verb">urn:openid:params:grant-type:ciba</spanx>
         </t>
         <t hangText="OpenID Provider Metadata">
-          OPs supporting the ping or poll modes of CIBA SHOULD include the backchannel request grant type in the <spanx style="verb">grant_types_supported</spanx> field of their discovery metadata
+          OPs supporting the ping or poll modes of CIBA SHOULD include the CIBA grant type in the <spanx style="verb">grant_types_supported</spanx> field of their discovery metadata
           and SHOULD publish the supported token delivery modes for clients using CIBA. The location of an OP's Backchannel Authentication Endpoint SHOULD be published in metadata.
           OPs that support signed authentication requests SHOULD publish the algorithms supported for signature verification.
           The following authorization server metadata parameters are introduced by this specification:
@@ -223,7 +223,7 @@
 
         <t hangText="Client Metadata">
           Clients registering to use CIBA MUST indicate a token delivery mode. When using the ping or poll mode, the Client MUST
-          include the backchannel grant type in the "grant_types" field. When using the ping or push mode, the Client MUST register a client notification
+          include the CIBA grant type in the "grant_types" field. When using the ping or push mode, the Client MUST register a client notification
           endpoint. Clients intending to send signed authentication requests MUST register the signature algorithm that will be used.
           The following parameters are introduced by this specification:
         </t>
@@ -261,7 +261,7 @@
             </t>
             <t>
               The only way that CIBA generates Pairwise Pseudonymous Identifiers in Ping and Poll modes is by providing a "jwks_uri" at the 
-              registration phase when the "urn:openid:params:modrna:grant-type:backchannel_request" grant type is registered. In that way 
+              registration phase when the "urn:openid:params:grant-type:ciba" grant type is registered. In that way 
               the OpenID Provider can use the host component of the "jwks_uri" as the Sector Identifier to generate the PPIDs for the Client. 
               So, when an OpenID Provider that supports PPIDs receives a dynamic registration request for a Client that indicates that it wishes 
               to use the Poll or Ping CIBA modes, it MUST check if a valid "jwks_uri" is set when the "subject_type" is "pairwise".
@@ -295,7 +295,7 @@
             </t>      
         </list>
         <figure>
-          <preamble>The following is a non-normative example from a dynamic registration request that contains the backchannel request grant type
+          <preamble>The following is a non-normative example from a dynamic registration request that contains the CIBA grant type
           as required and a "jwks_uri" (with line wraps within values for display purposes only).
           </preamble>
           <artwork>
@@ -312,7 +312,7 @@
         "logo_uri": "https://client.example.org/logo.png",
         "subject_type": "pairwise",
         "token_endpoint_auth_method": "private_key_jwt",
-        "grant_types": ["urn:openid:params:modrna:grant-type:backchannel_request"],
+        "grant_types": ["urn:openid:params:grant-type:ciba"],
         "backchannel_token_delivery_mode": "poll",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
         "userinfo_encrypted_response_alg": "RSA1_5",
@@ -851,7 +851,7 @@
         A Client can only register a single token delivery method and the OP MUST only deliver the Authentication Result to the Client through the registered mode.
       </t>
 
-      <section anchor="token_request" title="Token Request Using Backchannel Request Grant Type">
+      <section anchor="token_request" title="Token Request Using CIBA Grant Type">
         <t>
           If the Client is registered to use Poll or Ping modes, the Client will retrieve the Authentication Result from the token endpoint.
         </t>
@@ -875,7 +875,7 @@
         <t>
           <list style="hanging">
             <t hangText="grant_type">
-              REQUIRED.  Value MUST be set to <vspace/><spanx style="verb">urn:openid:params:modrna:grant-type:backchannel_request</spanx>
+              REQUIRED. Value MUST be <spanx style="verb">urn:openid:params:grant-type:ciba</spanx>
              </t>
             <t hangText="auth_req_id">
               REQUIRED. It is the unique identifier to identify the authentication request (transaction) made by the Client.
@@ -894,7 +894,7 @@
     Content-Type: application/x-www-form-urlencoded
     Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 
-    grant_type=urn%3Aopenid%3Aparams%3Amodrna%3Agrant-type%3Abackchannel_request
+    grant_type=urn%3Aopenid%3Aparams%3Agrant-type%3Aciba
       &auth_req_id=1c266114-a1be-4252-8ad1-04986c5b9ac1
 
     ]]>
@@ -982,7 +982,7 @@
           </t>
 
           <t>
-            For valid requests, the Client can now use the received <spanx style="verb">auth_req_id</spanx> to make a Token Request using the Backchannel Request Grant Type to the Token Endpoint as described in <xref target="token_request" format="title"/>.
+            For valid requests, the Client can now use the received <spanx style="verb">auth_req_id</spanx> to make a Token Request using the CIBA Grant Type to the Token Endpoint as described in <xref target="token_request" format="title"/>.
 
           </t>
        
@@ -1125,7 +1125,7 @@
         </t>
 
         <t>
-           If the Client is registered to use the Push Mode then it MUST NOT call the Token Endpoint with the Backchannel Request Grant Type and the following error is returned.
+           If the Client is registered to use the Push Mode then it MUST NOT call the Token Endpoint with the CIBA Grant Type and the following error is returned.
         </t>
         <t hangText="HTTP 403 Forbidden">
           <list style="hanging">        
@@ -1667,7 +1667,7 @@
       </t>
       <t>-OIDC-CIBA-CORE-02
         <list style='symbols'>
-          <t></t>
+          <t>Update the grant type URI to be more generic and not include MODRNA.</t>
         </list>
       </t>
     </section>
