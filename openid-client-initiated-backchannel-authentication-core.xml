@@ -522,6 +522,13 @@
               OPTIONAL. A secret code, such as password or pin, known only to the user but verifiable by the OP. The code is used to authorize sending an authentication request to user's authentication device. 
               This parameter should only be present if client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> indicates support for user code.
             </t>
+            <t hangText="requested_expiry">
+              OPTIONAL. A positive integer allowing the client to request the <spanx style="verb">expires_in</spanx> value for
+              the <spanx style="verb">auth_req_id</spanx> the server will return.
+              The server MAY use this value to influence the lifetime of the authentication request and is encouraged
+              to do so where it will improve the user experience, for example by terminating authentications when as it knows
+              the client is no longer interested in the result.
+            </t>
           </list>
         </t>
         <t>
@@ -1667,7 +1674,7 @@
       </t>
       <t>-OIDC-CIBA-CORE-02
         <list style='symbols'>
-          <t></t>
+          <t>Add the requested_expiry Authentication Request parameter.</t>
         </list>
       </t>
     </section>
