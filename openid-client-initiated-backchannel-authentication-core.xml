@@ -194,25 +194,26 @@
           <spanx style="verb">urn:openid:params:modrna:grant-type:backchannel_request</spanx>
         </t>
         <t hangText="OpenID Provider Metadata">
-          OPs supporting the ping or poll modes of CIBA SHOULD include the backchannel request grant type in the <spanx style="verb">grant_types_supported</spanx> field of their discovery metadata
-          and SHOULD publish the supported token delivery modes for clients using CIBA. The location of an OP's Backchannel Authentication Endpoint SHOULD be published in metadata.
-          OPs that support signed authentication requests SHOULD publish the algorithms supported for signature verification.
-          The following authorization server metadata parameters are introduced by this specification:
+          The following authorization server metadata parameters are introduced by this specification for OPs
+          publishing their support of the CIBA flow and details thereof.
         </t>
         <t>
           <list style="symbols">
             <t><spanx style="verb">backchannel_token_delivery_modes_supported</spanx>: REQUIRED. JSON array containing one or more of the
             following values: <spanx style="verb">poll</spanx>, <spanx style="verb">ping</spanx> and <spanx style="verb">push</spanx>.</t>
-            <t><spanx style="verb">backchannel_authentication_endpoint</spanx>: URL of the OP's Backchannel Authentication Endpoint
+            <t><spanx style="verb">backchannel_authentication_endpoint</spanx>: REQUIRED. URL of the OP's Backchannel Authentication Endpoint
               as defined in <xref target="auth_backchannel_endpoint"/>.</t>
             <t><spanx style="verb">backchannel_authentication_request_signing_alg_values_supported</spanx>:
               OPTIONAL. JSON array containing a list of the JWS signing algorithms (alg values) supported by the OP for signed authentication requests,
               which are described in <xref target="signed_auth_request"/>.
               If omitted, signed authentication requests are not supported by the OP.</t>
             <t><spanx style="verb">backchannel_user_code_parameter_supported</spanx>:
-            OPTIONAL. Boolean value specifying whether the OP supports use of the <spanx style="verb">user_code</spanx> parameter, with true indicating support. If omitted, the default value is false. 
+            OPTIONAL. Boolean value specifying whether the OP supports use of the <spanx style="verb">user_code</spanx> parameter, with true indicating support. If omitted, the default value is false.
             </t>
           </list>
+        </t>
+        <t>
+          The CIBA grant type is used in the <spanx style="verb">grant_types_supported</spanx> field of discovery metadata for OPs that suppoert the ping or poll delivery modes.
         </t>
         <t>
           The supported client authentication methods and, when applicable, the associated JWS signing
