@@ -513,10 +513,13 @@
               to interlock them together for the transaction by way of a visual cue for the end-user. This interlocking message
               enables the end-user to ensure that the action taken on the authentication device is related to the
               request initiated by the consumption device.
-              The value SHOULD contain a random value (e.g. a transactional approval code) of reasonable entropy.
-              Because the devices may have limited display abilities and the message is intending for visual inspection by the end-user,
+              The value SHOULD contain something that enables the end-user to reliably discern that the transaction is related across the consumption and authentication device,
+              such as a random value of reasonable entropy (e.g. a transactional approval code).
+              Because the various devices involved may have limited display abilities and the message is intending for visual inspection by the end-user,
               the <spanx style="verb">binding_message</spanx> value
               SHOULD be relatively short and use a limited set of plain text characters.
+              The <spanx style="verb">invalid_binding_message</spanx> defined in <xref target="auth_error_response"/> is used in the case
+              that it is necessary to inform the Client that the provided <spanx style="verb">binding_message</spanx> is unacceptable.
             </t>
             <t hangText="user_code">
               OPTIONAL. A secret code, such as password or pin, known only to the user but verifiable by the OP. The code is used to authorize sending an authentication request to user's authentication device. 
@@ -820,7 +823,7 @@
 
       <section anchor="backchannel_client_notification_endpoint" title="Client Notification Endpoint">
           <t>
-            The Client Notification Endpoint is set by the Client during <xref target="registration" format="title"/>. It is the endpoint the OP will call after a succesful or failed end-user authentication. 
+            The Client Notification Endpoint is set by the Client during <xref target="registration" format="title"/>. It is the endpoint the OP will call after a successful or failed end-user authentication.
           </t>
 
           <t>
@@ -943,7 +946,7 @@
         <section anchor="ping_callback" title="Ping Callback">
           <t>
             If the Client is registered in Ping mode, the OpenID Provider will send an HTTP POST Request
-            to the <xref target="backchannel_client_notification_endpoint" format="title"/> after a succesful or 
+            to the <xref target="backchannel_client_notification_endpoint" format="title"/> after a successful or
             failed end-user authentication.
           </t>
           <t>
@@ -1219,6 +1222,9 @@
                     </t>
                     <t hangText="invalid_user_code">
                       User code was invalid.
+                    </t>
+                    <t hangText="invalid_binding_message">
+                      The binding message is invalid or unacceptable for use in the context of the given request.
                     </t>
                 </list>
             </t>
@@ -1667,7 +1673,7 @@
       </t>
       <t>-OIDC-CIBA-CORE-02
         <list style='symbols'>
-          <t></t>
+          <t>Add an invalid_binding_message error code that can be used on the Authentication Error Response if the binding_message is unacceptable.</t>
         </list>
       </t>
     </section>
