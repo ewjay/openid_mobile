@@ -513,7 +513,7 @@
               to interlock them together for the transaction by way of a visual cue for the end-user. This interlocking message
               enables the end-user to ensure that the action taken on the authentication device is related to the
               request initiated by the consumption device.
-              The value SHOULD contain something that enables the end-user to reliably discern that the transaction is related across the consumption and authentication device,
+              The value SHOULD contain something that enables the end-user to reliably discern that the transaction is related across the consumption device and the authentication device,
               such as a random value of reasonable entropy (e.g. a transactional approval code).
               Because the various devices involved may have limited display abilities and the message is intending for visual inspection by the end-user,
               the <spanx style="verb">binding_message</spanx> value
