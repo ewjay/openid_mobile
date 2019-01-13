@@ -526,7 +526,7 @@
               OPTIONAL. A positive integer allowing the client to request the <spanx style="verb">expires_in</spanx> value for
               the <spanx style="verb">auth_req_id</spanx> the server will return.
               The server MAY use this value to influence the lifetime of the authentication request and is encouraged
-              to do so where it will improve the user experience, for example by terminating authentications when as it knows
+              to do so where it will improve the user experience, for example by terminating the authentication when as it knows
               the client is no longer interested in the result.
             </t>
           </list>
