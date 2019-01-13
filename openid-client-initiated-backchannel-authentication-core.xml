@@ -213,7 +213,7 @@
           </list>
         </t>
         <t>
-          The CIBA grant type is used in the <spanx style="verb">grant_types_supported</spanx> field of discovery metadata for OPs that suppoert the ping or poll delivery modes.
+          The CIBA grant type is used in the <spanx style="verb">grant_types_supported</spanx> field of discovery metadata for OPs that support the ping or poll delivery modes.
         </t>
         <t>
           The supported client authentication methods and, when applicable, the associated JWS signing
