@@ -1161,6 +1161,12 @@
               <t hangText="expired_token">
                 The auth_req_id has expired. The Client will need to make a new Authentication Request. OpenID Providers are not required to send this error, but Clients SHOULD support receiving this error.
               </t>
+             <t hangText="transaction_failed">
+                The OpenID Provider encountered an unexpected condition that prevented it from successfully completing the transaction.
+                This general case error code can be used to inform the Client that the CIBA transaction was unsuccessful for
+                reasons other than those explicitly defined by
+               <spanx style="verb">access_denied</spanx> and <spanx style="verb">expired_token</spanx>.
+             </t>
             </list>
         </t>
 
@@ -1667,7 +1673,7 @@
       </t>
       <t>-OIDC-CIBA-CORE-02
         <list style='symbols'>
-          <t></t>
+          <t>Add a transaction_failed error code to Push Error Payload as a catch-all.</t>
         </list>
       </t>
     </section>
