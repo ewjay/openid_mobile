@@ -194,25 +194,26 @@
           <spanx style="verb">urn:openid:params:modrna:grant-type:backchannel_request</spanx>
         </t>
         <t hangText="OpenID Provider Metadata">
-          OPs supporting the ping or poll modes of CIBA SHOULD include the backchannel request grant type in the <spanx style="verb">grant_types_supported</spanx> field of their discovery metadata
-          and SHOULD publish the supported token delivery modes for clients using CIBA. The location of an OP's Backchannel Authentication Endpoint SHOULD be published in metadata.
-          OPs that support signed authentication requests SHOULD publish the algorithms supported for signature verification.
-          The following authorization server metadata parameters are introduced by this specification:
+          The following authorization server metadata parameters are introduced by this specification for OPs
+          publishing their support of the CIBA flow and details thereof.
         </t>
         <t>
           <list style="symbols">
             <t><spanx style="verb">backchannel_token_delivery_modes_supported</spanx>: REQUIRED. JSON array containing one or more of the
             following values: <spanx style="verb">poll</spanx>, <spanx style="verb">ping</spanx> and <spanx style="verb">push</spanx>.</t>
-            <t><spanx style="verb">backchannel_authentication_endpoint</spanx>: URL of the OP's Backchannel Authentication Endpoint
+            <t><spanx style="verb">backchannel_authentication_endpoint</spanx>: REQUIRED. URL of the OP's Backchannel Authentication Endpoint
               as defined in <xref target="auth_backchannel_endpoint"/>.</t>
             <t><spanx style="verb">backchannel_authentication_request_signing_alg_values_supported</spanx>:
               OPTIONAL. JSON array containing a list of the JWS signing algorithms (alg values) supported by the OP for signed authentication requests,
               which are described in <xref target="signed_auth_request"/>.
               If omitted, signed authentication requests are not supported by the OP.</t>
             <t><spanx style="verb">backchannel_user_code_parameter_supported</spanx>:
-            OPTIONAL. Boolean value specifying whether the OP supports use of the <spanx style="verb">user_code</spanx> parameter, with true indicating support. If omitted, the default value is false. 
+            OPTIONAL. Boolean value specifying whether the OP supports use of the <spanx style="verb">user_code</spanx> parameter, with true indicating support. If omitted, the default value is false.
             </t>
           </list>
+        </t>
+        <t>
+          The CIBA grant type is used in the <spanx style="verb">grant_types_supported</spanx> field of discovery metadata for OPs that support the ping or poll delivery modes.
         </t>
         <t>
           The supported client authentication methods and, when applicable, the associated JWS signing
@@ -473,8 +474,9 @@
               REQUIRED if the Client is registered to use Ping or Push modes. 
               It is a bearer token provided by the Client that will be used by the OpenID Provider to authenticate the callback request to the Client.
               The length of the token MUST NOT exceed 1024 characters and it MUST conform to the syntax for Bearer credentials as defined in Section 2.1 of <xref target="RFC6750"/>.
-              Clients MUST ensure that it contains sufficient entropy (at least 128 bits) or be otherwise protected such as to make
-              brute force guessing or forgery of a valid token computationally infeasible.
+              Clients MUST ensure that it contains sufficient entropy (a minimum of 128 bits while 160 bits is recommended) to make
+              brute force guessing or forgery of a valid token computationally infeasible - the means of achieving this are implementation specific,
+              with possible approaches including secure pseudorandom number generation or cryptographically secured self-contained tokens.
             </t>
             <t hangText="acr_values">
               OPTIONAL. Requested Authentication Context Class Reference values.
@@ -524,6 +526,13 @@
             <t hangText="user_code">
               OPTIONAL. A secret code, such as password or pin, known only to the user but verifiable by the OP. The code is used to authorize sending an authentication request to user's authentication device. 
               This parameter should only be present if client registration parameter <spanx style="verb">backchannel_user_code_parameter</spanx> indicates support for user code.
+            </t>
+            <t hangText="requested_expiry">
+              OPTIONAL. A positive integer allowing the client to request the <spanx style="verb">expires_in</spanx> value for
+              the <spanx style="verb">auth_req_id</spanx> the server will return.
+              The server MAY use this value to influence the lifetime of the authentication request and is encouraged
+              to do so where it will improve the user experience, for example by terminating the authentication when as it knows
+              the client is no longer interested in the result.
             </t>
           </list>
         </t>
@@ -759,7 +768,10 @@
           <list style="hanging">
             <t hangText="auth_req_id">
               REQUIRED. This is a unique identifier to identify the authentication request made by the Client. It MUST contain sufficient
-              entropy (at least 128 bits) or be otherwise protected such as to make brute force guessing computationally infeasible.
+              entropy (a minimum of 128 bits while 160 bits is recommended) to make
+              brute force guessing or forgery of a valid <spanx style="verb">auth_req_id</spanx> computationally infeasible -
+              the means of achieving this are implementation specific,
+              with possible approaches including secure pseudorandom number generation or cryptographically secured self-contained tokens.
              </t>
             <t hangText="expires_in">
               REQUIRED. Expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
@@ -1164,6 +1176,12 @@
               <t hangText="expired_token">
                 The auth_req_id has expired. The Client will need to make a new Authentication Request. OpenID Providers are not required to send this error, but Clients SHOULD support receiving this error.
               </t>
+             <t hangText="transaction_failed">
+                The OpenID Provider encountered an unexpected condition that prevented it from successfully completing the transaction.
+                This general case error code can be used to inform the Client that the CIBA transaction was unsuccessful for
+                reasons other than those explicitly defined by
+               <spanx style="verb">access_denied</spanx> and <spanx style="verb">expired_token</spanx>.
+             </t>
             </list>
         </t>
 
@@ -1674,6 +1692,8 @@
       <t>-OIDC-CIBA-CORE-02
         <list style='symbols'>
           <t>Add an invalid_binding_message error code that can be used on the Authentication Error Response if the binding_message is unacceptable.</t>
+          <t>Add the requested_expiry Authentication Request parameter.</t>
+          <t>Add a transaction_failed error code to Push Error Payload as a catch-all.</t>
         </list>
       </t>
     </section>
