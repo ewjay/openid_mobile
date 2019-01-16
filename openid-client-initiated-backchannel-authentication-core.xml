@@ -774,10 +774,10 @@
               with possible approaches including secure pseudorandom number generation or cryptographically secured self-contained tokens.
              </t>
             <t hangText="expires_in">
-              REQUIRED. Expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
+              REQUIRED. A JSON number with a positive integer value indicating the expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
              </t>
             <t hangText="interval">
-              OPTIONAL. The minimum amount of time in seconds that the Client MUST wait between polling requests to the token endpoint. 
+              OPTIONAL. A JSON number with a positive integer value indicating the minimum amount of time in seconds that the Client MUST wait between polling requests to the token endpoint.
               This parameter will only be present if the Client is registered to use the Poll or Ping modes.
              </t>
           </list>
@@ -1694,6 +1694,7 @@
           <t>Add an invalid_binding_message error code that can be used on the Authentication Error Response if the binding_message is unacceptable.</t>
           <t>Add the requested_expiry Authentication Request parameter.</t>
           <t>Add a transaction_failed error code to Push Error Payload as a catch-all.</t>
+          <t>Be explicit that expires_in and interval of the Authentication Request Acknowledgement are positive integers represented as JSON numbers.</t>
         </list>
       </t>
     </section>
