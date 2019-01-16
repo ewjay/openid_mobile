@@ -14,7 +14,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="openid-client-initiated-backchannel-authentication-core-02" ipr="none">
+<rfc category="std" docName="openid-client-initiated-backchannel-authentication-core-03" ipr="none">
 
   <?rfc toc="yes" ?>
   <?rfc tocdepth="5" ?>
@@ -26,7 +26,7 @@
   
   <front>
     <title abbrev="CIBA">
-            OpenID Connect Client Initiated Backchannel Authentication Flow - Core 1.0 draft-02</title>
+            OpenID Connect Client Initiated Backchannel Authentication Flow - Core 1.0 draft-03</title>
 
 
     <author fullname="Gonzalo Fernandez Rodriguez" initials="G." surname="Fernandez">
@@ -1696,6 +1696,11 @@
           <t>Add the requested_expiry Authentication Request parameter.</t>
           <t>Add a transaction_failed error code to Push Error Payload as a catch-all.</t>
           <t>Be explicit that expires_in and interval of the Authentication Request Acknowledgement are positive integers represented as JSON numbers.</t>
+        </list>
+      </t>
+      <t>-OIDC-CIBA-CORE-03
+        <list style='symbols'>
+          <t></t>
         </list>
       </t>
     </section>
