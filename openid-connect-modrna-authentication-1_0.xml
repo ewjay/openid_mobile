@@ -44,7 +44,7 @@
 
 
 
-    <date day="14" month="Nov" year="2017" />
+    <date day="22" month="Jan" year="2019" />
     
     <workgroup>OpenID Mobile Profile Working Group</workgroup>
 
@@ -296,7 +296,7 @@ The Biometric may be captured as part of the consent flow.
         </t>
         <t>The values for the strings in the <spanx style="verb">amr</spanx> claim are
          registered in a IANA registry defined in 
-         <xref target="I-D.ietf-oauth-amr-values">Authentication Method Reference Values</xref>.
+         <xref target="RFC8176">Authentication Method Reference Values</xref>.
          </t>
         <t>
 	        This specification recommends the use of several of the values, to provide
@@ -554,7 +554,8 @@ The Biometric may be captured as part of the consent flow.
       <?rfc include="reference.RFC.7519"?>
       <?rfc include="reference.RFC.6711"?>
 
-      <?rfc include="reference.I-D.draft-ietf-oauth-amr-values-06.xml"?>
+      <?rfc include="reference.RFC.8176"?>
+
 
       <reference anchor="OpenID.Core" target="http://openid.net/specs/openid-connect-core-1_0.html">
         <front>
@@ -726,22 +727,5 @@ The Biometric may be captured as part of the consent flow.
     </section>
 
 
-    <section anchor="History" title="Document History">
-      <t>[[ To be removed from the final specification ]]</t>
-
-	  <t>-06 <list style="symbols">
-	  	<t>update reference to amr spec</t>
-	  	<t>Make Date current for implementers draft</t>
-	  	</list></t>
-
-      <t>-01 <list style="symbols">
-          <t>Initial draft</t>
-          <t>Added OIDF Standard Notice </t>
-          <t>changed references to amr specification</t>
-        </list></t>
-        
-          
-    
-    </section>
   </back>
 </rfc>

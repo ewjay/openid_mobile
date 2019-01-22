@@ -394,7 +394,6 @@
 <link href="#rfc.references.2" rel="Chapter" title="12.2 Informative References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgements"/>
 <link href="#rfc.appendix.B" rel="Chapter" title="B Notices"/>
-<link href="#rfc.appendix.C" rel="Chapter" title="C Document History"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
 
@@ -403,7 +402,7 @@
 
   <meta name="dct.creator" content="Connotte, J. and J. Bradley" />
   <meta name="dct.identifier" content="urn:ietf:id:openid-connect-modrna-authentication-1_0" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-11-14" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-1-22" />
   <meta name="dct.abstract" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
   <meta name="description" content="RPs are keen to use high quality authentication methods, which can be provided by Mobile Network Operators (MNO).  However a RP must be able to describe its demands for an authentication request and it must be able to do this in an interoperable way.  " />
 
@@ -432,7 +431,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">November 14, 2017</td>
+  <td class="right">January 22, 2019</td>
 </tr>
 
     	
@@ -475,7 +474,6 @@
 <li>12.2.   <a href="#rfc.references.2">Informative References</a></li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgements</a></li>
 <li>Appendix B.   <a href="#rfc.appendix.B">Notices</a></li>
-<li>Appendix C.   <a href="#rfc.appendix.C">Document History</a></li>
 <li><a href="#rfc.authors">Authors' Addresses</a></li>
 
 
@@ -538,7 +536,7 @@
 <p id="rfc.section.4.p.10">Depending on the authentication capabilities of the users device, the OP must attempt to match the highest requested acr value that the AD is capable of.  If the acr claim is not marked as essential in the request object, the OP may return another acr value that the device is capable of rather than an error if it cannot match any of the requested acr_values.  </p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#amr_values" id="amr_values">Authentication Method Reference (amr)</a></h1>
 <p id="rfc.section.5.p.1">The <samp>amr</samp> claim <a href="#OpenID.Core">OpenID Connect Core Sec 2</a> <cite title="NONE">[OpenID.Core]</cite> SHOULD be returned in the id_token if a <samp>acr</samp> value is specified in the request.  <br/> The <samp>amr</samp> claim is a JSON array containing one or more string values indicating the authentication methods used in the authentication.  </p>
-<p id="rfc.section.5.p.2">The values for the strings in the <samp>amr</samp> claim are registered in a IANA registry defined in <a href="#I-D.ietf-oauth-amr-values">Authentication Method Reference Values</a> <cite title="NONE">[I-D.ietf-oauth-amr-values]</cite>.  </p>
+<p id="rfc.section.5.p.2">The values for the strings in the <samp>amr</samp> claim are registered in a IANA registry defined in <a href="#RFC8176">Authentication Method Reference Values</a> <cite title="NONE">[RFC8176]</cite>.  </p>
 <p id="rfc.section.5.p.3">This specification recommends the use of several of the values, to provide a standard way for clients to understand the authentication </p>
 <p/>
 
@@ -624,12 +622,6 @@
   <tbody>
     <tr>
       <td class="reference">
-        <b id="I-D.ietf-oauth-amr-values">[I-D.ietf-oauth-amr-values]</b>
-      </td>
-      <td class="top"><a>Jones, M.</a>, <a>Hunt, P.</a> and <a>A. Nadalin</a>, "<a href="http://tools.ietf.org/html/draft-ietf-oauth-amr-values-06">Authentication Method Reference Values</a>", Internet-Draft draft-ietf-oauth-amr-values-06, February 2017.</td>
-    </tr>
-    <tr>
-      <td class="reference">
         <b id="OpenID.Core">[OpenID.Core]</b>
       </td>
       <td class="top"><a title="Nomura Research Institute, Ltd.">Sakimura, N.</a>, <a title="Ping Identity">Bradley, J.</a>, <a title="Microsoft">Jones, M.</a>, <a title="Google">de Medeiros, B.</a> and <a title="Salesforce">C. Mortimore</a>, "<a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a>", November 2014.</td>
@@ -663,6 +655,12 @@
         <b id="RFC7519">[RFC7519]</b>
       </td>
       <td class="top"><a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="http://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</a>", RFC 7519, DOI 10.17487/RFC7519, May 2015.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC8176">[RFC8176]</b>
+      </td>
+      <td class="top"><a>Jones, M.</a>, <a>Hunt, P.</a> and <a>A. Nadalin</a>, "<a href="http://tools.ietf.org/html/rfc8176">Authentication Method Reference Values</a>", RFC 8176, DOI 10.17487/RFC8176, June 2017.</td>
     </tr>
   </tbody>
 </table>
@@ -725,21 +723,6 @@
 <p id="rfc.section.B.p.1">Copyright (c) 2017 The OpenID Foundation.</p>
 <p id="rfc.section.B.p.2">The OpenID Foundation (OIDF) grants to any Contributor, developer, implementer, or other interested party a non-exclusive, royalty free, worldwide copyright license to reproduce, prepare derivative works from, distribute, perform and display, this Implementers Draft or Final Specification solely for the purposes of (i) developing specifications, and (ii) implementing Implementers Drafts and Final Specifications based on such documents, provided that attribution be made to the OIDF as the source of the material, but that such attribution does not indicate an endorsement by the OIDF.  </p>
 <p id="rfc.section.B.p.3">The technology described in this specification was made available from contributions from various sources, including members of the OpenID Foundation and others.  Although the OpenID Foundation has taken steps to help ensure that the technology is available for distribution, it takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this specification or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any independent effort to identify any such rights.  The OpenID Foundation and the contributors to this specification make no (and hereby expressly disclaim any) warranties (express, implied, or otherwise), including implied warranties of merchantability, non-infringement, fitness for a particular purpose, or title, related to this specification, and the entire risk as to implementing this specification is assumed by the implementer.  The OpenID Intellectual Property Rights policy requires contributors to offer a patent promise not to assert certain patent claims against other contributors and against implementers.  The OpenID Foundation invites any interested party to bring to its attention any copyrights, patents, patent applications, or other proprietary rights that may cover technology that may be required to practice this specification.  </p>
-<h1 id="rfc.appendix.C"><a href="#rfc.appendix.C">Appendix C.</a> <a href="#History" id="History">Document History</a></h1>
-<p id="rfc.section.C.p.1">[[ To be removed from the final specification ]]</p>
-<p id="rfc.section.C.p.2">-06 </p>
-
-<ul>
-  <li>update reference to amr spec</li>
-  <li>Make Date current for implementers draft</li>
-</ul>
-<p id="rfc.section.C.p.3">-01 </p>
-
-<ul>
-  <li>Initial draft</li>
-  <li>Added OIDF Standard Notice </li>
-  <li>changed references to amr specification</li>
-</ul>
 <h1 id="rfc.authors">
   <a href="#rfc.authors">Authors' Addresses</a>
 </h1>
