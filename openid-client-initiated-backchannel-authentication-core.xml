@@ -74,9 +74,12 @@
       <t>
         OpenID Connect Client Initiated Backchannel Authentication Flow is an authentication
         flow like OpenID Connect. However, unlike OpenID Connect, there is direct Relying Party to OpenID
-        Provider communication without redirects through the user's browser.
-        This specification allows a Relying Party that knows the user's identifier to obtain tokens from the
-        OpenID Provider. The user consent is given at the user's Authentication Device mediated by the OpenID Provider.
+        Provider communication without redirects through the user's browser. This specification has the concept 
+        of a Consumption Device (on which the user interacts with the Relying Party) and an Authentication Device (on 
+        which the user authenticates with the OpenID Provider and grants consent). This specification allows a 
+        Relying Party that has an identifier for a user to obtain tokens from the OpenID Provider. The user 
+        starts the flow with the Relying Party at the Consumption Device, but authenticates and grants consent on the 
+        Authentication Device.
       </t>
     </abstract>
   </front>
