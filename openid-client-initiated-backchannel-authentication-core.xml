@@ -779,6 +779,7 @@
             <t hangText="interval">
               OPTIONAL. A JSON number with a positive integer value indicating the minimum amount of time in seconds that the Client MUST wait between polling requests to the token endpoint.
               This parameter will only be present if the Client is registered to use the Poll or Ping modes.
+              If no value is provided, clients MUST use 5 as the default value.
              </t>
           </list>
         </t>
@@ -1700,7 +1701,7 @@
       </t>
       <t>-OIDC-CIBA-CORE-03
         <list style='symbols'>
-          <t></t>
+          <t>Define a default value of 5 seconds for interval.</t>
         </list>
       </t>
     </section>
