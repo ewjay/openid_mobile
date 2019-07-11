@@ -452,6 +452,12 @@
           The Client MUST authenticate to the Backchannel Authentication Endpoint using the authentication method registered for its 
           client_id, such as the authentication methods from Section 9 of <xref target="OpenID.Core"/> or authentication methods
           defined by extension in other specifications.
+          Note that there's some potential ambiguity around the appropriate audience value to use when JWT client assertion
+          based authentication is employed. To address that ambiguity
+          the Issuer Identifier of the OP SHOULD be used as the value of the audience.
+          In order to facilitate interoperability the OP MUST accept its Issuer Identifier,
+          Token Endpoint URL, or Backchannel Authentication Endpoint URL as values that identify it as an intended
+          audience.
         </t>
         <t>
           An authentication request is composed of the following parameters and MAY contain additional parameters defined by extension or profile:
@@ -1700,7 +1706,7 @@
       </t>
       <t>-OIDC-CIBA-CORE-03
         <list style='symbols'>
-          <t></t>
+          <t>Explicitly state the expectations for the audience value when JWT assertion based client authentication is used at the Backchannel Authentication Endpoint.</t>
         </list>
       </t>
     </section>
