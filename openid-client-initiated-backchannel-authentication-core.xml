@@ -1701,7 +1701,11 @@
       </t>
       <t>-OIDC-CIBA-CORE-03
         <list style='symbols'>
-          <t></t>
+          <t>Example changes: use public key crypto for client auth, make the expires_in values more reasonable,
+            remove userinfo_encrypted_response_alg RSA1_5 use that wasn't needed anyway,
+            update the login hint token to use sub_id rather than subject now that
+            https://tools.ietf.org/html/draft-ietf-secevent-subject-identifiers-04 has a "sub_id" JWT Claim definition,
+            change signed request and hint to use ECDSA so they're a little smaller</t>
         </list>
       </t>
     </section>
