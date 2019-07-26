@@ -497,7 +497,7 @@
               OPTIONAL.
               An ID Token previously issued to the Client by the OpenID Provider being passed back as a hint to identify
               the end-user for whom authentication is being requested.
-              If the ID Token received by the Client from the OP was encrypted, to use it as an id_token_hint,
+              If the ID Token received by the Client from the OP was asymmetrically encrypted, to use it as an id_token_hint,
               the client MUST decrypt the encrypted ID Token to extract the signed ID Token contained in it.
             </t> 
             <t hangText="login_hint">
@@ -1701,6 +1701,7 @@
       </t>
       <t>-OIDC-CIBA-CORE-03
         <list style='symbols'>
+          <t>Clarify that only an asymmetrically encrypted id_token_hint needs to be decrypted.</t>
           <t>Example changes: use public key crypto for client auth, make the expires_in values more reasonable,
             remove userinfo_encrypted_response_alg RSA1_5 use that wasn't needed anyway,
             update the login hint token to use sub_id rather than subject now that
