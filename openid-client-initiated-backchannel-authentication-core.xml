@@ -316,8 +316,6 @@
         "grant_types": ["urn:openid:params:grant-type:ciba"],
         "backchannel_token_delivery_mode": "poll",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
-        "userinfo_encrypted_response_alg": "RSA1_5",
-        "userinfo_encrypted_response_enc": "A128CBC-HS256",
         "contacts": ["ve7jtb@example.org", "mary@example.org"]
     }
                 ]]>
