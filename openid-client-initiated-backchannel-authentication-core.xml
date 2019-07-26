@@ -316,8 +316,6 @@
         "grant_types": ["urn:openid:params:grant-type:ciba"],
         "backchannel_token_delivery_mode": "poll",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
-        "userinfo_encrypted_response_alg": "RSA1_5",
-        "userinfo_encrypted_response_enc": "A128CBC-HS256",
         "contacts": ["ve7jtb@example.org", "mary@example.org"]
     }
                 ]]>
@@ -499,7 +497,7 @@
               OPTIONAL.
               An ID Token previously issued to the Client by the OpenID Provider being passed back as a hint to identify
               the end-user for whom authentication is being requested.
-              If the ID Token received by the Client from the OP was encrypted, to use it as an id_token_hint,
+              If the ID Token received by the Client from the OP was asymmetrically encrypted, to use it as an id_token_hint,
               the client MUST decrypt the encrypted ID Token to extract the signed ID Token contained in it.
             </t> 
             <t hangText="login_hint">
@@ -558,20 +556,24 @@
        <![CDATA[
    POST /bc-authorize HTTP/1.1
    Host: server.example.com
-   Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
    Content-Type: application/x-www-form-urlencoded
 
    scope=openid%20email%20example-scope&
    client_notification_token=8d67dc78-7faa-4d41-aabd-67707b374255&
    binding_message=W4SCT&
-   login_hint_token=eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IlJTMjU2In0.eyJ
-   zdWJqZWN0Ijp7InN1YmplY3RfdHlwZSI6InBob25lIiwicGhvbmUiOiIrMTMzMDI
-   4MTgwMDQifX0.YB8_8OksJd1FwfVsIUlH-rs9cPhkIa0DUi7OVW_Da9gP6huBxf7
-   aSDl3qKXA20uT1zThuSiYz0bdz8J_KPRHuC6vwoFlz9yBJ9ksWOP28sHPPi19_4-
-   xidwnb8P12-RoXwY2eAF82_NAn2vmpvqUjluoWyNHay8vguChIutqziV0bFl-7oa
-   xp36i4elbvT_DYeg20a0jz4wIBKc_46K8I28ErkwbI5O35GfElPXl-4J55NHkkOs
-   DxuUYQtWjSM3wme19735XWq2DIT2nmLFi4HzzT27W0cnJg7L_ai9uNNBvIx_Mp5A
-   bcmkR83apR4jxnQuE5Xf23qyRpAhawe7IPQ
+   login_hint_token=eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IkVTMjU2In0.eyJ
+   zdWJfaWQiOnsic3ViamVjdF90eXBlIjoicGhvbmUiLCJwaG9uZSI6IisxMzMwMjg
+   xODAwNCJ9fQ.Kk8jcUbHjJAQkRSHyDuFQr3NMEOSJEZc85VfER74tX6J9CuUllr8
+   9WKUHUR7MA0-mWlptMRRhdgW1ZDt7g1uwQ&
+   client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3A
+   client-assertion-type%3Ajwt-bearer&
+   client_assertion=eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IkVTMjU2In0.eyJ
+   pc3MiOiJzNkJoZFJrcXQzIiwic3ViIjoiczZCaGRSa3F0MyIsImF1ZCI6Imh0dHB
+   zOi8vc2VydmVyLmV4YW1wbGUuY29tIiwianRpIjoiYmRjLVhzX3NmLTNZTW80RlN
+   6SUoyUSIsImlhdCI6MTUzNzgxOTQ4NiwiZXhwIjoxNTM3ODE5Nzc3fQ.Ybr8mg_3
+   E2OptOSsA8rnelYO_y1L-yFaF_j1iemM3ntB61_GN3APe5cl_-5a6cvGlP154XAK
+   7fL-GaZSdnd9kg
+
        ]]>
           </artwork>
         </figure>
@@ -625,31 +627,29 @@
             <![CDATA[
    POST /bc-authorize HTTP/1.1
    Host: server.example.com
-   Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
    Content-Type: application/x-www-form-urlencoded
 
-   request=eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJz
+   request=eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IkVTMjU2In0.eyJpc3MiOiJz
    NkJoZFJrcXQzIiwiYXVkIjoiaHR0cHM6Ly9zZXJ2ZXIuZXhhbXBsZS5jb20iLCJl
    eHAiOjE1Mzc4MjAwODYsImlhdCI6MTUzNzgxOTQ4NiwibmJmIjoxNTM3ODE4ODg2
    LCJqdGkiOiI0TFRDcUFDQzJFU0M1QldDbk4zajU4RW5BIiwic2NvcGUiOiJvcGVu
    aWQgZW1haWwgZXhhbXBsZS1zY29wZSIsImNsaWVudF9ub3RpZmljYXRpb25fdG9r
    ZW4iOiI4ZDY3ZGM3OC03ZmFhLTRkNDEtYWFiZC02NzcwN2IzNzQyNTUiLCJiaW5k
    aW5nX21lc3NhZ2UiOiJXNFNDVCIsImxvZ2luX2hpbnRfdG9rZW4iOiJleUpyYVdR
-   aU9pSnNkR0ZqWlhOaWR5SXNJbUZzWnlJNklsSlRNalUySW4wLmV5SnpkV0pxWldO
-   MElqcDdJbk4xWW1wbFkzUmZkSGx3WlNJNkluQm9iMjVsSWl3aWNHaHZibVVpT2lJ
-   ck1UTXpNREk0TVRnd01EUWlmWDAuWUI4XzhPa3NKZDFGd2ZWc0lVbEgtcnM5Y1Bo
-   a0lhMERVaTdPVldfRGE5Z1A2aHVCeGY3YVNEbDNxS1hBMjB1VDF6VGh1U2lZejBi
-   ZHo4Sl9LUFJIdUM2dndvRmx6OXlCSjlrc1dPUDI4c0hQUGkxOV80LXhpZHduYjhQ
-   MTItUm9Yd1kyZUFGODJfTkFuMnZtcHZxVWpsdW9XeU5IYXk4dmd1Q2hJdXRxemlW
-   MGJGbC03b2F4cDM2aTRlbGJ2VF9EWWVnMjBhMGp6NHdJQktjXzQ2SzhJMjhFcmt3
-   Ykk1TzM1R2ZFbFBYbC00SjU1Tkhra09zRHh1VVlRdFdqU00zd21lMTk3MzVYV3Ey
-   RElUMm5tTEZpNEh6elQyN1cwY25KZzdMX2FpOXVOTkJ2SXhfTXA1QWJjbWtSODNh
-   cFI0anhuUXVFNVhmMjNxeVJwQWhhd2U3SVBRIn0.IBuxW3F_L9tj9f6fGC7FnVsH
-   9B9RoJYA8QyxtnxgOgMc1kcnufyGxdtd7lU1TjPCVNsbkR0vfGasCmoMYSMohPOb
-   nwAlkm8Yf0uglhxM83B0dj_I10vwlMGnVFvydaH9wnacM4Ln7E-JIYOxtZa33abf
-   1PB3fLs29GKOBmgNPn3NrxJ0iCLb0F243556Ypzdhcyj7vM8ukNzkKT3eQ0ZWJ1v
-   VRToThgKyIN-HvLFpeSfJtSH5ycMYOjob-qXUgKpQryUbgbpqsM1XnUV-8aBD5d8
-   VF5fQoz0PQWq63B_zpC22nstIFxNmfxztSFpnW0vgX0htNKOtL_HMwFRfwh71g
+   aU9pSnNkR0ZqWlhOaWR5SXNJbUZzWnlJNklrVlRNalUySW4wLmV5SnpkV0pmYVdR
+   aU9uc2ljM1ZpYW1WamRGOTBlWEJsSWpvaWNHaHZibVVpTENKd2FHOXVaU0k2SWlz
+   eE16TXdNamd4T0RBd05DSjlmUS5LazhqY1ViSGpKQVFrUlNIeUR1RlFyM05NRU9T
+   SkVaYzg1VmZFUjc0dFg2SjlDdVVsbHI4OVdLVUhVUjdNQTAtbVdscHRNUlJoZGdX
+   MVpEdDdnMXV3USJ9.RB-iFvzpkQ_gUzg0eutoviViCKyLugjVYfVqdjDZ63U1MZR
+   Z-KcUNSsBjCVptc-QdljCSNCUyULIzT2R5Nmg4Q&
+   client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3A
+   client-assertion-type%3Ajwt-bearer&
+   client_assertion=eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IkVTMjU2In0.eyJ
+   pc3MiOiJzNkJoZFJrcXQzIiwic3ViIjoiczZCaGRSa3F0MyIsImF1ZCI6Imh0dHB
+   zOi8vc2VydmVyLmV4YW1wbGUuY29tIiwianRpIjoiY2NfMVhzc3NmLTJpOG8yZ1B
+   6SUprMSIsImlhdCI6MTUzNzgxOTQ4NiwiZXhwIjoxNTM3ODE5Nzc3fQ.PWb_VMzU
+   IbD_aaO5xYpygnAlhRIjzoc6kxg4NixDuD1DVpkKVSBbBweqgbDLV-awkDtuWnyF
+   yUpHqg83AUV5TA
        ]]>
           </artwork>
         </figure>
@@ -669,15 +669,10 @@
      "scope": "openid email example-scope",
      "client_notification_token": "8d67dc78-7faa-4d41-aabd-67707b374255",
      "binding_message": "W4SCT",
-     "login_hint_token": "eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IlJTMjU2I
-       n0.eyJzdWJqZWN0Ijp7InN1YmplY3RfdHlwZSI6InBob25lIiwicGhvbmUiO
-       iIrMTMzMDI4MTgwMDQifX0.YB8_8OksJd1FwfVsIUlH-rs9cPhkIa0DUi7OV
-       W_Da9gP6huBxf7aSDl3qKXA20uT1zThuSiYz0bdz8J_KPRHuC6vwoFlz9yBJ
-       9ksWOP28sHPPi19_4-xidwnb8P12-RoXwY2eAF82_NAn2vmpvqUjluoWyNHa
-       y8vguChIutqziV0bFl-7oaxp36i4elbvT_DYeg20a0jz4wIBKc_46K8I28Er
-       kwbI5O35GfElPXl-4J55NHkkOsDxuUYQtWjSM3wme19735XWq2DIT2nmLFi4
-       HzzT27W0cnJg7L_ai9uNNBvIx_Mp5AbcmkR83apR4jxnQuE5Xf23qyRpAhaw
-       e7IPQ"
+     "login_hint_token": "eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IkVTMjU2I
+       n0.eyJzdWJfaWQiOnsic3ViamVjdF90eXBlIjoicGhvbmUiLCJwaG9uZSI6I
+       isxMzMwMjgxODAwNCJ9fQ.Kk8jcUbHjJAQkRSHyDuFQr3NMEOSJEZc85VfER
+       74tX6J9CuUllr89WKUHUR7MA0-mWlptMRRhdgW1ZDt7g1uwQ"
     }
        ]]>
         </artwork>
@@ -794,7 +789,7 @@
 
     {
       "auth_req_id": "1c266114-a1be-4252-8ad1-04986c5b9ac1",
-      "expires_in": 3600,
+      "expires_in": 120,
       "interval": 2
     }
             ]]>
@@ -908,11 +903,17 @@
     POST /token HTTP/1.1
     Host: server.example.com
     Content-Type: application/x-www-form-urlencoded
-    Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 
-    grant_type=urn%3Aopenid%3Aparams%3Agrant-type%3Aciba
-      &auth_req_id=1c266114-a1be-4252-8ad1-04986c5b9ac1
-
+    grant_type=urn%3Aopenid%3Aparams%3Agrant-type%3Aciba&
+    auth_req_id=1c266114-a1be-4252-8ad1-04986c5b9ac1&
+    client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3A
+    client-assertion-type%3Ajwt-bearer&
+    client_assertion=eyJraWQiOiJsdGFjZXNidyIsImFsZyI6IkVTMjU2In0.ey
+    Jpc3MiOiJzNkJoZFJrcXQzIiwic3ViIjoiczZCaGRSa3F0MyIsImF1ZCI6Imh0d
+    HBzOi8vc2VydmVyLmV4YW1wbGUuY29tL3Rva2VuIiwianRpIjoiLV9wMTZqNkhj
+    aVhvMzE3aHZaMzEyYyIsImlhdCI6MTUzNzgxOTQ5MSwiZXhwIjoxNTM3ODE5Nzg
+    yfQ.BjaEoqZb-81gE5zz4UYwNpC3QVSeX5XhH176vg35zjkbq3Zmv_UpHB2ZugR
+    Va344WchTQVpaSSShLbvha4yziA
     ]]>
           </artwork>
         </figure>
@@ -938,7 +939,7 @@
      "access_token": "G5kXH2wHvUra0sHlDy1iTkDJgsgUO1bN",
      "token_type": "Bearer",
      "refresh_token": "4bwc0ESC_IAhflf-ACC_vjD_ltc11ne-8gFPfA2Kx16",
-     "expires_in": 3600,
+     "expires_in": 120,
      "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE2NzcyNiJ9.eyJpc3MiOiJo
        dHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsInN1YiI6IjI0ODI4OTc2MTAwMSIs
        ImF1ZCI6InM2QmhkUmtxdDMiLCJlbWFpbCI6ImphbmVkb2VAZXhhbXBsZS5jb20i
@@ -1041,7 +1042,7 @@
      "access_token": "G5kXH2wHvUra0sHlDy1iTkDJgsgUO1bN",
      "token_type": "Bearer",
      "refresh_token": "4bwc0ESC_IAhflf-ACC_vjD_ltc11ne-8gFPfA2Kx16",
-     "expires_in": 3600,
+     "expires_in": 120,
      "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE2NzcyNiJ9.eyJpc3MiOiJ
        odHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsInN1YiI6IjI0ODI4OTc2MTAwMS
        IsImF1ZCI6InM2QmhkUmtxdDMiLCJlbWFpbCI6ImphbmVkb2VAZXhhbXBsZS5jb
@@ -1701,6 +1702,12 @@
       </t>
       <t>-OIDC-CIBA-CORE-03
         <list style='symbols'>
+          <t>Clarify that only an asymmetrically encrypted id_token_hint needs to be decrypted.</t>
+          <t>Example changes: use public key crypto for client auth, make the expires_in values more reasonable,
+            remove userinfo_encrypted_response_alg RSA1_5 use that wasn't needed anyway,
+            update the login hint token to use sub_id rather than subject now that
+            https://tools.ietf.org/html/draft-ietf-secevent-subject-identifiers-04 has a "sub_id" JWT Claim definition,
+            change signed request and hint to use ECDSA so they're a little smaller</t>
           <t>Define a default value of 5 seconds for interval.</t>
         </list>
       </t>
