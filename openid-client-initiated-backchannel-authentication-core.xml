@@ -1527,7 +1527,7 @@
       <?rfc include="reference.RFC.7591"?> <!-- Client Registration -->
 
       <?rfc include="reference.I-D.draft-ietf-oauth-device-flow-13"?>
-      
+
       <reference anchor="IANA.OAuth.Parameters" target="http://www.iana.org/assignments/oauth-parameters">
         <front>
           <title>OAuth Parameters</title>
