@@ -877,10 +877,10 @@
           If the Client is registered to use the Poll mode, then the Client polls the token endpoint at reasonable interval, which MUST NOT be more frequent than the minimum interval provided by the OpenID Provider via the "interval" parameter (if provided).
         </t>
         <t>
-         For polling requests the OP may implement long polling, where the OP responds to the token request only when the authentication result has become available or a timeout has occurred. The OP SHOULD follow best practices for long polling [RFC6202].
+         For polling requests the OP may implement long polling, where the OP responds to the token request only when the authentication result has become available or a timeout has occurred. A <eref target="https://tools.ietf.org/html/rfc6202#section-5.5">timeout of 30 seconds</eref> is recommended for long polling requests, as specified in Section 5 of <xref target="RFC6202"/>, Best Practices for Long Polling.
         </t>
         <t>
-         Polling interval is to be measured from the instant when a polling request is sent. To implement long polling the OP may respond slower than interval. A Client MUST NOT send two overlapping requests with same auth_req_id. Instead client must always wait until receiving response to previous request before sending out next request. If interval has passed when response is received then client can immediately send out next request.
+         Polling interval is to be measured from the instant when a polling request is sent. To implement long polling the OP may respond slower than interval. A Client MUST NOT send two overlapping requests with same auth_req_id. Instead client must wait until receiving response to previous request before sending out next request. If interval has passed when response is received then client can immediately send out next request.
         </t>
         <t>
           If the Client is registered to use the Ping mode, then when the Client receives a notification to its
