@@ -264,14 +264,35 @@
               Connect Core</eref>.
             </t>
             <t>
-              The only way that CIBA generates Pairwise Pseudonymous Identifiers in Ping and Poll modes is by providing a "jwks_uri" at the 
-              registration phase when the "urn:openid:params:grant-type:ciba" grant type is registered. In that way 
-              the OpenID Provider can use the host component of the "jwks_uri" as the Sector Identifier to generate the PPIDs for the Client. 
-              So, when an OpenID Provider that supports PPIDs receives a dynamic registration request for a Client that indicates that it wishes 
-              to use the Poll or Ping CIBA modes, it MUST check if a valid "jwks_uri" is set when the "subject_type" is "pairwise".
+               In OpenID Connect Core the <spanx style="verb">sector_identifier_uri<spanx> contains a document with a 
+               list of <spanx style="verb">redirect_uris</spanx> and the Sector Identifier is defined as either 
+               the host component of the <spanx style="verb">sector_identifier_uri</spanx> or if this is not provided 
+               then the host component of the <spanx style="verb">redirect_uri</spanx>.  
+            </t>
+            <t>
+              In CIBA Poll & Ping modes the <spanx style="verb">jwks_uri<spanx> is used in place of the 
+              <spanx style="verb">redirect_uri</spanx>. In CIBA Push mode the 
+              <spanx style="verb">backchannel_client_notification_endpoint</spanx> is used in place of the 
+              <spanx style="verb">redirect_uri</spanx>. In situations where the PPID must be shared among 
+              multiple RPs, then a <spanx style="verb">sector_identifier_uri</spanx> can be registered. 
+              This specification extends the purpose of the <spanx style="verb">sector_identifier_uri</spanx> such 
+              that it can contain <spanx style="verb">jwks_uris</spanx> and 
+              <spanx style="verb">backchannel_client_notification_endpoints</spanx> as well as 
+              <spanx style="verb">redirect_uri</spanx>.
+            </t>
 
-              If a "sector_identifier_uri" is explicitly provided, then the "jwks_uri" must be included in the list of URIs pointed to by 
-              the "sector_identifier_uri".
+            <t>In order to support Pairwise Pseudonymous Identifiers in Ping and Poll modes, the RP must 
+            provide either a sector_identifier_uri or a "jwks_uri" at the registration phase when 
+            the "urn:openid:params:grant-type:ciba" grant type is registered. In that way the OpenID Provider 
+            can use the host component of the sector_identifier_uri or ”jwks_uri" as the Sector Identifier 
+            to generate the PPIDs for the Client. 
+            <t>
+
+            <r>
+              When an OpenID Provider that supports PPIDs receives a dynamic registration request for a Client that 
+              indicates that it wishes to use the Poll or Ping CIBA modes, it MUST check if a valid "jwks_uri" is 
+              set when the "subject_type" is "pairwise". If a "sector_identifier_uri" is explicitly provided, 
+              then the "jwks_uri" must be included in the list of URIs pointed to by the "sector_identifier_uri".
             </t>            
             <t>
               But having registered a "jwks_uri" is not enough to use PPIDs, Client needs somehow to demonstrate that such "jwks_uri" belongs to it,
