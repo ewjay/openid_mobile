@@ -1336,6 +1336,12 @@
         the access token, a hash of the refresh token and the auth_req_id itself are included in the ID Token when the Push 
         mode is used. This allows the Client to verify that the values in the Push Callback have not been tampered with.                
       </t>
+      <t>
+        In some scenarios it may be appropriate for the RP to pass metadata to the OP about the context of the 
+        session it has with the user. For example the RP could send the geolocation of the consumption device and the
+        OP could verify that against the geolocation of the authentication device. This specification does not require 
+        such metadata to be sent, nor does it define the method by which such metadata would be conveyed. 
+      </t>
 
     
 
