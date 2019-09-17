@@ -73,9 +73,11 @@
   <middle>
     <section anchor="Introduction" title="Introduction">
       <t>
-        Todo: intro to the mobile profile
-
+        This specification is profile of the OpenID Connect Client Initiated Backchannel 
+        Authentication Flow (CIBA). It is targeted at Mobile Network Operators and includes 
+        guidance specific to that context.
       </t>
+ 
       <section anchor="rnc" title="Requirements Notation and Conventions">
         <t>
           The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -92,19 +94,18 @@
     </section>
 
     <section title='Examples of Use Cases'>
-        <t>
-          todo: more examples of mobile use-cases
-        </t>
         <t>The following use cases are non-normative examples to illustrate the usage of this specification.</t>
         <t>
-        <list style="numbers">
-        <t>A call center agent wants to authenticate a caller. 
-        Using additional scopes like e.g. "profile" or "phone" the call center agent would get access to claims
-        about the user like "phone_number" and "phone_number_verified".
-        </t>
-        <t>A bank teller wants to authenticate a customer in a bank branch - using CIBA for authentication in a face-to-face scenario.
-        </t>
-        </list>
+          <list style="numbers">
+            <t>A call center agent wants to authenticate a caller. 
+            Using additional scopes like e.g. "profile" or "phone" the call center agent would get access to claims
+            about the user like "phone_number" and "phone_number_verified".
+            </t>
+            <t>
+              A iDP wants to offer the ability for its relying parties to request "step-up" authorisation via a decoupled device
+            </t>
+    
+          </list>
         </t>
     </section>
     <section anchor="auth_request" title="Authentication Request">
@@ -115,28 +116,27 @@
           <list style="hanging">
             <t hangText="acr_values">
               REQUIRED. This value is required as defined in OpenID Connect MODRNA Authentication Profile 1.0.
-            </t>
-             <t hangText="login_hint">
-              todo: define using auth profile - example with phone number
-
-            </t>
-            <t hangText="login_hint_token">
-              todo: define using auth profile - closer to the token from the auth profile
-
-            </t>
+            </t>         
           </list>
         </t>
-    
+        <t>
+          Note: While the structure of a <spanx style="verb">login_hint</spanx> is undefined, in a 
+          mobile context a login_hint is likely to contain a MSISDN. 
+        </t>
+        <t>
+          Note: An ecosystem can protect the pricacy of a user's MSISDN and other personally identifiable
+          information through the use of a discovery service. The discovery service can return an 
+          encrypted <spanx style="verb">login_hint_token</spanx> for use in a CIBA flow.
+        </t>
     </section>
-
-    
 
     <section anchor="security_considerations" title="Security Considerations">
       <t>
-       todo: 
+       While this profile suports CIBA push mode, implementers should only implement that mode if 
+       the constraints of an environment require it, e.g. high latency environments. Poll and Ping modes 
+       are to be preferred as the method of token delivery in those modes is the same as other OAuth 2 
+       based flows, and therefore more likely to have had appropriate security review. 
       </t>
-
-    
 
     </section>
 
@@ -146,7 +146,7 @@
         to authenticate a user without knowing e.g. the MSISDN of the user.
         Users might be reluctant to provide their MSISDN to Clients because they fear
         misuse through automated calls or their number being leaked.
-        The login hint token is encrypted in order to protect the user's MSISDN from 
+        The login hint token can be encrypted in order to protect the user's MSISDN from 
         being revealed to the Client unintentionally.
       </t>
 
@@ -336,6 +336,11 @@
       <t>-01 
         <list style='symbols'>
           <t>Initial draft of mobile profile</t>
+        </list>
+      </t>
+      <t>-02 
+        <list style='symbols'>
+          <t>Tidied up draft, removing todos</t>
         </list>
       </t>
     </section>
