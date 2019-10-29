@@ -288,7 +288,7 @@
             to generate the PPIDs for the Client. 
             <t>
 
-            <r>
+            <t>
               When an OpenID Provider that supports PPIDs receives a dynamic registration request for a Client that 
               indicates that it wishes to use the Poll or Ping CIBA modes, it MUST check if a valid "jwks_uri" is 
               set when the "subject_type" is "pairwise". If a "sector_identifier_uri" is explicitly provided, 
