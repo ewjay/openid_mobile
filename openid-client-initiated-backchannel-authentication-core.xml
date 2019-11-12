@@ -1176,7 +1176,14 @@
        <t>
            If the auth_req_id is invalid or was issued to another Client, an <spanx style="verb">invalid_grant</spanx> error MUST be returned as described in Section 5.2 of <xref target="RFC6749"/>.
         </t>
-
+        <t>
+          If a Client continually polls quicker than the <spanx style="verb">interval</spanx>, the OP may return an 
+          <spanx style="verb">invalid_request</spanx> error.           
+        </t>
+        <t>
+          If a Client receive an <spanx style="verb">invalid_request</spanx> error it must not make any further requests for 
+          the same <spanx style="verb">auth_req_id</spanx>.
+        </t>
         <t>
            If the Client is registered to use the Push Mode then it MUST NOT call the Token Endpoint with the CIBA Grant Type and the following error is returned.
         </t>
