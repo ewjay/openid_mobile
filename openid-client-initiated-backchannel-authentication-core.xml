@@ -880,15 +880,47 @@
          For polling requests the OP may implement long polling, where the OP responds to the token request only 
          when the authentication result has become available or a timeout has occurred. A timeout of 30 seconds 
          is recommended for long polling requests, as specified in <eref target="https://tools.ietf.org/html/rfc6202#section-5.5">Section 
-         5.5 of RFC6202</eref>, Best Practices for Long Polling.
+         5.5 of RFC6202</eref>, Best Practices for Long Polling. 
+        </t>
+      
+         <t>
+          Clients MUST wait at least 30 seconds for a response when using polling mode. The OP should not take 
+          longer than 30 seconds to respond to a request, even when using long polling.
         </t>
         <t>
          The polling interval is measured from the instant when a polling request is sent. To implement 
          long polling the OP may respond slower than interval. A Client MUST NOT send two overlapping 
-         requests with same auth_req_id. Rather the client must always wait until receiving the response 
-         to the previous request before sending out the next request. If the interval has passed when 
-         the response is received, then the client may immediately send out the next request.
+         requests with same <spanx style="verb">auth_req_id</spanx>. Rather the client must always wait 
+         until receiving the response to the previous request before sending out the next request. 
+         If the interval has passed when the response is received, then the client may immediately send out the 
+         next request.
         </t>
+
+        <t>
+          An OP in a meltdown type situation may return an HTTP 503 with a Retry-After response header as described in
+          Section 7.1.3 of <xref target="RFC7231">HTTP/1.1</xref>. Clients should respect such headers and only retry 
+          the token request after the time indicated in the header.
+        </t>
+        
+        <t>
+        Here are some illustations of how a Client should behave based on different OP responses:
+        <list style="hanging">
+            <t hangText="Long Polling">
+              The Client makes a token request and the OP returns an <spanx style="verb">authorization_pending</spanx> 
+              error after 30s. In this case the Client can immediately make the next token request.
+            </t>
+            <t hangText="Standard Polling">
+              The Client makes a token request and the OP returns an <spanx style="verb">authorization_pending</spanx> 
+              error after 2s. In this case the Client must wait 28s before making the next request.
+            </t>
+            <t hangText="OP responds slower than 30s">
+              The Client makes a token request and the OP doesn't return any response within 30s. In this case 
+              the Client may cancel the request and immediately make a new request, but should typically wait longer.
+            </t>
+            
+          </list>      
+        </t>
+      
         <t>
           If the Client is registered to use the Ping mode, then when the Client receives a notification to its
           Client Notification Endpoint containing an auth_req_id that is verified against a client_notification_token, it must call the token endpoint to retrieve the authentication result. 
@@ -1532,6 +1564,7 @@
       <?rfc include="reference.RFC.6749"?>
       <?rfc include='reference.RFC.8414'?> <!-- OAuth AS metadata -->
       <?rfc include="reference.RFC.7591"?> <!-- Client Registration -->
+      <?rfc include="reference.RFC.7231"?>
 
       <?rfc include="reference.I-D.draft-ietf-oauth-device-flow-13"?>
 
