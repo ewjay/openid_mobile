@@ -1186,7 +1186,13 @@
               The Client is not authorized as it is configured in Push Mode
             </t>
           </list>
-        </t>       
+        </t>      
+
+        <t>
+          Note, when a Client receives a 4xx response code with a JSON payload then it should inspect the 
+          payload in order to determine the error rather than relying on the HTTP status code alone. 
+        </t>
+
       </section>
 
       <section anchor="push_error_payload" title="Push Error Payload">
