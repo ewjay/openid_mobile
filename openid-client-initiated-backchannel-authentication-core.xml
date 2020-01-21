@@ -802,6 +802,7 @@
               brute force guessing or forgery of a valid <spanx style="verb">auth_req_id</spanx> computationally infeasible -
               the means of achieving this are implementation specific,
               with possible approaches including secure pseudorandom number generation or cryptographically secured self-contained tokens.
+              The OpenID Provider MUST restrict the characters used to 'A'-'Z', 'a'-'z', '0'-'9', '.', '-' and '_', to reduce the chance of the client incorrectly decoding or re-encoding the <spanx style="verb">auth_req_id</spanx>; this character set was chosen to allow the server to use unpadded base64url if it wishes. The identifier MUST be treated as opaque by the client.
              </t>
             <t hangText="expires_in">
               REQUIRED. A JSON number with a positive integer value indicating the expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
