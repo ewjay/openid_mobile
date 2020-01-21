@@ -615,7 +615,12 @@
         <section title="Signed Authentication Request" anchor="signed_auth_request">
         <t>
           A signed authentication request is made by encoding all of the authentication request parameters as
-          claims of a signed JWT, with each parameter name as the claim name and its value as a JSON string.
+          claims of a signed JWT with each parameter name as the claim name and its value as a JSON string. 
+          An exception to this is <spanx style="verb">requested_expiry</spanx>, which may be sent as either a 
+          JSON string or a JSON number, the OP must accept either type. An extension or profile may define 
+          additional authentication request parameters, these may be defined to be any JSON type.
+        </t>
+        <t>
           The JWT MUST contain all of the authentication request parameters.
           The JWT MUST be secured with an asymmetric signature and follow the guidance from
           <eref target="https://openid.net/specs/openid-connect-core-1_0.html#Signing">Section 10.1</eref> of
