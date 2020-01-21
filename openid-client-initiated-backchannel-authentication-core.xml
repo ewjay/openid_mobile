@@ -722,13 +722,21 @@
         </section>
         <section title="User Code" anchor="user_code">
           <t>
-            User code is a mechanism to prevent unsolicited authentication requests from appearing on a user's authentication device.
+            CIBA supports the optional use of "user codes" as a mechanism to prevent unsolicited authentication requests from appearing on a user's authentication device.
           </t>
           <t>
-            It is optional for the OP to implement user code functionality. If the OP implements user code functionality then it may allow 1) clients without user code and 2) users without user code.
+            A "user code" is a secret known to the user, but which is not the user's password at the OP. When an OP supports this feature then Clients 
+            are required to ask the user for their "user code" in order to start a CIBA flow. This prevents malicious Clients or malicious end-users
+            from starting unsolicited CIBA flows for a particular user for whom they know the login_hint or equivalent. 
           </t>
           <t>
-            Typically clients that establish a security context with the user prior to sending a CIBA request should be allowed without user code. Example use cases of client security context are web applications that use CIBA for step-up authentication or call center applications where a caller ID is used to identify the user.
+            It is optional for the OP to implement User Code functionality. If the OP implements user code functionality then it may allow 1) clients without user code and 2) users without user code.
+          </t>
+          <t>
+            Typically clients that establish a security context with the user prior to sending a CIBA request should be allowed without the 
+            User Code mechanism (e.g. web applications that use CIBA for step-up authentication or call center applications where a caller ID 
+            is used to identify the user). In addition clients who don't use static user identifiers as login hints should be allowed without 
+            requiring the User Code mechanism. 
           </t>
           <t>
             The OP declares support for user code with the provider metadata parameter <spanx style="verb">backchannel_user_code_parameter_supported</spanx>.
@@ -745,7 +753,7 @@
           </t>
           <t>
             Registering a user code for a user is not in scope of this specification. Examples include 
-            a facility provided by the authentication device, SMS text messages or other service provided 
+            a facility provided by the authentication device or another service provided 
             by the OP. OPs should provide a method for the user to change the user code.
           </t>          
         </section>        
