@@ -264,13 +264,13 @@
               Connect Core</eref>.
             </t>
             <t>
-               In OpenID Connect Core the <spanx style="verb">sector_identifier_uri<spanx> contains a document with a 
+               In OpenID Connect Core the <spanx style="verb">sector_identifier_uri</spanx> contains a document with a
                list of <spanx style="verb">redirect_uris</spanx> and the Sector Identifier is defined as either 
                the host component of the <spanx style="verb">sector_identifier_uri</spanx> or if this is not provided 
                then the host component of the <spanx style="verb">redirect_uri</spanx>.  
             </t>
             <t>
-              In CIBA Poll & Ping modes the <spanx style="verb">jwks_uri<spanx> is used in place of the 
+              In CIBA Poll and Ping modes the <spanx style="verb">jwks_uri</spanx> is used in place of the
               <spanx style="verb">redirect_uri</spanx>. In CIBA Push mode the 
               <spanx style="verb">backchannel_client_notification_endpoint</spanx> is used in place of the 
               <spanx style="verb">redirect_uri</spanx>. In situations where the PPID must be shared among 
@@ -282,11 +282,11 @@
             </t>
 
             <t>In order to support Pairwise Pseudonymous Identifiers in Ping and Poll modes, the RP must 
-            provide either a sector_identifier_uri or a "jwks_uri" at the registration phase when 
+            provide either a sector_identifier_uri or a "jwks_uri" at the registration phase when
             the "urn:openid:params:grant-type:ciba" grant type is registered. In that way the OpenID Provider 
-            can use the host component of the sector_identifier_uri or ”jwks_uri" as the Sector Identifier 
+            can use the host component of the sector_identifier_uri or "jwks_uri" as the Sector Identifier
             to generate the PPIDs for the Client. 
-            <t>
+            </t>
 
             <t>
               When an OpenID Provider that supports PPIDs receives a dynamic registration request for a Client that 
