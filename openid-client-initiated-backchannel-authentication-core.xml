@@ -2,7 +2,6 @@
 <?xml-stylesheet type='text/xsl' href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 <!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
   <!ENTITY OpenID.Core PUBLIC '' 'https://openid.net/bibxml/reference.OpenID.Core.xml'>
-  <!ENTITY OpenID.Registration PUBLIC '' 'https://openid.net/bibxml/reference.OpenID.Registration.xml'>
 ]>
 <!--
   NOTE:  This XML file is input used to produce the authoritative copy of an
@@ -264,13 +263,14 @@
               Connect Core</eref>.
             </t>
             <t>
-               In OpenID Connect Core the <spanx style="verb">sector_identifier_uri</spanx> contains a document with a
+               In OpenID Connect Core the <spanx style="verb">sector_identifier_uri</spanx> contains a document with a 
                list of <spanx style="verb">redirect_uris</spanx> and the Sector Identifier is defined as either 
                the host component of the <spanx style="verb">sector_identifier_uri</spanx> or if this is not provided 
                then the host component of the <spanx style="verb">redirect_uri</spanx>.  
-            </t>
+            </t>            
+
             <t>
-              In CIBA Poll and Ping modes the <spanx style="verb">jwks_uri</spanx> is used in place of the
+              In CIBA Poll and Ping modes the <spanx style="verb">jwks_uri</spanx> is used in place of the 
               <spanx style="verb">redirect_uri</spanx>. In CIBA Push mode the 
               <spanx style="verb">backchannel_client_notification_endpoint</spanx> is used in place of the 
               <spanx style="verb">redirect_uri</spanx>. In situations where the PPID must be shared among 
@@ -281,19 +281,24 @@
               <spanx style="verb">redirect_uri</spanx>.
             </t>
 
-            <t>In order to support Pairwise Pseudonymous Identifiers in Ping and Poll modes, the RP must 
-            provide either a sector_identifier_uri or a "jwks_uri" at the registration phase when
-            the "urn:openid:params:grant-type:ciba" grant type is registered. In that way the OpenID Provider 
-            can use the host component of the sector_identifier_uri or "jwks_uri" as the Sector Identifier
-            to generate the PPIDs for the Client. 
+            <t>
+              In order to support Pairwise Pseudonymous Identifiers in Ping and Poll modes, the RP must 
+              provide either a <spanx style="verb">sector_identifier_uri</spanx> or a <spanx style="verb">jwks_uri</spanx> 
+              at the registration phase when the <spanx style="verb">urn:openid:params:grant-type:ciba</spanx> 
+              grant type is registered. In that way the OpenID Provider can use the host component of the 
+              <spanx style="verb">sector_identifier_uri</spanx> or <spanx style="verb">jwks_uri</spanx> as 
+              the Sector Identifier to generate the PPIDs for the Client. 
             </t>
 
             <t>
               When an OpenID Provider that supports PPIDs receives a dynamic registration request for a Client that 
-              indicates that it wishes to use the Poll or Ping CIBA modes, it MUST check if a valid "jwks_uri" is 
-              set when the "subject_type" is "pairwise". If a "sector_identifier_uri" is explicitly provided, 
-              then the "jwks_uri" must be included in the list of URIs pointed to by the "sector_identifier_uri".
+              indicates that it wishes to use the Poll or Ping CIBA modes, it MUST check if a valid 
+              <spanx style="verb">jwks_uri</spanx> is set when the <spanx style="verb">subject_type</spanx> 
+              is <spanx style="verb">pairwise</spanx>. If a <spanx style="verb">sector_identifier_uri</spanx> 
+              is explicitly provided, then the <spanx style="verb">jwks_uri</spanx> must be included in the 
+              list of URIs pointed to by the <spanx style="verb">sector_identifier_uri</spanx>.
             </t>            
+
             <t>
               But having registered a "jwks_uri" is not enough to use PPIDs, Client needs somehow to demonstrate that such "jwks_uri" belongs to it,
               which can be accomplished by proving possession of a private key corresponding to one of the public keys published at the "jwks_uri".
@@ -610,7 +615,12 @@
         <section title="Signed Authentication Request" anchor="signed_auth_request">
         <t>
           A signed authentication request is made by encoding all of the authentication request parameters as
-          claims of a signed JWT, with each parameter name as the claim name and its value as a JSON string.
+          claims of a signed JWT with each parameter name as the claim name and its value as a JSON string. 
+          An exception to this is <spanx style="verb">requested_expiry</spanx>, which may be sent as either a 
+          JSON string or a JSON number, the OP must accept either type. An extension or profile may define 
+          additional authentication request parameters, these may be defined to be any JSON type.
+        </t>
+        <t>
           The JWT MUST contain all of the authentication request parameters.
           The JWT MUST be secured with an asymmetric signature and follow the guidance from
           <eref target="https://openid.net/specs/openid-connect-core-1_0.html#Signing">Section 10.1</eref> of
@@ -712,13 +722,21 @@
         </section>
         <section title="User Code" anchor="user_code">
           <t>
-            User code is a mechanism to prevent unsolicited authentication requests from appearing on a user's authentication device.
+            CIBA supports the optional use of "user codes" as a mechanism to prevent unsolicited authentication requests from appearing on a user's authentication device.
           </t>
           <t>
-            It is optional for the OP to implement user code functionality. If the OP implements user code functionality then it may allow 1) clients without user code and 2) users without user code.
+            A "user code" is a secret known to the user, but which is not the user's password at the OP. When an OP supports this feature then Clients 
+            are required to ask the user for their "user code" in order to start a CIBA flow. This prevents malicious Clients or malicious end-users
+            from starting unsolicited CIBA flows for a particular user for whom they know the login_hint or equivalent. 
           </t>
           <t>
-            Typically clients that establish a security context with the user prior to sending a CIBA request should be allowed without user code. Example use cases of client security context are web applications that use CIBA for step-up authentication or call center applications where a caller ID is used to identify the user.
+            It is optional for the OP to implement User Code functionality. If the OP implements user code functionality then it may allow 1) clients without user code and 2) users without user code.
+          </t>
+          <t>
+            Typically clients that establish a security context with the user prior to sending a CIBA request should be allowed without the 
+            User Code mechanism (e.g. web applications that use CIBA for step-up authentication or call center applications where a caller ID 
+            is used to identify the user). In addition clients who don't use static user identifiers as login hints should be allowed without 
+            requiring the User Code mechanism. 
           </t>
           <t>
             The OP declares support for user code with the provider metadata parameter <spanx style="verb">backchannel_user_code_parameter_supported</spanx>.
@@ -735,7 +753,7 @@
           </t>
           <t>
             Registering a user code for a user is not in scope of this specification. Examples include 
-            a facility provided by the authentication device, SMS text messages or other service provided 
+            a facility provided by the authentication device or another service provided 
             by the OP. OPs should provide a method for the user to change the user code.
           </t>          
         </section>        
@@ -797,6 +815,7 @@
               brute force guessing or forgery of a valid <spanx style="verb">auth_req_id</spanx> computationally infeasible -
               the means of achieving this are implementation specific,
               with possible approaches including secure pseudorandom number generation or cryptographically secured self-contained tokens.
+              The OpenID Provider MUST restrict the characters used to 'A'-'Z', 'a'-'z', '0'-'9', '.', '-' and '_', to reduce the chance of the client incorrectly decoding or re-encoding the <spanx style="verb">auth_req_id</spanx>; this character set was chosen to allow the server to use unpadded base64url if it wishes. The identifier MUST be treated as opaque by the client.
              </t>
             <t hangText="expires_in">
               REQUIRED. A JSON number with a positive integer value indicating the expiration time of the "auth_req_id" in seconds since the authentication request was received. A Client calling the token endpoint with an expired <spanx style="verb">auth_req_id</spanx> will receive an error, see <xref target="token_error_response" format="title"/>.
@@ -997,7 +1016,7 @@
       <section anchor="token_response" title="Successful Token Response">
         <t>
           After receiving and validating a valid and authorized Token Request from the Client and when the end-user associated with the supplied <spanx style="verb">auth_req_id</spanx> has been authenticated and has authorized the request, the OpenID Provider returns a successful response as specified in Section 3.1.3.3 of <xref target="OpenID.Core"/>.
-
+          Once redeemed for a successful token response, the <spanx style="verb">auth_req_id</spanx> value that was used is no longer valid.
           If the end-user associated with the supplied <spanx style="verb">auth_req_id</spanx> has not been authenticated or has not authorized the request, an error response must be sent as defined in <xref target="token_error_response" format="title"/>.
         </t>      
         <figure>
@@ -1193,7 +1212,7 @@
       <section anchor="token_error_response" title="Token Error Response">
         <t>
             If the Token Request is invalid or unauthorized, the OpenID Provider constructs an error response according to Section 3.1.3.4 Token Error Response of <xref target="OpenID.Core"/>.
-          In addition to the error codes defined in Section 5.2 of <xref target="RFC6749"/>, the following error codes defined in the <xref target="I-D.ietf-oauth-device-flow">OAuth Device Flow</xref> are also applicable:
+          In addition to the error codes defined in Section 5.2 of <xref target="RFC6749"/>, the following error codes defined in the <xref target="RFC8628">OAuth Device Flow</xref> are also applicable:
           </t>
            <t>
             <list style="hanging">
@@ -1215,7 +1234,14 @@
        <t>
            If the auth_req_id is invalid or was issued to another Client, an <spanx style="verb">invalid_grant</spanx> error MUST be returned as described in Section 5.2 of <xref target="RFC6749"/>.
         </t>
-
+        <t>
+          If a Client continually polls quicker than the <spanx style="verb">interval</spanx>, the OP may return an 
+          <spanx style="verb">invalid_request</spanx> error.           
+        </t>
+        <t>
+          If a Client receive an <spanx style="verb">invalid_request</spanx> error it must not make any further requests for 
+          the same <spanx style="verb">auth_req_id</spanx>.
+        </t>
         <t>
            If the Client is registered to use the Push Mode then it MUST NOT call the Token Endpoint with the CIBA Grant Type and the following error is returned.
         </t>
@@ -1225,7 +1251,13 @@
               The Client is not authorized as it is configured in Push Mode
             </t>
           </list>
-        </t>       
+        </t>      
+
+        <t>
+          Note, when a Client receives a 4xx response code with a JSON payload then it should inspect the 
+          payload in order to determine the error rather than relying on the HTTP status code alone. 
+        </t>
+
       </section>
 
       <section anchor="push_error_payload" title="Push Error Payload">
@@ -1591,9 +1623,8 @@
       <?rfc include="reference.RFC.7519"?> <!-- JWT -->
 
       &OpenID.Core;
-      &OpenID.Registration;
       
-      <?rfc include="reference.I-D.draft-ietf-oauth-mtls-12"?>
+      <?rfc include="reference.I-D.draft-ietf-oauth-mtls-17"?>
 
     </references>
     
@@ -1604,7 +1635,7 @@
       <?rfc include="reference.RFC.7591"?> <!-- Client Registration -->
       <?rfc include="reference.RFC.7231"?>
 
-      <?rfc include="reference.I-D.draft-ietf-oauth-device-flow-13"?>
+      <?rfc include="reference.RFC.8628"?>      
 
       <reference anchor="IANA.OAuth.Parameters" target="http://www.iana.org/assignments/oauth-parameters">
         <front>
