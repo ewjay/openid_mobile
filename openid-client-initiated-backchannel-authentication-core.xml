@@ -1821,8 +1821,19 @@
             remove userinfo_encrypted_response_alg RSA1_5 use that wasn't needed anyway,
             update the login hint token to use sub_id rather than subject now that
             https://tools.ietf.org/html/draft-ietf-secevent-subject-identifiers-04 has a "sub_id" JWT Claim definition,
-            change signed request and hint to use ECDSA so they're a little smaller</t>
+            change signed request and hint to use ECDSA so they're a little smaller.</t>
           <t>Define a default value of 5 seconds for interval.</t>
+          <t>More clearly define Consumption Device and Authentication Device in the intro.</t>
+          <t>Added a security consideration around context metadata.</t>
+          <t>Better describe the use of long polling.</t>
+          <t>Improve text around the PPID mechanism and the guidance around verification of ownership of keys at jwks_uri.</t>
+          <t>Clarify that the auth_req_id value is not valid after successful redemption.</t>
+          <t>Update some references.</t>
+          <t>Add a note instructing clients to look error bodies rather than relying on the HTTP status code alone.</t>
+          <t>Add character restrictions for auth_req_id values.</t>
+          <t>Allow requested expiry to be sent as a number or string and state that extensios profiles may define additional authentication request parameters as any JSON type.</t>
+          <t>Add guidance around clients who poll to quickly.</t>
+          <t>Editorial changes to better introduce the user code mechanism.</t>
         </list>
       </t>
     </section>
