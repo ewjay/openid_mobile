@@ -1831,7 +1831,7 @@
           <t>Update some references.</t>
           <t>Add a note instructing clients to look error bodies rather than relying on the HTTP status code alone.</t>
           <t>Add character restrictions for auth_req_id values.</t>
-          <t>Allow requested expiry to be sent as a number or string and state that extensios profiles may define additional authentication request parameters as any JSON type.</t>
+          <t>Allow requested expiry to be sent as a number or string and state that extensions profiles may define additional authentication request parameters as any JSON type.</t>
           <t>Add guidance around clients who poll to quickly.</t>
           <t>Editorial changes to better introduce the user code mechanism.</t>
         </list>
