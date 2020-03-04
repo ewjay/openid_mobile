@@ -13,7 +13,7 @@
   document and not a private document, as the private="..." declaration could
   be taken to indicate.
 -->
-<rfc category="std" docName="openid-client-initiated-backchannel-authentication-core-03" ipr="none">
+<rfc category="std" docName="openid-client-initiated-backchannel-authentication-core-04" ipr="none">
 
   <?rfc toc="yes" ?>
   <?rfc tocdepth="5" ?>
@@ -25,7 +25,7 @@
   
   <front>
     <title abbrev="CIBA">
-            OpenID Connect Client Initiated Backchannel Authentication Flow - Core 1.0 draft-03</title>
+            OpenID Connect Client Initiated Backchannel Authentication Flow - Core 1.0 draft-04</title>
 
 
     <author fullname="Gonzalo Fernandez Rodriguez" initials="G." surname="Fernandez">
@@ -308,8 +308,8 @@
               <vspace />
               <list style="numbers">
                 <t>
-                  Using the <eref target="https://tools.ietf.org/html/draft-ietf-oauth-mtls#section-2.2">Self-Signed Certificate Mutual TLS OAuth Client Authentication Method</eref> as defined in section 2.2 of
-                  <xref target="I-D.ietf-oauth-mtls"/>.
+                  Using the <eref target="https://tools.ietf.org/html/rfc8705#section-2.2">Self-Signed Certificate Mutual TLS OAuth Client Authentication Method</eref> as defined in section 2.2 of
+                  <xref target="RFC8705"/>.
                 </t> 
                 <t>
                   Using the private_key_jwt method as per the section 9 <eref target="https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication">Client Authentication</eref>
@@ -1624,7 +1624,7 @@
 
       &OpenID.Core;
       
-      <?rfc include="reference.I-D.draft-ietf-oauth-mtls-17"?>
+      <?rfc include="reference.RFC.8705"?>
 
     </references>
     
@@ -1779,7 +1779,7 @@
           <t>
             If the OP uses Pairwise Identifiers and the Polling Mechanism to retrieve the token, it is necessary to provide a "jwks_uri" at the registration phase and
             it is MANDATORY for the Client to authenticate the token endpoint using one of this two mechanisms: 
-            Using Mutual TLS Self-Signed Certificate method as defined in section 2.2 of <xref target="I-D.ietf-oauth-mtls"/>
+            Using Mutual TLS Self-Signed Certificate method as defined in section 2.2 of draft-ietf-oauth-mtls
             or using the private_key_jwt method as per the section 9 <eref target="https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication">Client Authentication</eref>
             of the <xref target="OpenID.Core"/>
           </t>
@@ -1834,6 +1834,11 @@
           <t>Allow requested expiry to be sent as a number or string and state that extensions profiles may define additional authentication request parameters as any JSON type.</t>
           <t>Add guidance around clients who poll to quickly.</t>
           <t>Editorial changes to better introduce the user code mechanism.</t>
+        </list>
+      </t>
+      <t>-OIDC-CIBA-CORE-04
+        <list style='symbols'>
+          <t>Update OAuth MTLS draft reference to RFC 8705.</t>
         </list>
       </t>
     </section>
