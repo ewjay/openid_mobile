@@ -1436,7 +1436,7 @@
       </t>
       <t>
         OAuth 2.0 extensions that facilitate so called proof-of-possession (PoP) or sender-constrained tokens,
-        such as <xref target="RFC8705"/> or <xref target="I-D.fett-oauth-dpop"/>,
+        such as <xref target="RFC8705"/> or <xref target="I-D.ietf-oauth-dpop"/>,
         work by way of the client presenting and proving possession of a
         key when making a request to the token endpoint and the authorization server issuing tokens bound to that key.
         CIBA's push mode cannot be used to acquire such PoP tokens in a standard and interoperable manner
@@ -1668,8 +1668,8 @@
         </front>
       </reference>
 
-      <?rfc include="reference.I-D.draft-fett-oauth-dpop-04"?>
-      <?rfc include="reference.I-D.draft-ietf-oauth-security-topics-14"?>
+      <?rfc include="reference.I-D.ietf-oauth-dpop.xml"?>
+      <?rfc include="reference.I-D.ietf-oauth-security-topics.xml"?>
 
     </references>
 
